@@ -5,9 +5,9 @@
 - Support are limit on every version, so update Cocos Creator or Project Editor with caution.
 
 # Build
-- Ironsource: <= 5MB - Dùng version 3.6.3 và bản build Unity
+- Ironsource: <= 5MB - Use build Unity with version 3.6.3
 - Mintegral: <= 2.5MB
-- Unity: <= 5MB - Dùng version 3.6.3
+- Unity: <= 5MB - Use build version 3.6.3
 - Amazon: Use build Mintegral
 
 # Change link store
