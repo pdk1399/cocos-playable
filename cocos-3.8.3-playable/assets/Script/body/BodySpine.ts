@@ -100,7 +100,7 @@ export class BodySpine extends Component {
     onHit(audioForce: boolean = true): number {
         if (!this.AnimHitActive)
             return 0;
-        if (this.AudioJump != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimHit : true))
+        if (this.AudioHit != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimHit : true))
             this.AudioHit.play();
         this.m_hit = true;
         let animHitDuration = this.m_spine.onAnimation(this.AnimHit, false);
@@ -112,7 +112,7 @@ export class BodySpine extends Component {
     }
 
     onDead(audioForce: boolean = true): number {
-        if (this.AudioJump != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimDead : true))
+        if (this.AudioDead != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimDead : true))
             this.AudioDead.play();
         this.m_dead = true;
         if (!this.AnimDeadActive)
@@ -139,7 +139,7 @@ export class BodySpine extends Component {
     }
 
     onComplete(audioForce: boolean = true): number {
-        if (this.AudioJump != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimFinish : true))
+        if (this.AudioFinish != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimFinish : true))
             this.AudioFinish.play();
         return this.m_spine.onAnimation(this.AnimFinish, this.AnimFinishLoop);
     }

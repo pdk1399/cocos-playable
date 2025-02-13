@@ -67,11 +67,15 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null; } })
     AttackHold: boolean = false;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null; } })
+    AttackUnAim: boolean = true;
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null; } })
     AttackStopMoveAnim = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null; } })
     AttackStopMovePress = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null; } })
     AttackStopFall = false;
+    @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null; } })
+    AttackDegOffset: number = 0;
 
     @property({ group: { name: 'Pick&Throw' }, type: CCBoolean })
     Pick: boolean = false;
@@ -592,11 +596,11 @@ export class BodyControlX extends Component {
                     this.m_rigidbody.sleep();
                     this.scheduleOnce(() => this.m_rigidbody.wakeUp(), 0.02);
                     if (this.m_bodyAttack != null)
-                        this.m_bodyAttack.onAimDeg(this.m_faceDirX == 1 ? 0 : 180);
+                        this.m_bodyAttack.onAimDeg(this.m_faceDirX == 1 ? 0 + this.AttackDegOffset : 180 - this.AttackDegOffset);
                 }
                 if (!this.AttackHold) {
                     if (this.m_bodyAttack != null)
-                        this.m_bodyAttack.onAimDeg(this.m_faceDirX == 1 ? 0 : 180);
+                        this.m_bodyAttack.onAimDeg(this.m_faceDirX == 1 ? 0 + this.AttackDegOffset : 180 - this.AttackDegOffset);
                     this.onAttackProgess();
                 }
                 break;
@@ -607,27 +611,33 @@ export class BodyControlX extends Component {
                 }
                 if (this.AttackHold)
                     this.onAttackProgess();
+                this.onUnAim();
                 break;
         }
     }
 
-    protected onAttackProgess() {
+    protected onAttackProgess(): number {
         if (this.m_bodyAttack == null)
             return;
         if (this.m_bodyAttack.Aim) {
+            //Find target
             if (this.m_bodyAttack.m_rangeTarget == null ? true : !this.m_bodyAttack.m_rangeTarget.isValid)
                 this.m_bodyAttack.m_rangeTarget = this.m_bodyAttack.m_bodyCheck.onRangeTargetNearest();
-            if (this.m_bodyAttack.m_rangeTarget == null ? true : !this.m_bodyAttack.m_rangeTarget.isValid) {
-                this.m_bodyAttack.onUnAim();
-                this.m_bodyAttack.onAttackProgess();
-            }
-            else {
+            //Aim target
+            if (this.m_bodyAttack.m_rangeTarget == null ? true : !this.m_bodyAttack.m_rangeTarget.isValid)
+                this.m_bodyAttack.onAimDeg(this.m_faceDirX == 1 ? 0 + this.AttackDegOffset : 180 - this.AttackDegOffset);
+            else
                 this.m_bodyAttack.onAimTarget(this.m_bodyAttack.m_rangeTarget);
-                this.scheduleOnce(() => this.m_bodyAttack.onUnAim(), this.m_bodyAttack.onAttackProgess());
-            }
         }
+        //Attack target
+        return this.m_bodyAttack.onAttackProgess();
+    }
+
+    onUnAim() {
+        if (this.AttackUnAim)
+            this.m_bodyAttack.onUnAim();
         else
-            this.m_bodyAttack.onAttackProgess()
+            this.m_bodyAttack.onAimDeg(this.m_faceDirX == 1 ? 0 + this.AttackDegOffset : 180 - this.AttackDegOffset);
     }
 
     //INTERACTION:
@@ -723,6 +733,7 @@ export class BodyControlX extends Component {
     protected onFixed() {
         switch (this.Type) {
             case BodyType.STICK:
+                this.onUnAim();
                 break;
             case BodyType.BALL:
                 this.onJumpForce();

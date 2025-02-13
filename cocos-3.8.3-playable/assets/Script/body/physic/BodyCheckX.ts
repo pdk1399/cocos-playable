@@ -508,6 +508,8 @@ export class BodyCheckX extends Component {
                 }
             }
         }
+        if (target != null)
+            target = target.getChildByName('centre') ?? target.getChildByName('renderer').getChildByName('centre') ?? target;
         return target;
     }
 }
