@@ -17,10 +17,10 @@ export class MoveTarget extends Component {
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: MoveTarget) { return !this.Start; } })
-    Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCString, visible(this: MoveTarget) { return !this.Start; } })
     OnEvent: string = '';
+    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: MoveTarget) { return !this.Start; } })
+    Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
     @property({ group: { name: 'Event' }, type: CCBoolean })
