@@ -51,7 +51,7 @@ export class BodySpine extends Component {
     @property({ group: { name: 'Audio' }, type: AudioSource })
     AudioJump: AudioSource = null;
     @property({ group: { name: 'Audio' }, type: AudioSource })
-    AudioHurt: AudioSource = null;
+    AudioHit: AudioSource = null;
     @property({ group: { name: 'Audio' }, type: AudioSource })
     AudioFinish: AudioSource = null;
     @property({ group: { name: 'Audio' }, type: AudioSource })
@@ -97,11 +97,11 @@ export class BodySpine extends Component {
         return this.m_spine.onAnimation(this.AnimIdle, this.AnimIdleLoop);
     }
 
-    onHit(): number {
+    onHit(audioForce: boolean = true): number {
         if (!this.AnimHitActive)
             return 0;
-        if (this.AudioHurt != null)
-            this.AudioHurt.play();
+        if (this.AudioJump != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimHit : true))
+            this.AudioHit.play();
         this.m_hit = true;
         let animHitDuration = this.m_spine.onAnimation(this.AnimHit, false);
         this.scheduleOnce(() => {
@@ -111,8 +111,8 @@ export class BodySpine extends Component {
         return animHitDuration;
     }
 
-    onDead(): number {
-        if (this.AudioDead != null)
+    onDead(audioForce: boolean = true): number {
+        if (this.AudioJump != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimDead : true))
             this.AudioDead.play();
         this.m_dead = true;
         if (!this.AnimDeadActive)
@@ -128,8 +128,8 @@ export class BodySpine extends Component {
         return this.m_spine.onAnimation(this.AnimPush, true);
     }
 
-    onAirOn(): number {
-        if (this.AudioJump != null)
+    onAirOn(audioForce: boolean = true): number {
+        if (this.AudioJump != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimAirOn : true))
             this.AudioJump.play();
         return this.m_spine.onAnimation(this.AnimAirOn, true);
     }
@@ -138,8 +138,8 @@ export class BodySpine extends Component {
         return this.m_spine.onAnimation(this.AnimAirOff, true);
     }
 
-    onComplete(): number {
-        if (this.AudioFinish != null)
+    onComplete(audioForce: boolean = true): number {
+        if (this.AudioJump != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimFinish : true))
             this.AudioFinish.play();
         return this.m_spine.onAnimation(this.AnimFinish, this.AnimFinishLoop);
     }
