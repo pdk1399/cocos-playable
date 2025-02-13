@@ -39,15 +39,13 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'MoveX' }, type: CCBoolean })
     LockX: boolean = false;
     @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
-    MoveForceX = 10;
+    MoveGroundX = 40;
+    @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
+    MoveAirX: number = 40;
     @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
     MoveDampX = 40;
     @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX && this.Type == BodyType.BALL; } })
     TorqueX = 2000;
-    @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
-    MoveGroundX: number = 40;
-    @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
-    MoveAirX: number = 40;
     @property({ group: { name: 'MoveX' }, type: CCBoolean, visible(this: BodyControlX) { return !this.LockX; } })
     MoveForceStop = true;
     @property({ group: { name: 'MoveX' }, type: CCBoolean, visible(this: BodyControlX) { return !this.LockX; } })
@@ -138,6 +136,9 @@ export class BodyControlX extends Component {
     m_lockKnockBack: boolean = false;
     m_lockVelocity: boolean = false;
 
+    m_bodyX2: boolean = false;
+    m_bodyX4: boolean = false;
+
     m_body: BodyBase = null;
     m_bodyCheck: BodyCheckX = null;
     m_bodySpine: BodySpine = null;
@@ -198,6 +199,9 @@ export class BodyControlX extends Component {
             director.on(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             director.on(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
 
+            director.on(ConstantBase.BODY_X2, this.onBodyX2, this);
+            director.on(ConstantBase.BODY_X4, this.onBodyX4, this);
+
             if (full)
                 director.on(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
 
@@ -223,6 +227,9 @@ export class BodyControlX extends Component {
             director.off(ConstantBase.CONTROL_RELEASE, this.onMoveRelease, this);
             director.off(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             director.off(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
+
+            director.off(ConstantBase.BODY_X2, this.onBodyX2, this);
+            director.off(ConstantBase.BODY_X4, this.onBodyX4, this);
 
             if (full)
                 director.off(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
@@ -253,6 +260,9 @@ export class BodyControlX extends Component {
             this.node.on(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             this.node.on(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
 
+            this.node.on(ConstantBase.BODY_X2, this.onBodyX2, this);
+            this.node.on(ConstantBase.BODY_X4, this.onBodyX4, this);
+
             if (this.m_bodyAttack != null) {
                 this.node.on(ConstantBase.BODY_ATTACK_UP, this.m_bodyAttack.onMeleeAttackUp, this.m_bodyAttack);
                 this.node.on(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
@@ -275,6 +285,9 @@ export class BodyControlX extends Component {
             this.node.off(ConstantBase.CONTROL_RELEASE, this.onMoveRelease, this);
             this.node.off(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             this.node.off(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
+
+            this.node.off(ConstantBase.BODY_X2, this.onBodyX2, this);
+            this.node.off(ConstantBase.BODY_X4, this.onBodyX4, this);
 
             if (this.m_bodyAttack != null) {
                 this.node.off(ConstantBase.BODY_ATTACK_UP, this.m_bodyAttack.onMeleeAttackUp, this.m_bodyAttack);
@@ -353,69 +366,75 @@ export class BodyControlX extends Component {
                 break;
         }
 
-        if (this.MoveForceStop && this.m_moveDirX == 0 && this.m_rigidbody.linearVelocity.clone().x != 0) {
-            this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
-            if (this.Type == BodyType.BALL)
-                this.m_rigidbody.applyTorque(0, true);
-            return;
+        if (this.MoveForceStop && this.m_moveDirX == 0) {
+            switch (this.Type) {
+                case BodyType.STICK:
+                    if (this.m_rigidbody.linearVelocity.clone().x != 0) {
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        return;
+                    }
+                    break;
+                case BodyType.BALL:
+                    if (this.m_rigidbody.angularVelocity != 0) {
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.angularVelocity = 0;
+                        return;
+                    }
+                    break;
+            }
         }
 
         if (this.MoveForceFlip && this.m_moveDirX != 0) {
-            if (this.m_rigidbody.linearVelocity.clone().x > 0 && this.m_moveDirX < 0) {
-                this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
-                if (this.Type == BodyType.BALL)
-                    this.m_rigidbody.applyTorque(0, true);
-                return;
-            }
-            if (this.m_rigidbody.linearVelocity.clone().x < 0 && this.m_moveDirX > 0) {
-                this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
-                if (this.Type == BodyType.BALL)
-                    this.m_rigidbody.applyTorque(0, true);
-                return;
+            switch (this.Type) {
+                case BodyType.STICK:
+                    if (this.m_rigidbody.linearVelocity.clone().x > 0 && this.m_moveDirX < 0) {
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        return;
+                    }
+                    if (this.m_rigidbody.linearVelocity.clone().x < 0 && this.m_moveDirX > 0) {
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        return;
+                    }
+                    break;
+                case BodyType.BALL:
+                    if (this.m_rigidbody.angularVelocity < 0 && this.m_moveDirX < 0) {
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.angularVelocity = 1;
+                        return;
+                    }
+                    if (this.m_rigidbody.angularVelocity > 0 && this.m_moveDirX > 0) {
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.angularVelocity = -1;
+                        return;
+                    }
+                    break;
             }
         }
 
         let velocity = this.m_rigidbody.linearVelocity.clone();
         let current = velocity.clone();
 
-        if (this.m_body.m_dead || !this.m_control) {
+        if (this.m_body.m_dead || !this.m_control || this.m_bodyCheck.m_isHead) {
             velocity.x = 0;
+            if (this.Type == BodyType.BALL)
+                this.m_rigidbody.angularVelocity = 0;
         }
         else {
-            switch (this.Type) {
-                case BodyType.STICK:
-                    if (this.m_bodyCheck.m_isBot) {
-                        velocity.x += this.m_moveDirX * this.MoveForceX;
-                        if (velocity.x > this.MoveGroundX)
-                            velocity.x = this.MoveGroundX;
-                        else if (velocity.x < -this.MoveGroundX)
-                            velocity.x = -this.MoveGroundX;
-                    }
-                    else {
-                        velocity.x += this.m_moveDirX * this.MoveAirX;
-                        if (velocity.x > this.MoveAirX)
-                            velocity.x = this.MoveAirX;
-                        else if (velocity.x < -this.MoveAirX)
-                            velocity.x = -this.MoveAirX;
-                    }
-                    break;
-                case BodyType.BALL:
-                    if (this.m_bodyCheck.m_isBot) {
-                        this.m_rigidbody.applyTorque(-this.m_moveDirX * this.TorqueX * (this.m_rigidbody.getMass() / this.m_baseMass) * this.m_baseSize, true);
-                        velocity.x += this.m_moveDirX * this.MoveGroundX;
-                        if (velocity.x > this.MoveGroundX)
-                            velocity.x = this.MoveGroundX;
-                        else if (velocity.x < -this.MoveGroundX)
-                            velocity.x = -this.MoveGroundX;
-                    }
-                    else {
-                        velocity.x += this.m_moveDirX * this.MoveAirX;
-                        if (velocity.x > this.MoveAirX)
-                            velocity.x = this.MoveAirX;
-                        else if (velocity.x < -this.MoveAirX)
-                            velocity.x = -this.MoveAirX;
-                    }
-                    break;
+            if (this.m_bodyCheck.m_isBot) {
+                velocity.x += this.m_moveDirX * this.MoveGroundX;
+                if (velocity.x > this.MoveGroundX)
+                    velocity.x = this.MoveGroundX;
+                else if (velocity.x < -this.MoveGroundX)
+                    velocity.x = -this.MoveGroundX;
+                if (this.Type == BodyType.BALL)
+                    this.m_rigidbody.applyTorque(-this.m_moveDirX * this.TorqueX * (this.m_rigidbody.getMass() / this.m_baseMass) * this.m_baseSize, true);
+            }
+            else {
+                velocity.x += this.m_moveDirX * this.MoveAirX;
+                if (velocity.x > this.MoveAirX)
+                    velocity.x = this.MoveAirX;
+                else if (velocity.x < -this.MoveAirX)
+                    velocity.x = -this.MoveAirX;
             }
         }
         let damp = current.lerp(velocity, this.MoveDampX * dt);
@@ -434,7 +453,8 @@ export class BodyControlX extends Component {
         this.m_moveDirX = !this.LockX ? -1 : 0;
         if (this.m_faceDirX != -1) {
             this.m_faceDirX = -1;
-            this.m_bodySpine.onViewDirection(this.m_faceDirX);
+            if (this.Type != BodyType.BALL)
+                this.m_bodySpine.onViewDirection(this.m_faceDirX);
             this.m_bodyCheck.onDirUpdate(this.m_faceDirX);
             if (this.m_bodyAttack != null)
                 this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
@@ -445,7 +465,8 @@ export class BodyControlX extends Component {
         this.m_moveDirX = !this.LockX ? 1 : 0;
         if (this.m_faceDirX != 1) {
             this.m_faceDirX = 1;
-            this.m_bodySpine.onViewDirection(this.m_faceDirX);
+            if (this.Type != BodyType.BALL)
+                this.m_bodySpine.onViewDirection(this.m_faceDirX);
             this.m_bodyCheck.onDirUpdate(this.m_faceDirX);
             if (this.m_bodyAttack != null)
                 this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
@@ -494,6 +515,9 @@ export class BodyControlX extends Component {
         this.m_jumpSchedule = this.scheduleOnce(() => {
             this.m_lockJump = false;
         }, this.JumpDelay);
+
+        this.m_state = PlayerState.JUMP;
+        this.m_bodySpine.onAirOn();
     }
 
     onJumRelease() {
@@ -510,6 +534,9 @@ export class BodyControlX extends Component {
         let veloc = this.m_rigidbody.linearVelocity;
         veloc.y = jumpUp != null ? jumpUp : this.JumpUpY;
         this.m_rigidbody.linearVelocity = veloc;
+
+        this.m_state = PlayerState.JUMP;
+        this.m_bodySpine.onAirOn();
     }
 
     protected onBot(stage: boolean) {
@@ -615,11 +642,11 @@ export class BodyControlX extends Component {
             return;
         let delayPick = 0;
         if (this.m_pickUp == null) {
-            if (this.m_bodyCheck.m_interacteTarget.length == 0)
+            if (this.m_bodyCheck.m_targetInteracte.length == 0)
                 return;
             this.m_pickUpProgess = true;
             //Add Pick-up Object to current saved
-            this.m_pickUp = this.m_bodyCheck.m_interacteTarget[0];
+            this.m_pickUp = this.m_bodyCheck.m_targetInteracte[0];
             this.m_pickUpParent = this.m_pickUp.parent;
             this.m_pickUpSiblingIndex = this.m_pickUp.getSiblingIndex();
             //Save Pick-up Object's Rigidbody imformation before destroy it
@@ -681,7 +708,7 @@ export class BodyControlX extends Component {
     protected onInteractionFound(target: Node, stage: boolean) {
         if (this.m_pickUp != null)
             return;
-        if (this.m_bodyCheck.m_interacteTarget.length == 0) {
+        if (this.m_bodyCheck.m_targetInteracte.length == 0) {
             if (this.UiPickBtnActive)
                 director.emit(ConstantBase.INPUT_INTERACTION_SHOW, false);
             return;
@@ -704,6 +731,48 @@ export class BodyControlX extends Component {
                     .start();
                 break;
         }
+    }
+
+    //X2 - X4
+
+    onBodyX2(state: boolean = true) {
+        this.m_bodyX2 = state;
+        //
+        if (this.m_bodyX4)
+            return;
+        //
+        let baseScale: Vec3 = Vec3.ONE;
+        let ratio = state ? 2 : 1;
+        let colliders = this.getComponents(Collider2D);
+        setTimeout(() => {
+            tween(this.node).to(0.25, { scale: baseScale.clone().multiplyScalar(ratio) }).call(() => {
+                colliders.forEach(c => {
+                    c.apply();
+                });
+            }).start();
+        }, 1);
+        this.m_baseSize = state ? 2 : 1;
+    }
+
+    onBodyX4(state: boolean = true) {
+        this.m_bodyX4 = state;
+        //
+        if (!state && this.m_bodyX2) {
+            this.onBodyX2(true);
+            return;
+        }
+        //
+        let baseScale: Vec3 = Vec3.ONE;
+        let ratio = state ? 4 : 1;
+        let colliders = this.getComponents(Collider2D);
+        setTimeout(() => {
+            tween(this.node).to(0.25, { scale: baseScale.clone().multiplyScalar(ratio) }).call(() => {
+                colliders.forEach(c => {
+                    c.apply();
+                });
+            }).start();
+        }, 1);
+        this.m_baseSize = state ? 4 : 1;
     }
 
     //STAGE:
@@ -752,7 +821,7 @@ export class BodyControlX extends Component {
                 this.m_bodySpine.onPush();
                 break;
             case PlayerState.JUMP:
-                this.m_bodySpine.onAirOn();
+                this.m_bodySpine.onAirOn(false);
                 break;
             case PlayerState.AIR:
                 this.m_bodySpine.onAirOff();

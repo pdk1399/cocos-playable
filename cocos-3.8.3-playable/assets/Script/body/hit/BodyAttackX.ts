@@ -133,7 +133,7 @@ export class BodyAttackX extends Component {
     //Melee
 
     private onMeleeFoundTarget(target: Node, stage: boolean) {
-        if (this.m_bodyCheck.m_meleeTarget.length > 0) {
+        if (this.m_bodyCheck.m_targetMelee.length > 0) {
             if (!this.m_attack)
                 this.onMeleeAttackTargetStart();
             else
@@ -149,14 +149,14 @@ export class BodyAttackX extends Component {
     }
 
     onMeleeAttackTargetStart(): boolean {
-        if (this.m_bodyCheck.m_meleeTarget.length == 0)
+        if (this.m_bodyCheck.m_targetMelee.length == 0)
             return false;
         this.onAttackProgess();
         return true;
     }
 
     onMeleeAttackTargetEmit() {
-        this.m_bodyCheck.m_meleeTarget.forEach(target => {
+        this.m_bodyCheck.m_targetMelee.forEach(target => {
             if (this.m_meleeAttackUp)
                 target.emit(ConstantBase.NODE_BODY_DEAD, this.node);
             else
@@ -171,7 +171,7 @@ export class BodyAttackX extends Component {
     //Range
 
     private onRangeFoundTarget(target: Node, stage: boolean) {
-        if (this.m_bodyCheck.m_rangeTarget.length > 0) {
+        if (this.m_bodyCheck.m_targetRange.length > 0) {
             if (!this.m_attack)
                 this.onRangeAttackTargetStart();
             else
@@ -187,7 +187,7 @@ export class BodyAttackX extends Component {
     }
 
     onRangeAttackTargetStart(): boolean {
-        if (this.m_bodyCheck.m_rangeTarget.length == 0)
+        if (this.m_bodyCheck.m_targetRange.length == 0)
             return false;
         this.onAttackProgess();
         return true;
