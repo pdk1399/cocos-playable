@@ -5,6 +5,10 @@ const { ccclass, property } = _decorator;
 @ccclass('TriggerActive')
 export class TriggerActive extends Component {
 
+    @property({ group: { name: 'Target' }, type: CCBoolean })
+    TargetStart: boolean = false;
+    @property({ group: { name: 'Target' }, type: CCBoolean, visible(this: TriggerActive) { return this.TargetStart; } })
+    TargetStartState: boolean = false;
     @property({ group: { name: 'Target' }, type: [Node] })
     Target: Node[] = [];
     @property({ group: { name: 'Target' }, type: CCBoolean })
@@ -37,6 +41,14 @@ export class TriggerActive extends Component {
         });
         if (this.OnNode)
             this.node.on(ConstantBase.NODE_EVENT, this.onEventList, this);
+    }
+
+    protected start(): void {
+        if (this.TargetStart) {
+            this.Target.forEach(target => {
+                target.active = this.TargetStartState;
+            });
+        }
     }
 
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {

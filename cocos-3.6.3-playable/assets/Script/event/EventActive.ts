@@ -5,6 +5,10 @@ const { ccclass, property } = _decorator;
 @ccclass('EventActive')
 export class EventActive extends Component {
 
+    @property({ group: { name: 'Target' }, type: CCBoolean })
+    TargetStart: boolean = false;
+    @property({ group: { name: 'Target' }, type: CCBoolean, visible(this: EventActive) { return this.TargetStart; } })
+    TargetStartState: boolean = false;
     @property({ group: { name: 'Target' }, type: [Node] })
     Target: Node[] = [];
 
@@ -43,6 +47,11 @@ export class EventActive extends Component {
     }
 
     protected start(): void {
+        if (this.TargetStart) {
+            this.Target.forEach(target => {
+                target.active = this.TargetStartState;
+            });
+        }
         if (this.Start)
             this.onEvent();
     }
