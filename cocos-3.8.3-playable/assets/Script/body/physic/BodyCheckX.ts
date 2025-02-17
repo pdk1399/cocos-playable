@@ -19,13 +19,6 @@ export class BodyCheckX extends Component {
     @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: BodyCheckX) { return this.Raycast; } })
     RaycastHead: boolean = false;
 
-    @property({ group: { name: 'Option' }, type: CCBoolean })
-    Update: boolean = true;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: BodyCheckX) { return this.Update; } })
-    UpdateDirMelee: boolean = true;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: BodyCheckX) { return this.Update; } })
-    UpdateDirRange: boolean = true;
-
     @property({ group: { name: 'Self' }, type: CCInteger })
     TagBody: number = 100;
     @property({ group: { name: 'Self' }, type: CCInteger, visible(this: BodyCheckX) { return !this.Raycast; } })
@@ -36,19 +29,13 @@ export class BodyCheckX extends Component {
     TagHead: number = 97;
     @property({ group: { name: 'Self' }, type: CCInteger, visible(this: BodyCheckX) { return !this.Raycast; } })
     TagBotHead: number = 96;
-    @property({ group: { name: 'Self' }, type: CCInteger })
-    TagMelee: number = 101;
-    @property({ group: { name: 'Self' }, type: CCInteger })
-    TagRange: number = 102;
+
     @property({ group: { name: 'Self' }, type: CCInteger })
     TagInteraction: number = 103;
-
     @property({ group: { name: 'Other' }, type: CCInteger })
     TagGround: number = -1;
     @property({ group: { name: 'Other' }, type: CCInteger })
     TagPlatform: number = -2;
-    @property({ group: { name: 'Other' }, type: CCInteger })
-    TagTarget: number = 200;
     @property({ group: { name: 'Other' }, type: CCInteger })
     TagBox: number = 300;
 
@@ -78,19 +65,13 @@ export class BodyCheckX extends Component {
 
     m_offsetHeadX: number;
     m_offsetBotHeadX: number;
-    m_offsetMeleeX: number;
-    m_offsetRangeX: number;
 
     m_targetBot: Node = null;
-    m_targetMelee: Node[] = [];
-    m_targetRange: Node[] = [];
     m_targetInteracte: Node[] = [];
 
     m_raycastSchedule: Function = null;
 
     readonly m_emitBot: string = 'emit-body-bot';
-    readonly m_emitMelee: string = 'emit-body-melee';
-    readonly m_emitRange: string = 'emit-body-range';
     readonly m_emitInteracte: string = 'emit-body-interacte';
 
     m_colliderBody: Collider2D = null;
@@ -99,8 +80,6 @@ export class BodyCheckX extends Component {
     m_colliderTop: Collider2D = null;
     m_colliderHead: Collider2D = null;
     m_colliderBotHead: Collider2D = null;
-    m_colliderMelee: Collider2D = null;
-    m_colliderRange: Collider2D = null;
     m_colliderinteracte: Collider2D = null;
 
     protected onLoad(): void {
@@ -124,12 +103,6 @@ export class BodyCheckX extends Component {
                 case this.TagBotHead:
                     this.m_colliderBotHead = collider;
                     break;
-                case this.TagMelee:
-                    this.m_colliderMelee = collider;
-                    break;
-                case this.TagRange:
-                    this.m_colliderRange = collider;
-                    break;
                 case this.TagInteraction:
                     this.m_colliderinteracte = collider;
                     break;
@@ -150,10 +123,6 @@ export class BodyCheckX extends Component {
             this.m_offsetHeadX = this.m_colliderHead.offset.x;
         if (this.m_colliderBotHead != null)
             this.m_offsetBotHeadX = this.m_colliderBotHead.offset.x;
-        if (this.m_colliderMelee != null)
-            this.m_offsetMeleeX = this.m_colliderMelee.offset.x;
-        if (this.m_colliderRange != null)
-            this.m_offsetRangeX = this.m_colliderRange.offset.x;
     }
 
     //Contact
@@ -203,6 +172,7 @@ export class BodyCheckX extends Component {
                         this.m_isHead = this.m_countHead > 0;
                         break;
                 }
+                break;
             case this.TagBotHead:
                 if (otherCollider.sensor)
                     break;
@@ -214,28 +184,7 @@ export class BodyCheckX extends Component {
                         break;
                 }
                 break;
-            case this.TagMelee:
-                switch (otherCollider.tag) {
-                    case this.TagTarget:
-                        let index = this.m_targetMelee.findIndex(t => t == otherCollider.node);
-                        if (index >= 0)
-                            break;
-                        this.m_targetMelee.push(otherCollider.node);
-                        this.node.emit(this.m_emitMelee, otherCollider.node, true);
-                        break;
-                }
-                break;
-            case this.TagRange:
-                switch (otherCollider.tag) {
-                    case this.TagTarget:
-                        let index = this.m_targetRange.findIndex(t => t == otherCollider.node);
-                        if (index >= 0)
-                            break;
-                        this.m_targetRange.push(otherCollider.node);
-                        this.node.emit(this.m_emitRange, otherCollider.node, true);
-                        break;
-                }
-                break;
+
             case this.TagInteraction:
                 switch (otherCollider.tag) {
                     case this.TagBox:
@@ -304,28 +253,6 @@ export class BodyCheckX extends Component {
                     case this.TagPlatform:
                         this.m_countBotHead = math.clamp(this.m_countBotHead - 1, 0, this.m_countBotHead);
                         this.m_isBotHead = this.m_countBotHead == 0;
-                        break;
-                }
-                break;
-            case this.TagMelee:
-                switch (otherCollider.tag) {
-                    case this.TagTarget:
-                        let index = this.m_targetMelee.findIndex(t => t == otherCollider.node);
-                        if (index < 0)
-                            break;
-                        this.m_targetMelee.splice(index, 1);
-                        this.node.emit(this.m_emitMelee, otherCollider.node, false);
-                        break;
-                }
-                break;
-            case this.TagRange:
-                switch (otherCollider.tag) {
-                    case this.TagTarget:
-                        let index = this.m_targetRange.findIndex(t => t == otherCollider.node);
-                        if (index < 0)
-                            break;
-                        this.m_targetRange.splice(index, 1);
-                        this.node.emit(this.m_emitRange, otherCollider.node, false);
                         break;
                 }
                 break;
@@ -456,22 +383,6 @@ export class BodyCheckX extends Component {
             this.m_colliderBotHead.apply(); //Called this onStart() make bug (?)
         }
 
-        if (this.Update) {
-            if (this.UpdateDirMelee && this.m_colliderMelee != null ? this.m_colliderMelee.isValid : false) {
-                let meleeColliderOffset = this.m_colliderMelee.offset;
-                meleeColliderOffset.x = this.m_offsetMeleeX * dir;
-                this.m_colliderMelee.offset = meleeColliderOffset;
-                this.m_colliderMelee.apply(); //Called this onStart() make bug (?)
-            }
-
-            if (this.UpdateDirRange && this.m_colliderRange != null ? this.m_colliderRange.isValid : false) {
-                let rangeColliderOffset = this.m_colliderRange.offset;
-                rangeColliderOffset.x = this.m_offsetRangeX * dir;
-                this.m_colliderRange.offset = rangeColliderOffset;
-                this.m_colliderRange.apply(); //Called this onStart() make bug (?)
-            }
-        }
-
         this.m_isHead = false;
     }
 
@@ -479,37 +390,5 @@ export class BodyCheckX extends Component {
 
     onBotCheckOut() {
         this.m_isBotForce = false;
-    }
-
-    //Range
-
-    onRangeTargetNearest(): Node {
-        let target: Node = null;
-        let distance = 0;
-        for (let i = 0; i < this.m_targetRange.length; i++) {
-            let targetCheck = this.m_targetRange[i];
-            if (this.m_dir == 1 && this.node.worldPosition.clone().x > targetCheck.worldPosition.clone().x)
-                continue;
-            if (this.m_dir == -1 && this.node.worldPosition.clone().x < targetCheck.worldPosition.clone().x)
-                continue;
-            if (target == null ? true : !target.isValid) {
-                target = targetCheck;
-                let posA = this.node.worldPosition.clone();
-                let posB = targetCheck.worldPosition.clone();
-                distance = Vec2.distance(v2(posA.x, posA.y), v2(posB.x, posB.y));
-            }
-            else {
-                let posA = this.node.worldPosition.clone();
-                let posB = targetCheck.worldPosition.clone();
-                let distanceCheck = Vec2.distance(v2(posA.x, posA.y), v2(posB.x, posB.y));
-                if (distanceCheck < distance) {
-                    target = targetCheck;
-                    distance = distanceCheck;
-                }
-            }
-        }
-        if (target != null)
-            target = target.getChildByName('centre') ?? target.getChildByName('renderer').getChildByName('centre') ?? target;
-        return target;
     }
 }

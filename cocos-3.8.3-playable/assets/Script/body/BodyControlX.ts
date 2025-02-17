@@ -621,13 +621,13 @@ export class BodyControlX extends Component {
             return;
         if (this.m_bodyAttack.Aim) {
             //Find target
-            if (this.m_bodyAttack.m_rangeTarget == null ? true : !this.m_bodyAttack.m_rangeTarget.isValid)
-                this.m_bodyAttack.m_rangeTarget = this.m_bodyAttack.m_bodyCheck.onRangeTargetNearest();
+            if (this.m_bodyAttack.m_targetRangeAim == null ? true : !this.m_bodyAttack.m_targetRangeAim.isValid)
+                this.m_bodyAttack.m_targetRangeAim = this.m_bodyAttack.onRangeTargetNearest();
             //Aim target
-            if (this.m_bodyAttack.m_rangeTarget == null ? true : !this.m_bodyAttack.m_rangeTarget.isValid)
+            if (this.m_bodyAttack.m_targetRangeAim == null ? true : !this.m_bodyAttack.m_targetRangeAim.isValid)
                 this.m_bodyAttack.onAimDeg(this.m_faceDirX == 1 ? 0 + this.AttackDegOffset : 180 - this.AttackDegOffset);
             else
-                this.m_bodyAttack.onAimTarget(this.m_bodyAttack.m_rangeTarget);
+                this.m_bodyAttack.onAimTarget(this.m_bodyAttack.m_targetRangeAim);
         }
         //Attack target
         return this.m_bodyAttack.onAttackProgess();
@@ -752,7 +752,7 @@ export class BodyControlX extends Component {
         if (this.m_bodyX4)
             return;
         //
-        let baseScale: Vec3 = Vec3.ONE;
+        let baseScale: Vec3 = this.m_baseScale.clone();
         let ratio = state ? 2 : 1;
         let colliders = this.getComponents(Collider2D);
         setTimeout(() => {
@@ -773,7 +773,7 @@ export class BodyControlX extends Component {
             return;
         }
         //
-        let baseScale: Vec3 = Vec3.ONE;
+        let baseScale: Vec3 = this.m_baseScale.clone();
         let ratio = state ? 4 : 1;
         let colliders = this.getComponents(Collider2D);
         setTimeout(() => {
