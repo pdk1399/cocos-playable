@@ -12,6 +12,9 @@ export enum OrientationType {
 @ccclass('UiReponsive2DVerticle')
 export class UiReponsive2DVerticle extends Component {
 
+    @property(CCBoolean)
+    RevertSpace: boolean = false;
+
     m_orientation = OrientationType.LANDSCAPE;
     m_solution: math.Size;
     m_view: Vec2;
@@ -59,7 +62,7 @@ export class UiReponsive2DVerticle extends Component {
                     let ratioHeight = 1.0 * ConstantBase.SOLUTION_TARGET.y / this.m_solutionViewed.y;
                     if (ratioHeight < 1) {
                         this.m_reponsive.portraitHorSpace = 0;
-                        this.m_reponsive.portraitVerSpace = ((1.0 - ratioHeight) / 2) * 100;
+                        this.m_reponsive.portraitVerSpace = (((1.0 - ratioHeight) / 2) * 100) * (this.RevertSpace ? -1 : 1);
                     }
                     else {
                         this.m_reponsive.portraitHorSpace = 0;
