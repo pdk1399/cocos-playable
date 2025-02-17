@@ -339,6 +339,7 @@ export class BodyAttackX extends Component {
         }
         if (target != null)
             target = target.getChildByName('centre') ?? target.getChildByName('renderer').getChildByName('centre') ?? target;
+        this.m_targetRangeAim = target;
         return target;
     }
 
@@ -409,9 +410,6 @@ export class BodyAttackX extends Component {
             this.unscheduleAllCallbacks();
         }
 
-        if (dir == this.m_dir)
-            return;
-
         if (this.MeleeDirUpdate && this.m_colliderMelee != null ? this.m_colliderMelee.isValid : false) {
             let meleeColliderOffset = this.m_colliderMelee.offset;
             meleeColliderOffset.x = this.m_offsetMeleeX * dir;
@@ -442,10 +440,12 @@ export class BodyAttackX extends Component {
     }
 
     onAimTarget(target: Node) {
+        this.m_targetRangeAim = target;
         this.m_spine.onAimTarget(target);
     }
 
-    onUnAnim(deg?: number) {
+    onUnAim(deg?: number) {
+        this.m_targetRangeAim = null;
         if (deg != null)
             this.m_spine.onAimDeg(deg);
         this.m_spine.onUnAim();

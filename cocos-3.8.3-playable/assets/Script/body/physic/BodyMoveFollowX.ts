@@ -76,6 +76,7 @@ export class BodyMoveFollowX extends Component {
         this.m_dir = this.MoveRight ? 1 : -1;
         this.scheduleOnce(() => {
             this.m_bodyCheck.onDirUpdate(this.m_dir);
+            this.m_bodyAttack.onDirUpdate(this.m_dir);
             this.m_spine.onFaceDir(this.m_dir);
             this.onAttackRangeUpdate();
         }, 0.02)
@@ -138,6 +139,7 @@ export class BodyMoveFollowX extends Component {
             return;
         this.m_dir *= -1;
         this.m_bodyCheck.onDirUpdate(this.m_dir);
+        this.m_bodyAttack.onDirUpdate(this.m_dir);
         this.m_spine.onFaceDir(this.m_dir);
         this.onAttackRangeUpdate();
     }

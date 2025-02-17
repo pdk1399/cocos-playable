@@ -234,5 +234,6 @@ export class SpineBase extends Component {
         this.onAnimationClear(this.m_aimAnimIndex);
         this.m_aimBone.x = this.m_aimPosPrimary.x;
         this.m_aimBone.y = this.m_aimPosPrimary.y;
+        this.Spine._skeleton.updateWorldTransform();
     }
 }

@@ -181,7 +181,7 @@ export class BodyControlX extends Component {
             director.emit(ConstantBase.INPUT_INTERACTION_SHOW, false);
 
         this.m_faceDirX = this.FaceRight ? 1 : -1;
-        this.onAim();
+        this.scheduleOnce(() => this.onUnAim());
     }
 
     protected lateUpdate(dt: number): void {
@@ -589,10 +589,13 @@ export class BodyControlX extends Component {
 
     //ATTACK:
 
-    onAttack(active: boolean, update: boolean = true) {
-        if (update)
-            this.m_attack = active;
-        switch (active) {
+    onAttack(state: boolean, update: boolean = true) {
+        if (update) {
+            if (this.m_attack == state)
+                return;
+            this.m_attack = state;
+        }
+        switch (state) {
             case true:
                 if (this.AttackStopFall) {
                     this.unschedule(this.m_jumpSchedule);
@@ -611,10 +614,10 @@ export class BodyControlX extends Component {
                     this.m_rigidbody.gravityScale = this.m_baseGravity;
                     this.m_rigidbody.linearVelocity = v2(this.m_rigidbody.linearVelocity.clone().x, -0.02); //Fix bug not fall after attack
                 }
-                if (this.AttackHold) {
+                if (this.AttackHold)
+                    this.onAttackProgess();
+                else if ((this.AttackStopByBody && this.getAttack()) && (this.AttackStopByPress && this.m_attack))
                     this.onAim();
-                    this.scheduleOnce(() => this.onUnAim(), this.onAttackProgess());
-                }
                 else
                     this.onUnAim();
                 break;
@@ -625,7 +628,6 @@ export class BodyControlX extends Component {
         if (this.m_bodyAttack == null)
             return;
         this.onAim();
-        //Attack target
         return this.m_bodyAttack.onAttackProgess();
     }
 
@@ -635,21 +637,18 @@ export class BodyControlX extends Component {
         if (!this.m_bodyAttack.Aim)
             return;
         this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
-        //Find target
-        if (this.m_bodyAttack.m_targetRangeAim == null ? true : !this.m_bodyAttack.m_targetRangeAim.isValid)
-            this.m_bodyAttack.m_targetRangeAim = this.m_bodyAttack.onRangeTargetNearest();
-        //Aim target
-        if (this.m_bodyAttack.m_targetRangeAim == null ? true : !this.m_bodyAttack.m_targetRangeAim.isValid)
+        let target = this.m_bodyAttack.onRangeTargetNearest();
+        if (target == null ? true : !target.isValid)
             this.onUnAim();
         else
-            this.m_bodyAttack.onAimTarget(this.m_bodyAttack.m_targetRangeAim);
+            this.m_bodyAttack.onAimTarget(target);
     }
 
     protected onUnAim() {
         if (this.m_bodyAttack == null)
             return;
         this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
-        this.m_bodyAttack.onUnAnim(!this.AttackUnAim ? this.m_faceDirX == 1 ? 0 + this.AttackDegOffset : 180 - this.AttackDegOffset : null);
+        this.m_bodyAttack.onUnAim(!this.AttackUnAim ? this.m_faceDirX == 1 ? 0 + this.AttackDegOffset : 180 - this.AttackDegOffset : null);
     }
 
     //INTERACTION:
