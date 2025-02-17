@@ -165,7 +165,6 @@ export class BodyAttackX extends Component {
                         if (index >= 0)
                             break;
                         this.m_targetRange.push(otherCollider.node);
-                        console.log(this.m_targetRange.length + " add " + otherCollider.node.position.clone());
                         this.node.emit(this.m_emitRange, otherCollider.node, true);
                         break;
                 }
@@ -193,7 +192,6 @@ export class BodyAttackX extends Component {
                         if (index < 0)
                             break;
                         this.m_targetRange.splice(index, 1);
-                        console.log(this.m_targetRange.length + " remove " + otherCollider.node.position.clone());
                         this.node.emit(this.m_emitRange, otherCollider.node, false);
                         break;
                 }
