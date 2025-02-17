@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.SceneAsset",
-    "_name": "sprunki-normal-3-short",
+    "_name": "sprunki-shooter-normal-3-short",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_native": "",
@@ -11,7 +11,7 @@
   },
   {
     "__type__": "cc.Scene",
-    "_name": "sprunki-normal-3-short",
+    "_name": "sprunki-shooter-normal-3-short",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -205,7 +205,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 654.9041095890411,
+    "_orthoHeight": 573.2374100719425,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -7256,7 +7256,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 70,
+      "y": 68,
       "z": 0
     },
     "_lrot": {
@@ -8485,8 +8485,10 @@
     "StopOnHit": true,
     "ContinueOnHit": false,
     "Melee": false,
+    "MeleeDirUpdate": true,
     "MeleeAuto": false,
     "MeleeHit": 1,
+    "RangeDirUpdate": true,
     "RangeAuto": false,
     "RangeBullet": {
       "__id__": 208
@@ -8508,6 +8510,9 @@
     "AimFrom": {
       "__id__": 197
     },
+    "TagMelee": 101,
+    "TagRange": 102,
+    "TagTarget": 200,
     "_id": "95a5URcoxKcIzGQda8oB2Y"
   },
   {
@@ -8542,6 +8547,7 @@
     "__prefab": null,
     "Type": 0,
     "LockX": false,
+    "FaceRight": true,
     "MoveGroundX": 40,
     "MoveAirX": 40,
     "MoveDampX": 40,
@@ -8555,11 +8561,11 @@
     "JumpFall": false,
     "JumpAuto": false,
     "AttackHold": false,
-    "AttackUnAim": false,
-    "AttackStopMoveAnim": true,
-    "AttackStopMovePress": true,
+    "AttackStopByBody": true,
+    "AttackStopByPress": true,
     "AttackStopFall": false,
     "AttackDegOffset": 2,
+    "AttackUnAim": true,
     "Pick": false,
     "PickHold": false,
     "PickJumpOnce": true,
@@ -8592,20 +8598,14 @@
     "Raycast": false,
     "RaycastBot": true,
     "RaycastHead": false,
-    "Update": true,
-    "UpdateDirMelee": true,
-    "UpdateDirRange": true,
     "TagBody": 100,
     "TagTop": 99,
     "TagBot": 98,
     "TagHead": 97,
     "TagBotHead": 96,
-    "TagMelee": 101,
-    "TagRange": 102,
     "TagInteraction": 103,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagTarget": 200,
     "TagBox": 300,
     "_id": "daX1Uk/RFKjr1eaeMfd5hI"
   },
@@ -13708,21 +13708,21 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -39.26565170288086,
-      "y": 372.746826171875,
+      "x": 0,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
       "__type__": "cc.Quat",
       "x": 0,
       "y": 0,
-      "z": 0.6825725777129688,
-      "w": 0.7308178132436751
+      "z": 0,
+      "w": 1
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 0.999999914246175,
-      "y": 0.9999999894616419,
+      "x": 1,
+      "y": 1,
       "z": 1
     },
     "_mobility": 0,
@@ -13731,7 +13731,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 86.0900037946748
+      "z": 0
     },
     "_id": "d015G4wVtB94gJ2MVaUrmq"
   },
@@ -13872,7 +13872,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 140,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
@@ -13969,8 +13969,10 @@
     "StopOnHit": false,
     "ContinueOnHit": true,
     "Melee": true,
+    "MeleeDirUpdate": true,
     "MeleeAuto": true,
     "MeleeHit": 1,
+    "RangeDirUpdate": true,
     "RangeAuto": false,
     "RangeBullet": null,
     "RangeBulletSpeed": 5,
@@ -13988,6 +13990,9 @@
     "AimAnimIndex": 1,
     "AimBone": "aim_bone",
     "AimFrom": null,
+    "TagMelee": 201,
+    "TagRange": 202,
+    "TagTarget": 100,
     "_id": "19+45vkqNKYqDlr+Q406pU"
   },
   {
@@ -14023,20 +14028,14 @@
     "Raycast": false,
     "RaycastBot": true,
     "RaycastHead": false,
-    "Update": true,
-    "UpdateDirMelee": true,
-    "UpdateDirRange": true,
     "TagBody": 200,
     "TagTop": 199,
     "TagBot": 198,
     "TagHead": 197,
     "TagBotHead": 196,
-    "TagMelee": 201,
-    "TagRange": 202,
     "TagInteraction": 103,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagTarget": 100,
     "TagBox": 300,
     "_id": "a6EnGSWvNA2aXdFhjuBPJp"
   },
@@ -14445,21 +14444,21 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -39.26565170288086,
-      "y": 372.746826171875,
+      "x": 0,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
       "__type__": "cc.Quat",
       "x": 0,
       "y": 0,
-      "z": 0.6825725777129688,
-      "w": 0.7308178132436751
+      "z": 0,
+      "w": 1
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 0.999999914246175,
-      "y": 0.9999999894616419,
+      "x": 1,
+      "y": 1,
       "z": 1
     },
     "_mobility": 0,
@@ -14468,7 +14467,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 86.0900037946748
+      "z": 0
     },
     "_id": "61Pr+tjXRFnJUIUs0UQDsX"
   },
@@ -14609,7 +14608,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 140,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
@@ -14706,8 +14705,10 @@
     "StopOnHit": false,
     "ContinueOnHit": true,
     "Melee": true,
+    "MeleeDirUpdate": true,
     "MeleeAuto": true,
     "MeleeHit": 1,
+    "RangeDirUpdate": true,
     "RangeAuto": false,
     "RangeBullet": null,
     "RangeBulletSpeed": 5,
@@ -14725,6 +14726,9 @@
     "AimAnimIndex": 1,
     "AimBone": "aim_bone",
     "AimFrom": null,
+    "TagMelee": 201,
+    "TagRange": 202,
+    "TagTarget": 100,
     "_id": "36XNq+L5tAGaPzBUgkk/Ra"
   },
   {
@@ -14760,20 +14764,14 @@
     "Raycast": false,
     "RaycastBot": true,
     "RaycastHead": false,
-    "Update": true,
-    "UpdateDirMelee": true,
-    "UpdateDirRange": true,
     "TagBody": 200,
     "TagTop": 199,
     "TagBot": 198,
     "TagHead": 197,
     "TagBotHead": 196,
-    "TagMelee": 201,
-    "TagRange": 202,
     "TagInteraction": 103,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagTarget": 100,
     "TagBox": 300,
     "_id": "5enREISdtM4JOBOUgRHnpz"
   },
@@ -15182,21 +15180,21 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -39.26565170288086,
-      "y": 372.746826171875,
+      "x": 0,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
       "__type__": "cc.Quat",
       "x": 0,
       "y": 0,
-      "z": 0.6825725777129688,
-      "w": 0.7308178132436751
+      "z": 0,
+      "w": 1
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 0.999999914246175,
-      "y": 0.9999999894616419,
+      "x": 1,
+      "y": 1,
       "z": 1
     },
     "_mobility": 0,
@@ -15205,7 +15203,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 86.0900037946748
+      "z": 0
     },
     "_id": "70sIbW/GtHZb4crpaw5sT2"
   },
@@ -15346,7 +15344,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 140,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
@@ -15443,8 +15441,10 @@
     "StopOnHit": false,
     "ContinueOnHit": true,
     "Melee": true,
+    "MeleeDirUpdate": true,
     "MeleeAuto": true,
     "MeleeHit": 1,
+    "RangeDirUpdate": true,
     "RangeAuto": false,
     "RangeBullet": null,
     "RangeBulletSpeed": 5,
@@ -15462,6 +15462,9 @@
     "AimAnimIndex": 1,
     "AimBone": "aim_bone",
     "AimFrom": null,
+    "TagMelee": 201,
+    "TagRange": 202,
+    "TagTarget": 100,
     "_id": "642eVSU0tCm7lreVyzNvDv"
   },
   {
@@ -15497,20 +15500,14 @@
     "Raycast": false,
     "RaycastBot": true,
     "RaycastHead": false,
-    "Update": true,
-    "UpdateDirMelee": true,
-    "UpdateDirRange": true,
     "TagBody": 200,
     "TagTop": 199,
     "TagBot": 198,
     "TagHead": 197,
     "TagBotHead": 196,
-    "TagMelee": 201,
-    "TagRange": 202,
     "TagInteraction": 103,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagTarget": 100,
     "TagBox": 300,
     "_id": "75/YyMP7NDEK6poNK9S+M3"
   },
@@ -15974,21 +15971,21 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -39.26565170288086,
-      "y": 372.746826171875,
+      "x": 0,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
       "__type__": "cc.Quat",
       "x": 0,
       "y": 0,
-      "z": 0.6825725777129688,
-      "w": 0.7308178132436751
+      "z": 0,
+      "w": 1
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 0.999999914246175,
-      "y": 0.9999999894616419,
+      "x": 1,
+      "y": 1,
       "z": 1
     },
     "_mobility": 0,
@@ -15997,7 +15994,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 86.0900037946748
+      "z": 0
     },
     "_id": "05O9if2dpOg5leieVP36xb"
   },
@@ -16138,7 +16135,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 140,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
@@ -16235,8 +16232,10 @@
     "StopOnHit": false,
     "ContinueOnHit": true,
     "Melee": true,
+    "MeleeDirUpdate": true,
     "MeleeAuto": true,
     "MeleeHit": 1,
+    "RangeDirUpdate": true,
     "RangeAuto": false,
     "RangeBullet": null,
     "RangeBulletSpeed": 5,
@@ -16254,6 +16253,9 @@
     "AimAnimIndex": 1,
     "AimBone": "aim_bone",
     "AimFrom": null,
+    "TagMelee": 201,
+    "TagRange": 202,
+    "TagTarget": 100,
     "_id": "d4wCu5woFMEqdx6P+vX5zo"
   },
   {
@@ -16290,20 +16292,14 @@
     "Raycast": false,
     "RaycastBot": true,
     "RaycastHead": false,
-    "Update": true,
-    "UpdateDirMelee": true,
-    "UpdateDirRange": true,
     "TagBody": 200,
     "TagTop": 199,
     "TagBot": 198,
     "TagHead": 197,
     "TagBotHead": 196,
-    "TagMelee": 201,
-    "TagRange": 202,
     "TagInteraction": 103,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagTarget": 100,
     "TagBox": 300,
     "_id": "68robqefFLpKyg5XbwePSR"
   },
@@ -16741,21 +16737,21 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -39.26565170288086,
-      "y": 372.746826171875,
+      "x": 0,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
       "__type__": "cc.Quat",
       "x": 0,
       "y": 0,
-      "z": 0.6825725777129688,
-      "w": 0.7308178132436751
+      "z": 0,
+      "w": 1
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 0.999999914246175,
-      "y": 0.9999999894616419,
+      "x": 1,
+      "y": 1,
       "z": 1
     },
     "_mobility": 0,
@@ -16764,7 +16760,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 86.0900037946748
+      "z": 0
     },
     "_id": "12BarfC51L8rxIst+OMxAH"
   },
@@ -16905,7 +16901,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 140,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
@@ -17002,8 +16998,10 @@
     "StopOnHit": false,
     "ContinueOnHit": true,
     "Melee": true,
+    "MeleeDirUpdate": true,
     "MeleeAuto": true,
     "MeleeHit": 1,
+    "RangeDirUpdate": true,
     "RangeAuto": false,
     "RangeBullet": null,
     "RangeBulletSpeed": 5,
@@ -17021,6 +17019,9 @@
     "AimAnimIndex": 1,
     "AimBone": "aim_bone",
     "AimFrom": null,
+    "TagMelee": 201,
+    "TagRange": 202,
+    "TagTarget": 100,
     "_id": "75bjBOgx9K4I2c+vs+Wg8S"
   },
   {
@@ -17057,20 +17058,14 @@
     "Raycast": false,
     "RaycastBot": true,
     "RaycastHead": false,
-    "Update": true,
-    "UpdateDirMelee": true,
-    "UpdateDirRange": true,
     "TagBody": 200,
     "TagTop": 199,
     "TagBot": 198,
     "TagHead": 197,
     "TagBotHead": 196,
-    "TagMelee": 201,
-    "TagRange": 202,
     "TagInteraction": 103,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagTarget": 100,
     "TagBox": 300,
     "_id": "4dt2lRRkFMZKaVx8xeygoW"
   },
@@ -17583,21 +17578,21 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -39.26565170288086,
-      "y": 372.746826171875,
+      "x": 0,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
       "__type__": "cc.Quat",
       "x": 0,
       "y": 0,
-      "z": 0.6825725777129688,
-      "w": 0.7308178132436751
+      "z": 0,
+      "w": 1
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 0.999999914246175,
-      "y": 0.9999999894616419,
+      "x": 1,
+      "y": 1,
       "z": 1
     },
     "_mobility": 0,
@@ -17606,7 +17601,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 86.0900037946748
+      "z": 0
     },
     "_id": "29h0R0nT5NO7hVLpTmfkbY"
   },
@@ -17747,7 +17742,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 140,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
@@ -17844,8 +17839,10 @@
     "StopOnHit": false,
     "ContinueOnHit": true,
     "Melee": true,
+    "MeleeDirUpdate": true,
     "MeleeAuto": true,
     "MeleeHit": 1,
+    "RangeDirUpdate": true,
     "RangeAuto": false,
     "RangeBullet": null,
     "RangeBulletSpeed": 5,
@@ -17863,6 +17860,9 @@
     "AimAnimIndex": 1,
     "AimBone": "aim_bone",
     "AimFrom": null,
+    "TagMelee": 201,
+    "TagRange": 202,
+    "TagTarget": 100,
     "_id": "f5TGj1SXpKspu+zKWw6Ah4"
   },
   {
@@ -17899,20 +17899,14 @@
     "Raycast": false,
     "RaycastBot": true,
     "RaycastHead": false,
-    "Update": true,
-    "UpdateDirMelee": true,
-    "UpdateDirRange": true,
     "TagBody": 200,
     "TagTop": 199,
     "TagBot": 198,
     "TagHead": 197,
     "TagBotHead": 196,
-    "TagMelee": 201,
-    "TagRange": 202,
     "TagInteraction": 103,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagTarget": 100,
     "TagBox": 300,
     "_id": "dfnOfO2xxF86wiuNncZXhi"
   },
@@ -18350,21 +18344,21 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -39.26565170288086,
-      "y": 372.746826171875,
+      "x": 0,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
       "__type__": "cc.Quat",
       "x": 0,
       "y": 0,
-      "z": 0.6825725777129688,
-      "w": 0.7308178132436751
+      "z": 0,
+      "w": 1
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 0.999999914246175,
-      "y": 0.9999999894616419,
+      "x": 1,
+      "y": 1,
       "z": 1
     },
     "_mobility": 0,
@@ -18373,7 +18367,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 86.0900037946748
+      "z": 0
     },
     "_id": "f49hQxAfFKUZ3H6JQFSk62"
   },
@@ -18514,7 +18508,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 140,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
@@ -18611,8 +18605,10 @@
     "StopOnHit": false,
     "ContinueOnHit": true,
     "Melee": true,
+    "MeleeDirUpdate": true,
     "MeleeAuto": true,
     "MeleeHit": 1,
+    "RangeDirUpdate": true,
     "RangeAuto": false,
     "RangeBullet": null,
     "RangeBulletSpeed": 5,
@@ -18630,6 +18626,9 @@
     "AimAnimIndex": 1,
     "AimBone": "aim_bone",
     "AimFrom": null,
+    "TagMelee": 201,
+    "TagRange": 202,
+    "TagTarget": 100,
     "_id": "dbzC+qNuRPKatVC18zYpaj"
   },
   {
@@ -18666,20 +18665,14 @@
     "Raycast": false,
     "RaycastBot": true,
     "RaycastHead": false,
-    "Update": true,
-    "UpdateDirMelee": true,
-    "UpdateDirRange": true,
     "TagBody": 200,
     "TagTop": 199,
     "TagBot": 198,
     "TagHead": 197,
     "TagBotHead": 196,
-    "TagMelee": 201,
-    "TagRange": 202,
     "TagInteraction": 103,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagTarget": 100,
     "TagBox": 300,
     "_id": "4f8lSOgDhO/IZQgv7xoHgb"
   },
@@ -19117,21 +19110,21 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -39.26565170288086,
-      "y": 372.746826171875,
+      "x": 0,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
       "__type__": "cc.Quat",
       "x": 0,
       "y": 0,
-      "z": 0.6825725777129688,
-      "w": 0.7308178132436751
+      "z": 0,
+      "w": 1
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 0.999999914246175,
-      "y": 0.9999999894616419,
+      "x": 1,
+      "y": 1,
       "z": 1
     },
     "_mobility": 0,
@@ -19140,7 +19133,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 86.0900037946748
+      "z": 0
     },
     "_id": "dbSe49yklKKoLM3sM8ht6B"
   },
@@ -19281,7 +19274,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 140,
+      "y": 80,
       "z": 0
     },
     "_lrot": {
@@ -19378,8 +19371,10 @@
     "StopOnHit": false,
     "ContinueOnHit": true,
     "Melee": true,
+    "MeleeDirUpdate": true,
     "MeleeAuto": true,
     "MeleeHit": 1,
+    "RangeDirUpdate": true,
     "RangeAuto": false,
     "RangeBullet": null,
     "RangeBulletSpeed": 5,
@@ -19397,6 +19392,9 @@
     "AimAnimIndex": 1,
     "AimBone": "aim_bone",
     "AimFrom": null,
+    "TagMelee": 201,
+    "TagRange": 202,
+    "TagTarget": 100,
     "_id": "c5PCfXv/9MuKm822i7tDhl"
   },
   {
@@ -19433,20 +19431,14 @@
     "Raycast": false,
     "RaycastBot": true,
     "RaycastHead": false,
-    "Update": true,
-    "UpdateDirMelee": true,
-    "UpdateDirRange": true,
     "TagBody": 200,
     "TagTop": 199,
     "TagBot": 198,
     "TagHead": 197,
     "TagBotHead": 196,
-    "TagMelee": 201,
-    "TagRange": 202,
     "TagInteraction": 103,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagTarget": 100,
     "TagBox": 300,
     "_id": "b4TsTGZtBG4rrXqzcSgE0R"
   },

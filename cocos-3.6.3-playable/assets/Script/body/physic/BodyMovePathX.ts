@@ -84,6 +84,8 @@ export class BodyMovePathX extends Component {
         this.m_pathXR = this.m_pathXStart + this.PathOffsetXR;
         this.scheduleOnce(() => {
             this.m_bodyCheck.onDirUpdate(this.m_dir);
+            if (this.m_bodyAttack != null)
+                this.m_bodyAttack.onDirUpdate(this.m_dir);
             this.m_spine.onFaceDir(this.m_dir);
             this.onAttackRangeUpdate();
         }, 0.02)
@@ -146,6 +148,8 @@ export class BodyMovePathX extends Component {
             return;
         this.m_dir *= -1;
         this.m_bodyCheck.onDirUpdate(this.m_dir);
+        if (this.m_bodyAttack != null)
+            this.m_bodyAttack.onDirUpdate(this.m_dir);
         this.m_spine.onFaceDir(this.m_dir);
         this.onAttackRangeUpdate();
     }
@@ -167,9 +171,8 @@ export class BodyMovePathX extends Component {
     }
 
     onAttackRangeUpdate() {
-        if (this.m_bodyAttack == null || !this.m_bodyAttack.isValid)
-            return;
-        this.m_bodyAttack.onDirUpdate(this.m_dir);
+        if (this.m_bodyAttack != null)
+            this.m_bodyAttack.onDirUpdate(this.m_dir);
     }
 
     //

@@ -172,11 +172,14 @@ export class SpineBase extends Component {
 
     onAnimationEmty(index: number, mixDuration: number) {
         this.Spine.getState().setEmptyAnimation(index, mixDuration);
-        this.Spine.getState().clearTrack
+        this.Spine._skeleton.setSlotsToSetupPose();
+        this.Spine._skeleton.updateWorldTransform();
     }
 
     onAnimationClear(index: number) {
         this.Spine.getState().clearTrack(index);
+        this.Spine._skeleton.setSlotsToSetupPose();
+        this.Spine._skeleton.updateWorldTransform();
     }
 
     //
@@ -208,7 +211,7 @@ export class SpineBase extends Component {
         if (this.m_aimBone == null)
             return;
         let direction = v3(Math.cos(deg * (Math.PI / 180)), Math.sin(deg * (Math.PI / 180)), 0);
-        direction = direction.clone().normalize().multiplyScalar(200);
+        direction = direction.clone().normalize().multiplyScalar(10);
         let aimPosition = this.m_aimFrom.position.clone().add(direction);
         this.onAim(v2(aimPosition.x, aimPosition.y));
     }
@@ -228,8 +231,9 @@ export class SpineBase extends Component {
     onUnAim() {
         if (this.m_aimBone == null)
             return;
-        this.onAnimationEmty(this.m_aimAnimIndex, 0.02);
+        this.onAnimationClear(this.m_aimAnimIndex);
         this.m_aimBone.x = this.m_aimPosPrimary.x;
         this.m_aimBone.y = this.m_aimPosPrimary.y;
+        this.Spine._skeleton.updateWorldTransform();
     }
 }

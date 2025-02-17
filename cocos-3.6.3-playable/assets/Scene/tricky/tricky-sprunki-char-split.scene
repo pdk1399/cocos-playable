@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.SceneAsset",
-    "_name": "sprunki-char-split",
+    "_name": "tricky-sprunki-char-split",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_native": "",
@@ -11,7 +11,7 @@
   },
   {
     "__type__": "cc.Scene",
-    "_name": "sprunki-char-split",
+    "_name": "tricky-sprunki-char-split",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -196,7 +196,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 604.2477876106195,
+    "_orthoHeight": 654.9041095890411,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -1178,8 +1178,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "on-event",
+    "Once": false,
     "Delay": 0.2,
     "EmitEvent": "event-centre-move",
     "MoveToWorld": false,
@@ -1792,8 +1792,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "on-event",
+    "Once": false,
     "Delay": 0.2,
     "EmitEvent": "emit-event",
     "MoveToWorld": false,
@@ -1937,8 +1937,8 @@
     "__prefab": null,
     "Target": null,
     "Start": false,
-    "Once": false,
     "OnEvent": "event-centre-move",
+    "Once": false,
     "Delay": 0.2,
     "EmitEvent": "event-s-move",
     "MoveToWorld": false,
@@ -2082,8 +2082,8 @@
     "__prefab": null,
     "Target": null,
     "Start": false,
-    "Once": false,
     "OnEvent": "event-s-move",
+    "Once": false,
     "Delay": 0.2,
     "EmitEvent": "event-t-move",
     "MoveToWorld": false,
@@ -2227,8 +2227,8 @@
     "__prefab": null,
     "Target": null,
     "Start": false,
-    "Once": false,
     "OnEvent": "event-t-move",
+    "Once": false,
     "Delay": 0.2,
     "EmitEvent": "event-b-move",
     "MoveToWorld": false,
@@ -2372,8 +2372,8 @@
     "__prefab": null,
     "Target": null,
     "Start": false,
-    "Once": false,
     "OnEvent": "event-b-move",
+    "Once": false,
     "Delay": 0.2,
     "EmitEvent": "event-vs",
     "MoveToWorld": false,
@@ -2566,6 +2566,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -2628,8 +2629,8 @@
     "__prefab": null,
     "Target": null,
     "Start": false,
-    "Once": true,
     "OnEvent": "event-vs",
+    "Once": true,
     "Delay": 0,
     "EmitEvent": "event-tap-to-fight",
     "ScaleTo": {
@@ -2653,19 +2654,23 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "TargetStart": false,
+    "TargetStartState": false,
     "Target": [
       {
         "__id__": 64
       }
     ],
-    "TargetSelf": false,
     "Start": false,
     "OnNode": false,
     "OnEvent": "event-vs",
+    "OnEventState": true,
+    "OnEventOn": "",
+    "OnEventOff": "",
+    "OnEventRevert": "",
     "Once": false,
     "Delay": 0,
     "EmitEvent": "",
-    "StateActive": true,
     "_id": "7d/Lwga+5OJbYU1tw0T4mM"
   },
   {
@@ -2786,8 +2791,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1085.05859375,
-      "height": 146
+      "width": 1069.05859375,
+      "height": 130
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2841,6 +2846,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -2881,8 +2887,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "on-event",
+    "Once": false,
     "Delay": 0,
     "EmitTo": true,
     "EmitBack": true,
@@ -2935,8 +2941,8 @@
     "__prefab": null,
     "Target": null,
     "Start": false,
-    "Once": false,
     "OnEvent": "event-tap-to-fight",
+    "Once": false,
     "Delay": 0,
     "EmitEvent": "emit-event",
     "ScaleTo": {
@@ -3400,6 +3406,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -3604,6 +3611,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -4021,12 +4029,13 @@
     "DirectStore": true,
     "OnDirectStore": "direct-store",
     "DelayDirectStore": 0,
+    "AndroidDefault": true,
     "Android": "https://play.google.com/store/apps/details?id=com.arcade.puzzle.tricky.cat.catsle&hl=en",
     "IOS": "",
     "AdsType": 0,
-    "DebugStore": false,
+    "LinkOpen": false,
     "DirectPress": false,
-    "DirectPressStopEvent": false,
+    "DirectPressOnce": false,
     "EmitDirectPress": "direct-press",
     "LimitActive": true,
     "LimitDuration": 30,
@@ -4289,27 +4298,8 @@
       "x": 0,
       "y": 0
     },
-    "Background": null,
     "LockX": false,
     "LockY": false,
-    "OrthoScreen": true,
-    "OrthoLandscape": 1,
-    "OrthoPortrait": 1.5,
-    "RectScreen": true,
-    "RectLandScape": {
-      "__type__": "cc.Rect",
-      "x": 0,
-      "y": 0,
-      "width": 1,
-      "height": 1
-    },
-    "RectPortrait": {
-      "__type__": "cc.Rect",
-      "x": 0,
-      "y": 0.25,
-      "width": 1,
-      "height": 0.5
-    },
     "Limit": false,
     "LimitMax": {
       "__type__": "cc.Vec2",
@@ -4320,6 +4310,26 @@
       "__type__": "cc.Vec2",
       "x": -1000,
       "y": -1000
+    },
+    "OrthoScreen": true,
+    "OrthoLandscape": 1,
+    "OrthoPortrait": 1.5,
+    "RectScreen": true,
+    "RectLandScapeFixed": false,
+    "RectLandscape": {
+      "__type__": "cc.Rect",
+      "x": 0,
+      "y": 0,
+      "width": 1,
+      "height": 1
+    },
+    "RectPortraitFixed": false,
+    "RectPortrait": {
+      "__type__": "cc.Rect",
+      "x": 0,
+      "y": 0.25,
+      "width": 1,
+      "height": 0.5
     },
     "_id": "56JUr9rgpNW6uDavNkM5Tr"
   },
@@ -4333,6 +4343,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "AudioDebug": false,
     "AudioMusic": null,
     "_id": "3dXw552XFFX4AW5x61DoIC"
   },
