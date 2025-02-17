@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, IPhysics2DContact, Node, v2, Vec2 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, IPhysics2DContact, math, Node, v2, Vec2 } from 'cc';
 import { BodyBase } from '../BodyBase';
 import { BodyCheckX } from '../physic/BodyCheckX';
 import { ConstantBase } from '../../ConstantBase';
@@ -165,6 +165,7 @@ export class BodyAttackX extends Component {
                         if (index >= 0)
                             break;
                         this.m_targetRange.push(otherCollider.node);
+                        console.log(this.m_targetRange.length + " add " + otherCollider.node.position.clone());
                         this.node.emit(this.m_emitRange, otherCollider.node, true);
                         break;
                 }
@@ -192,6 +193,7 @@ export class BodyAttackX extends Component {
                         if (index < 0)
                             break;
                         this.m_targetRange.splice(index, 1);
+                        console.log(this.m_targetRange.length + " remove " + otherCollider.node.position.clone());
                         this.node.emit(this.m_emitRange, otherCollider.node, false);
                         break;
                 }
@@ -398,7 +400,8 @@ export class BodyAttackX extends Component {
             dir = 1;
         else if (dir < 0)
             dir = -1;
-        else return;
+        else
+            return;
 
         this.m_dir = dir;
 
@@ -407,6 +410,9 @@ export class BodyAttackX extends Component {
             this.m_attack = false;
             this.unscheduleAllCallbacks();
         }
+
+        if (dir == this.m_dir)
+            return;
 
         if (this.MeleeDirUpdate && this.m_colliderMelee != null ? this.m_colliderMelee.isValid : false) {
             let meleeColliderOffset = this.m_colliderMelee.offset;
