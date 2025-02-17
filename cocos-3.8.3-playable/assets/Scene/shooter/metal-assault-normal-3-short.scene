@@ -7215,7 +7215,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 70,
+      "y": 125,
       "z": 0
     },
     "_lrot": {
@@ -7640,7 +7640,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 150,
+      "y": 125,
       "z": 0
     },
     "_lrot": {
@@ -7664,7 +7664,7 @@
       "y": 0,
       "z": 0
     },
-    "_id": "6d1UcEtWNHmpEj0AhZ+x9F"
+    "_id": "ddIh7a71xHurnBn/6upebT"
   },
   {
     "__type__": "cc.Node",
@@ -7712,7 +7712,7 @@
       "y": 0,
       "z": 0
     },
-    "_id": "80O3oxCOZBXIxcYXibZRGR"
+    "_id": "c41/ntUtVJ3ZKIp61N2fIu"
   },
   {
     "__type__": "cc.UITransform",
@@ -7734,7 +7734,7 @@
       "x": 0.5,
       "y": 0.5
     },
-    "_id": "34UHOIq41M2r8Uk2/gT1eI"
+    "_id": "e05xYvdYBKbrTFxMdrLG9d"
   },
   {
     "__type__": "cc.Sprite",
@@ -7773,7 +7773,7 @@
     "_isTrimmedMode": true,
     "_useGrayscale": false,
     "_atlas": null,
-    "_id": "9dPIvw+IFKoJ+aCRAGlm1C"
+    "_id": "81hLMSwxlOGo7VawoJd5AM"
   },
   {
     "__type__": "8da08GHI7dACIKtUgaGu8L2",
@@ -7791,7 +7791,7 @@
       200,
       -1
     ],
-    "_id": "9fMYrV7bBAibg0FZOzIpiN"
+    "_id": "275MbZ1gBNJ5vcBF+gPrDi"
   },
   {
     "__type__": "cc.RigidBody2D",
@@ -7819,7 +7819,7 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": true,
-    "_id": "7bVMrw69ZDAp54Cu/T/qQg"
+    "_id": "ceFSRGjyxAcJ4ZtxFg7uyn"
   },
   {
     "__type__": "cc.BoxCollider2D",
@@ -7847,7 +7847,7 @@
       "width": 150,
       "height": 40
     },
-    "_id": "1eOc39U6tH2oWbFpQ9i7Tl"
+    "_id": "49z00QAhJBTqFiEbWsNUlt"
   },
   {
     "__type__": "ae063I0qLhDiqC1AQr7jPg1",
@@ -7859,7 +7859,11 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Target": [],
+    "Target": [
+      {
+        "__id__": 208
+      }
+    ],
     "TargetContact": false,
     "OnNode": false,
     "Once": false,
@@ -7870,7 +7874,7 @@
       200,
       -1
     ],
-    "_id": "b3gTmOLSxFuIIQBgD73f6W"
+    "_id": "30I18WcrVKJLW4H/tcHVrq"
   },
   {
     "__type__": "48eaaJNwCJHSI3Ub3AP/xVF",
@@ -8548,7 +8552,9 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Bullet": null,
+    "Bullet": {
+      "__id__": 208
+    },
     "BulletSpeed": 5,
     "ShootFrom": {
       "__id__": 195
@@ -8570,6 +8576,7 @@
     "__prefab": null,
     "Type": 0,
     "LockX": false,
+    "FaceRight": true,
     "MoveGroundX": 40,
     "MoveAirX": 40,
     "MoveDampX": 40,

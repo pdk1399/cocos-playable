@@ -130,9 +130,6 @@ export class BodyAttackX extends Component {
         if (this.RangeAuto)
             this.node.on(this.m_emitRange, this.onRangeFoundTarget, this);
 
-        if (this.Aim)
-            this.m_spine.onAimInit(this.AimAnim, this.AimAnimIndex, this.AimBone, this.AimFrom);
-
         this.node.on(this.m_body.m_emitBodyBaseHit, this.onHit, this);
         this.node.on(this.m_body.m_emitBodyBaseDead, this.onDead, this);
     }
@@ -142,6 +139,8 @@ export class BodyAttackX extends Component {
             this.m_offsetMeleeX = this.m_colliderMelee.offset.x;
         if (this.m_colliderRange != null)
             this.m_offsetRangeX = this.m_colliderRange.offset.x;
+        if (this.Aim)
+            this.m_spine.onAimInit(this.AimAnim, this.AimAnimIndex, this.AimBone, this.AimFrom);
     }
 
     //
@@ -354,19 +353,16 @@ export class BodyAttackX extends Component {
             this.scheduleOnce(() => this.onAttackProgessInvoke(), this.DelayAttack);
             //
             let attackDuration = 0;
-            if (this.AnimAttackMix) {
-                attackDuration = this.m_spine.onAnimationIndex(this.AnimAttackIndex, this.AnimAttack, false);
-                this.m_spine.onAnimationForce(this.AnimIdle, true);
-            }
-            else
+            if (!this.AnimAttackMix)
                 attackDuration = this.m_spine.onAnimationForce(this.AnimAttack, false);
+            else
+                attackDuration = this.m_spine.onAnimationIndex(this.AnimAttackIndex, this.AnimAttack, false);
             this.scheduleOnce(() => {
                 this.m_attack = false;
-                if (this.AnimAttackMix)
-                    this.m_spine.onAnimationClear(this.AnimAttackIndex);
-                else
+                if (!this.AnimAttackMix)
                     this.m_spine.onAnimationForce(this.AnimIdle, true);
-
+                else
+                    this.m_spine.onAnimationClear(this.AnimAttackIndex);
                 if (!this.Once) {
                     this.scheduleOnce(() => {
                         if (this.m_continue) {
@@ -445,7 +441,9 @@ export class BodyAttackX extends Component {
         this.m_spine.onAimTarget(target);
     }
 
-    onUnAim() {
+    onUnAnim(deg?: number) {
+        if (deg != null)
+            this.m_spine.onAimDeg(deg);
         this.m_spine.onUnAim();
     }
 }

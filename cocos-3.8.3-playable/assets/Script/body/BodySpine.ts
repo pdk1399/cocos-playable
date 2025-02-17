@@ -89,11 +89,13 @@ export class BodySpine extends Component {
 
     //
 
-    onIdle(): number {
-        if (!this.AnimIdleActive)
-            return 0;
-        if (this.m_hit)
-            return 0;
+    onIdle(force: boolean = false): number {
+        if (!force) {
+            if (!this.AnimIdleActive)
+                return 0;
+            if (this.m_hit)
+                return 0;
+        }
         return this.m_spine.onAnimation(this.AnimIdle, this.AnimIdleLoop);
     }
 
