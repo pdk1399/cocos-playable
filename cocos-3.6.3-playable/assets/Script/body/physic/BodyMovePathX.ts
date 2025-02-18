@@ -61,7 +61,6 @@ export class BodyMovePathX extends Component {
     m_bodySpine: BodySpine = null;
     m_bodyKnock: BodyKnockX = null;
     m_bodyAttack: BodyAttackX = null;
-    m_spine: SpineBase = null;
     m_rigidbody: RigidBody2D = null;
 
     protected onLoad(): void {
@@ -70,7 +69,6 @@ export class BodyMovePathX extends Component {
         this.m_bodySpine = this.getComponent(BodySpine);
         this.m_bodyKnock = this.getComponent(BodyKnockX);
         this.m_bodyAttack = this.getComponent(BodyAttackX);
-        this.m_spine = this.getComponent(SpineBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
 
         this.node.on(ConstantBase.NODE_PICK, this.onPick, this);
@@ -79,16 +77,11 @@ export class BodyMovePathX extends Component {
 
     protected start(): void {
         this.m_dir = this.MoveRight ? 1 : -1;
+        this.onDirUpdate();
+
         this.m_pathXStart = this.node.position.clone().x;
         this.m_pathXL = this.m_pathXStart - this.PathOffsetXL;
         this.m_pathXR = this.m_pathXStart + this.PathOffsetXR;
-        this.scheduleOnce(() => {
-            this.m_bodyCheck.onDirUpdate(this.m_dir);
-            if (this.m_bodyAttack != null)
-                this.m_bodyAttack.onDirUpdate(this.m_dir);
-            this.m_spine.onFaceDir(this.m_dir);
-            this.onAttackRangeUpdate();
-        }, 0.02)
     }
 
     protected update(dt: number): void {
@@ -147,11 +140,7 @@ export class BodyMovePathX extends Component {
         if (this.getDead() || this.getHit() || !this.getHeadChange())
             return;
         this.m_dir *= -1;
-        this.m_bodyCheck.onDirUpdate(this.m_dir);
-        if (this.m_bodyAttack != null)
-            this.m_bodyAttack.onDirUpdate(this.m_dir);
-        this.m_spine.onFaceDir(this.m_dir);
-        this.onAttackRangeUpdate();
+        this.onDirUpdate();
     }
 
     getHeadChange(): boolean {
@@ -170,7 +159,9 @@ export class BodyMovePathX extends Component {
         return false;
     }
 
-    onAttackRangeUpdate() {
+    onDirUpdate() {
+        this.m_bodyCheck.onDirUpdate(this.m_dir);
+        this.m_bodySpine.onViewDirection(this.m_dir);
         if (this.m_bodyAttack != null)
             this.m_bodyAttack.onDirUpdate(this.m_dir);
     }

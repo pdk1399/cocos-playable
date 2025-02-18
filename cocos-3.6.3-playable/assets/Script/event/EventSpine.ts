@@ -78,8 +78,8 @@ export class EventSpine extends Component {
                 target.scheduleOnce(() => {
                     if (this.EmitEvent != '')
                         director.emit(this.EmitEventFinal);
-                }, target.onAnimationForce(this.AnimEnd, this.AnimEndLoop));
-            }, Math.max(target.onAnimationForce(this.AnimLoop, true), this.AnimLoopDuration, 0));
-        }, target.onAnimationForce(this.AnimStart, false));
+                }, target.onAnimationForceUnSave(this.AnimEnd, this.AnimEndLoop));
+            }, Math.max(target.onAnimationForceUnSave(this.AnimLoop, true), this.AnimLoopDuration, 0));
+        }, target.onAnimationForceUnSave(this.AnimStart, false));
     }
 }

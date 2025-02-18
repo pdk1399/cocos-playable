@@ -77,7 +77,7 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null; } })
     AttackDegOffset: number = 0;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null; } })
-    AttackUnAim: boolean = true;
+    AttackAimReset: boolean = true;
 
     @property({ group: { name: 'Pick&Throw' }, type: CCBoolean })
     Pick: boolean = false;
@@ -177,11 +177,11 @@ export class BodyControlX extends Component {
         this.m_baseGravity = this.m_rigidbody.gravityScale;
         this.m_baseMass = this.m_rigidbody.getMass();
 
+        this.m_faceDirX = this.FaceRight ? 1 : -1;
+        this.onDirUpdate();
+
         if (this.UiPickBtnActive)
             director.emit(ConstantBase.INPUT_INTERACTION_SHOW, false);
-
-        this.m_faceDirX = this.FaceRight ? 1 : -1;
-        this.scheduleOnce(() => this.onUnAim());
     }
 
     protected lateUpdate(dt: number): void {
@@ -364,7 +364,7 @@ export class BodyControlX extends Component {
 
         switch (this.Type) {
             case BodyType.STICK:
-                if ((this.AttackStopByBody && this.getAttack()) || (this.AttackStopByPress && this.m_attack)) {
+                if (this.getAttack()) {
                     this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
                     return;
                 }
@@ -462,11 +462,7 @@ export class BodyControlX extends Component {
         this.m_moveDirX = !this.LockX ? -1 : 0;
         if (this.m_faceDirX != -1) {
             this.m_faceDirX = -1;
-            if (this.Type != BodyType.BALL)
-                this.m_bodySpine.onViewDirection(this.m_faceDirX);
-            this.m_bodyCheck.onDirUpdate(this.m_faceDirX);
-            if (this.m_bodyAttack != null)
-                this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
+            this.onDirUpdate();
         }
     }
 
@@ -474,11 +470,7 @@ export class BodyControlX extends Component {
         this.m_moveDirX = !this.LockX ? 1 : 0;
         if (this.m_faceDirX != 1) {
             this.m_faceDirX = 1;
-            if (this.Type != BodyType.BALL)
-                this.m_bodySpine.onViewDirection(this.m_faceDirX);
-            this.m_bodyCheck.onDirUpdate(this.m_faceDirX);
-            if (this.m_bodyAttack != null)
-                this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
+            this.onDirUpdate();
         }
     }
 
@@ -500,6 +492,14 @@ export class BodyControlX extends Component {
 
     onMoveReleaseY() {
         this.m_faceDirY = 0;
+    }
+
+    onDirUpdate() {
+        this.m_bodyCheck.onDirUpdate(this.m_faceDirX);
+        if (this.Type != BodyType.BALL)
+            this.m_bodySpine.onViewDirection(this.m_faceDirX);
+        if (this.m_bodyAttack != null)
+            this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
     }
 
     //JUMP:
@@ -590,11 +590,7 @@ export class BodyControlX extends Component {
     //ATTACK:
 
     onAttack(state: boolean, update: boolean = true) {
-        if (update) {
-            if (this.m_attack == state)
-                return;
-            this.m_attack = state;
-        }
+        this.m_attack = state;
         switch (state) {
             case true:
                 if (this.AttackStopFall) {
@@ -616,19 +612,12 @@ export class BodyControlX extends Component {
                 }
                 if (this.AttackHold)
                     this.onAttackProgess();
-                else if ((this.AttackStopByBody && this.getAttack()) && (this.AttackStopByPress && this.m_attack))
+                if (this.getAttack())
                     this.onAim();
                 else
-                    this.onUnAim();
+                    this.onAimReset();
                 break;
         }
-    }
-
-    protected onAttackProgess(): number {
-        if (this.m_bodyAttack == null)
-            return;
-        this.onAim();
-        return this.m_bodyAttack.onAttackProgess();
     }
 
     protected onAim() {
@@ -639,16 +628,25 @@ export class BodyControlX extends Component {
         this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
         let target = this.m_bodyAttack.onRangeTargetNearest();
         if (target == null ? true : !target.isValid)
-            this.onUnAim();
+            this.onAimReset();
         else
             this.m_bodyAttack.onAimTarget(target);
     }
 
-    protected onUnAim() {
+    protected onAimReset() {
         if (this.m_bodyAttack == null)
             return;
         this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
-        this.m_bodyAttack.onUnAim(!this.AttackUnAim ? this.m_faceDirX == 1 ? 0 + this.AttackDegOffset : 180 - this.AttackDegOffset : null);
+        if (this.AttackAimReset)
+            this.m_bodyAttack.onAimReset();
+        else
+            this.m_bodyAttack.onAimDeg(this.m_faceDirX == 1 ? 0 + this.AttackDegOffset : 180 - this.AttackDegOffset);
+    }
+
+    protected onAttackProgess(): number {
+        if (this.m_bodyAttack == null)
+            return;
+        return this.m_bodyAttack.onAttackProgess();
     }
 
     //INTERACTION:
@@ -744,7 +742,7 @@ export class BodyControlX extends Component {
     protected onFixed() {
         switch (this.Type) {
             case BodyType.STICK:
-                this.onUnAim();
+                this.onAimReset();
                 break;
             case BodyType.BALL:
                 this.onJumpForce();
@@ -806,7 +804,7 @@ export class BodyControlX extends Component {
             state = PlayerState.DEAD;
         else if (this.getHit())
             state = PlayerState.HIT;
-        else if (this.m_attack || this.getAttack()) {
+        else if (this.getAttack()) {
             if (this.AttackHold)
                 state = PlayerState.ATTACK_HOLD;
             else
@@ -854,15 +852,15 @@ export class BodyControlX extends Component {
                 this.m_bodySpine.onDash();
                 break;
             case PlayerState.ATTACK:
+                if (this.AttackHold)
+                    this.unschedule(this.m_attackReadySchedule);
                 if (this.AttackStopByBody || this.AttackStopByPress)
                     this.m_bodySpine.onIdle(true);
-                if (this.m_bodyAttack.AnimAttackHoldActive)
-                    this.unschedule(this.m_attackReadySchedule);
                 break;
             case PlayerState.ATTACK_HOLD:
                 if (this.AttackStopByBody || this.AttackStopByPress)
                     this.m_bodySpine.onIdle(true);
-                if (this.m_bodyAttack.AnimAttackHoldActive)
+                if (this.AttackHold)
                     this.m_attackReadySchedule = this.scheduleOnce(() => this.m_bodyAttack.onAttackHold(), this.m_bodyAttack.onAttackReady());
                 break;
         }
@@ -890,8 +888,10 @@ export class BodyControlX extends Component {
     }
 
     getAttack(): boolean {
-        if (this.m_bodyAttack != null)
-            return this.m_bodyAttack.m_attack;
+        if (this.AttackStopByBody && this.m_bodyAttack != null ? this.m_bodyAttack.m_attack : false)
+            return true;
+        if (this.AttackStopByPress && this.m_attack)
+            return true;
         return false;
     }
 

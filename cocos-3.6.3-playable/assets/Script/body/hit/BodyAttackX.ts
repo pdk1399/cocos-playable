@@ -48,25 +48,17 @@ export class BodyAttackX extends Component {
 
     @property({ group: { name: 'Anim' }, type: CCBoolean })
     AnimAttackMix: boolean = false;
-    @property({ group: { name: 'Anim' }, type: CCBoolean })
-    AnimAttackHoldActive: boolean = true;
-    @property({ group: { name: 'Anim' }, type: CCString, visible(this: BodyAttackX) { return this.AnimAttackHoldActive; } })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimAttackReady: string = 'attack_ready';
-    @property({ group: { name: 'Anim' }, type: CCString, visible(this: BodyAttackX) { return this.AnimAttackHoldActive; } })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimAttackHold: string = 'attack_hold';
     @property({ group: { name: 'Anim' }, type: CCString })
     AnimAttack: string = 'attack';
-    @property({ group: { name: 'Anim' }, type: CCInteger, visible(this: BodyAttackX) { return this.AnimAttackMix; } })
-    AnimAttackIndex: number = 3;
-    @property({ group: { name: 'Anim' }, type: CCString })
-    AnimIdle: string = 'idle';
 
     @property({ group: { name: 'Aim' }, type: CCBoolean })
     Aim: boolean = false;
     @property({ group: { name: 'Aim' }, type: CCString, visible(this: BodyAttackX) { return this.Aim; } })
     AimAnim: string = 'attack_aim';
-    @property({ group: { name: 'Aim' }, type: CCInteger, visible(this: BodyAttackX) { return this.Aim; } })
-    AimAnimIndex: number = 1;
     @property({ group: { name: 'Aim' }, type: CCString, visible(this: BodyAttackX) { return this.Aim; } })
     AimBone: string = 'aim_bone';
     @property({ group: { name: 'Aim' }, type: Node, visible(this: BodyAttackX) { return this.Aim; } })
@@ -132,6 +124,9 @@ export class BodyAttackX extends Component {
 
         this.node.on(this.m_body.m_emitBodyBaseHit, this.onHit, this);
         this.node.on(this.m_body.m_emitBodyBaseDead, this.onDead, this);
+
+        if (this.Aim)
+            this.m_spine.onAimInit(this.AimAnim, this.AimBone, this.AimFrom);
     }
 
     protected start(): void {
@@ -139,8 +134,6 @@ export class BodyAttackX extends Component {
             this.m_offsetMeleeX = this.m_colliderMelee.offset.x;
         if (this.m_colliderRange != null)
             this.m_offsetRangeX = this.m_colliderRange.offset.x;
-        if (this.Aim)
-            this.m_spine.onAimInit(this.AimAnim, this.AimAnimIndex, this.AimBone, this.AimFrom);
     }
 
     //
@@ -294,7 +287,7 @@ export class BodyAttackX extends Component {
             return;
         if (this.RangeTargetUpdate && this.m_targetRangeAim == null)
             this.m_targetRangeAim = this.onRangeTargetNearest();
-        if (this.m_targetRangeAim != null) {
+        if (this.m_targetRangeAim != null ? this.m_targetRangeAim.isValid : false) {
             this.m_shoot.onShootVelocityTarget(
                 this.m_targetRangeAim,
                 this.RangeBullet,
@@ -337,9 +330,9 @@ export class BodyAttackX extends Component {
                 }
             }
         }
-        if (target != null)
-            target = target.getChildByName('centre') ?? target.getChildByName('renderer').getChildByName('centre') ?? target;
-        this.m_targetRangeAim = target;
+        // if (target != null)
+        //     target = target.getChildByName('centre') ?? target.getChildByName('renderer').getChildByName('centre') ?? target;
+        // this.m_targetRangeAim = target;
         return target;
     }
 
@@ -355,15 +348,15 @@ export class BodyAttackX extends Component {
             //
             let attackDuration = 0;
             if (!this.AnimAttackMix)
-                attackDuration = this.m_spine.onAnimationForce(this.AnimAttack, false);
+                attackDuration = this.m_spine.onAnimationForceUnSave(this.AnimAttack, false);
             else
-                attackDuration = this.m_spine.onAnimationIndex(this.AnimAttackIndex, this.AnimAttack, false);
+                attackDuration = this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimAttack, false);
             this.scheduleOnce(() => {
                 this.m_attack = false;
                 if (!this.AnimAttackMix)
-                    this.m_spine.onAnimationForce(this.AnimIdle, true);
+                    this.m_spine.onAnimationForceLast();
                 else
-                    this.m_spine.onAnimationClear(this.AnimAttackIndex);
+                    this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
                 if (!this.Once) {
                     this.scheduleOnce(() => {
                         if (this.m_continue) {
@@ -402,7 +395,11 @@ export class BodyAttackX extends Component {
         else
             return;
 
+        let dirLast = this.m_dir;
         this.m_dir = dir;
+
+        if (dirLast == dir)
+            return;
 
         this.m_continue = false;
         if (this.StopOutRange) {
@@ -410,29 +407,36 @@ export class BodyAttackX extends Component {
             this.unscheduleAllCallbacks();
         }
 
-        if (this.MeleeDirUpdate && this.m_colliderMelee != null ? this.m_colliderMelee.isValid : false) {
-            let meleeColliderOffset = this.m_colliderMelee.offset;
-            meleeColliderOffset.x = this.m_offsetMeleeX * dir;
-            this.m_colliderMelee.offset = meleeColliderOffset;
-            this.m_colliderMelee.apply(); //Called this onStart() make bug (?)
-        }
-
-        if (this.RangeDirUpdate && this.m_colliderRange != null ? this.m_colliderRange.isValid : false) {
-            let rangeColliderOffset = this.m_colliderRange.offset;
-            rangeColliderOffset.x = this.m_offsetRangeX * dir;
-            this.m_colliderRange.offset = rangeColliderOffset;
-            this.m_colliderRange.apply(); //Called this onStart() make bug (?)
-        }
+        this.scheduleOnce(() => {
+            if (this.MeleeDirUpdate && this.m_colliderMelee != null ? this.m_colliderMelee.isValid : false) {
+                let meleeColliderOffset = this.m_colliderMelee.offset;
+                meleeColliderOffset.x = this.m_offsetMeleeX * dir;
+                this.m_colliderMelee.offset = meleeColliderOffset;
+                this.m_colliderMelee.apply(); //Called this onStart() make bug (?)
+            }
+            if (this.RangeDirUpdate && this.m_colliderRange != null ? this.m_colliderRange.isValid : false) {
+                let rangeColliderOffset = this.m_colliderRange.offset;
+                rangeColliderOffset.x = this.m_offsetRangeX * dir;
+                this.m_colliderRange.offset = rangeColliderOffset;
+                this.m_colliderRange.apply(); //Called this onStart() make bug (?)
+            }
+        })
     }
 
     //Anim
 
     onAttackReady(): number {
-        return this.m_spine.onAnimation(this.AnimAttackReady, false);
+        if (!this.AnimAttackMix)
+            return this.m_spine.onAnimationForce(this.AnimAttackReady, false);
+        else
+            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimAttackReady, false);
     }
 
     onAttackHold(): number {
-        return this.m_spine.onAnimation(this.AnimAttackHold, true);
+        if (!this.AnimAttackMix)
+            return this.m_spine.onAnimationForce(this.AnimAttackHold, false);
+        else
+            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimAttackHold, false);
     }
 
     onAimDeg(deg: number) {
@@ -444,10 +448,8 @@ export class BodyAttackX extends Component {
         this.m_spine.onAimTarget(target);
     }
 
-    onUnAim(deg?: number) {
+    onAimReset() {
         this.m_targetRangeAim = null;
-        if (deg != null)
-            this.m_spine.onAimDeg(deg);
-        this.m_spine.onUnAim();
+        this.m_spine.onAimReset();
     }
 }
