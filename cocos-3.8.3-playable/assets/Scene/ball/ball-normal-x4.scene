@@ -116,7 +116,7 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 960.0000000000001,
+      "x": 960,
       "y": 540,
       "z": 0
     },
@@ -202,7 +202,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 811.7277486910996,
+    "_orthoHeight": 540,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -1238,6 +1238,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "RevertSpace": false,
     "_id": "6dtoGPvV1I3rqYXYEU4pUi"
   },
   {
@@ -2583,7 +2584,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1920.0000000000002,
+      "width": 1920,
       "height": 1080
     },
     "_anchorPoint": {
@@ -3469,7 +3470,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1920.0000000000002,
+      "width": 1920,
       "height": 1080
     },
     "_anchorPoint": {
@@ -4353,7 +4354,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1920.0000000000002,
+      "width": 1920,
       "height": 1080
     },
     "_anchorPoint": {
@@ -4492,7 +4493,7 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "DirectStore": false,
+    "DirectStore": true,
     "OnDirectStore": "direct-store",
     "DelayDirectStore": 0,
     "AndroidDefault": false,
@@ -4520,7 +4521,7 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "DirectStore": false,
+    "DirectStore": true,
     "KeyUp": 38,
     "KeyDown": 40,
     "KeyLeft": 37,
@@ -4625,7 +4626,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1920.0000000000002,
+      "width": 1920,
       "height": 1080
     },
     "_anchorPoint": {
@@ -5480,6 +5481,7 @@
     "__prefab": null,
     "Type": 1,
     "LockX": false,
+    "FaceRight": true,
     "MoveGroundX": 40,
     "MoveAirX": 40,
     "MoveDampX": 40,
@@ -5493,9 +5495,11 @@
     "JumpFall": true,
     "JumpAuto": false,
     "AttackHold": false,
-    "AttackStopMoveAnim": true,
-    "AttackStopMovePress": true,
+    "AttackStopByBody": true,
+    "AttackStopByPress": true,
     "AttackStopFall": false,
+    "AttackDegOffset": 0,
+    "AttackAimReset": true,
     "Pick": false,
     "PickHold": false,
     "PickJumpOnce": true,
@@ -5528,20 +5532,14 @@
     "Raycast": true,
     "RaycastBot": true,
     "RaycastHead": true,
-    "Update": false,
-    "UpdateDirMelee": true,
-    "UpdateDirRange": true,
     "TagBody": 100,
     "TagTop": 99,
     "TagBot": 98,
     "TagHead": 97,
     "TagBotHead": 96,
-    "TagMelee": 101,
-    "TagRange": 102,
     "TagInteraction": 103,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagTarget": 200,
     "TagBox": 300,
     "_id": "8bj+1cug9K7q9y0gQ8bfCG"
   },
@@ -5571,7 +5569,6 @@
     "AnimPick": "pinkup",
     "AnimPickLoop": "pinkup_idle",
     "AnimThrow": "throw",
-    "AnimPickIndex": 2,
     "AnimFinish": "home_end",
     "AnimFinishLoop": false,
     "AudioJump": {
