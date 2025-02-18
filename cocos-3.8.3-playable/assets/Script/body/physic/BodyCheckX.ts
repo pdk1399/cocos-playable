@@ -367,23 +367,29 @@ export class BodyCheckX extends Component {
             dir = -1;
         else return;
 
+        let dirLast = this.m_dir;
         this.m_dir = dir;
 
-        if (this.m_colliderHead != null ? this.m_colliderHead.isValid : false) {
-            let headColliderOffset = this.m_colliderHead.offset;
-            headColliderOffset.x = this.m_offsetHeadX * dir;
-            this.m_colliderHead.offset = headColliderOffset;
-            this.m_colliderHead.apply(); //Called this onStart() make bug (?)
-        }
-
-        if (this.m_colliderBotHead != null ? this.m_colliderBotHead.isValid : false) {
-            let botHeadColliderOffset = this.m_colliderBotHead.offset;
-            botHeadColliderOffset.x = this.m_offsetBotHeadX * dir;
-            this.m_colliderBotHead.offset = botHeadColliderOffset;
-            this.m_colliderBotHead.apply(); //Called this onStart() make bug (?)
-        }
+        if (dirLast == dir)
+            return;
 
         this.m_isHead = false;
+
+        this.scheduleOnce(() => {
+            if (this.m_colliderHead != null ? this.m_colliderHead.isValid : false) {
+                let headColliderOffset = this.m_colliderHead.offset;
+                headColliderOffset.x = this.m_offsetHeadX * dir;
+                this.m_colliderHead.offset = headColliderOffset;
+                this.m_colliderHead.apply(); //Called this onStart() make bug (?)
+            }
+
+            if (this.m_colliderBotHead != null ? this.m_colliderBotHead.isValid : false) {
+                let botHeadColliderOffset = this.m_colliderBotHead.offset;
+                botHeadColliderOffset.x = this.m_offsetBotHeadX * dir;
+                this.m_colliderBotHead.offset = botHeadColliderOffset;
+                this.m_colliderBotHead.apply(); //Called this onStart() make bug (?)
+            }
+        })
     }
 
     //Bot

@@ -72,13 +72,7 @@ export class BodyMoveFollowX extends Component {
 
     protected start(): void {
         this.m_dir = this.MoveRight ? 1 : -1;
-        this.scheduleOnce(() => {
-            this.m_bodyCheck.onDirUpdate(this.m_dir);
-            if (this.m_bodyAttack != null)
-                this.m_bodyAttack.onDirUpdate(this.m_dir);
-            this.m_bodySpine.onViewDirection(this.m_dir);
-            this.onAttackRangeUpdate();
-        })
+        this.onDirUpdate();
     }
 
     protected update(dt: number): void {
@@ -137,11 +131,7 @@ export class BodyMoveFollowX extends Component {
         if (this.getDead() || this.getHit() || !this.getHeadChange())
             return;
         this.m_dir *= -1;
-        this.m_bodyCheck.onDirUpdate(this.m_dir);
-        if (this.m_bodyAttack != null)
-            this.m_bodyAttack.onDirUpdate(this.m_dir);
-        this.m_bodySpine.onViewDirection(this.m_dir);
-        this.onAttackRangeUpdate();
+        this.onDirUpdate();
     }
 
     getHeadChange(): boolean {
@@ -162,7 +152,9 @@ export class BodyMoveFollowX extends Component {
         return false;
     }
 
-    onAttackRangeUpdate() {
+    onDirUpdate() {
+        this.m_bodyCheck.onDirUpdate(this.m_dir);
+        this.m_bodySpine.onViewDirection(this.m_dir);
         if (this.m_bodyAttack != null)
             this.m_bodyAttack.onDirUpdate(this.m_dir);
     }

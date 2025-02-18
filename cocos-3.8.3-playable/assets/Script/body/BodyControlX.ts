@@ -177,16 +177,11 @@ export class BodyControlX extends Component {
         this.m_baseGravity = this.m_rigidbody.gravityScale;
         this.m_baseMass = this.m_rigidbody.getMass();
 
+        this.m_faceDirX = this.FaceRight ? 1 : -1;
+        this.onDirUpdate();
+
         if (this.UiPickBtnActive)
             director.emit(ConstantBase.INPUT_INTERACTION_SHOW, false);
-
-        this.m_faceDirX = this.FaceRight ? 1 : -1;
-        this.scheduleOnce(() => {
-            this.m_bodyCheck.onDirUpdate(this.m_faceDirX);
-            if (this.m_bodyAttack != null)
-                this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
-            this.m_bodySpine.onViewDirection(this.m_faceDirX);
-        })
     }
 
     protected lateUpdate(dt: number): void {
@@ -467,11 +462,7 @@ export class BodyControlX extends Component {
         this.m_moveDirX = !this.LockX ? -1 : 0;
         if (this.m_faceDirX != -1) {
             this.m_faceDirX = -1;
-            if (this.Type != BodyType.BALL)
-                this.m_bodySpine.onViewDirection(this.m_faceDirX);
-            this.m_bodyCheck.onDirUpdate(this.m_faceDirX);
-            if (this.m_bodyAttack != null)
-                this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
+            this.onDirUpdate();
         }
     }
 
@@ -479,11 +470,7 @@ export class BodyControlX extends Component {
         this.m_moveDirX = !this.LockX ? 1 : 0;
         if (this.m_faceDirX != 1) {
             this.m_faceDirX = 1;
-            if (this.Type != BodyType.BALL)
-                this.m_bodySpine.onViewDirection(this.m_faceDirX);
-            this.m_bodyCheck.onDirUpdate(this.m_faceDirX);
-            if (this.m_bodyAttack != null)
-                this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
+            this.onDirUpdate();
         }
     }
 
@@ -505,6 +492,14 @@ export class BodyControlX extends Component {
 
     onMoveReleaseY() {
         this.m_faceDirY = 0;
+    }
+
+    onDirUpdate() {
+        this.m_bodyCheck.onDirUpdate(this.m_faceDirX);
+        if (this.Type != BodyType.BALL)
+            this.m_bodySpine.onViewDirection(this.m_faceDirX);
+        if (this.m_bodyAttack != null)
+            this.m_bodyAttack.onDirUpdate(this.m_faceDirX);
     }
 
     //JUMP:

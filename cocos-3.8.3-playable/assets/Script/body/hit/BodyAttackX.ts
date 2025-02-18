@@ -398,28 +398,29 @@ export class BodyAttackX extends Component {
         let dirLast = this.m_dir;
         this.m_dir = dir;
 
+        if (dirLast == dir)
+            return;
+
         this.m_continue = false;
         if (this.StopOutRange) {
             this.m_attack = false;
             this.unscheduleAllCallbacks();
         }
 
-        if (dirLast == dir)
-            return;
-
-        if (this.MeleeDirUpdate && this.m_colliderMelee != null ? this.m_colliderMelee.isValid : false) {
-            let meleeColliderOffset = this.m_colliderMelee.offset;
-            meleeColliderOffset.x = this.m_offsetMeleeX * dir;
-            this.m_colliderMelee.offset = meleeColliderOffset;
-            this.m_colliderMelee.apply(); //Called this onStart() make bug (?)
-        }
-
-        if (this.RangeDirUpdate && this.m_colliderRange != null ? this.m_colliderRange.isValid : false) {
-            let rangeColliderOffset = this.m_colliderRange.offset;
-            rangeColliderOffset.x = this.m_offsetRangeX * dir;
-            this.m_colliderRange.offset = rangeColliderOffset;
-            this.m_colliderRange.apply(); //Called this onStart() make bug (?)
-        }
+        this.scheduleOnce(() => {
+            if (this.MeleeDirUpdate && this.m_colliderMelee != null ? this.m_colliderMelee.isValid : false) {
+                let meleeColliderOffset = this.m_colliderMelee.offset;
+                meleeColliderOffset.x = this.m_offsetMeleeX * dir;
+                this.m_colliderMelee.offset = meleeColliderOffset;
+                this.m_colliderMelee.apply(); //Called this onStart() make bug (?)
+            }
+            if (this.RangeDirUpdate && this.m_colliderRange != null ? this.m_colliderRange.isValid : false) {
+                let rangeColliderOffset = this.m_colliderRange.offset;
+                rangeColliderOffset.x = this.m_offsetRangeX * dir;
+                this.m_colliderRange.offset = rangeColliderOffset;
+                this.m_colliderRange.apply(); //Called this onStart() make bug (?)
+            }
+        })
     }
 
     //Anim
