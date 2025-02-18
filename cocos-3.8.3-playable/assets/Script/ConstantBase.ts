@@ -87,6 +87,12 @@ export class ConstantBase {
 
     static readonly NODE_PICK = 'node-pick';
     static readonly NODE_THROW = 'node-throw';
+
+    //
+
+    static readonly ANIM_INDEX_ATTACK: number = 1;
+    static readonly ANIM_INDEX_PICK: number = 1;
+    static readonly ANIM_INDEX_AIM: number = 2;
 }
 
 export enum EaseType {

@@ -1,6 +1,7 @@
 import { _decorator, AudioSource, CCBoolean, CCInteger, CCString, Component } from 'cc';
 import { BodyBase } from './BodyBase';
 import { SpineBase } from '../renderer/SpineBase';
+import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('BodySpine')
@@ -34,14 +35,12 @@ export class BodySpine extends Component {
     @property({ group: { name: 'Hit' }, type: CCBoolean, visible(this: BodySpine) { return this.AnimDeadActive; } })
     AnimDeadLoop: boolean = true;
 
-    @property({ group: { name: 'Pick' }, type: CCString })
+    @property({ group: { name: 'Pick&Throw' }, type: CCString })
     AnimPick: string = 'pick';
-    @property({ group: { name: 'Pick' }, type: CCString })
+    @property({ group: { name: 'Pick&Throw' }, type: CCString })
     AnimPickLoop: string = 'pick_loop';
-    @property({ group: { name: 'Pick' }, type: CCString })
+    @property({ group: { name: 'Pick&Throw' }, type: CCString })
     AnimThrow: string = 'throw';
-    @property({ group: { name: 'Pick' }, type: CCInteger })
-    AnimPickIndex: number = 2;
 
     @property({ group: { name: 'Finish' }, type: CCString })
     AnimFinish: string = 'win';
@@ -153,18 +152,18 @@ export class BodySpine extends Component {
     //PICK:
 
     onPick(): number {
-        return this.m_spine.onAnimationIndex(this.AnimPickIndex, this.AnimPick, false);
+        return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimPick, false);
     }
 
     onPickLoop(): number {
-        return this.m_spine.onAnimationIndex(this.AnimPickIndex, this.AnimPickLoop, true);
+        return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimPickLoop, true);
     }
 
     onThrow(): number {
-        return this.m_spine.onAnimationIndex(this.AnimPickIndex, this.AnimThrow, false);
+        return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimThrow, false);
     }
 
     onPickEmty() {
-        this.m_spine.onAnimationClear(this.AnimPickIndex);
+        this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_PICK);
     }
 }

@@ -56,7 +56,6 @@ export class BodyMoveFollowX extends Component {
     m_bodySpine: BodySpine = null;
     m_bodyKnock: BodyKnockX = null;
     m_bodyAttack: BodyAttackX = null;
-    m_spine: SpineBase = null;
     m_rigidbody: RigidBody2D = null;
 
     protected onLoad(): void {
@@ -65,7 +64,6 @@ export class BodyMoveFollowX extends Component {
         this.m_bodySpine = this.getComponent(BodySpine);
         this.m_bodyKnock = this.getComponent(BodyKnockX);
         this.m_bodyAttack = this.getComponent(BodyAttackX);
-        this.m_spine = this.getComponent(SpineBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
 
         this.node.on(ConstantBase.NODE_PICK, this.onPick, this);
@@ -78,9 +76,9 @@ export class BodyMoveFollowX extends Component {
             this.m_bodyCheck.onDirUpdate(this.m_dir);
             if (this.m_bodyAttack != null)
                 this.m_bodyAttack.onDirUpdate(this.m_dir);
-            this.m_spine.onFaceDir(this.m_dir);
+            this.m_bodySpine.onViewDirection(this.m_dir);
             this.onAttackRangeUpdate();
-        }, 0.02)
+        })
     }
 
     protected update(dt: number): void {
@@ -142,7 +140,7 @@ export class BodyMoveFollowX extends Component {
         this.m_bodyCheck.onDirUpdate(this.m_dir);
         if (this.m_bodyAttack != null)
             this.m_bodyAttack.onDirUpdate(this.m_dir);
-        this.m_spine.onFaceDir(this.m_dir);
+        this.m_bodySpine.onViewDirection(this.m_dir);
         this.onAttackRangeUpdate();
     }
 
@@ -190,10 +188,10 @@ export class BodyMoveFollowX extends Component {
 
         switch (this.m_state) {
             case BodyState.IDLE:
-                this.m_spine.onAnimation(this.m_bodySpine.AnimIdle, true);
+                this.m_bodySpine.onIdle();
                 break;
             case BodyState.MOVE:
-                this.m_spine.onAnimation(this.m_bodySpine.AnimMove, true);
+                this.m_bodySpine.onMove();
                 break;
             case BodyState.HIT:
                 break;

@@ -1,4 +1,5 @@
 import { _decorator, CCBoolean, CCString, Component, director, sp, v2, v3, Vec2, VERSION, Node } from 'cc';
+import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('SpineBase')
@@ -23,16 +24,15 @@ export class SpineBase extends Component {
 
     m_spineScaleXR: number;
     m_dir: number = 1;
-    m_spineAnim: string = '';
-    m_spineLoop: boolean = false;
-    m_spineAnimDuration: number = 0;
-    m_spineAnimDurationScale: number = 0;
-    m_spineTimeScale: number = 1;
+    m_anim: string = '';
+    m_loop: boolean = false;
+    m_duration: number = 0;
+    m_durationScale: number = 0;
+    m_timeScale: number = 1;
 
-    m_aimAnim: string = 'attack_aim';
-    m_aimAnimIndex: number = 1;
-    m_aimFrom: Node = null;
     m_aimBone: sp.spine.Bone;
+    m_aimAnim: string = 'attack_aim';
+    m_aimFrom: Node = null;
     m_aimPosPrimary: Vec2;
 
     protected onLoad(): void {
@@ -41,7 +41,7 @@ export class SpineBase extends Component {
 
         this.m_dir = this.FaceRight ? 1 : -1;
         this.m_spineScaleXR = this.Spine._skeleton.scaleX;
-        this.m_spineTimeScale = this.Spine.timeScale;
+        this.m_timeScale = this.Spine.timeScale;
 
         if (this.SpineEvent) {
             director.on(SpineBase.SPINE_PLAY, this.onPlay, this);
@@ -103,7 +103,7 @@ export class SpineBase extends Component {
     //
 
     onPlay(): void {
-        this.Spine.timeScale = this.m_spineTimeScale;
+        this.Spine.timeScale = this.m_timeScale;
     }
 
     onStop(): void {
@@ -122,52 +122,60 @@ export class SpineBase extends Component {
     onAnimation(anim: string, loop: boolean, durationScale: boolean = false): number {
         if (anim == '')
             return 0;
-        if (this.m_spineAnim == anim)
-            return durationScale ? this.m_spineAnimDuration : this.m_spineAnimDurationScale;
-        this.m_spineAnim = anim;
-        this.m_spineLoop = loop;
-        this.m_spineAnimDuration = this.Spine.setAnimation(0, anim, loop).animationEnd;
-        this.m_spineAnimDurationScale = 1.0 * this.m_spineAnimDuration / this.Spine.timeScale;
-        return durationScale ? this.m_spineAnimDuration : this.m_spineAnimDurationScale;
+        if (this.m_anim == anim)
+            return durationScale ? this.m_duration : this.m_durationScale;
+        this.m_anim = anim;
+        this.m_loop = loop;
+        this.m_duration = this.Spine.setAnimation(0, anim, loop).animationEnd;
+        this.m_durationScale = 1.0 * this.m_duration / this.Spine.timeScale;
+        return durationScale ? this.m_duration : this.m_durationScale;
     }
 
     onAnimationForce(anim: string, loop: boolean, durationScale: boolean = false): number {
         if (anim == '')
             return 0;
-        this.m_spineAnim = anim;
-        this.m_spineLoop = loop;
-        this.m_spineAnimDuration = this.Spine.setAnimation(0, anim, loop).animationEnd;
-        this.m_spineAnimDurationScale = 1.0 * this.m_spineAnimDuration / this.Spine.timeScale;
-        return durationScale ? this.m_spineAnimDuration : this.m_spineAnimDurationScale;
+        this.m_anim = anim;
+        this.m_loop = loop;
+        this.m_duration = this.Spine.setAnimation(0, anim, loop).animationEnd;
+        this.m_durationScale = 1.0 * this.m_duration / this.Spine.timeScale;
+        return durationScale ? this.m_duration : this.m_durationScale;
     }
 
     onAnimationForceLast(durationScale: boolean = false): number {
-        return this.onAnimationForce(this.m_spineAnim, this.m_spineLoop, durationScale);
+        return this.onAnimationForce(this.m_anim, this.m_loop, durationScale);
+    }
+
+    onAnimationForceUnSave(anim: string, loop: boolean, durationScale: boolean = false): number {
+        if (anim == '')
+            return 0;
+        let animDuration = this.Spine.setAnimation(0, anim, loop).animationEnd;
+        let animDurationScale = 1.0 * animDuration / this.Spine.timeScale;
+        return durationScale ? animDuration : animDurationScale;
     }
 
     getAnimation(): string {
-        return this.m_spineAnim;
+        return this.m_anim;
     }
 
     getAnimationDuration(): number {
-        return this.m_spineAnimDuration;
+        return this.m_duration;
     }
 
     getAnimationDurationScale(): number {
-        return this.m_spineAnimDurationScale;
+        return this.m_durationScale;
     }
 
     onTimeScale(TimeScale: number = 1) {
-        this.m_spineTimeScale = TimeScale;
+        this.m_timeScale = TimeScale;
         this.Spine.timeScale = TimeScale;
     }
 
     //
 
     onAnimationIndex(index: number, anim: string, loop: boolean, durationScale: boolean = false): number {
-        let Duration = this.Spine.setAnimation(index, anim, loop).animationEnd;
-        let Scale = durationScale ? this.Spine.timeScale : 1;
-        return Duration / Scale;
+        let duration = this.Spine.setAnimation(index, anim, loop).animationEnd;
+        let scale = durationScale ? this.Spine.timeScale : 1;
+        return duration / scale;
     }
 
     onAnimationEmty(index: number, mixDuration: number) {
@@ -192,10 +200,9 @@ export class SpineBase extends Component {
 
     //Aim
 
-    onAimInit(anim: string, index: number, bone: string, from: Node) {
-        this.m_aimAnim = anim;
-        this.m_aimAnimIndex = index;
+    onAimInit(anim: string, bone: string, from: Node) {
         this.m_aimBone = this.Spine.findBone(bone);
+        this.m_aimAnim = anim;
         this.m_aimPosPrimary = v2(this.m_aimBone.x, this.m_aimBone.y);
         this.m_aimFrom = from;
     }
@@ -225,13 +232,13 @@ export class SpineBase extends Component {
         this.m_aimBone.x = posLocalSpine.x;
         this.m_aimBone.y = posLocalSpine.y;
         this.Spine._skeleton.updateWorldTransform();
-        this.Spine.setAnimation(this.m_aimAnimIndex, this.m_aimAnim, true);
+        this.Spine.setAnimation(ConstantBase.ANIM_INDEX_AIM, this.m_aimAnim, true);
     }
 
-    onUnAim() {
+    onAimReset() {
         if (this.m_aimBone == null)
             return;
-        this.onAnimationClear(this.m_aimAnimIndex);
+        this.onAnimationClear(ConstantBase.ANIM_INDEX_AIM);
         this.m_aimBone.x = this.m_aimPosPrimary.x;
         this.m_aimBone.y = this.m_aimPosPrimary.y;
         this.Spine._skeleton.updateWorldTransform();

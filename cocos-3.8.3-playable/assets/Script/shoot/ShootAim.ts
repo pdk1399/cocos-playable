@@ -1,6 +1,7 @@
 import { _decorator, Node, CCFloat, CCInteger, CCString, Component, director, Tween, tween, v2, Vec2, CCBoolean, VERSION } from 'cc';
 import { SpineBase } from '../renderer/SpineBase';
 import { ShootBase } from './ShootBase';
+import { ConstantBase } from '../ConstantBase';
 const { ccclass, property, requireComponent } = _decorator;
 
 class DegTweener {
@@ -54,8 +55,6 @@ export class ShootAim extends Component {
     Aim: boolean = false;
     @property({ group: { name: 'Aim' }, type: CCString, visible(this: ShootAim) { return this.Aim; } })
     AimAnim: string = 'attack_aim';
-    @property({ group: { name: 'Aim' }, type: CCInteger, visible(this: ShootAim) { return this.Aim; } })
-    AimAnimIndex: number = 1;
     @property({ group: { name: 'Aim' }, type: CCString, visible(this: ShootAim) { return this.Aim; } })
     AimBone: string = 'aim_bone';
     @property({ group: { name: 'Aim' }, type: Node, visible(this: ShootAim) { return this.Aim; } })
@@ -81,7 +80,7 @@ export class ShootAim extends Component {
             director.on(this.OnEvent, this.onAim, this);
 
         if (this.Aim)
-            this.m_spine.onAimInit(this.AimAnim, this.AimAnimIndex, this.AimBone, this.AimFrom);
+            this.m_spine.onAimInit(this.AimAnim, this.AimBone, this.AimFrom);
     }
 
     protected start(): void {
