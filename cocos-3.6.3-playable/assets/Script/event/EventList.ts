@@ -12,20 +12,21 @@ Enum(ListType);
 @ccclass('EventList')
 export class EventList extends Component {
 
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventList) { return !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventList) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     OnNode: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventList) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventList) { return !this.OnNode; } })
     OnEvent: string = '';
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventList) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventList) { return !this.OnNode; } })
+    OnStop: string = '';
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
-    @property({ group: { name: 'Event' }, type: CCString })
-    OnStop: string = '';
+
 
     @property({ group: { name: 'Main' }, type: ListType })
     ListType: ListType = ListType.FORWARD;
@@ -40,13 +41,14 @@ export class EventList extends Component {
     m_quantity: number = 1;
 
     protected onLoad(): void {
-        if (!this.Start) {
-            if (this.OnNode)
-                this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
-            else
-                director.on(this.OnEvent, this.onEvent, this);
+        if (this.OnNode) {
+            this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
+            this.node.on(ConstantBase.NODE_STOP, this.onStop, this);
         }
-        director.on(this.OnStop, this.onStop, this);
+        else {
+            director.on(this.OnEvent, this.onEvent, this);
+            director.on(this.OnStop, this.onStop, this);
+        }
     }
 
     protected start(): void {

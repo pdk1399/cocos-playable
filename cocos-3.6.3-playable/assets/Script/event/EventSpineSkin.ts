@@ -9,13 +9,13 @@ export class EventSpineSkin extends Component {
     @property({ group: { name: 'Target' }, type: [SpineBase] })
     Target: SpineBase[] = [];
 
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventSpineSkin) { return !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventSpineSkin) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     OnNode: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventSpineSkin) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventSpineSkin) { return !this.OnNode; } })
     OnEvent: string = '';
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventSpineSkin) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
@@ -26,8 +26,6 @@ export class EventSpineSkin extends Component {
     Skin: string[] = [];
 
     protected onLoad(): void {
-        if (this.Start)
-            return;
         if (this.OnNode)
             this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
         else

@@ -9,20 +9,24 @@ export class EventSpine extends Component {
     @property({ group: { name: 'Target' }, type: [SpineBase] })
     Target: SpineBase[] = [];
 
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventSpine) { return !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventSpine) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     OnNode: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventSpine) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventSpine) { return !this.OnNode; } })
     OnEvent: string = '';
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventSpine) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
+    @property({ group: { name: 'Event' }, type: CCBoolean })
+    DelayEndAnim: boolean = true;
+    @property({ group: { name: 'Event' }, type: CCFloat })
+    DelayEnd = 0;
     @property({ group: { name: 'Event' }, type: CCString })
-    EmitEventFinal: string = '';
+    EmitEventEnd: string = '';
 
     @property({ group: { name: 'Main' }, type: CCString })
     AnimStart: string = '';
@@ -36,8 +40,6 @@ export class EventSpine extends Component {
     AnimEndLoop: boolean = false;
 
     protected onLoad(): void {
-        if (this.Start)
-            return;
         if (this.OnNode)
             this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
         else
@@ -73,13 +75,77 @@ export class EventSpine extends Component {
     onEventSingle(target: SpineBase) {
         if (target == null ? true : !target.isValid)
             return;
+        this.onEventSingleStart(target);
+    }
+
+    protected onEventSingleStart(target: SpineBase) {
+        if (target == null ? true : !target.isValid)
+            return;
+        if (this.AnimLoop == '' && !this.DelayEndAnim) {
+            this.scheduleOnce(() => {
+                //Final
+                if (this.EmitEventEnd != '')
+                    director.emit(this.EmitEventEnd);
+            }, this.DelayEnd)
+        }
         target.scheduleOnce(() => {
-            target.scheduleOnce(() => {
-                target.scheduleOnce(() => {
-                    if (this.EmitEvent != '')
-                        director.emit(this.EmitEventFinal);
-                }, target.onAnimationForceUnSave(this.AnimEnd, this.AnimEndLoop));
-            }, Math.max(target.onAnimationForceUnSave(this.AnimLoop, true), this.AnimLoopDuration, 0));
-        }, target.onAnimationForceUnSave(this.AnimStart, false));
+            if (this.AnimLoop == '' && this.DelayEndAnim) {
+                this.scheduleOnce(() => {
+                    //Final
+                    if (this.EmitEventEnd != '')
+                        director.emit(this.EmitEventEnd);
+                }, this.DelayEnd)
+            }
+            else {
+                //Continue
+                this.onEventSingleLoop(target);
+            }
+        }, target.onAnimationForceUnSave(this.AnimStart, this.AnimLoop == '' ? this.AnimEndLoop : false));
+    }
+
+    protected onEventSingleLoop(target: SpineBase) {
+        if (target == null ? true : !target.isValid)
+            return;
+        if (this.AnimEnd == '' && !this.DelayEndAnim) {
+            this.scheduleOnce(() => {
+                //Final
+                if (this.EmitEventEnd != '')
+                    director.emit(this.EmitEventEnd);
+            }, this.DelayEnd)
+        }
+        target.scheduleOnce(() => {
+            if (this.AnimEnd == '' && this.DelayEndAnim) {
+                this.scheduleOnce(() => {
+                    //Final
+                    if (this.EmitEventEnd != '')
+                        director.emit(this.EmitEventEnd);
+                }, this.DelayEnd)
+            }
+            else {
+                //Continue
+                this.onEventSingleEnd(target);
+            }
+        }, Math.max(target.onAnimationForceUnSave(this.AnimLoop, this.AnimEnd == '' ? this.AnimEndLoop : false), this.AnimLoopDuration, 0));
+    }
+
+    protected onEventSingleEnd(target: SpineBase) {
+        if (target == null ? true : !target.isValid)
+            return;
+        if (!this.DelayEndAnim) {
+            this.scheduleOnce(() => {
+                //Final
+                if (this.EmitEventEnd != '')
+                    director.emit(this.EmitEventEnd);
+            }, this.DelayEnd)
+        }
+        target.scheduleOnce(() => {
+            if (this.DelayEndAnim) {
+                this.scheduleOnce(() => {
+                    //Final
+                    if (this.EmitEventEnd != '')
+                        director.emit(this.EmitEventEnd);
+                }, this.DelayEnd)
+            }
+        }, target.onAnimationForceUnSave(this.AnimEnd, this.AnimEndLoop));
     }
 }

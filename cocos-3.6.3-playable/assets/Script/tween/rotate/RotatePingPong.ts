@@ -10,9 +10,9 @@ export class RotatePingPong extends Component {
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: RotatePingPong) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCString })
     OnEvent: string = '';
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: RotatePingPong) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
@@ -46,8 +46,6 @@ export class RotatePingPong extends Component {
     //
 
     protected onLoad(): void {
-        if (this.Start)
-            return;
         if (this.OnEvent != '')
             director.on(this.OnEvent, this.onEvent, this);
     }
