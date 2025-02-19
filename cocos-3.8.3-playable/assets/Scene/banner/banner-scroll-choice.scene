@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.SceneAsset",
-    "_name": "ball-choice-level",
+    "_name": "banner-scroll-choice",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_native": "",
@@ -205,7 +205,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 640.3751465416178,
+    "_orthoHeight": 540,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -656,8 +656,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "",
+    "Once": false,
     "Delay": 0,
     "EmitEvent": "",
     "RotateTo": 359.9,
@@ -829,7 +829,9 @@
     "OnStateOn": "",
     "OnStateOff": "",
     "OnStateChange": "zone-winter",
-    "EventOnce": false,
+    "Once": false,
+    "Delay": 0,
+    "DelayOnceFarme": false,
     "EmitState": "direct-store",
     "OnLock": "",
     "OnLockOn": "",
@@ -847,12 +849,15 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "NodeStateOn": [
+    "State": true,
+    "Delay": 0,
+    "DelayOnceFarme": false,
+    "TargetOn": [
       {
         "__id__": 11
       }
     ],
-    "NodeStateOff": [],
+    "TargetOff": [],
     "_id": "8eTC+v0OdMuJuHNapvKdDR"
   },
   {
@@ -1040,8 +1045,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "",
+    "Once": false,
     "Delay": 0,
     "EmitEvent": "",
     "RotateTo": 359.9,
@@ -1213,7 +1218,9 @@
     "OnStateOn": "",
     "OnStateOff": "",
     "OnStateChange": "zone-ramandan",
-    "EventOnce": false,
+    "Once": false,
+    "Delay": 0,
+    "DelayOnceFarme": false,
     "EmitState": "direct-store",
     "OnLock": "",
     "OnLockOn": "",
@@ -1231,12 +1238,15 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "NodeStateOn": [
+    "State": true,
+    "Delay": 0,
+    "DelayOnceFarme": false,
+    "TargetOn": [
       {
         "__id__": 23
       }
     ],
-    "NodeStateOff": [],
+    "TargetOff": [],
     "_id": "72dkP5VplJp7Mxl0u8IHii"
   },
   {
@@ -1424,8 +1434,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "",
+    "Once": false,
     "Delay": 0,
     "EmitEvent": "",
     "RotateTo": 359.9,
@@ -1597,7 +1607,9 @@
     "OnStateOn": "",
     "OnStateOff": "",
     "OnStateChange": "zone-candy-pink",
-    "EventOnce": false,
+    "Once": false,
+    "Delay": 0,
+    "DelayOnceFarme": false,
     "EmitState": "direct-store",
     "OnLock": "",
     "OnLockOn": "",
@@ -1615,12 +1627,15 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "NodeStateOn": [
+    "State": true,
+    "Delay": 0,
+    "DelayOnceFarme": false,
+    "TargetOn": [
       {
         "__id__": 35
       }
     ],
-    "NodeStateOff": [],
+    "TargetOff": [],
     "_id": "07I88eySRBY4Z5J1ktcG5T"
   },
   {
@@ -1808,8 +1823,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "",
+    "Once": false,
     "Delay": 0,
     "EmitEvent": "",
     "RotateTo": 359.9,
@@ -1981,7 +1996,9 @@
     "OnStateOn": "",
     "OnStateOff": "",
     "OnStateChange": "zone-candy-green",
-    "EventOnce": false,
+    "Once": false,
+    "Delay": 0,
+    "DelayOnceFarme": false,
     "EmitState": "direct-store",
     "OnLock": "",
     "OnLockOn": "",
@@ -1999,12 +2016,15 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "NodeStateOn": [
+    "State": true,
+    "Delay": 0,
+    "DelayOnceFarme": false,
+    "TargetOn": [
       {
         "__id__": 47
       }
     ],
-    "NodeStateOff": [],
+    "TargetOff": [],
     "_id": "46sSbiqdBMxbJ99Ecfd4/Q"
   },
   {
@@ -2192,8 +2212,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "",
+    "Once": false,
     "Delay": 0,
     "EmitEvent": "",
     "RotateTo": 359.9,
@@ -2365,7 +2385,9 @@
     "OnStateOn": "",
     "OnStateOff": "",
     "OnStateChange": "zone-summer",
-    "EventOnce": false,
+    "Once": false,
+    "Delay": 0,
+    "DelayOnceFarme": false,
     "EmitState": "direct-store",
     "OnLock": "",
     "OnLockOn": "",
@@ -2383,12 +2405,15 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "NodeStateOn": [
+    "State": true,
+    "Delay": 0,
+    "DelayOnceFarme": false,
+    "TargetOn": [
       {
         "__id__": 59
       }
     ],
-    "NodeStateOff": [],
+    "TargetOff": [],
     "_id": "c0+4Cwo1JO9rskkFOldB7X"
   },
   {
@@ -2595,6 +2620,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -2635,8 +2661,8 @@
     "__prefab": null,
     "Target": null,
     "Start": false,
-    "Once": false,
     "OnEvent": "",
+    "Once": false,
     "Delay": 0,
     "EmitTo": true,
     "EmitBack": true,
@@ -2939,8 +2965,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 389.31298828125,
-      "height": 132
+      "width": 387.31298828125,
+      "height": 130
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2994,6 +3020,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -3034,8 +3061,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "",
+    "Once": false,
     "Delay": 0,
     "EmitTo": true,
     "EmitBack": true,
@@ -3120,8 +3147,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 412.7138671875,
-      "height": 132
+      "width": 410.7138671875,
+      "height": 130
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3175,6 +3202,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -3215,8 +3243,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "",
+    "Once": false,
     "Delay": 0,
     "EmitTo": true,
     "EmitBack": true,
@@ -3510,8 +3538,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 111.60302734375,
-      "height": 43.8
+      "width": 109.60302734375,
+      "height": 41.8
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3565,6 +3593,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -4170,6 +4199,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -4374,6 +4404,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -5051,6 +5082,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -5255,6 +5287,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -5932,6 +5965,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -6136,6 +6170,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -6553,12 +6588,13 @@
     "DirectStore": false,
     "OnDirectStore": "direct-store",
     "DelayDirectStore": 3,
+    "AndroidDefault": true,
     "Android": "https://play.google.com/store/apps/details?id=com.platformer.red.blue.adventure.mvsd&hl=en&gl=US",
     "IOS": "",
     "AdsType": 0,
-    "DebugStore": false,
+    "LinkOpen": false,
     "DirectPress": false,
-    "DirectPressStopEvent": true,
+    "DirectPressOnce": false,
     "EmitDirectPress": "direct-press",
     "LimitActive": false,
     "LimitDuration": 60,
@@ -6640,9 +6676,6 @@
     "_enabled": true,
     "__prefab": null,
     "DirectStore": false,
-    "DebugUpdate": {
-      "__id__": 101
-    },
     "KeyUp": 38,
     "KeyDown": 40,
     "KeyLeft": 37,
@@ -6667,9 +6700,9 @@
       null,
       null
     ],
-    "SwitchStart": true,
-    "SwitchStartIndex": 0,
+    "SwitchActive": false,
     "Switch": [],
+    "SwitchState": false,
     "Other": [],
     "_id": "25YzXMg1NFd7O/CJk2ix7O"
   },
@@ -7082,29 +7115,8 @@
       "x": 0,
       "y": 0
     },
-    "Background": {
-      "__id__": 195
-    },
     "LockX": true,
     "LockY": true,
-    "OrthoScreen": true,
-    "OrthoLandscape": 1,
-    "OrthoPortrait": 1.5,
-    "RectScreen": true,
-    "RectLandScape": {
-      "__type__": "cc.Rect",
-      "x": 0,
-      "y": 0,
-      "width": 1,
-      "height": 1
-    },
-    "RectPortrait": {
-      "__type__": "cc.Rect",
-      "x": 0,
-      "y": 0.25,
-      "width": 1,
-      "height": 0.5
-    },
     "Limit": false,
     "LimitMax": {
       "__type__": "cc.Vec2",
@@ -7115,6 +7127,26 @@
       "__type__": "cc.Vec2",
       "x": -9000,
       "y": 800
+    },
+    "OrthoScreen": true,
+    "OrthoLandscape": 1,
+    "OrthoPortrait": 1.5,
+    "RectScreen": true,
+    "RectLandScapeFixed": false,
+    "RectLandscape": {
+      "__type__": "cc.Rect",
+      "x": 0,
+      "y": 0,
+      "width": 1,
+      "height": 1
+    },
+    "RectPortraitFixed": false,
+    "RectPortrait": {
+      "__type__": "cc.Rect",
+      "x": 0,
+      "y": 0.25,
+      "width": 1,
+      "height": 0.5
     },
     "_id": "d85zlOOolKJ7xeIO2aIHac"
   },
@@ -7128,6 +7160,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "AudioDebug": false,
     "AudioMusic": null,
     "_id": "3dXw552XFFX4AW5x61DoIC"
   },
