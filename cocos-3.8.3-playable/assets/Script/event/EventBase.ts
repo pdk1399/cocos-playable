@@ -20,9 +20,9 @@ export class EventBase extends Component {
     StartState: boolean = true;
     @property({ group: { name: 'Event' }, type: Node, visible(this: EventBase) { return this.Start && this.Type > EventType.BOOLEAN; } })
     StartTarget: Node = null;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventBase) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCString })
     OnEvent: string = '';
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventBase) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
@@ -30,8 +30,6 @@ export class EventBase extends Component {
     EmitEvent: string = '';
 
     protected onLoad(): void {
-        if (this.Start)
-            return;
         if (this.OnEvent != '') {
             switch (this.Type) {
                 case EventType.NONE:

@@ -10,9 +10,9 @@ export class MoveOnce extends Component {
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: MoveOnce) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCString })
     OnEvent: string = '';
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: MoveOnce) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;

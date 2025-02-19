@@ -14,19 +14,19 @@ export class EventActive extends Component {
 
     @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventActive) { return !this.OnNode; } })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventActive) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     OnNode: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventActive) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventActive) { return !this.OnNode; } })
     OnEvent: string = '';
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventActive) { return !this.Start && !this.OnNode && this.OnEvent != ''; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventActive) { return !this.OnNode && this.OnEvent != ''; } })
     OnEventState: boolean = true;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventActive) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventActive) { return !this.OnNode; } })
     OnEventOn: string = '';
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventActive) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventActive) { return !this.OnNode; } })
     OnEventOff: string = '';
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventActive) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventActive) { return !this.OnNode; } })
     OnEventRevert: string = '';
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventActive) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventActive) { return !this.OnNode; } })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
@@ -34,8 +34,6 @@ export class EventActive extends Component {
     EmitEvent: string = '';
 
     protected onLoad(): void {
-        if (this.Start)
-            return;
         if (this.OnNode)
             this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
         else {

@@ -8,13 +8,13 @@ export class EventDestroy extends Component {
     @property({ group: { name: 'Target' }, type: [Node] })
     Target: Node[] = [];
 
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventDestroy) { return !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventDestroy) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     OnNode: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventDestroy) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventDestroy) { return !this.OnNode; } })
     OnEvent: string = '';
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EventDestroy) { return !this.Start && !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
@@ -22,8 +22,6 @@ export class EventDestroy extends Component {
     EmitEvent: string = '';
 
     protected onLoad(): void {
-        if (this.Start)
-            return;
         if (this.OnNode)
             this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
         else
