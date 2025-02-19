@@ -37,8 +37,6 @@ export class RotateOnce extends Component {
     //
 
     protected onLoad(): void {
-        if (this.Start)
-            return;
         if (this.OnEvent != '')
             director.on(this.OnEvent, this.onEvent, this);
     }
