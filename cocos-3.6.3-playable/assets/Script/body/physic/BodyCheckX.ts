@@ -374,6 +374,9 @@ export class BodyCheckX extends Component {
             return;
 
         this.m_isHead = false;
+        this.m_countHead = 0;
+        this.m_isBotHead = false;
+        this.m_countBotHead = 0;
 
         this.scheduleOnce(() => {
             if (this.m_colliderHead != null ? this.m_colliderHead.isValid : false) {
