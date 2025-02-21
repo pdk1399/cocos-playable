@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCString, Color, Component, director, Node, sp } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
@@ -33,6 +33,11 @@ export class EventActive extends Component {
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
 
+    @property({ group: { name: 'Option' }, type: CCBoolean })
+    TargetSpine: boolean = false; //When TRUE, the target's skeleton will be used instead of node
+    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventActive) { return this.TargetSpine; } })
+    TargetSpineColor: boolean = false; //When TRUE, the target's color of skeleton will be used instead of component
+
     protected onLoad(): void {
         if (this.OnNode)
             this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
@@ -45,11 +50,8 @@ export class EventActive extends Component {
     }
 
     protected start(): void {
-        if (this.TargetStart) {
-            this.Target.forEach(target => {
-                target.active = this.TargetStartState;
-            });
-        }
+        if (this.TargetStart)
+            this.onEventList(this.TargetStartState);
         if (this.Start)
             this.onEvent();
     }
@@ -109,12 +111,34 @@ export class EventActive extends Component {
     onEventSingle(target: Node, state?: boolean) {
         if (target == null ? true : !target.isValid)
             return;
-        target.active = state != null ? state : this.OnEventState;
+        if (this.TargetSpine) {
+            let targetSpine = target.getComponent(sp.Skeleton);
+            if (this.TargetSpineColor) {
+                let targetSpineColor = targetSpine.color;
+                targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, state ? 255 : 0);
+                targetSpine.color = targetSpineColor;
+            }
+            else
+                targetSpine.enabled = state;
+        }
+        else
+            target.active = state != null ? state : this.OnEventState;
     }
 
     onEventSingleRevert(target: Node) {
         if (target == null ? true : !target.isValid)
             return;
-        target.active = !target.active;
+        if (this.TargetSpine) {
+            let targetSpine = target.getComponent(sp.Skeleton);
+            if (this.TargetSpineColor) {
+                let targetSpineColor = targetSpine.color;
+                targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, targetSpineColor.a != 255 ? 255 : 0);
+                targetSpine.color = targetSpineColor;
+            }
+            else
+                targetSpine.enabled = !targetSpine.enabled;
+        }
+        else
+            target.active = !target.active;
     }
 }
