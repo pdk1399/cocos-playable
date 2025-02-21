@@ -1,7 +1,7 @@
 import { _decorator, CCBoolean, Color, Component, director, EventTouch, Input, input, KeyCode, Label, Node, Sprite, v2, v3, Vec2 } from 'cc';
 import { StickController } from './StickController';
 import { StickProgess } from './StickProgess';
-import { ConstantBase } from '../ConstantBase';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('StickField')

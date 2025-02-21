@@ -1,11 +1,11 @@
-import { _decorator, CCFloat, CCInteger, Collider2D, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D, v2, Vec2 } from 'cc';
+import { _decorator, CCFloat, CCInteger, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D, v2, Vec2 } from 'cc';
 import { StickController } from '../StickController';
 import { StickField } from '../StickField';
-import { ConstantBase } from '../../ConstantBase';
+import { ConstantBase } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('StickSword')
-export class StickSword extends StickController {
+@ccclass('StickPikeman')
+export class StickPikeman extends StickController {
     @property(CCInteger)
     attackDamage: number = 1;
 
@@ -113,9 +113,6 @@ export class StickSword extends StickController {
     }
 
     private SetTargetUpdateAnim() {
-        if (this.isDead())
-            return;
-        //
         if (this.animCurrent() == this.ANIM_ATTACK)
             return;
         //
