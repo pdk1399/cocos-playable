@@ -95,6 +95,18 @@ export class ConstantBase {
     static readonly ANIM_INDEX_ATTACK: number = 1;
     static readonly ANIM_INDEX_PICK: number = 1;
     static readonly ANIM_INDEX_AIM: number = 2;
+
+    //STICK-BATTLE
+
+    static readonly BATTLE_START: string = 'battle-start';
+    static readonly BATTLE_END: string = 'battle-end';
+    static readonly BATTLE_START_COUNTDOWN: string = 'battle-start-countdown';
+    static readonly STICK_BLUE_DEAD: string = 'stick-blue-dead';
+    static readonly STICK_RED_DEAD: string = 'stick-red-dead';
+
+    static readonly TAG_FIELD_RENDERER = 10;
+    static readonly TAG_FIELD_BODY = 100;
+    static readonly TAG_FIELD_RANGE = 101;
 }
 
 export enum EaseType {
