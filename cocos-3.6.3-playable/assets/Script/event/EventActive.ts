@@ -1,6 +1,13 @@
-import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCString, Color, Component, director, Enum, Node, sp } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
+
+export enum TargetType {
+    Node,
+    Spine,
+    SpineColor,
+}
+Enum(TargetType);
 
 @ccclass('EventActive')
 export class EventActive extends Component {
@@ -33,6 +40,9 @@ export class EventActive extends Component {
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
 
+    @property({ group: { name: 'Option' }, type: TargetType })
+    TargetType: TargetType = TargetType.Node;
+
     protected onLoad(): void {
         if (this.OnNode)
             this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
@@ -45,11 +55,8 @@ export class EventActive extends Component {
     }
 
     protected start(): void {
-        if (this.TargetStart) {
-            this.Target.forEach(target => {
-                target.active = this.TargetStartState;
-            });
-        }
+        if (this.TargetStart)
+            this.onEventList(this.TargetStartState);
         if (this.Start)
             this.onEvent();
     }
@@ -94,27 +101,79 @@ export class EventActive extends Component {
 
     onEventList(state?: boolean) {
         this.Target = this.Target.filter(t => t != null);
-        this.Target.forEach(target => this.onEventSingle(target, state));
+        this.Target.forEach(target => this.onEventSingle(target, state, this.TargetType));
         this.Target = this.Target.filter(t => t != null);
     }
 
     onEventListRevert() {
         this.Target = this.Target.filter(t => t != null);
         this.Target.forEach(target => {
-            this.onEventSingleRevert(target);
+            this.onEventSingleRevert(target, this.TargetType);
         });
         this.Target = this.Target.filter(t => t != null);
     }
 
-    onEventSingle(target: Node, state?: boolean) {
+    onEventSingle(target: Node, state: boolean, targetType: TargetType) {
         if (target == null ? true : !target.isValid)
             return;
-        target.active = state != null ? state : this.OnEventState;
+        switch (targetType) {
+            case TargetType.Node:
+                target.active = state != null ? state : this.OnEventState;
+                break;
+            case TargetType.Spine:
+                {
+                    let targetSpine = target.getComponent(sp.Skeleton);
+                    if (targetSpine == null) {
+                        this.onEventSingle(target, state, TargetType.Node);
+                        return;
+                    }
+                    targetSpine.enabled = state;
+                }
+                break;
+            case TargetType.SpineColor:
+                {
+                    let targetSpine = target.getComponent(sp.Skeleton);
+                    if (targetSpine == null) {
+                        this.onEventSingle(target, state, TargetType.Node);
+                        return;
+                    }
+                    let targetSpineColor = targetSpine.color;
+                    targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, state ? 255 : 0);
+                    targetSpine.color = targetSpineColor;
+                }
+                break;
+        }
     }
 
-    onEventSingleRevert(target: Node) {
+    onEventSingleRevert(target: Node, targetType: TargetType) {
         if (target == null ? true : !target.isValid)
             return;
-        target.active = !target.active;
+        switch (targetType) {
+            case TargetType.Node:
+                target.active = !target.active;
+                break;
+            case TargetType.Spine:
+                {
+                    let targetSpine = target.getComponent(sp.Skeleton);
+                    if (targetSpine == null) {
+                        this.onEventSingleRevert(target, TargetType.Node);
+                        return;
+                    }
+                    targetSpine.enabled = !targetSpine.enabled;
+                }
+                break;
+            case TargetType.SpineColor:
+                {
+                    let targetSpine = target.getComponent(sp.Skeleton);
+                    if (targetSpine == null) {
+                        this.onEventSingleRevert(target, TargetType.Node);
+                        return;
+                    }
+                    let targetSpineColor = targetSpine.color;
+                    targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, targetSpineColor.a != 255 ? 255 : 0);
+                    targetSpine.color = targetSpineColor;
+                }
+                break;
+        }
     }
 }
