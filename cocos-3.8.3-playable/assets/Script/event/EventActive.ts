@@ -101,34 +101,42 @@ export class EventActive extends Component {
 
     onEventList(state?: boolean) {
         this.Target = this.Target.filter(t => t != null);
-        this.Target.forEach(target => this.onEventSingle(target, state));
+        this.Target.forEach(target => this.onEventSingle(target, state, this.TargetType));
         this.Target = this.Target.filter(t => t != null);
     }
 
     onEventListRevert() {
         this.Target = this.Target.filter(t => t != null);
         this.Target.forEach(target => {
-            this.onEventSingleRevert(target);
+            this.onEventSingleRevert(target, this.TargetType);
         });
         this.Target = this.Target.filter(t => t != null);
     }
 
-    onEventSingle(target: Node, state?: boolean) {
+    onEventSingle(target: Node, state: boolean, targetType: TargetType) {
         if (target == null ? true : !target.isValid)
             return;
-        switch (this.TargetType) {
+        switch (targetType) {
             case TargetType.Node:
                 target.active = state != null ? state : this.OnEventState;
                 break;
             case TargetType.Spine:
                 {
                     let targetSpine = target.getComponent(sp.Skeleton);
+                    if (targetSpine == null) {
+                        this.onEventSingle(target, state, TargetType.Node);
+                        return;
+                    }
                     targetSpine.enabled = state;
                 }
                 break;
             case TargetType.SpineColor:
                 {
                     let targetSpine = target.getComponent(sp.Skeleton);
+                    if (targetSpine == null) {
+                        this.onEventSingle(target, state, TargetType.Node);
+                        return;
+                    }
                     let targetSpineColor = targetSpine.color;
                     targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, state ? 255 : 0);
                     targetSpine.color = targetSpineColor;
@@ -137,22 +145,30 @@ export class EventActive extends Component {
         }
     }
 
-    onEventSingleRevert(target: Node) {
+    onEventSingleRevert(target: Node, targetType: TargetType) {
         if (target == null ? true : !target.isValid)
             return;
-        switch (this.TargetType) {
+        switch (targetType) {
             case TargetType.Node:
                 target.active = !target.active;
                 break;
             case TargetType.Spine:
                 {
                     let targetSpine = target.getComponent(sp.Skeleton);
+                    if (targetSpine == null) {
+                        this.onEventSingleRevert(target, TargetType.Node);
+                        return;
+                    }
                     targetSpine.enabled = !targetSpine.enabled;
                 }
                 break;
             case TargetType.SpineColor:
                 {
                     let targetSpine = target.getComponent(sp.Skeleton);
+                    if (targetSpine == null) {
+                        this.onEventSingleRevert(target, TargetType.Node);
+                        return;
+                    }
                     let targetSpineColor = targetSpine.color;
                     targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, targetSpineColor.a != 255 ? 255 : 0);
                     targetSpine.color = targetSpineColor;
