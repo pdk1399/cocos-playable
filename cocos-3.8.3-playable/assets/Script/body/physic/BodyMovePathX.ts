@@ -186,6 +186,9 @@ export class BodyMovePathX extends Component {
             return;
         this.m_state = state;
         switch (this.m_state) {
+            case BodyState.NONE:
+                this.m_bodySpine.onIdle(true);
+                break;
             case BodyState.IDLE:
                 this.m_bodySpine.onIdle();
                 break;
