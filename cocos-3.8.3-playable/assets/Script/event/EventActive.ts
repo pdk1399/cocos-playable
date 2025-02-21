@@ -1,6 +1,13 @@
-import { _decorator, CCBoolean, CCFloat, CCString, Color, Component, director, Node, sp } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCString, Color, Component, director, Enum, Node, sp } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
+
+export enum TargetType {
+    Node,
+    Spine,
+    SpineColor,
+}
+Enum(TargetType);
 
 @ccclass('EventActive')
 export class EventActive extends Component {
@@ -33,10 +40,8 @@ export class EventActive extends Component {
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
 
-    @property({ group: { name: 'Option' }, type: CCBoolean })
-    TargetSpine: boolean = false; //When TRUE, the target's skeleton will be used instead of node
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventActive) { return this.TargetSpine; } })
-    TargetSpineColor: boolean = false; //When TRUE, the target's color of skeleton will be used instead of component
+    @property({ group: { name: 'Option' }, type: TargetType })
+    TargetType: TargetType = TargetType.Node;
 
     protected onLoad(): void {
         if (this.OnNode)
@@ -111,34 +116,48 @@ export class EventActive extends Component {
     onEventSingle(target: Node, state?: boolean) {
         if (target == null ? true : !target.isValid)
             return;
-        if (this.TargetSpine) {
-            let targetSpine = target.getComponent(sp.Skeleton);
-            if (this.TargetSpineColor) {
-                let targetSpineColor = targetSpine.color;
-                targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, state ? 255 : 0);
-                targetSpine.color = targetSpineColor;
-            }
-            else
-                targetSpine.enabled = state;
+        switch (this.TargetType) {
+            case TargetType.Node:
+                target.active = state != null ? state : this.OnEventState;
+                break;
+            case TargetType.Spine:
+                {
+                    let targetSpine = target.getComponent(sp.Skeleton);
+                    targetSpine.enabled = state;
+                }
+                break;
+            case TargetType.SpineColor:
+                {
+                    let targetSpine = target.getComponent(sp.Skeleton);
+                    let targetSpineColor = targetSpine.color;
+                    targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, state ? 255 : 0);
+                    targetSpine.color = targetSpineColor;
+                }
+                break;
         }
-        else
-            target.active = state != null ? state : this.OnEventState;
     }
 
     onEventSingleRevert(target: Node) {
         if (target == null ? true : !target.isValid)
             return;
-        if (this.TargetSpine) {
-            let targetSpine = target.getComponent(sp.Skeleton);
-            if (this.TargetSpineColor) {
-                let targetSpineColor = targetSpine.color;
-                targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, targetSpineColor.a != 255 ? 255 : 0);
-                targetSpine.color = targetSpineColor;
-            }
-            else
-                targetSpine.enabled = !targetSpine.enabled;
+        switch (this.TargetType) {
+            case TargetType.Node:
+                target.active = !target.active;
+                break;
+            case TargetType.Spine:
+                {
+                    let targetSpine = target.getComponent(sp.Skeleton);
+                    targetSpine.enabled = !targetSpine.enabled;
+                }
+                break;
+            case TargetType.SpineColor:
+                {
+                    let targetSpine = target.getComponent(sp.Skeleton);
+                    let targetSpineColor = targetSpine.color;
+                    targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, targetSpineColor.a != 255 ? 255 : 0);
+                    targetSpine.color = targetSpineColor;
+                }
+                break;
         }
-        else
-            target.active = !target.active;
     }
 }
