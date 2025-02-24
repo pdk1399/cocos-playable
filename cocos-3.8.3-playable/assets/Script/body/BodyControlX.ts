@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, director, Enum, Node, RigidBody2D, tween, v2, v3, Vec2, Vec3 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, director, Enum, Node, RigidBody2D, Tween, tween, v2, v3, Vec2, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { DataRigidbody } from '../data/DataRigidbody';
 import { BodyBase } from './BodyBase';
@@ -9,6 +9,7 @@ import { BodyKnockX } from './physic/BodyKnockX';
 const { ccclass, property } = _decorator;
 
 export enum PlayerState {
+    NONE,
     IDLE,
     MOVE,
     PUSH,
@@ -115,6 +116,7 @@ export class BodyControlX extends Component {
 
     m_state = PlayerState.IDLE;
     m_moveDirX: number = 0;
+    m_moveRatioX: number = 1;
     m_faceDirX: number = 1;
     m_faceDirY: number = 0;
 
@@ -136,6 +138,7 @@ export class BodyControlX extends Component {
     m_control: boolean = true;
     m_end: boolean = false;
     m_endReady: boolean = false;
+    m_endCentre: Vec3;
 
     m_lockInput: boolean = false;
     m_lockJump: boolean = false;
@@ -467,6 +470,7 @@ export class BodyControlX extends Component {
                     velocity.x = -this.MoveAirX;
             }
         }
+        velocity.x *= this.m_moveRatioX;
         let damp = current.lerp(velocity, this.MoveDampX * dt);
         this.m_rigidbody.linearVelocity = damp;
     }
@@ -852,7 +856,9 @@ export class BodyControlX extends Component {
                 state = PlayerState.PUSH;
         }
         else {
-            if (this.m_rigidbody.linearVelocity.y > 0)
+            if (this.m_rigidbody == null ? true : !this.m_rigidbody.isValid)
+                state = PlayerState.NONE;
+            else if (this.m_rigidbody.linearVelocity.y > 0)
                 state = PlayerState.JUMP;
             else if (this.m_rigidbody.linearVelocity.y < 0)
                 state = PlayerState.AIR;
@@ -939,7 +945,7 @@ export class BodyControlX extends Component {
     }
 
     /**Excute Player complete, but not continue complete progress if 'EndOnGround' value is TRUE*/
-    protected onComplete(centre: Vec3) {
+    protected onComplete(state: boolean, target: Node) {
         director.emit(ConstantBase.CONTROL_RELEASE);
         director.emit(ConstantBase.CONTROL_JUMP_RELEASE);
         director.emit(ConstantBase.CONTROL_LOCK);
@@ -952,6 +958,11 @@ export class BodyControlX extends Component {
 
         if (!this.EndOnGround)
             this.onCompleteProgess();
+
+        if (this.Type == BodyType.BALL) {
+            let centre = target.getChildByName('centre') ?? target;
+            this.m_endCentre = centre.worldPosition.clone();
+        }
     }
 
     protected onCompleteProgess() {
@@ -965,9 +976,26 @@ export class BodyControlX extends Component {
             this.m_bodySpine.onViewDirection(this.m_faceDirX);
         }
         this.scheduleOnce(() => {
-            this.scheduleOnce(() => {
-                director.emit(ConstantBase.GAME_COMPLETE);
-            }, this.m_bodySpine.onComplete());
+            switch (this.Type) {
+                case BodyType.BALL:
+                    this.m_rigidbody.destroy();
+                    tween(this.node)
+                        .to(0.2, { worldPosition: this.m_endCentre })
+                        .to(0.3, { scale: this.node.scale.clone().add(v3(1, 1, 1)) })
+                        .to(0.2, { scale: v3() })
+                        .call(() => {
+                            this.scheduleOnce(() => {
+                                director.emit(ConstantBase.GAME_COMPLETE);
+                            }, this.m_bodySpine.onComplete());
+                        })
+                        .start();
+                    break;
+                default:
+                    this.scheduleOnce(() => {
+                        director.emit(ConstantBase.GAME_COMPLETE);
+                    }, this.m_bodySpine.onComplete());
+                    break;
+            }
         }, 0);
     }
 

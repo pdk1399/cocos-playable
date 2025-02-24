@@ -79,7 +79,7 @@ export class ConstantBase {
     static readonly NODE_STATE = 'node-state';
     static readonly NODE_STATE_LOCK = 'node-state-lock';
 
-    static readonly NODE_EVENT = 'node-event';
+    static readonly NODE_EVENT = 'node-event'; //<State, Target>
 
     static readonly NODE_BODY_HIT = 'node-body-hit';
     static readonly NODE_BODY_DEAD = 'node-body-dead';
