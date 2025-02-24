@@ -161,12 +161,15 @@ export class BodyControlX extends Component {
         this.m_rigidbody = this.getComponent(RigidBody2D);
 
         this.onControlByDirector(true);
+
         director.on(ConstantBase.PLAYER_COMPLETE, this.onComplete, this);
         director.on(ConstantBase.GAME_TIME_OUT, this.onStop, this);
 
-        this.node.on(this.m_body.m_emitBodyBaseDead, this.onDead, this);
-        this.node.on(this.m_bodyCheck.m_emitBot, this.onBot, this);
-        this.node.on(this.m_bodyCheck.m_emitInteracte, this.onInteractionFound, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_BOT, this.onBot, this);
+        this.node.on(ConstantBase.NODE_BODY_COLLIDE, this.onCollide, this);
+        this.node.on(ConstantBase.NODE_BODY_INTERACTE, this.onInteractionFound, this);
+
         this.node.on(ConstantBase.NODE_CONTROL_DIRECTOR, this.onControlByDirector, this);
         this.node.on(ConstantBase.NODE_CONTROL_NODE, this.onControlByNode, this);
     }
@@ -344,6 +347,24 @@ export class BodyControlX extends Component {
         //if (!this.m_rigidbody.isAwake())
         //Rigidbody wake up again if it's not awake
         //    this.m_rigidbody.wakeUp();
+
+        if (this.m_end || this.m_endReady) {
+            switch (this.Type) {
+                case BodyType.STICK:
+                    if (this.m_rigidbody.linearVelocity.clone().x != 0) {
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        return;
+                    }
+                    break;
+                case BodyType.BALL:
+                    if (this.m_rigidbody.angularVelocity != 0) {
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.angularVelocity = 0;
+                        return;
+                    }
+                    break;
+            }
+        }
 
         if (this.JumpAuto && this.m_bodyCheck.m_isBot)
             this.onJump(dt);
@@ -737,6 +758,16 @@ export class BodyControlX extends Component {
         director.emit(ConstantBase.INPUT_INTERACTION_ICON, this.UiPickIconIndex);
     }
 
+    //COLLIDE
+
+    protected onCollide(target: Node) {
+        if (this.m_bodyX4) {
+            let bodyTarget = target.getComponent(BodyBase);
+            if (bodyTarget != null)
+                bodyTarget.onDead(this.node);
+        }
+    }
+
     //FIXED:
 
     protected onFixed() {
@@ -908,7 +939,7 @@ export class BodyControlX extends Component {
     }
 
     /**Excute Player complete, but not continue complete progress if 'EndOnGround' value is TRUE*/
-    protected onComplete(Centre: Vec3) {
+    protected onComplete(centre: Vec3) {
         director.emit(ConstantBase.CONTROL_RELEASE);
         director.emit(ConstantBase.CONTROL_JUMP_RELEASE);
         director.emit(ConstantBase.CONTROL_LOCK);

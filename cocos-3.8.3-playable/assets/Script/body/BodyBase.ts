@@ -70,9 +70,6 @@ export class BodyBase extends Component {
     @property({ group: { name: 'Option' }, type: AudioSource })
     AudioDead: AudioSource = null;
 
-    readonly m_emitBodyBaseHit: string = 'emit-body-base-hit';
-    readonly m_emitBodyBaseDead: string = 'emit-body-base-dead';
-
     m_dead: boolean = false;
     m_hit: boolean = false;
     m_hitPointCurrent: number;
@@ -150,7 +147,7 @@ export class BodyBase extends Component {
             if (this.ShakeHit)
                 director.emit(ConstantBase.CAMERA_EFFECT_SHAKE_ONCE);
 
-            this.node.emit(this.m_emitBodyBaseHit, hit, from);
+            this.node.emit(ConstantBase.NODE_BODY_HIT, hit, from);
             if (this.EmitHit != '') {
                 if (this.EmitFull)
                     director.emit(this.EmitHit, this.m_hitPointCurrent, this.HitPoint);
@@ -182,7 +179,7 @@ export class BodyBase extends Component {
             }
         }
 
-        this.node.emit(this.m_emitBodyBaseDead, from);
+        this.node.emit(ConstantBase.NODE_BODY_DEAD, from);
         if (this.EmitDead != '') {
             if (this.EmitFull)
                 director.emit(this.EmitDead, this.node);

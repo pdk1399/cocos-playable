@@ -83,6 +83,9 @@ export class ConstantBase {
 
     static readonly NODE_BODY_HIT = 'node-body-hit';
     static readonly NODE_BODY_DEAD = 'node-body-dead';
+    static readonly NODE_BODY_BOT = 'node-body-bot';
+    static readonly NODE_BODY_INTERACTE = 'node-body-interacte';
+    static readonly NODE_BODY_COLLIDE = 'node-body-collide';
 
     static readonly NODE_CONTROL_DIRECTOR = 'node-control-director';
     static readonly NODE_CONTROL_NODE = 'node-control-node';
