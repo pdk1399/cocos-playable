@@ -5,7 +5,8 @@ const { ccclass, property } = _decorator;
 export enum EventType {
     NONE,
     BOOLEAN,
-    NODE,
+    TARGET_CONTACT,
+    TARGET_SELF,
 };
 Enum(EventType);
 
@@ -56,10 +57,15 @@ export class TriggerBase extends Component {
                     if (this.EmitEvent != '')
                         director.emit(this.EmitEvent, true);
                     break;
-                case EventType.NODE:
+                case EventType.TARGET_CONTACT:
                     this.node.emit(ConstantBase.NODE_EVENT, true, otherCollider.node);
                     if (this.EmitEvent != '')
                         director.emit(this.EmitEvent, true, otherCollider.node);
+                    break;
+                case EventType.TARGET_SELF:
+                    this.node.emit(ConstantBase.NODE_EVENT, true, selfCollider.node);
+                    if (this.EmitEvent != '')
+                        director.emit(this.EmitEvent, true, selfCollider.node);
                     break;
             }
         }, Math.max(this.Delay, 0));
@@ -93,10 +99,15 @@ export class TriggerBase extends Component {
                     if (this.EmitEvent != '')
                         director.emit(this.EmitEvent, false);
                     break;
-                case EventType.NODE:
+                case EventType.TARGET_CONTACT:
                     this.node.emit(ConstantBase.NODE_EVENT, false, otherCollider.node);
                     if (this.EmitEvent != '')
                         director.emit(this.EmitEvent, false, otherCollider.node);
+                    break;
+                case EventType.TARGET_SELF:
+                    this.node.emit(ConstantBase.NODE_EVENT, false, selfCollider.node);
+                    if (this.EmitEvent != '')
+                        director.emit(this.EmitEvent, false, selfCollider.node);
                     break;
             }
         }, Math.max(this.Delay, 0));

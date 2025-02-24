@@ -1,5 +1,6 @@
 import { _decorator, CCBoolean, CCFloat, Component, ERigidBody2DType, Node, RigidBody2D, tween, v2, v3, Vec2 } from 'cc';
 import { BodyBase } from '../BodyBase';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property, requireComponent } = _decorator;
 
 @ccclass('BodyKnockX')
@@ -29,6 +30,8 @@ export class BodyKnockX extends Component {
     DeadFlow: boolean = false;
     @property({ group: { name: 'Option' }, type: CCBoolean })
     DeadRotate: boolean = false;
+    @property({ group: { name: 'Option' }, type: CCBoolean })
+    DeadRotateRight: boolean = true;
     @property({ group: { name: 'Option' }, type: CCFloat })
     DeadRotateDuration: number = 0.5;
     @property({ group: { name: 'Option' }, type: Node })
@@ -45,8 +48,8 @@ export class BodyKnockX extends Component {
         this.m_body = this.getComponent(BodyBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
 
-        this.node.on(this.m_body.m_emitBodyBaseHit, this.onHit, this);
-        this.node.on(this.m_body.m_emitBodyBaseDead, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
     }
 
     protected start(): void {
@@ -88,9 +91,13 @@ export class BodyKnockX extends Component {
         this.onKnock(from, this.DeadDeg, this.DeadForce);
 
         if (this.DeadRotate) {
+            let rotateDir = this.node.worldPosition.clone().x < from.worldPosition.clone().x ? 1 : -1;
+            let rotateFixed = this.DeadRotateRight ? 1 : -1;
+            let rotateValue = v3();
+            rotateValue.z = 359 * rotateDir * rotateFixed;
             tween(this.DeadRotateNode)
                 .repeatForever(tween(this.DeadRotateNode)
-                    .to(this.DeadRotateDuration, { eulerAngles: v3(0, 0, 359) }, { easing: 'linear' })
+                    .to(this.DeadRotateDuration, { eulerAngles: rotateValue }, { easing: 'linear' })
                     .call(() => this.DeadRotateNode.eulerAngles = v3(0, 0, 0)))
                 .start();
         }

@@ -122,8 +122,8 @@ export class BodyAttackX extends Component {
         if (this.RangeAuto)
             this.node.on(this.m_emitRange, this.onRangeFoundTarget, this);
 
-        this.node.on(this.m_body.m_emitBodyBaseHit, this.onHit, this);
-        this.node.on(this.m_body.m_emitBodyBaseDead, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
 
         if (this.Aim)
             this.m_spine.onAimInit(this.AimAnim, this.AimBone, this.AimFrom);

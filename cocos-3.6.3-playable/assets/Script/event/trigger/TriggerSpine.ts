@@ -22,15 +22,15 @@ export class TriggerSpine extends Component {
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEventFinal: string = '';
 
-    @property({ group: { name: 'Option' }, type: CCString })
+    @property({ group: { name: 'Main' }, type: CCString })
     AnimStart: string = '';
-    @property({ group: { name: 'Option' }, type: CCString })
+    @property({ group: { name: 'Main' }, type: CCString })
     AnimLoop: string = '';
-    @property({ group: { name: 'Option' }, type: CCFloat })
+    @property({ group: { name: 'Main' }, type: CCFloat })
     AnimLoopDuration: number = 0;
-    @property({ group: { name: 'Option' }, type: CCString })
+    @property({ group: { name: 'Main' }, type: CCString })
     AnimEnd: string = '';
-    @property({ group: { name: 'Option' }, type: CCBoolean })
+    @property({ group: { name: 'Main' }, type: CCBoolean })
     AnimEndLoop: boolean = false;
 
     @property({ group: { name: 'Tag' }, type: CCInteger })

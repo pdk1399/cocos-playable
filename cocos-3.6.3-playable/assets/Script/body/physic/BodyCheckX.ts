@@ -1,5 +1,6 @@
 import { _decorator, CCBoolean, CCInteger, CircleCollider2D, Collider2D, Component, Contact2DType, director, Enum, ERaycast2DType, IPhysics2DContact, macro, math, Node, PhysicsSystem2D, RigidBody2D, v2, v3, Vec2 } from 'cc';
 import { BodyPlatformX } from './BodyPlatformX';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property, requireComponent } = _decorator;
 
 export enum BodyType {
@@ -71,9 +72,6 @@ export class BodyCheckX extends Component {
 
     m_raycastSchedule: Function = null;
 
-    readonly m_emitBot: string = 'emit-body-bot';
-    readonly m_emitInteracte: string = 'emit-body-interacte';
-
     m_colliderBody: Collider2D = null;
     m_colliderBodyCircle: CircleCollider2D = null;
     m_colliderBot: Collider2D = null;
@@ -130,25 +128,28 @@ export class BodyCheckX extends Component {
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         switch (selfCollider.tag) {
             case this.TagBody:
-                if (otherCollider.sensor)
-                    break;
-                if (otherCollider.getComponent(BodyPlatformX) != null)
-                    break;
                 switch (otherCollider.tag) {
                     case this.TagGround:
+                        if (otherCollider.getComponent(BodyPlatformX) != null || otherCollider.sensor)
+                            break;
                         this.m_countBody++;
                         this.m_isBody = this.m_countBody > 0;
+                        break;
+                    default:
+                        if (otherCollider.getComponent(BodyPlatformX) != null)
+                            break;
+                        this.node.emit(ConstantBase.NODE_BODY_COLLIDE, otherCollider.node, true);
                         break;
                 }
                 break;
             case this.TagTop:
                 break;
             case this.TagBot:
-                if (otherCollider.sensor)
-                    break;
                 switch (otherCollider.tag) {
                     case this.TagGround:
                     case this.TagPlatform:
+                        if (otherCollider.sensor)
+                            break;
                         if (this.m_countBot == 0)
                             this.m_targetBot = otherCollider.node;
                         this.m_countBot++;
@@ -156,29 +157,27 @@ export class BodyCheckX extends Component {
                         this.m_isBotCollide = this.m_countBot > 0;
                         if (state != this.m_isBotCollide) {
                             this.m_isBotForce = null;
-                            this.node.emit(this.m_emitBot, this.m_isBotCollide);
+                            this.node.emit(ConstantBase.NODE_BODY_BOT, this.m_isBotCollide);
                         }
                         break;
                 }
                 break;
             case this.TagHead:
-                if (otherCollider.sensor)
-                    break;
-                if (otherCollider.getComponent(BodyPlatformX) != null)
-                    break;
                 switch (otherCollider.tag) {
                     case this.TagGround:
+                        if (otherCollider.sensor || otherCollider.getComponent(BodyPlatformX) != null)
+                            break;
                         this.m_countHead++;
                         this.m_isHead = this.m_countHead > 0;
                         break;
                 }
                 break;
             case this.TagBotHead:
-                if (otherCollider.sensor)
-                    break;
                 switch (otherCollider.tag) {
                     case this.TagGround:
                     case this.TagPlatform:
+                        if (otherCollider.sensor)
+                            break;
                         this.m_countBotHead++;
                         this.m_isBotHead = this.m_countBotHead == 0;
                         break;
@@ -192,7 +191,7 @@ export class BodyCheckX extends Component {
                         if (index >= 0)
                             break;
                         this.m_targetInteracte.push(otherCollider.node);
-                        this.node.emit(this.m_emitInteracte, otherCollider.node, true);
+                        this.node.emit(ConstantBase.NODE_BODY_INTERACTE, otherCollider.node, true);
                         break;
                 }
                 break;
@@ -202,25 +201,28 @@ export class BodyCheckX extends Component {
     protected onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         switch (selfCollider.tag) {
             case this.TagBody:
-                if (otherCollider.sensor)
-                    break;
-                if (otherCollider.getComponent(BodyPlatformX) != null)
-                    break;
                 switch (otherCollider.tag) {
                     case this.TagGround:
+                        if (otherCollider.getComponent(BodyPlatformX) != null || otherCollider.sensor)
+                            break;
                         this.m_countBody = math.clamp(this.m_countBody - 1, 0, this.m_countBody);
                         this.m_isBody = this.m_countBody > 0;
+                        break;
+                    default:
+                        if (otherCollider.getComponent(BodyPlatformX) != null)
+                            break;
+                        this.node.emit(ConstantBase.NODE_BODY_COLLIDE, otherCollider.node, false);
                         break;
                 }
                 break;
             case this.TagTop:
                 break;
             case this.TagBot:
-                if (otherCollider.sensor)
-                    break;
                 switch (otherCollider.tag) {
                     case this.TagGround:
                     case this.TagPlatform:
+                        if (otherCollider.sensor)
+                            break;
                         this.m_countBot = math.clamp(this.m_countBot - 1, 0, this.m_countBot);
                         if (this.m_countBot == 0)
                             this.m_targetBot = null;
@@ -228,29 +230,27 @@ export class BodyCheckX extends Component {
                         this.m_isBotCollide = this.m_countBot > 0;
                         if (state != this.m_isBotCollide) {
                             this.m_isBotForce = null;
-                            this.node.emit(this.m_emitBot, this.m_isBotCollide);
+                            this.node.emit(ConstantBase.NODE_BODY_BOT, this.m_isBotCollide);
                         }
                         break;
                 }
                 break;
             case this.TagHead:
-                if (otherCollider.sensor)
-                    break;
-                if (otherCollider.getComponent(BodyPlatformX) != null)
-                    break;
                 switch (otherCollider.tag) {
                     case this.TagGround:
+                        if (otherCollider.sensor || otherCollider.getComponent(BodyPlatformX) != null)
+                            break;
                         this.m_countHead = math.clamp(this.m_countHead - 1, 0, this.m_countHead);
                         this.m_isHead = this.m_countHead > 0;
                         break;
                 }
                 break;
             case this.TagBotHead:
-                if (otherCollider.sensor)
-                    break;
                 switch (otherCollider.tag) {
                     case this.TagGround:
                     case this.TagPlatform:
+                        if (otherCollider.sensor)
+                            break;
                         this.m_countBotHead = math.clamp(this.m_countBotHead - 1, 0, this.m_countBotHead);
                         this.m_isBotHead = this.m_countBotHead == 0;
                         break;
@@ -263,7 +263,7 @@ export class BodyCheckX extends Component {
                         if (index < 0)
                             break;
                         this.m_targetInteracte.splice(index, 1);
-                        this.node.emit(this.m_emitInteracte, otherCollider.node, false);
+                        this.node.emit(ConstantBase.NODE_BODY_INTERACTE, otherCollider.node, false);
                         break;
                 }
                 break;
@@ -273,6 +273,8 @@ export class BodyCheckX extends Component {
     //Raycast
 
     protected onRaycastSchedule() {
+        // if (!this.Raycast)
+        //     return;
         if (this.RaycastBot)
             this.onRaycastBot();
         if (this.RaycastHead)
@@ -281,7 +283,7 @@ export class BodyCheckX extends Component {
 
     protected onRaycastBot() {
         if (this.m_isBotForce != null) {
-            this.node.emit(this.m_emitBot, this.m_isBotForce);
+            this.node.emit(ConstantBase.NODE_BODY_BOT, this.m_isBotForce);
             this.m_isBotForce = null;
             return;
         }
@@ -306,6 +308,8 @@ export class BodyCheckX extends Component {
                 switch (results[i].collider.tag) {
                     case this.TagGround:
                     case this.TagPlatform:
+                        if (results[i].collider.sensor)
+                            break;
                         this.m_isBotCollide = true;
                         out = true;
                         break;
@@ -318,7 +322,7 @@ export class BodyCheckX extends Component {
             }
         }
         if (state != this.m_isBotCollide)
-            this.node.emit(this.m_emitBot, this.m_isBotCollide);
+            this.node.emit(ConstantBase.NODE_BODY_BOT, this.m_isBotCollide);
     }
 
     protected onRaycastHead() {

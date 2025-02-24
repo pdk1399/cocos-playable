@@ -1,7 +1,7 @@
 import { _decorator, Component, director, Label, Node, Size, UITransform, v2, Vec2, Vec3 } from 'cc';
 import { StickController } from './StickController';
 import { StickField } from './StickField';
-import { ConstantBase } from '../ConstantBase';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('StickProgess')
