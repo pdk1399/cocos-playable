@@ -68,8 +68,8 @@ export class BodySpine extends Component {
         this.m_body = this.getComponent(BodyBase);
         this.m_spine = this.getComponent(SpineBase);
 
-        this.node.on(this.m_body.m_emitBodyBaseHit, this.onHit, this);
-        this.node.on(this.m_body.m_emitBodyBaseDead, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
     }
 
     //
@@ -118,7 +118,7 @@ export class BodySpine extends Component {
         this.m_dead = true;
         if (!this.AnimDeadActive)
             return 0;
-        return this.m_spine.onAnimation(this.AnimDead, this.AnimDeadLoop);
+        return this.m_spine.onAnimationForce(this.AnimDead, this.AnimDeadLoop);
     }
 
     onMove(): number {
