@@ -226,7 +226,7 @@ export class BodyAttackX extends Component {
 
     //MELEE
 
-    protected onMeleeFoundTarget(target: Node, stage: boolean) {
+    protected onMeleeFoundTarget() {
         if (this.m_stop)
             return;
         if (this.m_targetMelee.length > 0) {
@@ -272,7 +272,7 @@ export class BodyAttackX extends Component {
 
     //RANGE
 
-    protected onRangeFoundTarget(target: Node, stage: boolean) {
+    protected onRangeFoundTarget() {
         if (this.m_stop)
             return;
         if (this.m_targetRange.length > 0) {
@@ -411,6 +411,12 @@ export class BodyAttackX extends Component {
                 this.m_spine.onAnimationForceLast();
             else
                 this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
+        }
+        else if (this.m_stop && !state) {
+            if (this.MeleeAuto)
+                this.onMeleeFoundTarget();
+            if (this.RangeAuto)
+                this.onRangeFoundTarget();
         }
         this.m_stop = state;
     }
