@@ -118,7 +118,7 @@ export class BodyControlXY extends Component {
 
     protected onControlByDirector(state: boolean, full: boolean = true) {
         if (state) {
-            director.on(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick);
+            director.on(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick, this);
 
             director.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
@@ -143,7 +143,7 @@ export class BodyControlXY extends Component {
             }
         }
         else {
-            director.off(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick);
+            director.off(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick, this);
 
             director.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
@@ -196,7 +196,7 @@ export class BodyControlXY extends Component {
             }
         }
         else {
-            this.node.off(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick);
+            this.node.off(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick, this);
 
             this.node.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
@@ -295,8 +295,8 @@ export class BodyControlXY extends Component {
         this.m_rigidbody.linearVelocity = damp;
     }
 
-    onJoyStick(Direction: Vec2) {
-        if (Direction.clone().x == 0 && Direction.clone().y == 0) {
+    onJoyStick(direction: Vec2) {
+        if (direction.clone().x == 0 && direction.clone().y == 0) {
             this.m_move = false;
             this.m_moveDir = Vec2.ZERO.clone();
             if (this.m_bodyAttack != null && this.MoveStopAttack)
@@ -304,9 +304,9 @@ export class BodyControlXY extends Component {
         }
         else {
             this.m_move = true;
-            this.m_moveDir = Direction.normalize();
-            this.m_faceDir = Direction.normalize();
-            this.m_faceDirX = Direction.x > 0 ? 1 : -1;
+            this.m_moveDir = direction.normalize();
+            this.m_faceDir = direction.normalize();
+            this.m_faceDirX = direction.x > 0 ? 1 : -1;
             this.onDirUpdate();
             if (this.m_bodyAttack != null && this.MoveStopAttack)
                 this.m_bodyAttack.onStop(true);
