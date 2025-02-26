@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, CCFloat, view, screen, Vec3, CCBoolean, Camera, Tween, Vec2, director, tween, v2, v3, Rect, TweenEasing, math } from 'cc';
+import { _decorator, Component, Node, CCFloat, view, screen, Vec3, CCBoolean, Camera, Tween, Vec2, director, tween, v2, v3, Rect, TweenEasing, math, Enum, sys } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
@@ -6,6 +6,7 @@ export enum OrientationType {
     PORTRAIT,
     LANDSCAPE,
 }
+Enum(OrientationType)
 
 class NodeTweener {
     Base: CameraBase = null;
@@ -52,6 +53,12 @@ export default class CameraBase extends Component {
 
     @property({ group: { name: 'Rect' }, type: CCBoolean })
     RectScreen: boolean = false;
+    @property({ group: { name: 'Rect' }, type: OrientationType, visible(this: CameraBase) { return this.RectScreen; } })
+    RectTarget: OrientationType = OrientationType.LANDSCAPE;
+    @property({ group: { name: 'Rect' }, type: CCFloat, visible(this: CameraBase) { return this.RectScreen && this.RectTarget == OrientationType.LANDSCAPE; } })
+    RectTargetLandscape: number = 1.0;
+    @property({ group: { name: 'Rect' }, type: CCFloat, visible(this: CameraBase) { return this.RectScreen && this.RectTarget == OrientationType.PORTRAIT; } })
+    RectTargetPortrait: number = 1.0 * ConstantBase.SOLUTION_PORTRAIT.x / ConstantBase.SOLUTION_PORTRAIT.y; //1080:1920 = 0.5625
     @property({ group: { name: 'Rect' }, type: CCBoolean, visible(this: CameraBase) { return this.RectScreen; } })
     RectLandScapeFixed: boolean = false;
     @property({ group: { name: 'Rect' }, type: Rect, visible(this: CameraBase) { return this.RectScreen && this.RectLandScapeFixed; } })
@@ -60,17 +67,19 @@ export default class CameraBase extends Component {
     RectPortraitFixed: boolean = false;
     @property({ group: { name: 'Rect' }, type: Rect, visible(this: CameraBase) { return this.RectScreen && this.RectPortraitFixed; } })
     RectPortrait: Rect = new Rect(0, 0.25, 1, 0.5);
+    @property({ group: { name: 'Rect' }, type: CCBoolean, visible(this: CameraBase) { return this.RectScreen; } })
+    RectDebug: boolean = false;
 
     m_camera: Camera = null;
     m_orthoHeight: number = 0;
     m_syncY: boolean = false;
     m_target: Vec3;
 
-    m_orientationRectSolution = OrientationType.LANDSCAPE;
     m_orientation = OrientationType.LANDSCAPE;
     m_solution: math.Size;
     m_view: Vec2;
     m_solutionViewed: math.Size;
+    m_solutionTarget: Vec2;
 
     m_update: boolean = true;
     m_lock: Vec3;
@@ -103,7 +112,8 @@ export default class CameraBase extends Component {
         if (this.LockX || this.LockY)
             this.m_lock = this.node.worldPosition.clone();
 
-        this.m_orientationRectSolution = ConstantBase.SOLUTION_TARGET.x < ConstantBase.SOLUTION_TARGET.y ? OrientationType.PORTRAIT : OrientationType.LANDSCAPE;
+        this.m_solutionTarget = this.RectTarget == OrientationType.LANDSCAPE ? ConstantBase.SOLUTION_LANDSCAPE : ConstantBase.SOLUTION_PORTRAIT;
+        this.m_solutionTarget = this.m_solutionTarget.clone().multiplyScalar(this.RectTarget == OrientationType.LANDSCAPE ? this.RectTargetLandscape : this.RectTargetPortrait);
     }
 
     protected start() {
@@ -174,6 +184,15 @@ export default class CameraBase extends Component {
         this.onCanvasCurrent();
         this.onCameraOrthoHeight();
         this.onCameraRectScreen();
+        if (this.RectDebug && sys.os == sys.OS.WINDOWS) {
+            console.log('=============');
+            console.log('Canvas resize:');
+            console.log('Orientation: ' + (this.m_orientation == OrientationType.LANDSCAPE ? 'LANDSCAPE' : 'PORTRAIT'));
+            console.log('Solution target: [' + this.m_solutionTarget.x + ';' + this.m_solutionTarget.y + ']');
+            console.log('Solution viewed: [' + this.m_solutionViewed.x + ';' + this.m_solutionViewed.y + ']');
+            console.log('Camera Rect: ' + this.m_camera.rect);
+            console.log('=============');
+        }
     }
 
     //
@@ -197,12 +216,12 @@ export default class CameraBase extends Component {
         if (!this.RectScreen)
             return;
         let rect = new Rect(0, 0, 1, 1);
-        let ratioWidth = 1.0 * ConstantBase.SOLUTION_TARGET.x / this.m_solutionViewed.x;
+        let ratioWidth = 1.0 * this.m_solutionTarget.x / this.m_solutionViewed.x;
         if (ratioWidth < 1) {
             rect.x = (1.0 - ratioWidth) / 2;
             rect.width = ratioWidth;
         }
-        let ratioHeight = 1.0 * ConstantBase.SOLUTION_TARGET.y / this.m_solutionViewed.y;
+        let ratioHeight = 1.0 * this.m_solutionTarget.y / this.m_solutionViewed.y;
         if (ratioHeight < 1) {
             rect.y = (1.0 - ratioHeight) / 2;
             rect.height = ratioHeight;

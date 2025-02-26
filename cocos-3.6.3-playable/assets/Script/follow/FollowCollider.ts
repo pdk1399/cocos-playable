@@ -55,8 +55,9 @@ export class FollowCollider extends Component {
     m_folow: boolean = true;
     m_far: boolean = true;
     m_dir: number = 1;
-
+    m_move: boolean = false;
     m_view: boolean = false;
+
     m_spine: SpineBase = null;
     m_rigidbody: RigidBody2D = null;
 
@@ -87,7 +88,7 @@ export class FollowCollider extends Component {
     protected lateUpdate(dt: number): void {
         if (!this.getFollow()) {
             this.m_rigidbody.linearVelocity = Vec2.ZERO.clone();
-            this.onViewFollow(false, false);
+            this.onStateUpdate(false, false);
             if (this.NodeEvent)
                 this.node.emit(this.EmitNodeMove, false);
             return;
@@ -97,7 +98,7 @@ export class FollowCollider extends Component {
         let velocity = velocityDir.multiplyScalar(this.m_far ? this.SpeedRun : this.SpeedMove).clone();
         this.m_rigidbody.linearVelocity = v2(velocity.x, velocity.y);
 
-        this.onViewFollow(true, this.getFar());
+        this.onStateUpdate(true, this.getFar());
         if (this.NodeEvent)
             this.node.emit(this.EmitNodeMove, true);
     }
@@ -176,7 +177,10 @@ export class FollowCollider extends Component {
         return this.m_far;
     }
 
-    private onViewFollow(move: boolean, far: boolean) {
+    private onStateUpdate(move: boolean, far: boolean) {
+        if (move == this.m_move)
+            return;
+        this.m_move = move;
         this.m_spine.onFaceDir(this.getDir());
         if (!move) {
             if (!this.m_view) {

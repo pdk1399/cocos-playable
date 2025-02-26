@@ -119,38 +119,43 @@ export class SpineBase extends Component {
 
     //
 
-    onAnimation(anim: string, loop: boolean, durationScale: boolean = false): number {
+    onAnimation(anim: string, loop: boolean, durationScale: boolean = false, timeScale: number = 1): number {
         if (anim == '')
             return 0;
         if (this.m_anim == anim)
-            return durationScale ? this.m_duration : this.m_durationScale;
+            return !durationScale ? this.m_duration : this.m_durationScale;
         this.m_anim = anim;
         this.m_loop = loop;
+        this.m_timeScale = timeScale;
+        this.Spine.timeScale = timeScale;
         this.m_duration = this.Spine.setAnimation(0, anim, loop).animationEnd;
         this.m_durationScale = 1.0 * this.m_duration / this.Spine.timeScale;
-        return durationScale ? this.m_duration : this.m_durationScale;
+        return !durationScale ? this.m_duration : this.m_durationScale;
     }
 
-    onAnimationForce(anim: string, loop: boolean, durationScale: boolean = false): number {
+    onAnimationForce(anim: string, loop: boolean, durationScale: boolean = false, timeScale: number = 1): number {
         if (anim == '')
             return 0;
         this.m_anim = anim;
         this.m_loop = loop;
+        this.m_timeScale = timeScale;
+        this.Spine.timeScale = timeScale;
         this.m_duration = this.Spine.setAnimation(0, anim, loop).animationEnd;
         this.m_durationScale = 1.0 * this.m_duration / this.Spine.timeScale;
-        return durationScale ? this.m_duration : this.m_durationScale;
+        return !durationScale ? this.m_duration : this.m_durationScale;
     }
 
     onAnimationForceLast(durationScale: boolean = false): number {
-        return this.onAnimationForce(this.m_anim, this.m_loop, durationScale);
+        return this.onAnimationForce(this.m_anim, this.m_loop, durationScale, this.m_timeScale);
     }
 
-    onAnimationForceUnSave(anim: string, loop: boolean, durationScale: boolean = false): number {
+    onAnimationForceUnSave(anim: string, loop: boolean, durationScale: boolean = false, timeScale: number = 1): number {
         if (anim == '')
             return 0;
+        this.Spine.timeScale = timeScale;
         let animDuration = this.Spine.setAnimation(0, anim, loop).animationEnd;
         let animDurationScale = 1.0 * animDuration / this.Spine.timeScale;
-        return durationScale ? animDuration : animDurationScale;
+        return !durationScale ? animDuration : animDurationScale;
     }
 
     getAnimation(): string {
@@ -172,10 +177,11 @@ export class SpineBase extends Component {
 
     //
 
-    onAnimationIndex(index: number, anim: string, loop: boolean, durationScale: boolean = false): number {
-        let duration = this.Spine.setAnimation(index, anim, loop).animationEnd;
-        let scale = durationScale ? this.Spine.timeScale : 1;
-        return duration / scale;
+    onAnimationIndex(index: number, anim: string, loop: boolean, durationScale: boolean = false, timeScale: number = 1): number {
+        this.Spine.timeScale = timeScale;
+        let animDuration = this.Spine.setAnimation(index, anim, loop).animationEnd;
+        let animDurationScale = !durationScale ? this.Spine.timeScale : 1;
+        return animDuration / animDurationScale;
     }
 
     onAnimationEmty(index: number, mixDuration: number) {

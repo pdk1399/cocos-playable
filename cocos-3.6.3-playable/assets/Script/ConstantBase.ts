@@ -2,9 +2,13 @@ import { _decorator, Enum, v2, Vec2 } from 'cc';
 
 export class ConstantBase {
 
-    static readonly SOLUTION_TARGET: Vec2 = v2(1920, 1080);
+    static readonly SOLUTION_LANDSCAPE: Vec2 = v2(1920, 1080);
+    static readonly SOLUTION_PORTRAIT: Vec2 = v2(1080, 1920);
 
     //
+
+    static readonly PLAYER_COMPLETE: string = 'player-complete';
+    static readonly PLAYER_DEAD: string = 'player-dead';
 
     static readonly GAME_COMPLETE: string = 'game-complete';
     static readonly GAME_LOSE: string = 'game-lose';
@@ -18,13 +22,13 @@ export class ConstantBase {
     static readonly CONTROL_LOCK: string = 'control-lock';
     static readonly CONTROL_RESUME: string = 'control-resume';
 
-    static readonly CONTROL_LEFT: string = 'control-move-left';
-    static readonly CONTROL_RIGHT: string = 'control-move-right';
+    static readonly CONTROL_LEFT: string = 'control-left';
+    static readonly CONTROL_RIGHT: string = 'control-right';
     static readonly CONTROL_UP: string = 'control-up';
     static readonly CONTROL_DOWN: string = 'control-down';
-    static readonly CONTROL_RELEASE: string = 'control-move-release';
-    static readonly CONTROL_RELEASE_X: string = 'control-move-release-x';
-    static readonly CONTROL_RELEASE_Y: string = 'control-move-release-y';
+    static readonly CONTROL_RELEASE: string = 'control-release';
+    static readonly CONTROL_RELEASE_X: string = 'control-release-x';
+    static readonly CONTROL_RELEASE_Y: string = 'control-release-y';
     static readonly CONTROL_JUMP: string = 'control-jump';
     static readonly CONTROL_JUMP_RELEASE: string = 'control-jump-release';
     static readonly CONTROL_DASH: string = 'control-dash';
@@ -34,10 +38,6 @@ export class ConstantBase {
     static readonly CONTROL_FIXED: string = 'control-fixed';
     static readonly CONTROL_SWITCH: string = 'control-switch';
 
-    static readonly INPUT_ATTACK_SHOW: string = 'input-attack-show';
-    static readonly INPUT_INTERACTION_SHOW: string = 'input-interaction-show';
-    static readonly INPUT_INTERACTION_ICON: string = 'input-interaction-icon';
-
     //
 
     static readonly BODY_SLEEP: string = 'body-sleep';
@@ -45,32 +45,12 @@ export class ConstantBase {
 
     static readonly BODY_X2 = 'body-x2';
     static readonly BODY_X4 = 'body-x4';
-    static readonly BODY_ATTACK_UP = 'body-attack-up';
+    static readonly BODY_ATTACK_ULTIMATE = 'body-attack-ultimate';
     static readonly BODY_BUBBLE_CELESTE = 'body-bubble-celeste';
 
-    static readonly CAMERA_TARGET_SWITCH: string = 'camera-target-switch';
-    static readonly CAMERA_VALUE_SMOOTH_TIME: string = 'camera-value-smooth-time';
-    static readonly CAMERA_VALUE_OFFSET: string = 'camera-value-offset';
-    static readonly CAMERA_VALUE_SCALE: string = 'camera-value-scale';
-    static readonly CAMERA_EFFECT_SHAKE: string = 'camera-effect-shake';
-    static readonly CAMERA_EFFECT_SHAKE_ONCE: string = 'camera-effect-shake-once';
-
-    static readonly PLAYER_COMPLETE: string = 'player-complete';
-    static readonly PLAYER_DEAD: string = 'player-dead';
-    static readonly PLAYER_REVIVE: string = 'player-revive';
-    static readonly PLAYER_GROUND = 'player-ground';
-    static readonly PLAYER_HURT = 'player-hurt';
-    static readonly PLAYER_KNOCK = 'player-knock';
-
-    //
-
-    static readonly PLAYER_VALUE_ATTACK: string = 'player-value-attack';
-    static readonly PLAYER_VALUE_MOVE_X: string = 'player-value-move-x';
-    static readonly PLAYER_VALUE_DAMP_X: string = 'player-value-damp-x';
-    static readonly PLAYER_VALUE_AIR_X: string = 'player-value-air-x';
-    static readonly PLAYER_VALUE_JUMP_Y: string = 'player-value-jump-y';
-    static readonly PLAYER_VALUE_GRAVITY: string = 'player-value-gravity';
-    static readonly PLAYER_VALUE_HEALTH: string = 'player-value-health';
+    static readonly BODY_VALUE_MELEE_HIT: string = 'body-value-melee-hit';
+    static readonly BODY_VALUE_HIT_POINT: string = 'body-value-hit-point';
+    static readonly BODY_VALUE_HIT_POINT_CURRENT = 'body-value-hit-point-current';
 
     //
 
@@ -98,6 +78,21 @@ export class ConstantBase {
     static readonly ANIM_INDEX_ATTACK: number = 1;
     static readonly ANIM_INDEX_PICK: number = 1;
     static readonly ANIM_INDEX_AIM: number = 2;
+
+    //
+
+    static readonly UI_ATTACK_SHOW: string = 'ui-attack-show';
+    static readonly UI_INTERACTION_SHOW: string = 'ui-interaction-show';
+    static readonly UI_INTERACTION_ICON: string = 'ui-interaction-icon';
+
+    //
+
+    static readonly CAMERA_TARGET_SWITCH: string = 'camera-target-switch';
+    static readonly CAMERA_VALUE_SMOOTH_TIME: string = 'camera-value-smooth-time';
+    static readonly CAMERA_VALUE_OFFSET: string = 'camera-value-offset';
+    static readonly CAMERA_VALUE_SCALE: string = 'camera-value-scale';
+    static readonly CAMERA_EFFECT_SHAKE: string = 'camera-effect-shake';
+    static readonly CAMERA_EFFECT_SHAKE_ONCE: string = 'camera-effect-shake-once';
 
     //STICK-BATTLE
 

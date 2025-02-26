@@ -59,7 +59,7 @@ export class UiReponsive2DVerticle extends Component {
                     this.m_reponsive.portraitHorSpace = 0;
                     this.m_reponsive.portraitVerSpace = CameraBase.instance.RectPortrait.y * 100;
                 } else {
-                    let ratioHeight = 1.0 * ConstantBase.SOLUTION_TARGET.y / this.m_solutionViewed.y;
+                    let ratioHeight = 1.0 * ConstantBase.SOLUTION_LANDSCAPE.y / this.m_solutionViewed.y;
                     if (ratioHeight < 1) {
                         this.m_reponsive.portraitHorSpace = 0;
                         this.m_reponsive.portraitVerSpace = (((1.0 - ratioHeight) / 2) * 100) * (this.RevertSpace ? -1 : 1);
@@ -78,7 +78,7 @@ export class UiReponsive2DVerticle extends Component {
                     this.m_reponsive.landscapeHorSpace = 0;
                     this.m_reponsive.landscapeVerSpace = CameraBase.instance.RectLandscape.y * 100;
                 } else {
-                    let ratioHeight = 1.0 * ConstantBase.SOLUTION_TARGET.y / this.m_solutionViewed.y;
+                    let ratioHeight = 1.0 * ConstantBase.SOLUTION_LANDSCAPE.y / this.m_solutionViewed.y;
                     if (ratioHeight < 1) {
                         this.m_reponsive.landscapeHorSpace = 0;
                         this.m_reponsive.landscapeVerSpace = ((1.0 - ratioHeight) / 2) * 100;
@@ -92,7 +92,7 @@ export class UiReponsive2DVerticle extends Component {
                 if (CameraBase.instance.RectPortraitFixed)
                     this.m_reponsive.landscapeWidthRatio = CameraBase.instance.RectLandscape.width;
                 else {
-                    let ratioWidth = 1.0 * ConstantBase.SOLUTION_TARGET.x / this.m_solutionViewed.x;
+                    let ratioWidth = 1.0 * ConstantBase.SOLUTION_LANDSCAPE.x / this.m_solutionViewed.x;
                     if (ratioWidth < 1) {
                         this.m_reponsive.landscapeWidthRatio = ratioWidth;
                     }
