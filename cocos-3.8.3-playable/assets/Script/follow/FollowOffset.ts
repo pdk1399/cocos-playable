@@ -49,6 +49,8 @@ export class FollowOffset extends Component {
     m_folow: boolean = true;
     m_far: boolean = true;
     m_dir: number = 1;
+    m_move: boolean = false;
+
     m_spine: SpineBase = null;
 
     protected onLoad(): void {
@@ -66,7 +68,7 @@ export class FollowOffset extends Component {
 
     protected lateUpdate(dt: number): void {
         if (!this.getFollow()) {
-            this.onFollowMove(false);
+            this.onStateUpdate(false);
             if (this.NodeEvent)
                 this.node.emit(this.EmitNodeMove, false);
             return;
@@ -80,7 +82,7 @@ export class FollowOffset extends Component {
         Vec3.lerp(result, start, end, math.clamp(this.m_far ? this.RatioRun : this.RatioMove, 0, 1));
         this.node.worldPosition = result;
 
-        this.onFollowMove(true, this.getFar());
+        this.onStateUpdate(true, this.getFar());
         if (this.NodeEvent)
             this.node.emit(this.EmitNodeMove, true);
     }
@@ -137,7 +139,10 @@ export class FollowOffset extends Component {
         return this.m_far;
     }
 
-    private onFollowMove(move: boolean, far: boolean = false) {
+    private onStateUpdate(move: boolean, far: boolean = false) {
+        if (move == this.m_move)
+            return;
+        this.m_move = move;
         this.m_spine.onFaceDir(this.getDir());
         if (!move)
             this.m_spine.onAnimation(this.AnimIdle, true);

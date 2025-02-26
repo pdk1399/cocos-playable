@@ -2,7 +2,8 @@ import { _decorator, Enum, v2, Vec2 } from 'cc';
 
 export class ConstantBase {
 
-    static readonly SOLUTION_TARGET: Vec2 = v2(1920, 1080);
+    static readonly SOLUTION_LANDSCAPE: Vec2 = v2(1920, 1080);
+    static readonly SOLUTION_PORTRAIT: Vec2 = v2(1080, 1920);
 
     //
 
