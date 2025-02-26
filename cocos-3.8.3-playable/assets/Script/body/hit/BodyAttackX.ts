@@ -33,27 +33,31 @@ export class BodyAttackX extends Component {
     @property({ group: { name: 'Melee' }, type: CCInteger, visible(this: BodyAttackX) { return this.Melee; } })
     MeleeHit: number = 1
 
-    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyCheckX) { return this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.getComponent(ShootBase) != null; } })
+    Range: boolean = false;
+    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeDirUpdate: boolean = true;
-    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeAuto: boolean = false;
-    @property({ group: { name: 'Range' }, type: Node, visible(this: BodyAttackX) { return this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: Node, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeBullet: Node = null;
-    @property({ group: { name: 'Range' }, type: CCFloat, visible(this: BodyAttackX) { return this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: CCFloat, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeBulletSpeed: number = 5;
-    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeTargetUpdate: boolean = true;
-    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeTargetReset: boolean = true;
 
     @property({ group: { name: 'Anim' }, type: CCBoolean })
-    AnimAttackMix: boolean = false;
+    AnimMix: boolean = false;
     @property({ group: { name: 'Anim' }, type: CCString })
-    AnimAttackReady: string = 'attack_ready';
+    AnimReady: string = 'attack_ready';
     @property({ group: { name: 'Anim' }, type: CCString })
-    AnimAttackHold: string = 'attack_hold';
+    AnimHold: string = 'attack_hold';
     @property({ group: { name: 'Anim' }, type: CCString })
     AnimAttack: string = 'attack';
+    @property({ group: { name: 'Anim' }, type: CCFloat })
+    AnimTimeScale: number = 1;
 
     @property({ group: { name: 'Aim' }, type: CCBoolean })
     Aim: boolean = false;
@@ -73,6 +77,7 @@ export class BodyAttackX extends Component {
 
     m_dir: number = 0;
 
+    m_stop: boolean = false;
     m_attack: boolean = false;
     m_attackMeleeUp: boolean = false;
     m_continue: boolean = false;
@@ -222,6 +227,8 @@ export class BodyAttackX extends Component {
     //Melee
 
     private onMeleeFoundTarget(target: Node, stage: boolean) {
+        if (this.m_stop)
+            return;
         if (this.m_targetMelee.length > 0) {
             if (!this.m_attack)
                 this.onMeleeAttackTargetStart();
@@ -260,6 +267,8 @@ export class BodyAttackX extends Component {
     //Range
 
     private onRangeFoundTarget(target: Node, stage: boolean) {
+        if (this.m_stop)
+            return;
         if (this.m_targetRange.length > 0) {
             if (!this.m_attack)
                 this.onRangeAttackTargetStart();
@@ -347,13 +356,13 @@ export class BodyAttackX extends Component {
             this.scheduleOnce(() => this.onAttackProgessInvoke(), this.DelayAttack);
             //
             let attackDuration = 0;
-            if (!this.AnimAttackMix)
-                attackDuration = this.m_spine.onAnimationForceUnSave(this.AnimAttack, false);
+            if (!this.AnimMix)
+                attackDuration = this.m_spine.onAnimationForceUnSave(this.AnimAttack, false, true, this.AnimTimeScale);
             else
-                attackDuration = this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimAttack, false);
+                attackDuration = this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimAttack, false, true, this.AnimTimeScale);
             this.scheduleOnce(() => {
                 this.m_attack = false;
-                if (!this.AnimAttackMix)
+                if (!this.AnimMix)
                     this.m_spine.onAnimationForceLast();
                 else
                     this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
@@ -375,14 +384,29 @@ export class BodyAttackX extends Component {
             }, attackDuration);
             //
         }, this.Delay);
-        return this.Delay + this.DelayAttack;
+        return this.Delay;
     }
 
     private onAttackProgessInvoke() {
         if (this.Melee)
             this.onMeleeAttackTargetEmit();
-        if (this.m_shoot != null)
+        if (this.Range && this.m_shoot != null)
             this.onRangeAttackTargetShoot();
+    }
+
+    //Stop
+
+    onStop(state: boolean) {
+        if (!this.m_stop && state) {
+            this.m_continue = false;
+            this.m_attack = false;
+            this.unscheduleAllCallbacks();
+            if (!this.AnimMix)
+                this.m_spine.onAnimationForceLast();
+            else
+                this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
+        }
+        this.m_stop = state;
     }
 
     //Dir
@@ -426,17 +450,17 @@ export class BodyAttackX extends Component {
     //Anim
 
     onAttackReady(): number {
-        if (!this.AnimAttackMix)
-            return this.m_spine.onAnimationForce(this.AnimAttackReady, false);
+        if (!this.AnimMix)
+            return this.m_spine.onAnimationForce(this.AnimReady, false);
         else
-            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimAttackReady, false);
+            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimReady, false);
     }
 
     onAttackHold(): number {
-        if (!this.AnimAttackMix)
-            return this.m_spine.onAnimationForce(this.AnimAttackHold, false);
+        if (!this.AnimMix)
+            return this.m_spine.onAnimationForce(this.AnimHold, false);
         else
-            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimAttackHold, false);
+            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimHold, false);
     }
 
     onAimDeg(deg: number) {

@@ -1,17 +1,13 @@
-import { _decorator, CCBoolean, CCFloat, Component, ERigidBody2DType, Node, RigidBody2D, tween, v2, v3, Vec2 } from 'cc';
-import { BodyBase } from '../BodyBase';
+import { _decorator, CCBoolean, CCFloat, Component, Node, RigidBody2D, tween, v2, v3, Vec2 } from 'cc';
 import { ConstantBase } from '../../ConstantBase';
-const { ccclass, property, requireComponent } = _decorator;
+import { BodyBase } from '../BodyBase';
+const { ccclass, property } = _decorator;
 
-@ccclass('BodyKnockX')
-@requireComponent(BodyBase)
-@requireComponent(RigidBody2D)
-export class BodyKnockX extends Component {
+@ccclass('BodyKnockXY')
+export class BodyKnockXY extends Component {
 
     @property({ group: { name: 'Hit' }, type: CCBoolean })
     Hit: boolean = true;
-    @property({ group: { name: 'Hit' }, type: CCFloat })
-    HitDeg: number = 50;
     @property({ group: { name: 'Hit' }, type: CCFloat })
     HitForce: number = 25;
     @property({ group: { name: 'Hit' }, type: CCFloat })
@@ -19,8 +15,6 @@ export class BodyKnockX extends Component {
 
     @property({ group: { name: 'Dead' }, type: CCBoolean })
     Dead: boolean = false;
-    @property({ group: { name: 'Dead' }, type: CCFloat })
-    DeadDeg: number = 50;
     @property({ group: { name: 'Dead' }, type: CCFloat })
     DeadForce: number = 25;
     @property({ group: { name: 'Dead' }, type: CCFloat })
@@ -69,7 +63,7 @@ export class BodyKnockX extends Component {
             this.m_rigidbody.sleep();
             this.scheduleOnce(() => this.m_rigidbody.wakeUp(), 0.02);
         }, this.HitDuration);
-        this.onKnock(from, this.HitDeg, this.HitForce);
+        this.onKnock(from, this.HitForce);
     }
 
     onDead(from: Node) {
@@ -86,9 +80,7 @@ export class BodyKnockX extends Component {
                 this.scheduleOnce(() => this.m_rigidbody.wakeUp(), 0.02);
             }, this.DeadDuration);
         }
-        else
-            this.m_rigidbody.gravityScale = 0;
-        this.onKnock(from, this.DeadDeg, this.DeadForce);
+        this.onKnock(from, this.DeadForce);
 
         if (this.DeadRotate) {
             let rotateDir = this.node.worldPosition.clone().x < from.worldPosition.clone().x ? 1 : -1;
@@ -103,16 +95,9 @@ export class BodyKnockX extends Component {
         }
     }
 
-    onKnock(from: Node, deg: number, force: number) {
-        let reflect = this.node.worldPosition.clone().x < from.worldPosition.clone().x;
-        this.m_force = this.getVelocity(deg, force, reflect);
+    onKnock(from: Node, force: number) {
+        let velocity = from.worldPosition.clone().subtract(from.worldPosition.clone()).multiplyScalar(force);
+        this.m_force = v2(velocity.x, velocity.y);
         this.m_rigidbody.linearVelocity = this.m_force;
-    }
-
-    private getVelocity(deg: number, length: number, reflect: boolean): Vec2 {
-        let direction = v2(Math.cos(deg * (Math.PI / 180)), Math.sin(deg * (Math.PI / 180)));
-        if (reflect)
-            direction.x *= -1;
-        return direction.normalize().multiplyScalar(length);
     }
 }
