@@ -10,7 +10,7 @@ export class RotateRestart extends Component {
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: RotateRestart) { return !this.Start; } })
     OnEvent: string = '';
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
