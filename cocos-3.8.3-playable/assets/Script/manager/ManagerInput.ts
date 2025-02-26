@@ -142,13 +142,13 @@ export class ManagerInput extends Component {
             this.BtnAttack.on(Input.EventType.TOUCH_START, this.onAttackStart, this);
             this.BtnAttack.on(Input.EventType.TOUCH_END, this.onAttackEnd, this);
             this.BtnAttack.on(Input.EventType.TOUCH_CANCEL, this.onAttackEnd, this);
-            director.on(ConstantBase.INPUT_ATTACK_SHOW, this.onAttackShow, this);
+            director.on(ConstantBase.UI_ATTACK_SHOW, this.onAttackShow, this);
         }
 
         if (this.BtnInteraction != null) {
             this.BtnInteraction.on(Input.EventType.TOUCH_START, this.onInteraction, this);
-            director.on(ConstantBase.INPUT_INTERACTION_SHOW, this.onInteractionShow, this);
-            director.on(ConstantBase.INPUT_INTERACTION_ICON, this.onInteractionIcon, this);
+            director.on(ConstantBase.UI_INTERACTION_SHOW, this.onInteractionShow, this);
+            director.on(ConstantBase.UI_INTERACTION_ICON, this.onInteractionIcon, this);
         }
 
         this.Switch.forEach(Item => {

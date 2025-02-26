@@ -2,11 +2,11 @@ import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Component, directo
 import { ValueCurrency } from './ValueCurrency';
 const { ccclass, property } = _decorator;
 
-export enum StatFerLevel {
+export enum StatValueType {
     Add,
     Muti,
 }
-Enum(StatFerLevel);
+Enum(StatValueType);
 
 @ccclass('ValueStat')
 export class ValueStat extends Component {
@@ -24,15 +24,15 @@ export class ValueStat extends Component {
     //
     @property({ group: { name: 'Stat' }, type: CCFloat })
     Stat: number = 1;
-    @property({ group: { name: 'Stat' }, type: StatFerLevel })
-    StatType: StatFerLevel = StatFerLevel.Add;
+    @property({ group: { name: 'Stat' }, type: StatValueType })
+    StatType: StatValueType = StatValueType.Add;
     @property({ group: { name: 'Stat' }, type: CCFloat })
     StatFerLevel: number = 1;
     //
     @property({ group: { name: 'Stat' }, type: CCFloat })
     Cost: number = 10;
-    @property({ group: { name: 'Stat' }, type: StatFerLevel })
-    CostType: StatFerLevel = StatFerLevel.Add;
+    @property({ group: { name: 'Stat' }, type: StatValueType })
+    CostType: StatValueType = StatValueType.Add;
     @property({ group: { name: 'Stat' }, type: CCFloat })
     CostFerLevel: number = 10;
 
@@ -81,18 +81,18 @@ export class ValueStat extends Component {
         for (let i = 0; i < Value; i++) {
             this.Level++;
             switch (this.StatType) {
-                case StatFerLevel.Add:
+                case StatValueType.Add:
                     this.Stat += this.StatFerLevel;
                     break;
-                case StatFerLevel.Muti:
+                case StatValueType.Muti:
                     this.Stat *= this.StatFerLevel;
                     break;
             }
             switch (this.CostType) {
-                case StatFerLevel.Add:
+                case StatValueType.Add:
                     this.Cost += this.CostFerLevel;
                     break;
-                case StatFerLevel.Muti:
+                case StatValueType.Muti:
                     this.Cost *= this.CostFerLevel;
                     break;
             }

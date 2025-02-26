@@ -187,7 +187,7 @@ export class BodyControlX extends Component {
         this.onDirUpdate();
 
         if (this.UiPickBtnActive)
-            director.emit(ConstantBase.INPUT_INTERACTION_SHOW, false);
+            director.emit(ConstantBase.UI_INTERACTION_SHOW, false);
     }
 
     protected lateUpdate(dt: number): void {
@@ -200,9 +200,6 @@ export class BodyControlX extends Component {
 
     protected onControlByDirector(state: boolean, full: boolean = true) {
         if (state) {
-            director.on(ConstantBase.BODY_SLEEP, this.onSleep, this);
-            director.on(ConstantBase.BODY_AWAKE, this.onAwake, this);
-
             director.on(ConstantBase.CONTROL_JUMP, this.onJump, this);
             director.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
 
@@ -214,24 +211,30 @@ export class BodyControlX extends Component {
             director.on(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             director.on(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
 
+            director.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
+            director.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+
             director.on(ConstantBase.BODY_X2, this.onBodyX2, this);
             director.on(ConstantBase.BODY_X4, this.onBodyX4, this);
 
             if (full)
                 director.on(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
 
-            if (this.m_bodyAttack != null) {
-                director.on(ConstantBase.BODY_ATTACK_UP, this.m_bodyAttack.onMeleeAttackUp, this.m_bodyAttack);
-                director.on(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+            director.on(ConstantBase.BODY_SLEEP, this.onSleep, this);
+            director.on(ConstantBase.BODY_AWAKE, this.onAwake, this);
+
+            if (this.m_body != null) {
+                director.on(ConstantBase.BODY_VALUE_HIT_POINT, this.m_body.onHitPoint, this.m_body);
+                director.on(ConstantBase.BODY_VALUE_HIT_POINT_CURRENT, this.m_body.onHitPointCurrent, this.m_body);
             }
 
-            director.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
-            director.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+            if (this.m_bodyAttack != null) {
+                director.on(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+                director.on(ConstantBase.BODY_ATTACK_ULTIMATE, this.m_bodyAttack.onMeleeUltimate, this.m_bodyAttack);
+                director.on(ConstantBase.BODY_VALUE_MELEE_HIT, this.m_bodyAttack.onMeleeHit, this.m_bodyAttack);
+            }
         }
         else {
-            director.off(ConstantBase.BODY_SLEEP, this.onSleep, this);
-            director.off(ConstantBase.BODY_AWAKE, this.onAwake, this);
-
             director.off(ConstantBase.CONTROL_JUMP, this.onJump, this);
             director.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
 
@@ -243,27 +246,33 @@ export class BodyControlX extends Component {
             director.off(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             director.off(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
 
+            director.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
+            director.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+
             director.off(ConstantBase.BODY_X2, this.onBodyX2, this);
             director.off(ConstantBase.BODY_X4, this.onBodyX4, this);
 
             if (full)
                 director.off(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
 
-            if (this.m_bodyAttack != null) {
-                director.off(ConstantBase.BODY_ATTACK_UP, this.m_bodyAttack.onMeleeAttackUp, this.m_bodyAttack);
-                director.off(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+            director.off(ConstantBase.BODY_SLEEP, this.onSleep, this);
+            director.off(ConstantBase.BODY_AWAKE, this.onAwake, this);
+
+            if (this.m_body != null) {
+                director.off(ConstantBase.BODY_VALUE_HIT_POINT, this.m_body.onHitPoint, this.m_body);
+                director.off(ConstantBase.BODY_VALUE_HIT_POINT_CURRENT, this.m_body.onHitPointCurrent, this.m_body);
             }
 
-            director.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
-            director.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+            if (this.m_bodyAttack != null) {
+                director.off(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+                director.off(ConstantBase.BODY_ATTACK_ULTIMATE, this.m_bodyAttack.onMeleeUltimate, this.m_bodyAttack);
+                director.off(ConstantBase.BODY_VALUE_MELEE_HIT, this.m_bodyAttack.onMeleeHit, this.m_bodyAttack);
+            }
         }
     }
 
     protected onControlByNode(state: boolean) {
         if (state) {
-            this.node.on(ConstantBase.BODY_SLEEP, this.onSleep, this);
-            this.node.on(ConstantBase.BODY_AWAKE, this.onAwake, this);
-
             this.node.on(ConstantBase.CONTROL_JUMP, this.onJump, this);
             this.node.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
 
@@ -275,21 +284,30 @@ export class BodyControlX extends Component {
             this.node.on(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             this.node.on(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
 
+            this.node.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
+            this.node.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+
             this.node.on(ConstantBase.BODY_X2, this.onBodyX2, this);
             this.node.on(ConstantBase.BODY_X4, this.onBodyX4, this);
 
-            if (this.m_bodyAttack != null) {
-                this.node.on(ConstantBase.BODY_ATTACK_UP, this.m_bodyAttack.onMeleeAttackUp, this.m_bodyAttack);
-                this.node.on(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+            // if (full)
+            //     this.node.on(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
+
+            this.node.on(ConstantBase.BODY_SLEEP, this.onSleep, this);
+            this.node.on(ConstantBase.BODY_AWAKE, this.onAwake, this);
+
+            if (this.m_body != null) {
+                this.node.on(ConstantBase.BODY_VALUE_HIT_POINT, this.m_body.onHitPoint, this.m_body);
+                this.node.on(ConstantBase.BODY_VALUE_HIT_POINT_CURRENT, this.m_body.onHitPointCurrent, this.m_body);
             }
 
-            this.node.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
-            this.node.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+            if (this.m_bodyAttack != null) {
+                this.node.on(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+                this.node.on(ConstantBase.BODY_ATTACK_ULTIMATE, this.m_bodyAttack.onMeleeUltimate, this.m_bodyAttack);
+                this.node.on(ConstantBase.BODY_VALUE_MELEE_HIT, this.m_bodyAttack.onMeleeHit, this.m_bodyAttack);
+            }
         }
         else {
-            this.node.off(ConstantBase.BODY_SLEEP, this.onSleep, this);
-            this.node.off(ConstantBase.BODY_AWAKE, this.onAwake, this);
-
             this.node.off(ConstantBase.CONTROL_JUMP, this.onJump, this);
             this.node.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
 
@@ -301,16 +319,28 @@ export class BodyControlX extends Component {
             this.node.off(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             this.node.off(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
 
+            this.node.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
+            this.node.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+
             this.node.off(ConstantBase.BODY_X2, this.onBodyX2, this);
             this.node.off(ConstantBase.BODY_X4, this.onBodyX4, this);
 
-            if (this.m_bodyAttack != null) {
-                this.node.off(ConstantBase.BODY_ATTACK_UP, this.m_bodyAttack.onMeleeAttackUp, this.m_bodyAttack);
-                this.node.off(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+            // if (full)
+            //     this.node.off(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
+
+            this.node.off(ConstantBase.BODY_SLEEP, this.onSleep, this);
+            this.node.off(ConstantBase.BODY_AWAKE, this.onAwake, this);
+
+            if (this.m_body != null) {
+                this.node.off(ConstantBase.BODY_VALUE_HIT_POINT, this.m_body.onHitPoint, this.m_body);
+                this.node.off(ConstantBase.BODY_VALUE_HIT_POINT_CURRENT, this.m_body.onHitPointCurrent, this.m_body);
             }
 
-            this.node.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
-            this.node.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+            if (this.m_bodyAttack != null) {
+                this.node.off(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+                this.node.off(ConstantBase.BODY_ATTACK_ULTIMATE, this.m_bodyAttack.onMeleeUltimate, this.m_bodyAttack);
+                this.node.off(ConstantBase.BODY_VALUE_MELEE_HIT, this.m_bodyAttack.onMeleeHit, this.m_bodyAttack);
+            }
         }
     }
 
@@ -322,6 +352,8 @@ export class BodyControlX extends Component {
         director.emit(ConstantBase.CONTROL_LOCK);
         this.onJumRelease();
         this.onMoveRelease();
+        if (this.m_bodyAttack != null)
+            this.m_bodyAttack.onStop(true);
     }
 
     //RIGIDBODY:
@@ -712,7 +744,7 @@ export class BodyControlX extends Component {
             delayPick = this.m_bodySpine.onPick();
             this.scheduleOnce(() => this.m_bodySpine.onPickLoop(), this.m_bodySpine.onPick());
             //Ui
-            director.emit(ConstantBase.INPUT_INTERACTION_ICON, this.UiThrowIconIndex);
+            director.emit(ConstantBase.UI_INTERACTION_ICON, this.UiThrowIconIndex);
         }
         else {
             this.m_pickUpProgess = true;
@@ -742,8 +774,8 @@ export class BodyControlX extends Component {
             this.scheduleOnce(() => this.m_bodySpine.onPickEmty(), this.m_bodySpine.onThrow());
             //Ui
             if (this.UiPickBtnActive)
-                director.emit(ConstantBase.INPUT_INTERACTION_SHOW, false);
-            director.emit(ConstantBase.INPUT_INTERACTION_ICON, this.UiPickIconIndex);
+                director.emit(ConstantBase.UI_INTERACTION_SHOW, false);
+            director.emit(ConstantBase.UI_INTERACTION_ICON, this.UiPickIconIndex);
         }
         if (this.m_pickUpProgess)
             this.scheduleOnce(() => this.m_pickUpProgess = false, delayPick + 0.02);
@@ -754,12 +786,12 @@ export class BodyControlX extends Component {
             return;
         if (this.m_bodyCheck.m_targetInteracte.length == 0) {
             if (this.UiPickBtnActive)
-                director.emit(ConstantBase.INPUT_INTERACTION_SHOW, false);
+                director.emit(ConstantBase.UI_INTERACTION_SHOW, false);
             return;
         }
         if (this.UiPickBtnActive)
-            director.emit(ConstantBase.INPUT_INTERACTION_SHOW, true);
-        director.emit(ConstantBase.INPUT_INTERACTION_ICON, this.UiPickIconIndex);
+            director.emit(ConstantBase.UI_INTERACTION_SHOW, true);
+        director.emit(ConstantBase.UI_INTERACTION_ICON, this.UiPickIconIndex);
     }
 
     //COLLIDE
@@ -955,6 +987,8 @@ export class BodyControlX extends Component {
 
         this.onJumRelease();
         this.onMoveRelease();
+        if (this.m_bodyAttack != null)
+            this.m_bodyAttack.onStop(true);
 
         if (!this.EndOnGround)
             this.onCompleteProgess();
@@ -1010,6 +1044,8 @@ export class BodyControlX extends Component {
 
         this.onJumRelease();
         this.onMoveRelease();
+        if (this.m_bodyAttack != null)
+            this.m_bodyAttack.onStop(true);
 
         if (this.Pick && this.EndPickDestroy) {
             if (this.m_pickUp != null ? this.m_pickUp.isValid : false)

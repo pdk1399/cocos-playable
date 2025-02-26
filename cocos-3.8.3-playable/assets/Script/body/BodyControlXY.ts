@@ -118,11 +118,9 @@ export class BodyControlXY extends Component {
 
     protected onControlByDirector(state: boolean, full: boolean = true) {
         if (state) {
-            director.on(ConstantBase.BODY_SLEEP, this.onSleep, this);
-            director.on(ConstantBase.BODY_AWAKE, this.onAwake, this);
+            director.on(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick);
 
-            director.on(ConstantBase.CONTROL_JOY_STICK, this.onInputJoyStick, this);
-            director.on(ConstantBase.CONTROL_RELEASE, this.onMoveRelease, this);
+            director.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
             director.on(ConstantBase.BODY_X2, this.onBodyX2, this);
             director.on(ConstantBase.BODY_X4, this.onBodyX4, this);
@@ -130,19 +128,24 @@ export class BodyControlXY extends Component {
             if (full)
                 director.on(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
 
-            if (this.m_bodyAttack != null) {
-                director.on(ConstantBase.BODY_ATTACK_UP, this.m_bodyAttack.onMeleeAttackUp, this.m_bodyAttack);
-                director.on(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+            director.on(ConstantBase.BODY_SLEEP, this.onSleep, this);
+            director.on(ConstantBase.BODY_AWAKE, this.onAwake, this);
+
+            if (this.m_body != null) {
+                director.on(ConstantBase.BODY_VALUE_HIT_POINT, this.m_body.onHitPoint, this.m_body);
+                director.on(ConstantBase.BODY_VALUE_HIT_POINT_CURRENT, this.m_body.onHitPointCurrent, this.m_body);
             }
 
-            director.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+            if (this.m_bodyAttack != null) {
+                director.on(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+                director.on(ConstantBase.BODY_ATTACK_ULTIMATE, this.m_bodyAttack.onMeleeUltimate, this.m_bodyAttack);
+                director.on(ConstantBase.BODY_VALUE_MELEE_HIT, this.m_bodyAttack.onMeleeHit, this.m_bodyAttack);
+            }
         }
         else {
-            director.off(ConstantBase.BODY_SLEEP, this.onSleep, this);
-            director.off(ConstantBase.BODY_AWAKE, this.onAwake, this);
+            director.off(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick);
 
-            director.off(ConstantBase.CONTROL_JOY_STICK, this.onInputJoyStick, this);
-            director.off(ConstantBase.CONTROL_RELEASE, this.onMoveRelease, this);
+            director.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
             director.off(ConstantBase.BODY_X2, this.onBodyX2, this);
             director.off(ConstantBase.BODY_X4, this.onBodyX4, this);
@@ -150,49 +153,72 @@ export class BodyControlXY extends Component {
             if (full)
                 director.off(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
 
-            if (this.m_bodyAttack != null) {
-                director.off(ConstantBase.BODY_ATTACK_UP, this.m_bodyAttack.onMeleeAttackUp, this.m_bodyAttack);
-                director.off(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+            director.off(ConstantBase.BODY_SLEEP, this.onSleep, this);
+            director.off(ConstantBase.BODY_AWAKE, this.onAwake, this);
+
+            if (this.m_body != null) {
+                director.off(ConstantBase.BODY_VALUE_HIT_POINT, this.m_body.onHitPoint, this.m_body);
+                director.off(ConstantBase.BODY_VALUE_HIT_POINT_CURRENT, this.m_body.onHitPointCurrent, this.m_body);
             }
 
-            director.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+            if (this.m_bodyAttack != null) {
+                director.off(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+                director.off(ConstantBase.BODY_ATTACK_ULTIMATE, this.m_bodyAttack.onMeleeUltimate, this.m_bodyAttack);
+                director.off(ConstantBase.BODY_VALUE_MELEE_HIT, this.m_bodyAttack.onMeleeHit, this.m_bodyAttack);
+            }
         }
     }
 
     protected onControlByNode(state: boolean) {
         if (state) {
-            this.node.on(ConstantBase.BODY_SLEEP, this.onSleep, this);
-            this.node.on(ConstantBase.BODY_AWAKE, this.onAwake, this);
+            this.node.on(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick, this);
 
-            this.node.on(ConstantBase.CONTROL_JOY_STICK, this.onInputJoyStick, this);
-            this.node.on(ConstantBase.CONTROL_RELEASE, this.onMoveRelease, this);
+            this.node.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
             this.node.on(ConstantBase.BODY_X2, this.onBodyX2, this);
             this.node.on(ConstantBase.BODY_X4, this.onBodyX4, this);
 
-            if (this.m_bodyAttack != null) {
-                this.node.on(ConstantBase.BODY_ATTACK_UP, this.m_bodyAttack.onMeleeAttackUp, this.m_bodyAttack);
-                this.node.on(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+            // if (full)
+            //     this.node.on(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
+
+            this.node.on(ConstantBase.BODY_SLEEP, this.onSleep, this);
+            this.node.on(ConstantBase.BODY_AWAKE, this.onAwake, this);
+
+            if (this.m_body != null) {
+                this.node.on(ConstantBase.BODY_VALUE_HIT_POINT, this.m_body.onHitPoint, this.m_body);
+                this.node.on(ConstantBase.BODY_VALUE_HIT_POINT_CURRENT, this.m_body.onHitPointCurrent, this.m_body);
             }
 
-            this.node.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+            if (this.m_bodyAttack != null) {
+                this.node.on(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+                this.node.on(ConstantBase.BODY_ATTACK_ULTIMATE, this.m_bodyAttack.onMeleeUltimate, this.m_bodyAttack);
+                this.node.on(ConstantBase.BODY_VALUE_MELEE_HIT, this.m_bodyAttack.onMeleeHit, this.m_bodyAttack);
+            }
         }
         else {
-            this.node.off(ConstantBase.BODY_SLEEP, this.onSleep, this);
-            this.node.off(ConstantBase.BODY_AWAKE, this.onAwake, this);
+            this.node.off(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick);
 
-            this.node.off(ConstantBase.CONTROL_JOY_STICK, this.onInputJoyStick, this);
-            this.node.off(ConstantBase.CONTROL_RELEASE, this.onMoveRelease, this);
+            this.node.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
             this.node.off(ConstantBase.BODY_X2, this.onBodyX2, this);
             this.node.off(ConstantBase.BODY_X4, this.onBodyX4, this);
 
-            if (this.m_bodyAttack != null) {
-                this.node.off(ConstantBase.BODY_ATTACK_UP, this.m_bodyAttack.onMeleeAttackUp, this.m_bodyAttack);
-                this.node.off(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+            // if (full)
+            //     this.node.off(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
+
+            this.node.off(ConstantBase.BODY_SLEEP, this.onSleep, this);
+            this.node.off(ConstantBase.BODY_AWAKE, this.onAwake, this);
+
+            if (this.m_body != null) {
+                this.node.off(ConstantBase.BODY_VALUE_HIT_POINT, this.m_body.onHitPoint, this.m_body);
+                this.node.off(ConstantBase.BODY_VALUE_HIT_POINT_CURRENT, this.m_body.onHitPointCurrent, this.m_body);
             }
 
-            this.node.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
+            if (this.m_bodyAttack != null) {
+                this.node.off(ConstantBase.CONTROL_ATTACK, this.onAttack, this);
+                this.node.off(ConstantBase.BODY_ATTACK_ULTIMATE, this.m_bodyAttack.onMeleeUltimate, this.m_bodyAttack);
+                this.node.off(ConstantBase.BODY_VALUE_MELEE_HIT, this.m_bodyAttack.onMeleeHit, this.m_bodyAttack);
+            }
         }
     }
 
@@ -202,6 +228,8 @@ export class BodyControlXY extends Component {
         director.emit(ConstantBase.CONTROL_RELEASE);
         director.emit(ConstantBase.CONTROL_LOCK);
         this.onMoveRelease();
+        if (this.m_bodyAttack != null)
+            this.m_bodyAttack.onStop(true);
     }
 
     //RIGIDBODY:
@@ -267,11 +295,11 @@ export class BodyControlXY extends Component {
         this.m_rigidbody.linearVelocity = damp;
     }
 
-    onInputJoyStick(Direction: Vec2) {
+    onJoyStick(Direction: Vec2) {
         if (Direction.clone().x == 0 && Direction.clone().y == 0) {
             this.m_move = false;
             this.m_moveDir = Vec2.ZERO.clone();
-            if (this.MoveStopAttack)
+            if (this.m_bodyAttack != null && this.MoveStopAttack)
                 this.m_bodyAttack.onStop(false);
         }
         else {
@@ -280,7 +308,7 @@ export class BodyControlXY extends Component {
             this.m_faceDir = Direction.normalize();
             this.m_faceDirX = Direction.x > 0 ? 1 : -1;
             this.onDirUpdate();
-            if (this.MoveStopAttack)
+            if (this.m_bodyAttack != null && this.MoveStopAttack)
                 this.m_bodyAttack.onStop(true);
         }
     }
@@ -522,6 +550,8 @@ export class BodyControlXY extends Component {
         this.m_end = true;
 
         this.onMoveRelease();
+        if (this.m_bodyAttack != null)
+            this.m_bodyAttack.onStop(true);
     }
 
     protected onCompleteProgess() {
@@ -542,6 +572,8 @@ export class BodyControlXY extends Component {
         this.m_end = true;
 
         this.onMoveRelease();
+        if (this.m_bodyAttack != null)
+            this.m_bodyAttack.onStop(true);
 
         this.scheduleOnce(() => {
             this.m_rigidbody.sleep();

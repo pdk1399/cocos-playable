@@ -79,7 +79,7 @@ export class BodyAttackX extends Component {
 
     m_stop: boolean = false;
     m_attack: boolean = false;
-    m_attackMeleeUp: boolean = false;
+    m_attackMeleeUltimate: boolean = false;
     m_continue: boolean = false;
     m_dead: boolean = false;
 
@@ -207,12 +207,12 @@ export class BodyAttackX extends Component {
         this.unscheduleAllCallbacks();
         if (this.MeleeAuto) {
             this.scheduleOnce(() => {
-                this.scheduleOnce(() => this.onMeleeAttackTargetStart(), this.DelayLoop);
+                this.scheduleOnce(() => this.onMeleeStart(), this.DelayLoop);
             }, duration);
         }
         if (this.RangeAuto) {
             this.scheduleOnce(() => {
-                this.scheduleOnce(() => this.onRangeAttackTargetStart(), this.DelayLoop);
+                this.scheduleOnce(() => this.onRangeStart(), this.DelayLoop);
             }, duration);
         }
     }
@@ -224,14 +224,14 @@ export class BodyAttackX extends Component {
         this.unscheduleAllCallbacks();
     }
 
-    //Melee
+    //MELEE
 
-    private onMeleeFoundTarget(target: Node, stage: boolean) {
+    protected onMeleeFoundTarget(target: Node, stage: boolean) {
         if (this.m_stop)
             return;
         if (this.m_targetMelee.length > 0) {
             if (!this.m_attack)
-                this.onMeleeAttackTargetStart();
+                this.onMeleeStart();
             else
                 this.m_continue = true;
         }
@@ -244,34 +244,40 @@ export class BodyAttackX extends Component {
         }
     }
 
-    onMeleeAttackTargetStart(): boolean {
+    protected onMeleeStart(): boolean {
         if (this.m_targetMelee.length == 0)
             return false;
         this.onAttackProgess();
         return true;
     }
 
-    onMeleeAttackTargetEmit() {
+    protected onMeleeTarget() {
         this.m_targetMelee.forEach(target => {
-            if (this.m_attackMeleeUp)
+            if (this.m_attackMeleeUltimate)
                 target.emit(ConstantBase.NODE_BODY_DEAD, this.node);
             else
                 target.emit(ConstantBase.NODE_BODY_HIT, this.MeleeHit, this.node);
         });
     }
 
-    onMeleeAttackUp(state: boolean = true) {
-        this.m_attackMeleeUp = state;
+    onMeleeHit(value: number) {
+        this.MeleeHit = value;
+        if (this.MeleeHit < 1)
+            this.MeleeHit = 1;
     }
 
-    //Range
+    onMeleeUltimate(state: boolean = true) {
+        this.m_attackMeleeUltimate = state;
+    }
 
-    private onRangeFoundTarget(target: Node, stage: boolean) {
+    //RANGE
+
+    protected onRangeFoundTarget(target: Node, stage: boolean) {
         if (this.m_stop)
             return;
         if (this.m_targetRange.length > 0) {
             if (!this.m_attack)
-                this.onRangeAttackTargetStart();
+                this.onRangeStart();
             else
                 this.m_continue = true;
         }
@@ -284,14 +290,14 @@ export class BodyAttackX extends Component {
         }
     }
 
-    onRangeAttackTargetStart(): boolean {
+    protected onRangeStart(): boolean {
         if (this.m_targetRange.length == 0)
             return false;
         this.onAttackProgess();
         return true;
     }
 
-    onRangeAttackTargetShoot() {
+    protected onRangeShoot() {
         if (this.m_shoot == null)
             return;
         if (this.RangeTargetUpdate && this.m_targetRangeAim == null)
@@ -345,7 +351,7 @@ export class BodyAttackX extends Component {
         return target;
     }
 
-    //Attack
+    //ATTACK
 
     onAttackProgess(): number {
         if (this.m_dead || this.m_attack)
@@ -369,8 +375,8 @@ export class BodyAttackX extends Component {
                 if (!this.Once) {
                     this.scheduleOnce(() => {
                         if (this.m_continue) {
-                            if (!this.onMeleeAttackTargetStart())
-                                if (!this.onRangeAttackTargetStart()) {
+                            if (!this.onMeleeStart())
+                                if (!this.onRangeStart()) {
                                     this.m_continue = false;
                                     this.m_attack = false;
                                 }
@@ -387,14 +393,14 @@ export class BodyAttackX extends Component {
         return this.Delay;
     }
 
-    private onAttackProgessInvoke() {
+    protected onAttackProgessInvoke() {
         if (this.Melee)
-            this.onMeleeAttackTargetEmit();
+            this.onMeleeTarget();
         if (this.Range && this.m_shoot != null)
-            this.onRangeAttackTargetShoot();
+            this.onRangeShoot();
     }
 
-    //Stop
+    //STOP
 
     onStop(state: boolean) {
         if (!this.m_stop && state) {
@@ -409,7 +415,7 @@ export class BodyAttackX extends Component {
         this.m_stop = state;
     }
 
-    //Dir
+    //DIR
 
     onDirUpdate(dir: number) {
         if (dir > 0)
@@ -447,7 +453,7 @@ export class BodyAttackX extends Component {
         })
     }
 
-    //Anim
+    //ANIM
 
     onAttackReady(): number {
         if (!this.AnimMix)

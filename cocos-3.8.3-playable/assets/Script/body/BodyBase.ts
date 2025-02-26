@@ -118,6 +118,8 @@ export class BodyBase extends Component {
             director.emit(this.EmitDestroy, this.node);
     }
 
+    //
+
     onHit(hit: number, from: Node) {
         if (this.m_dead)
             return;
@@ -191,6 +193,27 @@ export class BodyBase extends Component {
         this.node.off(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
     }
 
+    onProtect(state: boolean = true) {
+        this.Protect = state;
+    }
+
+    onHitPoint(value: number) {
+        this.HitPoint = value;
+        if (this.HitPoint < 1)
+            this.HitPoint = 1;
+        this.onHitPointCurrent(this.HitPoint);
+        this.onBarUpdate();
+    }
+
+    onHitPointCurrent(value: number) {
+        this.m_hitPointCurrent = value;
+        if (this.m_hitPointCurrent > this.HitPoint)
+            this.m_hitPointCurrent = this.HitPoint;
+        else if (this.m_hitPointCurrent < 0)
+            this.m_hitPointCurrent = 0;
+        this.onBarUpdate();
+    }
+
     onBarUpdate() {
         if (this.BarMask != null) {
             if (this.m_maskSprite != null ? this.m_maskSprite.type == Sprite.Type.FILLED : false)
@@ -207,7 +230,7 @@ export class BodyBase extends Component {
         }
     }
 
-    //Destroy
+    //DESTROY
 
     private onDeadDestroy() {
         if (this.DestroyNode) {
@@ -229,7 +252,7 @@ export class BodyBase extends Component {
             }, Math.max(this.DestroyBodyDelay, 0.02));
     }
 
-    //Effect
+    //EFFECT
 
     private onHitEffect() {
         if (this.AudioHit != null)
