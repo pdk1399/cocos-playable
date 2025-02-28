@@ -4,6 +4,9 @@
 # Update version
 - Support are limit on every version, so update Cocos Creator or Project Editor with caution.
 
+# Tool build:
+- Super-html package in version 3.8.3 need Node.js package install to use.
+
 # Build
 - Ironsource: <= 5MB - Use build Unity with version 3.6.3
 - Mintegral: <= 2.5MB
