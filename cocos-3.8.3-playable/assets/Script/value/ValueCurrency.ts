@@ -5,11 +5,11 @@ const { ccclass, property } = _decorator;
 export class ValueCurrency extends Component {
 
     @property({ group: { name: 'Event' }, type: CCString })
+    OnCollect: string = '';
+    @property({ group: { name: 'Event' }, type: CCString })
     EmitUse: string = '';
     @property({ group: { name: 'Event' }, type: CCString })
     EmitUpdate: string = '';
-    @property({ group: { name: 'Event' }, type: CCString })
-    OnCollect: string = '';
 
     @property({ group: { name: 'Currency' }, type: CCFloat })
     Current: number = 100;
