@@ -125,9 +125,7 @@ export class BodyControlX extends Component {
     m_jumpContinue: boolean = false;
 
     m_dash: boolean = false;
-
     m_attack: boolean = false;
-    m_attackReadySchedule: any = null;
 
     m_pickUp: Node = null;
     m_pickUpProgess: boolean = false;
@@ -922,11 +920,13 @@ export class BodyControlX extends Component {
                 break;
             case PlayerStateX.ATTACK:
                 if (this.AttackHold)
-                    this.unschedule(this.m_attackReadySchedule);
+                    this.m_bodyAttack.onAnimAttackUnReady();
                 break;
             case PlayerStateX.ATTACK_HOLD:
-                if (this.AttackHold)
-                    this.m_attackReadySchedule = this.scheduleOnce(() => this.m_bodyAttack.onAttackHold(), this.m_bodyAttack.onAttackReady());
+                if (this.AttackHold) {
+                    this.m_bodyAttack.onAnimAttackUnReady();
+                    this.m_bodyAttack.onAnimAttackReady();
+                }
                 break;
         }
         this.m_state = state;

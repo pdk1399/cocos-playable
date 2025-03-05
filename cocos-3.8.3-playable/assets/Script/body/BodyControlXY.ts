@@ -61,9 +61,7 @@ export class BodyControlXY extends Component {
     m_faceDir: Vec2 = v2();
 
     m_dash: boolean = false;
-
     m_attack: boolean = false;
-    m_attackReadySchedule: any = null;
 
     m_control: boolean = true;
     m_end: boolean = false;
@@ -495,11 +493,11 @@ export class BodyControlXY extends Component {
                 break;
             case PlayerStateXY.ATTACK:
                 if (this.AttackHold)
-                    this.unschedule(this.m_attackReadySchedule);
+                    this.m_bodyAttack.onAnimAttackUnReady();
                 break;
             case PlayerStateXY.ATTACK_HOLD:
                 if (this.AttackHold)
-                    this.m_attackReadySchedule = this.scheduleOnce(() => this.m_bodyAttack.onAttackHold(), this.m_bodyAttack.onAttackReady());
+                    this.m_bodyAttack.onAnimAttackReady();
                 break;
         }
         this.m_state = state;
