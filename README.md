@@ -14,7 +14,7 @@
 - Amazon: Use build Mintegral
 
 # Change link store
-- Can change link store of HTML file build without re-build in project by search text "https://".
+- Can change link store of HTML file build without re-build in project by search text "https://play.google.com/".
 
 # Tilemap
 - To open and edit Tile file in Cocos, use Tiled tool.
