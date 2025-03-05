@@ -13,6 +13,9 @@
 - Unity: <= 5MB - Use build version 3.6.3
 - Amazon: Use build Mintegral
 
+# Build Compress
+- Spine: Don't export skin, animation & images attach to slot (check in *.png with *.json file after export) that not used in scene.
+
 # Change link store
 - Can change link store of HTML file build without re-build in project by search text "https://play.google.com/".
 
