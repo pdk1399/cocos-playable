@@ -89,6 +89,8 @@ export class BodySpine extends Component {
     //
 
     onIdle(force: boolean = false): number {
+        if (this.m_hit || this.m_dead)
+            return 0;
         if (!force) {
             if (!this.AnimIdleActive)
                 return 0;
@@ -125,44 +127,62 @@ export class BodySpine extends Component {
     }
 
     onMove(): number {
+        if (this.m_hit || this.m_dead)
+            return 0;
         return this.m_spine.onAnimation(this.AnimMove, true);
     }
 
     onPush(): number {
+        if (this.m_hit || this.m_dead)
+            return 0;
         return this.m_spine.onAnimation(this.AnimPush, true);
     }
 
     onAirOn(audioForce: boolean = true): number {
+        if (this.m_hit || this.m_dead)
+            return 0;
         if (this.AudioJump != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimAirOn : true))
             this.AudioJump.play();
         return this.m_spine.onAnimation(this.AnimAirOn, true);
     }
 
     onAirOff(): number {
+        if (this.m_hit || this.m_dead)
+            return 0;
         return this.m_spine.onAnimation(this.AnimAirOff, true);
     }
 
     onComplete(audioForce: boolean = true): number {
+        if (this.m_hit || this.m_dead)
+            return 0;
         if (this.AudioFinish != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimFinish : true))
             this.AudioFinish.play();
         return this.m_spine.onAnimation(this.AnimFinish, this.AnimFinishLoop);
     }
 
     onDash(): number {
+        if (this.m_hit || this.m_dead)
+            return 0;
         return this.m_spine.onAnimation(this.AnimDash, true);
     }
 
     //PICK:
 
     onPick(): number {
+        if (this.m_hit || this.m_dead)
+            return 0;
         return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimPick, false);
     }
 
     onPickLoop(): number {
+        if (this.m_hit || this.m_dead)
+            return 0;
         return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimPickLoop, true);
     }
 
     onThrow(): number {
+        if (this.m_hit || this.m_dead)
+            return 0;
         return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimThrow, false);
     }
 
