@@ -99,15 +99,18 @@ export class BodySpine extends Component {
     }
 
     onHit(audioForce: boolean = true): number {
+        if (this.m_hit || this.m_dead)
+            return 0;
         if (!this.AnimHitActive)
             return 0;
         if (this.AudioHit != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimHit : true))
             this.AudioHit.play();
         this.m_hit = true;
-        let animHitDuration = this.m_spine.onAnimation(this.AnimHit, false);
+        let animHitDuration = this.m_spine.onAnimationForceUnSave(this.AnimHit, false);
         this.scheduleOnce(() => {
             this.m_hit = false;
-            this.onIdle();
+            if (!this.m_dead)
+                this.onIdle();
         }, animHitDuration);
         return animHitDuration;
     }
