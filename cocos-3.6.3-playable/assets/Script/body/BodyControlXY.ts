@@ -61,9 +61,7 @@ export class BodyControlXY extends Component {
     m_faceDir: Vec2 = v2();
 
     m_dash: boolean = false;
-
     m_attack: boolean = false;
-    m_attackReadySchedule: any = null;
 
     m_control: boolean = true;
     m_end: boolean = false;
@@ -359,12 +357,10 @@ export class BodyControlXY extends Component {
                 }
                 break;
             case false:
-                if (this.AttackHold)
+                if (this.AttackHold) {
                     this.onAttackProgess();
-                if (this.getAttack())
-                    this.onAim();
-                else
                     this.onAimReset();
+                }
                 break;
         }
     }
@@ -392,10 +388,12 @@ export class BodyControlXY extends Component {
             this.m_bodyAttack.onAimDeg(this.m_faceDirX == 1 ? 0 + this.AttackDegOffset : 180 - this.AttackDegOffset);
     }
 
-    protected onAttackProgess(): number {
+    protected onAttackProgess() {
         if (this.m_bodyAttack == null)
             return;
-        return this.m_bodyAttack.onAttackProgess();
+        if (!this.MoveStopAttack && (this.MoveStopByBodyAttack || this.MoveStopByPressAttack))
+            this.m_bodySpine.onIdle(true);
+        this.scheduleOnce(() => this.m_bodyAttack.onAttackProgess());
     }
 
     //COLLIDE
@@ -495,15 +493,11 @@ export class BodyControlXY extends Component {
                 break;
             case PlayerStateXY.ATTACK:
                 if (this.AttackHold)
-                    this.unschedule(this.m_attackReadySchedule);
-                if (!this.MoveStopAttack && (this.MoveStopByBodyAttack || this.MoveStopByPressAttack))
-                    this.m_bodySpine.onIdle(true);
+                    this.m_bodyAttack.onAnimAttackUnReady();
                 break;
             case PlayerStateXY.ATTACK_HOLD:
-                if (!this.MoveStopAttack && (this.MoveStopByBodyAttack || this.MoveStopByPressAttack))
-                    this.m_bodySpine.onIdle(true);
                 if (this.AttackHold)
-                    this.m_attackReadySchedule = this.scheduleOnce(() => this.m_bodyAttack.onAttackHold(), this.m_bodyAttack.onAttackReady());
+                    this.m_bodyAttack.onAnimAttackReady();
                 break;
         }
         this.m_state = state;

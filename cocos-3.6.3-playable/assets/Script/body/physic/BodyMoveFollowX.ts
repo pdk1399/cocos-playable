@@ -68,6 +68,9 @@ export class BodyMoveFollowX extends Component {
 
         this.node.on(ConstantBase.NODE_PICK, this.onPick, this);
         this.node.on(ConstantBase.NODE_THROW, this.onThrow, this);
+
+        if (this.m_bodyAttack != null)
+            this.node.on(ConstantBase.NODE_BODY_MELEE, this.onMeleeFoundTarget, this);
     }
 
     protected start(): void {
@@ -114,6 +117,10 @@ export class BodyMoveFollowX extends Component {
             this.m_move = false;
             velocity.x = 0;
         }
+        else if (this.getTarget() && this.CheckHead && this.m_bodyCheck.m_isHead) {
+            this.m_move = false;
+            velocity.x = 0;
+        }
         else if (this.m_bodyCheck.m_isBot) {
             this.m_move = this.MoveGroundX > 0;
             velocity.x = this.m_dir * this.MoveGroundX;
@@ -137,18 +144,19 @@ export class BodyMoveFollowX extends Component {
     getHeadChange(): boolean {
         if (this.getKnock())
             return false;
-        if (this.CheckHead && this.m_bodyCheck.m_isHead)
-            return true;
-        if (this.CheckBotHead && this.m_bodyCheck.m_isBotHead && this.m_bodyCheck.m_isBot)
-            return true;
-        if (this.Follow != null) {
+        if (this.getTarget()) {
             if (!this.FollowDirAttack && this.getAttack())
                 return false;
             if (this.m_dir == 1 && this.node.position.clone().x > this.Follow.position.clone().x)
                 return true;
             if (this.m_dir == -1 && this.node.position.clone().x < this.Follow.position.clone().x)
                 return true;
+            return false;
         }
+        if (this.CheckBotHead && this.m_bodyCheck.m_isBotHead && this.m_bodyCheck.m_isBot)
+            return true;
+        if (this.CheckHead && this.m_bodyCheck.m_isHead)
+            return true;
         return false;
     }
 
@@ -157,6 +165,12 @@ export class BodyMoveFollowX extends Component {
         this.m_bodySpine.onViewDirection(this.m_dir);
         if (this.m_bodyAttack != null)
             this.m_bodyAttack.onDirUpdate(this.m_dir);
+    }
+
+    //
+
+    protected onMeleeFoundTarget() {
+        this.m_bodySpine.onIdle(true);
     }
 
     //
@@ -180,10 +194,9 @@ export class BodyMoveFollowX extends Component {
 
         switch (this.m_state) {
             case BodyState.NONE:
-                this.m_bodySpine.onIdle(true);
                 break;
             case BodyState.IDLE:
-                this.m_bodySpine.onIdle();
+                this.m_bodySpine.onIdle(true);
                 break;
             case BodyState.MOVE:
                 this.m_bodySpine.onMove();
@@ -217,6 +230,10 @@ export class BodyMoveFollowX extends Component {
         if (this.m_bodyKnock != null)
             return this.m_bodyKnock.m_knock;
         return false;
+    }
+
+    getTarget(): boolean {
+        return this.Follow != null ? this.Follow.isValid : false;
     }
 
     onPick() {

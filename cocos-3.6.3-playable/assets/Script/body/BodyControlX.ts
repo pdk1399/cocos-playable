@@ -125,9 +125,7 @@ export class BodyControlX extends Component {
     m_jumpContinue: boolean = false;
 
     m_dash: boolean = false;
-
     m_attack: boolean = false;
-    m_attackReadySchedule: any = null;
 
     m_pickUp: Node = null;
     m_pickUpProgess: boolean = false;
@@ -667,12 +665,10 @@ export class BodyControlX extends Component {
                     this.m_rigidbody.gravityScale = this.m_baseGravity;
                     this.m_rigidbody.linearVelocity = v2(this.m_rigidbody.linearVelocity.clone().x, -0.02); //Fix bug not fall after attack
                 }
-                if (this.AttackHold)
+                if (this.AttackHold) {
                     this.onAttackProgess();
-                if (this.getAttack())
-                    this.onAim();
-                else
                     this.onAimReset();
+                }
                 break;
         }
     }
@@ -700,10 +696,12 @@ export class BodyControlX extends Component {
             this.m_bodyAttack.onAimDeg(this.m_faceDirX == 1 ? 0 + this.AttackDegOffset : 180 - this.AttackDegOffset);
     }
 
-    protected onAttackProgess(): number {
+    protected onAttackProgess() {
         if (this.m_bodyAttack == null)
             return;
-        return this.m_bodyAttack.onAttackProgess();
+        if (this.MoveStopByBodyAttack || this.MoveStopByPressAttack)
+            this.m_bodySpine.onIdle(true);
+        this.scheduleOnce(() => this.m_bodyAttack.onAttackProgess());
     }
 
     //INTERACTION:
@@ -922,15 +920,13 @@ export class BodyControlX extends Component {
                 break;
             case PlayerStateX.ATTACK:
                 if (this.AttackHold)
-                    this.unschedule(this.m_attackReadySchedule);
-                if (this.MoveStopByBodyAttack || this.MoveStopByPressAttack)
-                    this.m_bodySpine.onIdle(true);
+                    this.m_bodyAttack.onAnimAttackUnReady();
                 break;
             case PlayerStateX.ATTACK_HOLD:
-                if (this.MoveStopByBodyAttack || this.MoveStopByPressAttack)
-                    this.m_bodySpine.onIdle(true);
-                if (this.AttackHold)
-                    this.m_attackReadySchedule = this.scheduleOnce(() => this.m_bodyAttack.onAttackHold(), this.m_bodyAttack.onAttackReady());
+                if (this.AttackHold) {
+                    this.m_bodyAttack.onAnimAttackUnReady();
+                    this.m_bodyAttack.onAnimAttackReady();
+                }
                 break;
         }
         this.m_state = state;

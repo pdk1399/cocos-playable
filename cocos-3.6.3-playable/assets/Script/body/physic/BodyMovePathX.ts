@@ -73,6 +73,9 @@ export class BodyMovePathX extends Component {
 
         this.node.on(ConstantBase.NODE_PICK, this.onPick, this);
         this.node.on(ConstantBase.NODE_THROW, this.onThrow, this);
+
+        if (this.m_bodyAttack != null)
+            this.node.on(ConstantBase.NODE_BODY_MELEE, this.onMeleeFoundTarget, this);
     }
 
     protected start(): void {
@@ -168,6 +171,12 @@ export class BodyMovePathX extends Component {
 
     //
 
+    protected onMeleeFoundTarget() {
+        this.m_bodySpine.onIdle(true);
+    }
+
+    //
+
     onStateUpdate() {
         let state = BodyState.IDLE;
         //FIND STAGE:
@@ -187,7 +196,6 @@ export class BodyMovePathX extends Component {
         this.m_state = state;
         switch (this.m_state) {
             case BodyState.NONE:
-                this.m_bodySpine.onIdle(true);
                 break;
             case BodyState.IDLE:
                 this.m_bodySpine.onIdle();

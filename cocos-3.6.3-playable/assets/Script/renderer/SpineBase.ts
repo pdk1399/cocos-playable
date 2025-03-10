@@ -186,14 +186,14 @@ export class SpineBase extends Component {
 
     onAnimationEmty(index: number, mixDuration: number) {
         this.Spine.getState().setEmptyAnimation(index, mixDuration);
-        this.Spine._skeleton.setSlotsToSetupPose();
-        this.Spine._skeleton.updateWorldTransform();
+        // this.Spine._skeleton.setSlotsToSetupPose();
+        // this.Spine._skeleton.updateWorldTransform();
     }
 
     onAnimationClear(index: number) {
         this.Spine.getState().clearTrack(index);
-        this.Spine._skeleton.setSlotsToSetupPose();
-        this.Spine._skeleton.updateWorldTransform();
+        // this.Spine._skeleton.setSlotsToSetupPose();
+        // this.Spine._skeleton.updateWorldTransform();
     }
 
     //
@@ -247,6 +247,6 @@ export class SpineBase extends Component {
         this.onAnimationClear(ConstantBase.ANIM_INDEX_AIM);
         this.m_aimBone.x = this.m_aimPosPrimary.x;
         this.m_aimBone.y = this.m_aimPosPrimary.y;
-        this.Spine._skeleton.updateWorldTransform();
+        // this.Spine._skeleton.updateWorldTransform();
     }
 }

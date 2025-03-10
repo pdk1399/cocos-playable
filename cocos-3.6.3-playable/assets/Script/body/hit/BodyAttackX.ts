@@ -8,11 +8,9 @@ const { ccclass, property } = _decorator;
 
 @ccclass('BodyAttackX')
 export class BodyAttackX extends Component {
-
+    //
     @property({ group: { name: 'Main' }, type: CCBoolean })
     Once: boolean = false;
-    @property({ group: { name: 'Main' }, type: CCFloat })
-    Delay: number = 0.02;
     @property({ group: { name: 'Main' }, type: CCFloat })
     DelayAttack: number = 0.02;
     @property({ group: { name: 'Main' }, type: CCFloat })
@@ -50,12 +48,10 @@ export class BodyAttackX extends Component {
 
     @property({ group: { name: 'Anim' }, type: CCBoolean })
     AnimMix: boolean = false;
-    @property({ group: { name: 'Anim' }, type: CCString })
-    AnimReady: string = 'attack_ready';
-    @property({ group: { name: 'Anim' }, type: CCString })
-    AnimHold: string = 'attack_hold';
-    @property({ group: { name: 'Anim' }, type: CCString })
-    AnimAttack: string = 'attack';
+    @property({ group: { name: 'Anim' }, type: [CCString] })
+    AnimReady: string[] = [];
+    @property({ group: { name: 'Anim' }, type: [CCString] })
+    AnimAttack: string[] = [];
     @property({ group: { name: 'Anim' }, type: CCFloat })
     AnimTimeScale: number = 1;
 
@@ -78,23 +74,28 @@ export class BodyAttackX extends Component {
     m_dir: number = 0;
 
     m_stop: boolean = false;
-    m_attack: boolean = false;
-    m_attackMeleeUltimate: boolean = false;
-    m_continue: boolean = false;
     m_dead: boolean = false;
+    m_attack: boolean = false;
+
+    m_continue: boolean = false;
 
     m_targetMelee: Node[] = [];
     m_targetRange: Node[] = [];
     m_targetRangeAim: Node = null;
-
-    readonly m_emitMelee: string = 'emit-body-melee';
-    readonly m_emitRange: string = 'emit-body-range';
 
     m_offsetMeleeX: number;
     m_offsetRangeX: number;
 
     m_colliderMelee: Collider2D = null;
     m_colliderRange: Collider2D = null;
+
+    m_attackMeleeUltimate: boolean = false;
+
+    m_attackSchedule: any = null;
+    m_animAttackIndex: number = 0;
+
+    m_attackReadySchedule: any = null;
+    m_animAttackReadyIndex: number = 0;
 
     m_body: BodyBase = null;
     m_bodyCheck: BodyCheckX = null;
@@ -123,9 +124,9 @@ export class BodyAttackX extends Component {
         }
 
         if (this.MeleeAuto)
-            this.node.on(this.m_emitMelee, this.onMeleeFoundTarget, this);
+            this.node.on(ConstantBase.NODE_BODY_MELEE, this.onMeleeFoundTarget, this);
         if (this.RangeAuto)
-            this.node.on(this.m_emitRange, this.onRangeFoundTarget, this);
+            this.node.on(ConstantBase.NODE_BODY_RANGE, this.onRangeFoundTarget, this);
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
         this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
@@ -152,7 +153,7 @@ export class BodyAttackX extends Component {
                         if (index >= 0)
                             break;
                         this.m_targetMelee.push(otherCollider.node);
-                        this.node.emit(this.m_emitMelee, otherCollider.node, true);
+                        this.node.emit(ConstantBase.NODE_BODY_MELEE, otherCollider.node, true);
                         break;
                 }
                 break;
@@ -163,7 +164,7 @@ export class BodyAttackX extends Component {
                         if (index >= 0)
                             break;
                         this.m_targetRange.push(otherCollider.node);
-                        this.node.emit(this.m_emitRange, otherCollider.node, true);
+                        this.node.emit(ConstantBase.NODE_BODY_RANGE, otherCollider.node, true);
                         break;
                 }
                 break;
@@ -179,7 +180,7 @@ export class BodyAttackX extends Component {
                         if (index < 0)
                             break;
                         this.m_targetMelee.splice(index, 1);
-                        this.node.emit(this.m_emitMelee, otherCollider.node, false);
+                        this.node.emit(ConstantBase.NODE_BODY_MELEE, otherCollider.node, false);
                         break;
                 }
                 break;
@@ -190,7 +191,7 @@ export class BodyAttackX extends Component {
                         if (index < 0)
                             break;
                         this.m_targetRange.splice(index, 1);
-                        this.node.emit(this.m_emitRange, otherCollider.node, false);
+                        this.node.emit(ConstantBase.NODE_BODY_RANGE, otherCollider.node, false);
                         break;
                 }
                 break;
@@ -247,7 +248,7 @@ export class BodyAttackX extends Component {
     protected onMeleeStart(): boolean {
         if (this.m_targetMelee.length == 0)
             return false;
-        this.onAttackProgess();
+        this.scheduleOnce(() => this.onAttackProgess());
         return true;
     }
 
@@ -293,7 +294,7 @@ export class BodyAttackX extends Component {
     protected onRangeStart(): boolean {
         if (this.m_targetRange.length == 0)
             return false;
-        this.onAttackProgess();
+        this.scheduleOnce(() => this.onAttackProgess());
         return true;
     }
 
@@ -358,39 +359,39 @@ export class BodyAttackX extends Component {
             return 0;
         this.m_attack = true;
         this.m_continue = true;
-        this.scheduleOnce(() => {
-            this.scheduleOnce(() => this.onAttackProgessInvoke(), this.DelayAttack);
-            //
-            let attackDuration = 0;
+        this.scheduleOnce(() => this.onAttackProgessInvoke(), this.DelayAttack);
+
+        this.unschedule(this.m_attackSchedule);
+        if (!this.AnimMix)
+            this.m_spine.onAnimationForceLast();
+        else
+            this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
+
+        let attackDuration = this.onAnimAttack();
+        this.m_attackSchedule = this.scheduleOnce(() => {
+            this.m_attack = false;
             if (!this.AnimMix)
-                attackDuration = this.m_spine.onAnimationForceUnSave(this.AnimAttack, false, true, this.AnimTimeScale);
+                this.m_spine.onAnimationForceLast();
             else
-                attackDuration = this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimAttack, false, true, this.AnimTimeScale);
-            this.scheduleOnce(() => {
+                this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
+            if (!this.Once) {
+                this.scheduleOnce(() => {
+                    if (this.m_continue) {
+                        if (!this.onMeleeStart())
+                            if (!this.onRangeStart()) {
+                                this.m_continue = false;
+                                this.m_attack = false;
+                            }
+                    }
+                }, this.DelayLoop);
+            }
+            else {
+                this.m_continue = false;
                 this.m_attack = false;
-                if (!this.AnimMix)
-                    this.m_spine.onAnimationForceLast();
-                else
-                    this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
-                if (!this.Once) {
-                    this.scheduleOnce(() => {
-                        if (this.m_continue) {
-                            if (!this.onMeleeStart())
-                                if (!this.onRangeStart()) {
-                                    this.m_continue = false;
-                                    this.m_attack = false;
-                                }
-                        }
-                    }, this.DelayLoop);
-                }
-                else {
-                    this.m_continue = false;
-                    this.m_attack = false;
-                }
-            }, attackDuration);
-            //
-        }, this.Delay);
-        return this.Delay;
+            }
+        }, attackDuration);
+
+        return Math.max(attackDuration, this.DelayAttack);
     }
 
     protected onAttackProgessInvoke() {
@@ -461,18 +462,34 @@ export class BodyAttackX extends Component {
 
     //ANIM
 
-    onAttackReady(): number {
+    protected onAnim(anim: string, loop: boolean, durationScale: boolean = false, timeScale: number = 1): number {
         if (!this.AnimMix)
-            return this.m_spine.onAnimationForce(this.AnimReady, false);
+            return this.m_spine.onAnimationForceUnSave(anim, loop, durationScale, timeScale);
         else
-            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimReady, false);
+            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, anim, loop, durationScale, timeScale);
     }
 
-    onAttackHold(): number {
-        if (!this.AnimMix)
-            return this.m_spine.onAnimationForce(this.AnimHold, false);
-        else
-            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, this.AnimHold, false);
+    onAnimAttackReady() {
+        if (this.m_animAttackReadyIndex > this.AnimReady.length - 1)
+            return;
+        let continueReady = this.m_animAttackReadyIndex < this.AnimReady.length - 1;
+        let durationReady = this.onAnim(this.AnimReady[this.m_animAttackReadyIndex], !continueReady);
+        if (continueReady)
+            this.m_attackReadySchedule = this.scheduleOnce(() => this.onAnimAttackReady(), durationReady);
+        this.m_animAttackReadyIndex++;
+    }
+
+    onAnimAttackUnReady() {
+        this.unschedule(this.m_attackReadySchedule);
+        this.m_animAttackReadyIndex = 0;
+    }
+
+    protected onAnimAttack(): number {
+        if (this.m_animAttackIndex > this.AnimAttack.length - 1)
+            this.m_animAttackIndex = 0;
+        let durationAttack = this.onAnim(this.AnimAttack[this.m_animAttackIndex], false, true, this.AnimTimeScale);
+        this.m_animAttackIndex++;
+        return durationAttack;
     }
 
     onAimDeg(deg: number) {
