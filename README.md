@@ -10,7 +10,7 @@
 # Build
 - Ironsource: <= 5MB - Use build Unity with version 3.6.3
 - Mintegral: <= 2.5MB
-- Unity: <= 5MB - Use build version 3.6.3
+- Unity: <= 5MB - Use build version 3.6.3 (Updated: Now can export >= 5MB)
 - Amazon: Use build Mintegral
 
 # Build Compress
