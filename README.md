@@ -9,9 +9,9 @@
 
 # Build
 - Ironsource: <= 5MB - Use build Unity with version 3.6.3
-- Mintegral: <= 2.5MB
+- Mintegral: <= 2.5MB - Should use version 3.8.3 to minimize build size
 - Unity: <= 5MB - Use build version 3.6.3 (Updated: Now can export >= 5MB)
-- Amazon: Use build Mintegral
+- Amazon: Use build Mintegral with version 3.8.3
 
 # Build Compress
 - Spine: Don't export skin, animation & images attach to slot (check in *.png with *.json file after export) that not used in scene.
