@@ -404,4 +404,8 @@ export class BodyCheckX extends Component {
     onBotCheckOut() {
         this.m_isBotForce = false;
     }
+
+    onBotCheckNone() {
+        this.m_isBotForce = null;
+    }
 }

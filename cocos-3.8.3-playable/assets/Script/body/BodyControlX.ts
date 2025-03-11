@@ -47,6 +47,10 @@ export class BodyControlX extends Component {
     MoveAirX: number = 40;
     @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
     MoveDampX = 40;
+    @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
+    MoveDashX = 5000;
+    @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
+    DelayDashX = 0.5;
     @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX && this.Type == BodyType.BALL; } })
     TorqueX = 2000;
     @property({ group: { name: 'MoveX' }, type: CCBoolean, visible(this: BodyControlX) { return !this.LockX; } })
@@ -125,6 +129,7 @@ export class BodyControlX extends Component {
     m_jumpContinue: boolean = false;
 
     m_dash: boolean = false;
+    m_dashDelay: boolean = false;
     m_attack: boolean = false;
 
     m_pickUp: Node = null;
@@ -198,9 +203,6 @@ export class BodyControlX extends Component {
 
     protected onControlByDirector(state: boolean, full: boolean = true) {
         if (state) {
-            director.on(ConstantBase.CONTROL_JUMP, this.onJump, this);
-            director.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
-
             director.on(ConstantBase.CONTROL_UP, this.onMoveUp, this);
             director.on(ConstantBase.CONTROL_DOWN, this.onMoveDown, this);
             director.on(ConstantBase.CONTROL_LEFT, this.onMoveLeft, this);
@@ -208,6 +210,11 @@ export class BodyControlX extends Component {
             director.on(ConstantBase.CONTROL_RELEASE, this.onMoveRelease, this);
             director.on(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             director.on(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
+
+            director.on(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            director.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
+
+            director.on(ConstantBase.CONTROL_DASH, this.onDash, this);
 
             director.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             director.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
@@ -233,9 +240,6 @@ export class BodyControlX extends Component {
             }
         }
         else {
-            director.off(ConstantBase.CONTROL_JUMP, this.onJump, this);
-            director.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
-
             director.off(ConstantBase.CONTROL_UP, this.onMoveUp, this);
             director.off(ConstantBase.CONTROL_DOWN, this.onMoveDown, this);
             director.off(ConstantBase.CONTROL_LEFT, this.onMoveLeft, this);
@@ -243,6 +247,11 @@ export class BodyControlX extends Component {
             director.off(ConstantBase.CONTROL_RELEASE, this.onMoveRelease, this);
             director.off(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             director.off(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
+
+            director.off(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            director.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
+
+            director.off(ConstantBase.CONTROL_DASH, this.onDash, this);
 
             director.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             director.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
@@ -271,9 +280,6 @@ export class BodyControlX extends Component {
 
     protected onControlByNode(state: boolean) {
         if (state) {
-            this.node.on(ConstantBase.CONTROL_JUMP, this.onJump, this);
-            this.node.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
-
             this.node.on(ConstantBase.CONTROL_UP, this.onMoveUp, this);
             this.node.on(ConstantBase.CONTROL_DOWN, this.onMoveDown, this);
             this.node.on(ConstantBase.CONTROL_LEFT, this.onMoveLeft, this);
@@ -281,6 +287,11 @@ export class BodyControlX extends Component {
             this.node.on(ConstantBase.CONTROL_RELEASE, this.onMoveRelease, this);
             this.node.on(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             this.node.on(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
+
+            this.node.on(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            this.node.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
+
+            this.node.on(ConstantBase.CONTROL_DASH, this.onDash, this);
 
             this.node.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             this.node.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
@@ -306,9 +317,6 @@ export class BodyControlX extends Component {
             }
         }
         else {
-            this.node.off(ConstantBase.CONTROL_JUMP, this.onJump, this);
-            this.node.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
-
             this.node.off(ConstantBase.CONTROL_UP, this.onMoveUp, this);
             this.node.off(ConstantBase.CONTROL_DOWN, this.onMoveDown, this);
             this.node.off(ConstantBase.CONTROL_LEFT, this.onMoveLeft, this);
@@ -316,6 +324,11 @@ export class BodyControlX extends Component {
             this.node.off(ConstantBase.CONTROL_RELEASE, this.onMoveRelease, this);
             this.node.off(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             this.node.off(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
+
+            this.node.off(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            this.node.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
+
+            this.node.off(ConstantBase.CONTROL_DASH, this.onDash, this);
 
             this.node.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             this.node.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
@@ -402,8 +415,10 @@ export class BodyControlX extends Component {
         if (this.JumpAuto && this.m_bodyCheck.m_isBot)
             this.onJump(dt);
 
-        if (this.m_dash)
+        if (this.m_dash) {
+            this.m_rigidbody.linearVelocity = v2(5000 * this.m_faceDirX, 0);
             return;
+        }
 
         if (this.getKnock()) {
             //Rigidbody unable move when in knock state
@@ -619,16 +634,20 @@ export class BodyControlX extends Component {
     //DASH:
 
     onDash() {
-        if (this.m_dash)
+        if (this.m_dash || this.m_dashDelay)
             return;
         this.m_dash = true;
-        this.m_rigidbody.linearVelocity = v2(5000 * this.m_faceDirX, 0);
+        this.m_dashDelay = true;
+        this.m_moveDirX = this.m_faceDirX;
+        this.m_rigidbody.linearVelocity = v2(this.MoveDashX * this.m_faceDirX, 0);
         this.m_rigidbody.gravityScale = 0;
         this.scheduleOnce(() => {
             this.m_dash = false;
             this.m_rigidbody.linearVelocity = v2(0, 0);
             this.m_rigidbody.gravityScale = this.m_baseGravity;
         }, 0.15);
+        this.scheduleOnce(() => this.m_dashDelay = false, this.DelayDashX);
+        this.m_bodyCheck.onBotCheckNone();
     }
 
     //SWITCH
@@ -867,8 +886,6 @@ export class BodyControlX extends Component {
         //FIND STAGE:
         if (this.getDead())
             state = PlayerStateX.DEAD;
-        else if (this.getHit())
-            state = PlayerStateX.HIT;
         else if (this.getAttack()) {
             if (this.AttackHold)
                 state = PlayerStateX.ATTACK_HOLD;
@@ -877,21 +894,21 @@ export class BodyControlX extends Component {
         }
         else if (this.m_dash)
             state = PlayerStateX.DASH;
-        else if (this.m_bodyCheck.m_isBot) {
+        // else if (this.getHit())
+        //     state = PlayerStateX.HIT;
+        else if (!this.m_bodyCheck.m_isBot) {
+            if (this.m_rigidbody.linearVelocity.y > 0)
+                state = PlayerStateX.JUMP;
+            else if (this.m_rigidbody.linearVelocity.y < 0)
+                state = PlayerStateX.AIR;
+        }
+        else {
             if (this.m_moveDirX == 0)
                 state = PlayerStateX.IDLE;
             else if (!this.m_bodyCheck.m_isHead)
                 state = PlayerStateX.MOVE;
             else
                 state = PlayerStateX.PUSH;
-        }
-        else {
-            if (this.m_rigidbody == null ? true : !this.m_rigidbody.isValid)
-                state = PlayerStateX.NONE;
-            else if (this.m_rigidbody.linearVelocity.y > 0)
-                state = PlayerStateX.JUMP;
-            else if (this.m_rigidbody.linearVelocity.y < 0)
-                state = PlayerStateX.AIR;
         }
         //UPDATE STAGE:
         if (this.m_state == state)
@@ -913,8 +930,8 @@ export class BodyControlX extends Component {
             case PlayerStateX.AIR:
                 this.m_bodySpine.onAirOff();
                 break;
-            case PlayerStateX.HIT:
-                break;
+            // case PlayerStateX.HIT:
+            //     break;
             case PlayerStateX.DASH:
                 this.m_bodySpine.onDash();
                 break;
@@ -930,6 +947,7 @@ export class BodyControlX extends Component {
                 break;
         }
         this.m_state = state;
+        console.log(this.m_bodyCheck.m_isBot + ' ' + this.m_state.toString());
     }
 
     //GET:
