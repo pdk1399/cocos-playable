@@ -947,7 +947,6 @@ export class BodyControlX extends Component {
                 break;
         }
         this.m_state = state;
-        console.log(this.m_bodyCheck.m_isBot + ' ' + this.m_state.toString());
     }
 
     //GET:
