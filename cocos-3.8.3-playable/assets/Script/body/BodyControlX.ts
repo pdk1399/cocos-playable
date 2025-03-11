@@ -595,8 +595,10 @@ export class BodyControlX extends Component {
             this.m_lockJump = false;
         }, this.JumpDelay);
 
-        this.m_state = PlayerStateX.JUMP;
-        this.m_bodySpine.onAirOn();
+        if (!this.getDead() && !this.getAttack() && !this.m_dash) {
+            this.m_state = PlayerStateX.JUMP;
+            this.m_bodySpine.onAirOn();
+        }
     }
 
     onJumRelease() {
@@ -614,8 +616,10 @@ export class BodyControlX extends Component {
         veloc.y = jumpUp != null ? jumpUp : this.JumpUpY;
         this.m_rigidbody.linearVelocity = veloc;
 
-        this.m_state = PlayerStateX.JUMP;
-        this.m_bodySpine.onAirOn();
+        if (!this.getDead() && !this.getAttack() && !this.m_dash) {
+            this.m_state = PlayerStateX.JUMP;
+            this.m_bodySpine.onAirOn();
+        }
     }
 
     protected onBot(stage: boolean) {
@@ -645,9 +649,14 @@ export class BodyControlX extends Component {
             this.m_dash = false;
             this.m_rigidbody.linearVelocity = v2(0, 0);
             this.m_rigidbody.gravityScale = this.m_baseGravity;
+            //
+            //Fix bug Dash while Jump cancel current Jump progress, don't remove code below
+            if (this.m_bodyCheck.m_isBot) {
+                this.m_jumpCountCurrent = 0;
+                this.m_jumpContinue = false;
+            }
         }, 0.15);
         this.scheduleOnce(() => this.m_dashDelay = false, this.DelayDashX);
-        this.m_bodyCheck.onBotCheckNone();
     }
 
     //SWITCH
