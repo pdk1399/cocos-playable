@@ -51,12 +51,13 @@ export class BodyCheckX extends Component {
     protected m_isBotCollide: boolean = false;
     protected m_isBotForce?: boolean = null;
     get m_isBot() {
-        // return this.m_isBotForce != null ? this.m_isBotForce : this.m_isBotCollide;
-        if (this.m_isBotForce != null)
-            return this.m_isBotForce;
+        if (this.Raycast) {
+            if (this.m_isBotForce != null)
+                return this.m_isBotForce;
+            if (this.m_countBody > 0 && !this.m_isHead)
+                return true;
+        }
         if (this.m_isBotCollide)
-            return true;
-        if (this.m_countBody > 0 && !this.m_isHead)
             return true;
         return false;
     }

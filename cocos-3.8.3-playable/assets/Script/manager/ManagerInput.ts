@@ -84,6 +84,7 @@ export class ManagerInput extends Component {
     m_left: boolean = false;
     m_right: boolean = false;
     m_jump: boolean = false;
+    m_dash: boolean = false;
     m_attack: boolean = false;
     m_switchIndex: number = 0;
 
@@ -283,6 +284,9 @@ export class ManagerInput extends Component {
         if (this.BtnJump != null)
             this.BtnJump.active = false;
 
+        if (this.BtnDash != null)
+            this.BtnDash.active = false;
+
         if (this.JoyMove != null)
             this.JoyMove.node.active = false;
 
@@ -316,6 +320,9 @@ export class ManagerInput extends Component {
 
         if (this.BtnJump != null)
             this.BtnJump.active = this.m_avaible;
+
+        if (this.BtnDash != null)
+            this.BtnDash.active = this.m_avaible;
 
         if (this.JoyMove != null)
             this.JoyMove.node.active = this.m_avaible;
@@ -555,7 +562,8 @@ export class ManagerInput extends Component {
             !this.m_down &&
             !this.m_left &&
             !this.m_right &&
-            !this.m_jump &&
+            //!this.m_jump &&
+            !this.m_dash &&
             !this.m_attack)
             this.m_keyboard = false;
     }

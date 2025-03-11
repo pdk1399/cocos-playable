@@ -52,6 +52,10 @@ export class BodyAttackX extends Component {
     AnimReady: string[] = [];
     @property({ group: { name: 'Anim' }, type: [CCString] })
     AnimAttack: string[] = [];
+    @property({ group: { name: 'Anim' }, type: [CCFloat] })
+    DelayAttackAnim: number[] = [];
+    @property({ group: { name: 'Anim' }, type: [CCInteger] })
+    MeleeHitAnim: number[] = [];
     @property({ group: { name: 'Anim' }, type: CCFloat })
     AnimTimeScale: number = 1;
 
@@ -76,7 +80,6 @@ export class BodyAttackX extends Component {
     m_stop: boolean = false;
     m_dead: boolean = false;
     m_attack: boolean = false;
-
     m_continue: boolean = false;
 
     m_targetMelee: Node[] = [];
@@ -89,6 +92,7 @@ export class BodyAttackX extends Component {
     m_colliderMelee: Collider2D = null;
     m_colliderRange: Collider2D = null;
 
+    m_attackMeleeHit: number;
     m_attackMeleeUltimate: boolean = false;
 
     m_attackSchedule: any = null;
@@ -140,6 +144,14 @@ export class BodyAttackX extends Component {
             this.m_offsetMeleeX = this.m_colliderMelee.offset.x;
         if (this.m_colliderRange != null)
             this.m_offsetRangeX = this.m_colliderRange.offset.x;
+        while (this.DelayAttackAnim.length < this.AnimAttack.length)
+            this.DelayAttackAnim.push(this.DelayAttack);
+        while (this.DelayAttackAnim.length > this.AnimAttack.length)
+            this.DelayAttackAnim.splice(this.DelayAttackAnim.length - 1, 1);
+        while (this.MeleeHitAnim.length < this.AnimAttack.length)
+            this.MeleeHitAnim.push(this.MeleeHit);
+        while (this.MeleeHitAnim.length > this.AnimAttack.length)
+            this.MeleeHitAnim.splice(this.MeleeHitAnim.length - 1, 1);
     }
 
     //
@@ -257,7 +269,7 @@ export class BodyAttackX extends Component {
             if (this.m_attackMeleeUltimate)
                 target.emit(ConstantBase.NODE_BODY_DEAD, this.node);
             else
-                target.emit(ConstantBase.NODE_BODY_HIT, this.MeleeHit, this.node);
+                target.emit(ConstantBase.NODE_BODY_HIT, this.m_attackMeleeHit, this.node);
         });
     }
 
@@ -359,7 +371,6 @@ export class BodyAttackX extends Component {
             return 0;
         this.m_attack = true;
         this.m_continue = true;
-        this.scheduleOnce(() => this.onAttackProgessInvoke(), this.DelayAttack);
 
         this.unschedule(this.m_attackSchedule);
         if (!this.AnimMix)
@@ -367,7 +378,7 @@ export class BodyAttackX extends Component {
         else
             this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
 
-        let attackDuration = this.onAnimAttack();
+        let attackDuration = this.onAnim(this.AnimAttack[this.m_animAttackIndex], false, true, this.AnimTimeScale);
         this.m_attackSchedule = this.scheduleOnce(() => {
             this.m_attack = false;
             if (!this.AnimMix)
@@ -390,6 +401,15 @@ export class BodyAttackX extends Component {
                 this.m_attack = false;
             }
         }, attackDuration);
+
+        this.m_attackMeleeHit = this.MeleeHitAnim[this.m_animAttackIndex];
+        this.scheduleOnce(() => {
+            this.onAttackProgessInvoke();
+        }, this.DelayAttackAnim[this.m_animAttackIndex]);
+
+        this.m_animAttackIndex++;
+        if (this.m_animAttackIndex > this.AnimAttack.length - 1)
+            this.m_animAttackIndex = 0;
 
         return Math.max(attackDuration, this.DelayAttack);
     }
@@ -482,14 +502,6 @@ export class BodyAttackX extends Component {
     onAnimAttackUnReady() {
         this.unschedule(this.m_attackReadySchedule);
         this.m_animAttackReadyIndex = 0;
-    }
-
-    protected onAnimAttack(): number {
-        if (this.m_animAttackIndex > this.AnimAttack.length - 1)
-            this.m_animAttackIndex = 0;
-        let durationAttack = this.onAnim(this.AnimAttack[this.m_animAttackIndex], false, true, this.AnimTimeScale);
-        this.m_animAttackIndex++;
-        return durationAttack;
     }
 
     onAimDeg(deg: number) {
