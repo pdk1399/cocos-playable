@@ -496,8 +496,10 @@ export class BodyControlXY extends Component {
                     this.m_bodyAttack.onAnimAttackUnReady();
                 break;
             case PlayerStateXY.ATTACK_HOLD:
-                if (this.AttackHold)
+                if (this.AttackHold) {
+                    this.m_bodyAttack.onAnimAttackUnReady();
                     this.m_bodyAttack.onAnimAttackReady();
+                }
                 break;
         }
         this.m_state = state;

@@ -4,6 +4,7 @@ import { BodyCheckX } from '../physic/BodyCheckX';
 import { ConstantBase } from '../../ConstantBase';
 import { ShootBase } from '../../shoot/ShootBase';
 import { SpineBase } from '../../renderer/SpineBase';
+import { BodySpine } from '../BodySpine';
 const { ccclass, property } = _decorator;
 
 @ccclass('BodyAttackX')
@@ -105,12 +106,14 @@ export class BodyAttackX extends Component {
     m_bodyCheck: BodyCheckX = null;
     m_shoot: ShootBase = null;
     m_spine: SpineBase = null;
+    m_bodySpine: BodySpine = null;
 
     protected onLoad(): void {
         this.m_body = this.getComponent(BodyBase);
         this.m_bodyCheck = this.getComponent(BodyCheckX);
         this.m_shoot = this.getComponent(ShootBase);
         this.m_spine = this.getComponent(SpineBase);
+        this.m_bodySpine = this.getComponent(BodySpine);
 
         let colliders = this.getComponents(Collider2D);
         for (let i = 0; i < colliders.length; i++) {
@@ -373,18 +376,28 @@ export class BodyAttackX extends Component {
         this.m_continue = true;
 
         this.unschedule(this.m_attackSchedule);
+
+        this.m_bodySpine.m_lockAttack = true;
         if (!this.AnimMix)
             this.m_spine.onAnimationForceLast();
         else
             this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
 
-        let attackDuration = this.onAnim(this.AnimAttack[this.m_animAttackIndex], false, true, this.AnimTimeScale);
+        let attackDuration = this.m_bodySpine.onAnimAttack(
+            this.AnimAttack[this.m_animAttackIndex],
+            this.AnimMix,
+            /*loop*/ false,
+            /*durationScale*/ true,
+            /*animTimeScale*/ this.AnimTimeScale);
         this.m_attackSchedule = this.scheduleOnce(() => {
             this.m_attack = false;
+
+            this.m_bodySpine.m_lockAttack = false;
             if (!this.AnimMix)
                 this.m_spine.onAnimationForceLast();
             else
                 this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
+
             if (!this.Once) {
                 this.scheduleOnce(() => {
                     if (this.m_continue) {
@@ -482,18 +495,11 @@ export class BodyAttackX extends Component {
 
     //ANIM
 
-    protected onAnim(anim: string, loop: boolean, durationScale: boolean = false, timeScale: number = 1): number {
-        if (!this.AnimMix)
-            return this.m_spine.onAnimationForceUnSave(anim, loop, durationScale, timeScale);
-        else
-            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, anim, loop, durationScale, timeScale);
-    }
-
     onAnimAttackReady() {
         if (this.m_animAttackReadyIndex > this.AnimReady.length - 1)
             return;
         let continueReady = this.m_animAttackReadyIndex < this.AnimReady.length - 1;
-        let durationReady = this.onAnim(this.AnimReady[this.m_animAttackReadyIndex], !continueReady);
+        let durationReady = this.m_bodySpine.onAnimAttack(this.AnimReady[this.m_animAttackReadyIndex], this.AnimMix, !continueReady);
         if (continueReady)
             this.m_attackReadySchedule = this.scheduleOnce(() => this.onAnimAttackReady(), durationReady);
         this.m_animAttackReadyIndex++;

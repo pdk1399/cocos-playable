@@ -61,6 +61,8 @@ export class BodySpine extends Component {
     m_hit: boolean = false;
     m_dead: boolean = false;
 
+    m_lockAttack: boolean = false;
+
     m_body: BodyBase = null;
     m_spine: SpineBase = null;
 
@@ -104,6 +106,8 @@ export class BodySpine extends Component {
         if (this.m_hit || this.m_dead)
             return 0;
         if (!this.AnimHitActive)
+            return 0;
+        if (this.m_lockAttack)
             return 0;
         if (this.AudioHit != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimHit : true))
             this.AudioHit.play();
@@ -164,6 +168,15 @@ export class BodySpine extends Component {
         if (this.m_hit || this.m_dead)
             return 0;
         return this.m_spine.onAnimation(this.AnimDash, true);
+    }
+
+    //ATTACK
+
+    onAnimAttack(anim: string, animMix: boolean, loop: boolean, durationScale: boolean = false, timeScale: number = 1): number {
+        if (!animMix)
+            return this.m_spine.onAnimationForceUnSave(anim, loop, durationScale, timeScale);
+        else
+            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, anim, loop, durationScale, timeScale);
     }
 
     //PICK:
