@@ -19,6 +19,12 @@
 # Change link store
 - Can change link store of HTML file build without re-build in project by search text "https://play.google.com/".
 
+# Spine
+- Export spine *.json version 3.8.3 for both cocos version 3.6.3 & 3.8.3.
+- If want to change name file(s) of spine:
+    + Do it inside folder explorer instead of cocos editor (and don't focus on cocos editor while doing this).
+    + Then change name of image path in file *.atlas.txt (like "char.png" at the first line).
+
 # Tilemap
 - To open and edit Tile file in Cocos, use Tiled tool.
 - Website: https://www.mapeditor.org/
