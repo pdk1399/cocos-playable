@@ -19,7 +19,7 @@
 - Tile: Any tile sprite import into tile file *.tmx will make it heavier, remove any tile assets that don't used in scene.
 
 # Spine
-- Export spine *.json version 3.8.3 for both cocos version 3.6.3 & 3.8.3.
+- Export file(s) spine *.json version 3.8.3 for both cocos version 3.6.3 & 3.8.3.
 - If want to change name file(s) of spine:
     + Do it inside folder explorer instead of cocos editor (and don't focus on cocos editor while doing this).
     + Then change name of image path in file *.atlas.txt (like "char.png" at the first line).
