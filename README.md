@@ -5,7 +5,7 @@
 - Support are limit on every version, so update Cocos Creator or Project Editor with caution.
 
 # Tool build:
-- Super-html package in version 3.8.3 need Node.js package install to use.
+- Super-html package in version 3.8.3 need Node.js package installed to use.
 
 # Build
 - Ironsource: <= 5MB - Use build Unity with version 3.6.3
@@ -14,10 +14,9 @@
 - Amazon: Use build Mintegral with version 3.8.3
 
 # Build Compress
+- Image (include image of spine): With size >=150KB can be called heavyly and should compress.
 - Spine: Don't export skin, animation & images attach to slot (check in *.png with *.json file after export) that not used in scene.
-
-# Change link store
-- Can change link store of HTML file build without re-build in project by search text "https://play.google.com/".
+- Tile: Any tile sprite import into tile file *.tmx will make it heavier, remove any tile assets that don't used in scene.
 
 # Spine
 - Export spine *.json version 3.8.3 for both cocos version 3.6.3 & 3.8.3.
@@ -29,3 +28,6 @@
 - To open and edit Tile file in Cocos, use Tiled tool.
 - Website: https://www.mapeditor.org/
 - Itch.io: https://thorbjorn.itch.io/tiled
+
+# Change link store
+- Can change link store of HTML file build without re-build in project by search text "https://play.google.com/".
