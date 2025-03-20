@@ -27,13 +27,13 @@ export class UiJoystick extends Component {
     @property({ group: { name: 'Main' }, type: CCFloat })
     RatioOffset: number = 0.75;
 
-    @property({ group: { name: 'Init' }, type: CCBoolean })
+    @property({ group: { name: 'Node' }, type: CCBoolean })
     DotFocus: boolean = false;
-    @property({ group: { name: 'Init' }, type: Node })
+    @property({ group: { name: 'Node' }, type: Node })
     Dot: Node = null;
-    @property({ group: { name: 'Init' }, type: Node })
+    @property({ group: { name: 'Node' }, type: Node })
     Mask: Node = null;
-    @property({ group: { name: 'Init' }, type: Camera })
+    @property({ group: { name: 'Node' }, type: Camera })
     UiCamera: Camera = null;
 
     m_dotRadius: number;
