@@ -27,6 +27,8 @@ export class UiJoystick extends Component {
     @property({ group: { name: 'Main' }, type: CCFloat })
     RatioOffset: number = 0.75;
 
+    @property({ group: { name: 'Init' }, type: CCBoolean })
+    DotFocus: boolean = false;
     @property({ group: { name: 'Init' }, type: Node })
     Dot: Node = null;
     @property({ group: { name: 'Init' }, type: Node })
@@ -51,10 +53,18 @@ export class UiJoystick extends Component {
         this.m_uiTransform = this.node.getComponent(UITransform);
         this.m_uiOpacity = this.node.getComponent(UIOpacity);
 
-        this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
-        this.node.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
-        this.node.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
-        this.node.on(Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+        if (this.DotFocus) {
+            this.Dot.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
+            this.Dot.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
+            this.Dot.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
+            this.Dot.on(Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+        }
+        else {
+            this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
+            this.node.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
+            this.node.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
+            this.node.on(Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+        }
     }
 
     protected start(): void {
