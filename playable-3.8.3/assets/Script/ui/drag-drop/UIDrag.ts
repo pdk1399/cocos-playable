@@ -33,7 +33,7 @@ export class UIDrag extends Component {
     m_posLocked: Vec3 = v3();
     m_posDot: Vec3 = v3();
     m_direction: Vec2 = v2();
-    m_opacity: number;
+    m_posDrop: Vec3 = v3();
 
     m_uiTransform: UITransform = null;
 
@@ -66,6 +66,7 @@ export class UIDrag extends Component {
         let dotSize = this.Drag.getComponent(UITransform).contentSize;
         this.m_dotRadius = Math.max(dotSize.x, dotSize.y) / 2;
         this.m_posPrimary = this.Drag.getPosition();
+        this.m_posDrop = this.node.position.clone();
     }
 
     //DRAG
@@ -124,17 +125,18 @@ export class UIDrag extends Component {
         if (this.m_dropCurrent != null) {
             this.m_drop = this.m_dropCurrent;
             this.m_uiDrop = this.m_uiDropCurrent;
-            console.log('New parent ' + this.m_dropCurrent.name);
         }
         this.node.setParent(this.m_drop, true);
+        this.node.position = this.m_posDrop;
+        console.log(this.node.parent.name);
 
-        // this.m_direction = Vec2.ZERO.clone();
+        this.m_direction = Vec2.ZERO.clone();
 
-        // this.m_posTouched = this.m_posPrimary;
-        // this.m_posLocked = this.m_posPrimary;
-        // this.m_posDot = this.m_posPrimary;
+        this.m_posTouched = this.m_posPrimary;
+        this.m_posLocked = this.m_posPrimary;
+        this.m_posDot = this.m_posPrimary;
 
-        // this.Drag.position = this.m_posDot;
+        this.Drag.position = this.m_posDot;
     }
 
     //DROP
@@ -144,7 +146,6 @@ export class UIDrag extends Component {
             return;
         this.m_dropCurrent = otherCollider.node;
         this.m_uiDropCurrent = otherCollider.node.getComponent(UIDrop);
-        console.log('Enter ' + otherCollider.node.name);
     }
 
     protected onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
@@ -154,6 +155,5 @@ export class UIDrag extends Component {
             return;
         this.m_dropCurrent = null;
         this.m_uiDropCurrent = null;
-        console.log('Leave ' + otherCollider.node.name);
     }
 }
