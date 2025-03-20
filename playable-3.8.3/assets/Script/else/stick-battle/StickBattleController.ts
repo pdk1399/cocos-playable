@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCInteger, CCString, Collider2D, Component, Contact2DType, director, EventMouse, EventTouch, Input, IPhysics2DContact, sp, tween, Tween, v3 } from 'cc';
-import { StickField } from './StickField';
+import { StickField } from './StickBattleField';
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 

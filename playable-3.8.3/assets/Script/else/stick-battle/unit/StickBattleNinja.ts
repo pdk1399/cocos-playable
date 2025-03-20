@@ -1,11 +1,11 @@
-import { _decorator, CCFloat, CCInteger, Collider2D, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D, v2, Vec2 } from 'cc';
-import { StickController } from '../StickController';
-import { StickField } from '../StickField';
+import { _decorator, CCFloat, CCInteger, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D, v2, Vec2 } from 'cc';
+import { StickController } from '../StickBattleController';
+import { StickField } from '../StickBattleField';
 import { ConstantBase } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('StickSword')
-export class StickSword extends StickController {
+@ccclass('StickNinja')
+export class StickNinja extends StickController {
     @property(CCInteger)
     attackDamage: number = 1;
 
