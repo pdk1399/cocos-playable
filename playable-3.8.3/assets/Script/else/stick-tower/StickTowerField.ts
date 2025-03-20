@@ -3,12 +3,6 @@ const { ccclass, property } = _decorator;
 
 @ccclass('StickTowerManager')
 export class StickTowerManager extends Component {
-    start() {
 
-    }
 
-    update(deltaTime: number) {
-        
-    }
 }
-
