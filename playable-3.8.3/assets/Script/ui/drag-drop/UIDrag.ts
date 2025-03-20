@@ -128,7 +128,6 @@ export class UIDrag extends Component {
         }
         this.node.setParent(this.m_drop, true);
         this.node.position = this.m_posDrop;
-        console.log(this.node.parent.name);
 
         this.m_direction = Vec2.ZERO.clone();
 
