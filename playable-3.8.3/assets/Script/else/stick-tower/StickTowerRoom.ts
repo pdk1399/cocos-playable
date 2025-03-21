@@ -2,10 +2,13 @@ import { _decorator, Component, director, Node } from 'cc';
 import { StickTowerUnit } from './StickTowerUnit';
 import { ConstantBase } from '../../ConstantBase';
 import { UIDrag } from '../../ui/drag-drop/UIDrag';
+import { StickTowerField } from './StickTowerField';
 const { ccclass, property } = _decorator;
 
 @ccclass('StickTowerRoom')
 export class StickTowerRoom extends Component {
+
+    m_field: StickTowerField = null;
 
     m_player: StickTowerUnit = null;
     m_uiDragPlayer: UIDrag = null;
@@ -55,6 +58,12 @@ export class StickTowerRoom extends Component {
                     this.m_player.onPointAdd(enermyPoint);
                     this.m_unit[this.m_unit.length - 1].node.destroy();
                     this.m_unit.splice(this.m_unit.length - 1, 1);
+                    if (this.m_field.onRoomCheckWin()) {
+                        this.scheduleOnce(() => {
+                            this.m_player.onUnitWin();
+                            director.emit(ConstantBase.GAME_COMPLETE);
+                        }, 1);
+                    }
                 }, this.m_unit[this.m_unit.length - 1].onUnitDead());
             }
             else {
