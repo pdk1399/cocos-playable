@@ -1,4 +1,4 @@
-import { _decorator, Camera, CCInteger, Collider2D, Component, Contact2DType, EventTouch, IPhysics2DContact, Node, RigidBody2D, UIOpacity, UITransform, v2, v3, Vec2, Vec3 } from 'cc';
+import { _decorator, Camera, CCBoolean, CCInteger, Collider2D, Component, Contact2DType, EventTouch, IPhysics2DContact, Node, RigidBody2D, UIOpacity, UITransform, v2, v3, Vec2, Vec3 } from 'cc';
 import { UIDrop } from './UIDrop';
 const { ccclass, property } = _decorator;
 
@@ -12,6 +12,8 @@ export class UIDrag extends Component {
     //- UIDrag node must be the child of UIDrop node for working progress.
     //- Top node should have highest index view in scene (and shouldn't be null to avoid un-right view).
 
+    @property({ group: { name: 'Node' }, type: CCBoolean })
+    Lock: boolean = false;
     @property({ group: { name: 'Node' }, type: Node })
     Drag: Node = null;
     @property({ group: { name: 'Node' }, type: Node })
@@ -82,6 +84,9 @@ export class UIDrag extends Component {
     //DRAG: Base on code from UIJoystick.ts
 
     onTouchStart(event: EventTouch) {
+        if (this.Lock)
+            return;
+
         this.m_drag = true;
         this.node.setParent(this.Top, true); //While dragging, the node will be on top of all other nodes
 
@@ -109,6 +114,12 @@ export class UIDrag extends Component {
     }
 
     onTouchMove(event: EventTouch) {
+        if (this.Lock)
+            return;
+        if (!this.m_drag)
+            //Avoid glitch when dragging before starting dragging progress after un-locking
+            return;
+
         let tempV2 = event.getLocation().clone();
         let tempV3 = new Vec3();
         tempV3.x = tempV2.x;
@@ -131,6 +142,12 @@ export class UIDrag extends Component {
     }
 
     onTouchEnd(event: EventTouch) {
+        if (this.Lock)
+            return;
+        if (!this.m_drag)
+            //Avoid glitch when dragging before starting dragging progress after un-locking
+            return;
+
         this.m_drag = false;
         if (this.m_dropCurrent != null) {
             if (this.m_dropCurrent != this.m_drop)
@@ -155,6 +172,9 @@ export class UIDrag extends Component {
     //DROP
 
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        if (this.Lock)
+            return;
+
         if (selfCollider.tag != this.TagDrag || otherCollider.tag != this.TagDrop)
             return;
         //NOTE: When begin dragging, the current drop node will be the first drop node contact.
@@ -163,6 +183,9 @@ export class UIDrag extends Component {
     }
 
     protected onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        if (this.Lock)
+            return;
+
         if (selfCollider.tag != this.TagDrag || otherCollider.tag != this.TagDrop)
             return;
         if (otherCollider.node != this.m_dropCurrent)
