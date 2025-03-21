@@ -1,10 +1,10 @@
 import { _decorator, CCBoolean, CCInteger, CCString, Collider2D, Component, Contact2DType, director, EventMouse, EventTouch, Input, IPhysics2DContact, sp, tween, Tween, v3 } from 'cc';
-import { StickField } from './StickBattleField';
+import { StickBattleField } from './StickBattleField';
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('StickController')
-export class StickController extends Component {
+export class StickBattleController extends Component {
     @property(CCBoolean)
     UnitTeam: boolean = true;
 
@@ -39,7 +39,7 @@ export class StickController extends Component {
 
     public isDead(): boolean { return this.health <= 0; }
 
-    public isStop(): boolean { return this.isDead() || !StickField.Instance.isBattleStart() || StickField.Instance.isBattleEnd(); }
+    public isStop(): boolean { return this.isDead() || !StickBattleField.Instance.isBattleStart() || StickBattleField.Instance.isBattleEnd(); }
 
     //
 
@@ -116,7 +116,7 @@ export class StickController extends Component {
         this.health = 0;
         this.SetAnim(this.AnimDead, false);
         //
-        StickField.Instance.SetStickRemove(this, this.isTeam());
+        StickBattleField.Instance.SetStickRemove(this, this.isTeam());
         //
         if (this.isTeam())
             director.emit(ConstantBase.STICK_BLUE_DEAD, this.node);

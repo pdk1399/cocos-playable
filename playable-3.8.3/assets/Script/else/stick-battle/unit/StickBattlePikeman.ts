@@ -1,11 +1,11 @@
 import { _decorator, CCFloat, CCInteger, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D, v2, Vec2 } from 'cc';
-import { StickController } from '../StickBattleController';
-import { StickField } from '../StickBattleField';
+import { StickBattleController } from '../StickBattleController';
+import { StickBattleField } from '../StickBattleField';
 import { ConstantBase } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('StickPikeman')
-export class StickPikeman extends StickController {
+export class StickBattlePikeman extends StickBattleController {
     @property(CCInteger)
     attackDamage: number = 1;
 
@@ -23,8 +23,8 @@ export class StickPikeman extends StickController {
 
     animMove(): string { return this.moveSpeed > 0 ? this.ANIM_MOVE : this.ANIM_IDLE; }
 
-    attackTarget: StickController = null;
-    attackRange: StickController[] = [];
+    attackTarget: StickBattleController = null;
+    attackRange: StickBattleController[] = [];
 
     moveTarget: Node = null;
     moveDir: Vec2 = Vec2.ZERO;
@@ -92,7 +92,7 @@ export class StickPikeman extends StickController {
             return;
         }
         //
-        var TargetClosed = StickField.Instance.GetStickClosed(this, this.isTeam()).node;
+        var TargetClosed = StickBattleField.Instance.GetStickClosed(this, this.isTeam()).node;
         if (TargetClosed != null) {
             this.attackTarget = null;
             this.moveTarget = TargetClosed;
@@ -116,7 +116,7 @@ export class StickPikeman extends StickController {
         if (this.animCurrent() == this.ANIM_ATTACK)
             return;
         //
-        if (StickField.Instance.isBattleEnd() && !this.isDead()) {
+        if (StickBattleField.Instance.isBattleEnd() && !this.isDead()) {
             this.SetAnim(this.ANIM_IDLE, true);
             return;
         }
@@ -131,9 +131,9 @@ export class StickPikeman extends StickController {
 
     //
 
-    private SetTargetInRangeAdd(Target: StickController) {
+    private SetTargetInRangeAdd(Target: StickBattleController) {
         //CHECK STICK!
-        var Stick = Target.getComponent(StickController);
+        var Stick = Target.getComponent(StickBattleController);
         if (Stick == null)
             return;
         if (Stick.isTeam() == this.isTeam())
@@ -150,9 +150,9 @@ export class StickPikeman extends StickController {
         this.SetAttack(false);
     }
 
-    private SetTargetInRangeRemove(Target: StickController) {
+    private SetTargetInRangeRemove(Target: StickBattleController) {
         //CHECK STICK!
-        var Stick = Target.getComponent(StickController);
+        var Stick = Target.getComponent(StickBattleController);
         if (Stick == null)
             return;
         if (Stick.isTeam() == this.isTeam())
@@ -164,7 +164,7 @@ export class StickPikeman extends StickController {
             this.attackRange.splice(index, 1);
     }
 
-    private GetTargetInRange(): StickController {
+    private GetTargetInRange(): StickBattleController {
         //FIND:
         for (var i = 0; i < this.attackRange.length; i++) {
             if (this.attackRange[i].isDead())
@@ -191,7 +191,7 @@ export class StickPikeman extends StickController {
                 switch (otherCollider.tag) {
                     //-------------------------------------------------
                     case ConstantBase.TAG_FIELD_RENDERER:
-                        StickField.Instance.SetStickRenderer();
+                        StickBattleField.Instance.SetStickRenderer();
                         break;
                     //-------------------------------------------------
                 }
@@ -201,7 +201,7 @@ export class StickPikeman extends StickController {
                 switch (otherCollider.tag) {
                     //-------------------------------------------------
                     case ConstantBase.TAG_FIELD_BODY:
-                        this.SetTargetInRangeAdd(otherCollider.getComponent(StickController));
+                        this.SetTargetInRangeAdd(otherCollider.getComponent(StickBattleController));
                         break;
                     //-------------------------------------------------
                 }
@@ -220,7 +220,7 @@ export class StickPikeman extends StickController {
                 switch (otherCollider.tag) {
                     //-------------------------------------------------
                     case ConstantBase.TAG_FIELD_BODY:
-                        this.SetTargetInRangeRemove(otherCollider.getComponent(StickController));
+                        this.SetTargetInRangeRemove(otherCollider.getComponent(StickBattleController));
                         break;
                     //-------------------------------------------------
                 }
@@ -229,7 +229,7 @@ export class StickPikeman extends StickController {
         }
     }
 
-    private onEnermyDead(Target: StickController) {
+    private onEnermyDead(Target: StickBattleController) {
         if (this.isStop()) {
             this.SetTargetUpdateAnim();
             return;
@@ -304,7 +304,7 @@ export class StickPikeman extends StickController {
             //ATTACK HIT!
             if (this.attackTarget != null)
                 //NOTE: When stick attack, if target missing by dead or else, this attack will be fail!
-                this.attackTarget.getComponent(StickController).SetHealth(-this.attackDamage);
+                this.attackTarget.getComponent(StickBattleController).SetHealth(-this.attackDamage);
         }, DurationAttack / 2);
     }
 }

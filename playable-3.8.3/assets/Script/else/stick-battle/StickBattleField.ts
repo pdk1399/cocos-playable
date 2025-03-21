@@ -1,13 +1,13 @@
 import { _decorator, CCBoolean, Color, Component, director, EventTouch, Input, input, KeyCode, Label, Node, Sprite, v2, v3, Vec2 } from 'cc';
-import { StickController } from './StickBattleController';
-import { StickProgess } from './StickBattleProgess';
+import { StickBattleController } from './StickBattleController';
+import { StickBattleProgess } from './StickBattleProgess';
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('StickField')
-export class StickField extends Component {
+export class StickBattleField extends Component {
 
-    static Instance: StickField;
+    static Instance: StickBattleField;
 
     @property(CCBoolean)
     touchStart: boolean = true;
@@ -18,8 +18,8 @@ export class StickField extends Component {
     @property(Node)
     Area: Node = null;
 
-    @property(StickProgess)
-    Progess: StickProgess = null;
+    @property(StickBattleProgess)
+    Progess: StickBattleProgess = null;
 
     @property(Node)
     Hand: Node = null;
@@ -33,17 +33,17 @@ export class StickField extends Component {
     //
 
     touchArea: Sprite[] = [];
-    touchStick: StickController = null;
+    touchStick: StickBattleController = null;
     touchTime: number = 0;
 
     //
 
-    sticks: StickController[] = [];
+    sticks: StickBattleController[] = [];
 
     //
 
     stickBlueStart: number = 0;
-    sticksBlue: StickController[] = [];
+    sticksBlue: StickBattleController[] = [];
 
     public progessBlue(): number { return 1.0 * this.sticksBlue.length / (this.sticksBlue.length + this.sticksRed.length); }
 
@@ -52,7 +52,7 @@ export class StickField extends Component {
     //
 
     stickRedStart: number = 0;
-    sticksRed: StickController[] = [];
+    sticksRed: StickBattleController[] = [];
 
     public progessRed(): number { return 1.0 * this.sticksRed.length / (this.sticksBlue.length + this.sticksRed.length); }
 
@@ -72,7 +72,7 @@ export class StickField extends Component {
     readonly DELAY_BATTLE_RESULT: number = 1.5;
 
     protected onLoad(): void {
-        StickField.Instance = this;
+        StickBattleField.Instance = this;
     }
 
     protected start(): void {
@@ -225,7 +225,7 @@ export class StickField extends Component {
                 //Don't check object if it not active!
                 continue;
             //
-            var Stick = this.Field.children[i].getComponent(StickController);
+            var Stick = this.Field.children[i].getComponent(StickBattleController);
             if (Stick == null)
                 continue;
             //
@@ -268,7 +268,7 @@ export class StickField extends Component {
         this.sticks.sort()
     }
 
-    public SetStickRemove(Target: StickController, Team: boolean): void {
+    public SetStickRemove(Target: StickBattleController, Team: boolean): void {
         let i = this.sticks.findIndex((t) => t == Target);
         if (i < 0) {
             console.warn("[Field] Remove " + Target.name + " fail because not exist in list!");
@@ -293,7 +293,7 @@ export class StickField extends Component {
             this.SetBattleEnd();
     }
 
-    public SetStickAdd(Target: StickController, Team: boolean): void {
+    public SetStickAdd(Target: StickBattleController, Team: boolean): void {
         let i = this.sticks.findIndex((t) => t == Target);
         if (i >= 0) {
             console.warn("[Field] Add " + Target.name + " fail because exist in list!");
@@ -311,7 +311,7 @@ export class StickField extends Component {
         //console.log("[Field] Remain " + this.sticksRed.length + " Red stick(s)!");
     }
 
-    public GetStickClosed(From: StickController, Team: boolean): StickController {
+    public GetStickClosed(From: StickBattleController, Team: boolean): StickBattleController {
         if (From == null) {
             console.warn("[Field] Node null!");
             return null;
@@ -334,7 +334,7 @@ export class StickField extends Component {
             return this.GetStickClosedSingle(From, this.sticksBlue);
     }
 
-    private GetStickClosedSingle(From: StickController, List: StickController[]): StickController {
+    private GetStickClosedSingle(From: StickBattleController, List: StickBattleController[]): StickBattleController {
         var IndexMin = -1;
         var DistanceMin = 99999;
         for (var i = 0; i < List.length; i++) {

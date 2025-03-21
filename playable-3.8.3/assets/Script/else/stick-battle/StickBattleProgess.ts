@@ -1,11 +1,11 @@
 import { _decorator, Component, director, Label, Node, Size, UITransform, v2, Vec2, Vec3 } from 'cc';
-import { StickController } from './StickBattleController';
-import { StickField } from './StickBattleField';
+import { StickBattleController } from './StickBattleController';
+import { StickBattleField } from './StickBattleField';
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('StickProgess')
-export class StickProgess extends Component {
+export class StickBattleProgess extends Component {
     @property(Label)
     LabelBlue: Label = null;
 
@@ -31,13 +31,13 @@ export class StickProgess extends Component {
     }
 
     public SetInit(): void {
-        this.LabelBlue.string = StickField.Instance.valueBlue().toString();
-        this.LabelRed.string = StickField.Instance.valueRed().toString();
+        this.LabelBlue.string = StickBattleField.Instance.valueBlue().toString();
+        this.LabelRed.string = StickBattleField.Instance.valueRed().toString();
     }
 
     //
 
-    private onStickDead(Target: StickController): void {
+    private onStickDead(Target: StickBattleController): void {
         this.SetProgessUpdate();
         //console.warn("B:" + (StickField.Instance.progessBlue()) + " R: " + (StickField.Instance.progessRed()));
     }
@@ -46,14 +46,14 @@ export class StickProgess extends Component {
 
     private SetProgessUpdate() {
         this.BarBlue.setContentSize(new Size(
-            this.barLength * (StickField.Instance.progessBlue() + (1 - StickField.Instance.progessRed())),
+            this.barLength * (StickBattleField.Instance.progessBlue() + (1 - StickBattleField.Instance.progessRed())),
             this.BarBlue.contentSize.y));
-        this.LabelBlue.string = StickField.Instance.valueBlue().toString();
+        this.LabelBlue.string = StickBattleField.Instance.valueBlue().toString();
         //
         this.BarRed.setContentSize(new Size(
-            this.barLength * (StickField.Instance.progessRed() + (1 - StickField.Instance.progessBlue())),
+            this.barLength * (StickBattleField.Instance.progessRed() + (1 - StickBattleField.Instance.progessBlue())),
             this.BarRed.contentSize.y));
-        this.LabelRed.string = StickField.Instance.valueRed().toString();
+        this.LabelRed.string = StickBattleField.Instance.valueRed().toString();
         //
         this.Centre.setPosition(new Vec3(this.barLength - this.BarRed.contentSize.x, this.Centre.position.y, 0));
     }
