@@ -59,7 +59,7 @@ export class ConstantBase {
     static readonly NODE_STATE = 'node-state';
     static readonly NODE_STATE_LOCK = 'node-state-lock';
 
-    static readonly NODE_EVENT = 'node-event'; //<State, Target>
+    static readonly NODE_EVENT = 'node-event'; //<state, target>
 
     static readonly NODE_BODY_HIT = 'node-body-hit';
     static readonly NODE_BODY_DEAD = 'node-body-dead';
@@ -74,6 +74,10 @@ export class ConstantBase {
 
     static readonly NODE_PICK = 'node-pick';
     static readonly NODE_THROW = 'node-throw';
+
+    static readonly NODE_UI_DRAG_ENTER = 'node-ui-drag-enter';
+    static readonly NODE_UI_DRAG_BACK = 'node-ui-drag-back';
+    static readonly NODE_UI_DRAG_EXIT = 'node-ui-drag-exit';
 
     //
 

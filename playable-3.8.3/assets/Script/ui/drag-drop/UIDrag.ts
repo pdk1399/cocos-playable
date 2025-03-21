@@ -5,7 +5,12 @@ const { ccclass, property } = _decorator;
 @ccclass('UIDrag')
 export class UIDrag extends Component {
 
-    //NOTE: Target should have Rigidbody2D and Collider2D to contact with Drop progress.
+    //NOTE: 
+    //- Drag node (of UIDrag) & Drop node (of UIDrop) should have Rigidbody2D and Collider2D for full progress.
+    //- Drag node (of UIDrag) must be the child of UIDrag node to avoid glitch when dragging.
+    //- Drop node (of UIDrop) should got multiple collider to avoid glitch when fast dragging.
+    //- UIDrag node must be the child of UIDrop node for working progress.
+    //- Top node should have highest index view in scene (and shouldn't be null to avoid un-right view).
 
     @property({ group: { name: 'Node' }, type: Node })
     Drag: Node = null;
@@ -38,10 +43,6 @@ export class UIDrag extends Component {
     m_uiTransform: UITransform = null;
 
     protected onLoad(): void {
-        this.m_drop = this.node.parent;
-        this.m_uiDrop = this.node.parent.getComponent(UIDrop);
-        if (this.m_uiDrop == null)
-            console.log('UIDrop in parent of ' + this.node.name + ' is not found');
         this.m_uiTransform = this.node.getComponent(UITransform);
 
         this.Drag.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
@@ -67,9 +68,18 @@ export class UIDrag extends Component {
         this.m_dotRadius = Math.max(dotSize.x, dotSize.y) / 2;
         this.m_posPrimary = this.Drag.getPosition();
         this.m_posDrop = this.node.position.clone();
+
+        //NOTE: If UIDrop is not found (with UIDrop's init progress), the parent of UIDrag will be parent.
+        this.scheduleOnce(() => {
+            if (this.m_uiDrop == null) {
+                console.log('UIDrop parent of ' + this.node.name + ' is not found, so ' + this.node.parent + ' will be the parent');
+                this.m_drop = this.node.parent;
+                this.m_uiDrop = this.node.parent.getComponent(UIDrop);
+            }
+        });
     }
 
-    //DRAG
+    //DRAG: Base on code from UIJoystick.ts
 
     onTouchStart(event: EventTouch) {
         this.m_drag = true;
@@ -123,9 +133,13 @@ export class UIDrag extends Component {
     onTouchEnd(event: EventTouch) {
         this.m_drag = false;
         if (this.m_dropCurrent != null) {
-            this.m_drop = this.m_dropCurrent;
-            this.m_uiDrop = this.m_uiDropCurrent;
+            if (this.m_dropCurrent != this.m_drop)
+                //NOTE: To avoid glitch when dragging on the same drop node, only excute exit when difference drop node.
+                this.m_uiDrop.onDragExit(this);
+            this.m_uiDropCurrent.onDragEnter(this);
         }
+        else
+            this.m_uiDrop.onDragBack(this);
         this.node.setParent(this.m_drop, true);
         this.node.position = this.m_posDrop;
 
@@ -143,6 +157,7 @@ export class UIDrag extends Component {
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         if (selfCollider.tag != this.TagDrag || otherCollider.tag != this.TagDrop)
             return;
+        //NOTE: When begin dragging, the current drop node will be the first drop node contact.
         this.m_dropCurrent = otherCollider.node;
         this.m_uiDropCurrent = otherCollider.node.getComponent(UIDrop);
     }
