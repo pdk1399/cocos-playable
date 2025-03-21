@@ -42,7 +42,7 @@ export class StickTowerRoom extends Component {
             this.m_uiDragPlayer.Lock = true;
             let playerPoint = this.m_player.Point;
             let enermyPoint = this.m_unit[this.m_unit.length - 1].Point;
-            if (this.m_player.Point >= this.m_unit[this.m_unit.length - 1].Point) {
+            if (this.m_player.Point > this.m_unit[this.m_unit.length - 1].Point) {
                 //Player Attack
                 this.scheduleOnce(() => {
                     this.m_uiDragPlayer.Lock = false;
