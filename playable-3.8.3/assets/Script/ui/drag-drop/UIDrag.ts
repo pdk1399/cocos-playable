@@ -193,4 +193,12 @@ export class UIDrag extends Component {
         this.m_dropCurrent = null;
         this.m_uiDropCurrent = null;
     }
+
+    //
+
+    onPosDrop(pos: Vec3, update: boolean = false) {
+        this.m_posDrop = pos;
+        if (update)
+            this.node.position = this.m_posDrop;
+    }
 }

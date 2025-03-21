@@ -16,6 +16,8 @@ export class StickTowerUnit extends Component {
     AnimAttack: string[] = [];
     @property({ group: { name: 'Anim' }, type: CCString })
     AnimDead: string = 'dead';
+    @property({ group: { name: 'Anim' }, type: CCString })
+    AnimWin: string = 'win';
 
     @property({ group: { name: 'Option' }, type: Label })
     PointLabel: Label = null;
@@ -32,12 +34,14 @@ export class StickTowerUnit extends Component {
         this.onPointUpdate();
     }
 
+    //ANIM
+
     onUnitIdle(): number {
-        return this.m_spine.onAnimation(this.AnimIdle, true);
+        return this.m_spine.onAnimationForce(this.AnimIdle, true);
     }
 
     onUnitAttack(): number {
-        let duration = this.m_spine.onAnimation(this.AnimAttack[this.m_attackIndex], false);
+        let duration = this.m_spine.onAnimationForce(this.AnimAttack[this.m_attackIndex], false);
         this.m_attackIndex++;
         if (this.m_attackIndex > this.AnimAttack.length - 1)
             this.m_attackIndex = 0;
@@ -45,8 +49,14 @@ export class StickTowerUnit extends Component {
     }
 
     onUnitDead(): number {
-        return this.m_spine.onAnimation(this.AnimDead, false);
+        return this.m_spine.onAnimationForce(this.AnimDead, false);
     }
+
+    onUnitWin(): number {
+        return this.m_spine.onAnimationForce(this.AnimWin, false);
+    }
+
+    //POINT 
 
     onPointAdd(value: number) {
         this.Point += value;
