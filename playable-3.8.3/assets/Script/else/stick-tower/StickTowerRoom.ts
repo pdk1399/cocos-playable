@@ -1,4 +1,4 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, director, Node } from 'cc';
 import { StickTowerUnit } from './StickTowerUnit';
 import { ConstantBase } from '../../ConstantBase';
 import { UIDrag } from '../../ui/drag-drop/UIDrag';
@@ -39,17 +39,35 @@ export class StickTowerRoom extends Component {
         this.m_uiDragPlayer = unit.getComponent(UIDrag);
         //Main Progress
         if (this.m_unit.length > 0) {
-            //Player Attack
             this.m_uiDragPlayer.Lock = true;
-            this.scheduleOnce(() => {
-                this.m_uiDragPlayer.Lock = false;
-                this.m_player.onUnitIdle();
-            }, this.m_player.onUnitAttack());
-            //Enermy Dead
-            this.scheduleOnce(() => {
-                this.m_unit[this.m_unit.length - 1].node.destroy();
-                this.m_unit.splice(this.m_unit.length - 1, 1);
-            }, this.m_unit[this.m_unit.length - 1].onUnitDead());
+            let playerPoint = this.m_player.Point;
+            let enermyPoint = this.m_unit[this.m_unit.length - 1].Point;
+            if (this.m_player.Point >= this.m_unit[this.m_unit.length - 1].Point) {
+                //Player Attack
+                this.scheduleOnce(() => {
+                    this.m_uiDragPlayer.Lock = false;
+                    this.m_player.onUnitIdle();
+                }, this.m_player.onUnitAttack());
+                //Enermy Dead
+                this.m_unit[this.m_unit.length - 1].onPointAdd(-9999);
+                this.scheduleOnce(() => {
+                    this.m_player.onPointAdd(enermyPoint);
+                    this.m_unit[this.m_unit.length - 1].node.destroy();
+                    this.m_unit.splice(this.m_unit.length - 1, 1);
+                }, this.m_unit[this.m_unit.length - 1].onUnitDead());
+            }
+            else {
+                //Player Dead
+                this.m_player.onPointAdd(-9999);
+                this.scheduleOnce(() => {
+                    this.m_unit[this.m_unit.length - 1].onPointAdd(playerPoint);
+                    director.emit(ConstantBase.GAME_LOSE);
+                }, this.m_player.onUnitDead());
+                //Enermy Attack
+                this.scheduleOnce(() => {
+                    this.m_unit[this.m_unit.length - 1].onUnitIdle()
+                }, this.m_unit[this.m_unit.length - 1].onUnitAttack());
+            }
         }
     }
 
