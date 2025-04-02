@@ -94,9 +94,9 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
     MoveAttackByFace = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    DashStopByBodyAttack = true;
+    DashStopByBodyAttack = false;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    DashStopByPressAttack = true;
+    DashStopByPressAttack = false;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
     MoveAttackReset = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
