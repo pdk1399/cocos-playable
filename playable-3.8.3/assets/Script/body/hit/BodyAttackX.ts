@@ -15,6 +15,8 @@ export class BodyAttackX extends Component {
     @property({ group: { name: 'Main' }, type: CCFloat })
     DelayAttack: number = 0.02;
     @property({ group: { name: 'Main' }, type: CCFloat })
+    DelayNext: number = 2;
+    @property({ group: { name: 'Main' }, type: CCFloat })
     DelayLoop: number = 1;
     @property({ group: { name: 'Main' }, type: CCBoolean })
     StopOutRange: boolean = true;
@@ -160,7 +162,7 @@ export class BodyAttackX extends Component {
             this.DelayAttackAnim.splice(this.DelayAttackAnim.length - 1, 1);
         //Delay Next Anim
         while (this.DelayNextAnim.length < this.AnimAttack.length)
-            this.DelayNextAnim.push(0);
+            this.DelayNextAnim.push(this.DelayNext);
         while (this.DelayNextAnim.length > this.AnimAttack.length)
             this.DelayNextAnim.splice(this.DelayNextAnim.length - 1, 1);
         //Melee Hit Anim
