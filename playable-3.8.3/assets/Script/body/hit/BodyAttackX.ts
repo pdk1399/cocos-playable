@@ -53,10 +53,12 @@ export class BodyAttackX extends Component {
     AnimReady: string[] = [];
     @property({ group: { name: 'Anim' }, type: [CCString] })
     AnimAttack: string[] = [];
-    @property({ group: { name: 'Anim' }, type: [CCFloat] })
-    DelayAttackAnim: number[] = [];
     @property({ group: { name: 'Anim' }, type: [CCInteger] })
     MeleeHitAnim: number[] = [];
+    @property({ group: { name: 'Anim' }, type: [CCFloat] })
+    DelayAttackAnim: number[] = [];
+    @property({ group: { name: 'Anim' }, type: [CCFloat] })
+    DelayNextAnim: number[] = [];
     @property({ group: { name: 'Anim' }, type: CCFloat })
     AnimTimeScale: number = 1;
 
@@ -83,6 +85,18 @@ export class BodyAttackX extends Component {
     m_attack: boolean = false;
     m_continue: boolean = false;
 
+    m_meleeUltimate: boolean = false;
+
+    m_readyIndex: number = 0;
+    m_attackIndex: number = 0;
+    m_meleeHit: number;
+    m_attackNext: boolean = false;
+
+    m_readySchedule: any = null;
+    m_attackSchedule: any = null;
+    m_continueSchedule: any = null;
+    m_nextSchedule: any = null;
+
     m_targetMelee: Node[] = [];
     m_targetRange: Node[] = [];
     m_targetRangeAim: Node = null;
@@ -92,15 +106,6 @@ export class BodyAttackX extends Component {
 
     m_colliderMelee: Collider2D = null;
     m_colliderRange: Collider2D = null;
-
-    m_attackMeleeHit: number;
-    m_attackMeleeUltimate: boolean = false;
-
-    m_attackSchedule: any = null;
-    m_animAttackIndex: number = 0;
-
-    m_attackReadySchedule: any = null;
-    m_animAttackReadyIndex: number = 0;
 
     m_body: BodyBase = null;
     m_bodyCheck: BodyCheckX = null;
@@ -143,14 +148,22 @@ export class BodyAttackX extends Component {
     }
 
     protected start(): void {
+        //Collider
         if (this.m_colliderMelee != null)
             this.m_offsetMeleeX = this.m_colliderMelee.offset.x;
         if (this.m_colliderRange != null)
             this.m_offsetRangeX = this.m_colliderRange.offset.x;
+        //Delay Attack Anim
         while (this.DelayAttackAnim.length < this.AnimAttack.length)
             this.DelayAttackAnim.push(this.DelayAttack);
         while (this.DelayAttackAnim.length > this.AnimAttack.length)
             this.DelayAttackAnim.splice(this.DelayAttackAnim.length - 1, 1);
+        //Delay Next Anim
+        while (this.DelayNextAnim.length < this.AnimAttack.length)
+            this.DelayNextAnim.push(0);
+        while (this.DelayNextAnim.length > this.AnimAttack.length)
+            this.DelayNextAnim.splice(this.DelayNextAnim.length - 1, 1);
+        //Melee Hit Anim
         while (this.MeleeHitAnim.length < this.AnimAttack.length)
             this.MeleeHitAnim.push(this.MeleeHit);
         while (this.MeleeHitAnim.length > this.AnimAttack.length)
@@ -269,10 +282,10 @@ export class BodyAttackX extends Component {
 
     protected onMeleeTarget() {
         this.m_targetMelee.forEach(target => {
-            if (this.m_attackMeleeUltimate)
+            if (this.m_meleeUltimate)
                 target.emit(ConstantBase.NODE_BODY_DEAD, this.node);
             else
-                target.emit(ConstantBase.NODE_BODY_HIT, this.m_attackMeleeHit, this.node);
+                target.emit(ConstantBase.NODE_BODY_HIT, this.m_meleeHit, this.node);
         });
     }
 
@@ -283,7 +296,7 @@ export class BodyAttackX extends Component {
     }
 
     onMeleeUltimate(state: boolean = true) {
-        this.m_attackMeleeUltimate = state;
+        this.m_meleeUltimate = state;
     }
 
     //RANGE
@@ -370,12 +383,17 @@ export class BodyAttackX extends Component {
     //ATTACK
 
     onAttackProgess(): number {
-        if (this.m_dead || this.m_attack)
+        if (this.m_dead)
+            return 0;
+        if (!this.m_attackNext && this.m_attack)
             return 0;
         this.m_attack = true;
         this.m_continue = true;
 
+        this.unscheduleAllCallbacks();
         this.unschedule(this.m_attackSchedule);
+        this.unschedule(this.m_continueSchedule);
+        this.unschedule(this.m_nextSchedule);
 
         this.m_bodySpine.m_lockAttack = true;
         if (!this.AnimMix)
@@ -383,15 +401,16 @@ export class BodyAttackX extends Component {
         else
             this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
 
-        let attackDuration = this.m_bodySpine.onAnimAttack(
-            this.AnimAttack[this.m_animAttackIndex],
+        let animAttackDuration = this.m_bodySpine.onAnimAttack(
+            this.AnimAttack[this.m_attackIndex],
             this.AnimMix,
             /*loop*/ false,
             /*durationScale*/ true,
             /*animTimeScale*/ this.AnimTimeScale);
         this.m_attackSchedule = this.scheduleOnce(() => {
+            this.unschedule(this.m_nextSchedule);
             this.m_attack = false;
-
+            this.m_attackNext = false;
             this.m_bodySpine.m_lockAttack = false;
             if (!this.AnimMix)
                 this.m_spine.onAnimationForceLast();
@@ -399,7 +418,7 @@ export class BodyAttackX extends Component {
                 this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
 
             if (!this.Once) {
-                this.scheduleOnce(() => {
+                this.m_continueSchedule = this.scheduleOnce(() => {
                     if (this.m_continue) {
                         if (!this.onMeleeStart())
                             if (!this.onRangeStart()) {
@@ -413,18 +432,21 @@ export class BodyAttackX extends Component {
                 this.m_continue = false;
                 this.m_attack = false;
             }
-        }, attackDuration);
+        }, animAttackDuration);
 
-        this.m_attackMeleeHit = this.MeleeHitAnim[this.m_animAttackIndex];
-        this.scheduleOnce(() => {
-            this.onAttackProgessInvoke();
-        }, this.DelayAttackAnim[this.m_animAttackIndex]);
+        this.m_meleeHit = this.MeleeHitAnim[this.m_attackIndex];
+        let attackDelayDuration = this.DelayAttackAnim[this.m_attackIndex];
+        this.scheduleOnce(() => this.onAttackProgessInvoke(), attackDelayDuration);
 
-        this.m_animAttackIndex++;
-        if (this.m_animAttackIndex > this.AnimAttack.length - 1)
-            this.m_animAttackIndex = 0;
+        let animNextDuration = this.DelayNextAnim[this.m_attackIndex] / this.AnimTimeScale;
+        this.m_attackNext = false;
+        this.m_nextSchedule = this.scheduleOnce(() => this.m_attackNext = true, animNextDuration);
 
-        return Math.max(attackDuration, this.DelayAttack);
+        this.m_attackIndex++;
+        if (this.m_attackIndex > this.AnimAttack.length - 1)
+            this.m_attackIndex = 0;
+        console.log('attack');
+        return Math.max(animAttackDuration, this.DelayAttack);
     }
 
     protected onAttackProgessInvoke() {
@@ -441,6 +463,8 @@ export class BodyAttackX extends Component {
             this.m_continue = false;
             this.m_attack = false;
             this.unscheduleAllCallbacks();
+            this.unschedule(this.m_attackSchedule);
+            this.unschedule(this.m_continueSchedule);
             if (!this.AnimMix)
                 this.m_spine.onAnimationForceLast();
             else
@@ -496,18 +520,18 @@ export class BodyAttackX extends Component {
     //ANIM
 
     onAnimAttackReady() {
-        if (this.m_animAttackReadyIndex > this.AnimReady.length - 1)
+        if (this.m_readyIndex > this.AnimReady.length - 1)
             return;
-        let continueReady = this.m_animAttackReadyIndex < this.AnimReady.length - 1;
-        let durationReady = this.m_bodySpine.onAnimAttack(this.AnimReady[this.m_animAttackReadyIndex], this.AnimMix, !continueReady);
-        if (continueReady)
-            this.m_attackReadySchedule = this.scheduleOnce(() => this.onAnimAttackReady(), durationReady);
-        this.m_animAttackReadyIndex++;
+        let animAttackReadyContinue = this.m_readyIndex < this.AnimReady.length - 1;
+        let animAttackReadyDuration = this.m_bodySpine.onAnimAttack(this.AnimReady[this.m_readyIndex], this.AnimMix, !animAttackReadyContinue);
+        if (animAttackReadyContinue)
+            this.m_readySchedule = this.scheduleOnce(() => this.onAnimAttackReady(), animAttackReadyDuration);
+        this.m_readyIndex++;
     }
 
     onAnimAttackUnReady() {
-        this.unschedule(this.m_attackReadySchedule);
-        this.m_animAttackReadyIndex = 0;
+        this.unschedule(this.m_readySchedule);
+        this.m_readyIndex = 0;
     }
 
     onAimDeg(deg: number) {
