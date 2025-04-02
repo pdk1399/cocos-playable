@@ -50,6 +50,8 @@ export class BodyAttackX extends Component {
     RangeTargetReset: boolean = true;
 
     @property({ group: { name: 'Anim' }, type: CCBoolean })
+    AnimComboKeep: boolean = false;
+    @property({ group: { name: 'Anim' }, type: CCBoolean })
     AnimMix: boolean = false;
     @property({ group: { name: 'Anim' }, type: [CCString] })
     AnimReady: string[] = [];
@@ -434,6 +436,8 @@ export class BodyAttackX extends Component {
                 this.m_continue = false;
                 this.m_attack = false;
             }
+            if (!this.AnimComboKeep)
+                this.m_attackIndex = 0;
         }, animAttackDuration);
 
         this.m_meleeHit = this.MeleeHitAnim[this.m_attackIndex];
