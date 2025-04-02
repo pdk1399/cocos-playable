@@ -457,7 +457,7 @@ export class BodyAttackX extends Component {
         this.m_attackIndex++;
         if (this.m_attackIndex > this.AnimAttack.length - 1)
             this.m_attackIndex = 0;
-        console.log('attack');
+
         return Math.max(animAttackDuration, this.DelayAttack);
     }
 
@@ -466,6 +466,10 @@ export class BodyAttackX extends Component {
             this.onMeleeTarget();
         if (this.Range && this.m_shoot != null)
             this.onRangeShoot();
+    }
+
+    onAttackReset() {
+        this.m_attackIndex = 0;
     }
 
     //STOP
@@ -481,6 +485,8 @@ export class BodyAttackX extends Component {
                 this.m_spine.onAnimationForceLast();
             else
                 this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
+            if (!this.AnimComboKeep)
+                this.m_attackIndex = 0;
         }
         else if (this.m_stop && !state) {
             if (this.MeleeAuto)
