@@ -63,6 +63,8 @@ export class BodyAttackX extends Component {
     DelayAttackAnim: number[] = [];
     @property({ group: { name: 'Anim' }, type: [CCFloat] })
     DelayNextAnim: number[] = [];
+    @property({ group: { name: 'Anim' }, type: CCBoolean })
+    NextUnAttack: boolean = false;
     @property({ group: { name: 'Anim' }, type: CCFloat })
     AnimTimeScale: number = 1;
 
@@ -446,7 +448,11 @@ export class BodyAttackX extends Component {
 
         let animNextDuration = this.DelayNextAnim[this.m_attackIndex] / this.AnimTimeScale;
         this.m_attackNext = false;
-        this.m_nextSchedule = this.scheduleOnce(() => this.m_attackNext = true, animNextDuration);
+        this.m_nextSchedule = this.scheduleOnce(() => {
+            this.m_attackNext = true;
+            if (this.NextUnAttack)
+                this.m_attack = false;
+        }, animNextDuration);
 
         this.m_attackIndex++;
         if (this.m_attackIndex > this.AnimAttack.length - 1)
