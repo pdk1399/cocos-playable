@@ -105,7 +105,7 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockY; } })
     FallAttackStop = false;
     @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockY && !this.FallAttackStop; } })
-    FallAttackForce: number = -0.2;
+    FallAttackForce: number = 0; //Default -0.2f for slow fall down while attack
 
     @property({ group: { name: 'Pick&Throw' }, type: CCBoolean })
     Pick: boolean = false;
@@ -606,7 +606,7 @@ export class BodyControlX extends Component {
         if (this.JumpAuto && this.m_bodyCheck.m_isBot)
             this.onJump(dt);
 
-        if (!this.FallAttackStop && this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {
+        if (!this.FallAttackStop && this.FallAttackForce != 0 && this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {
             this.m_rigidbody.linearVelocity = v2(this.m_rigidbody.linearVelocity.clone().x, this.FallAttackForce); //Fix bug not fall after attack
             return;
         }
@@ -943,6 +943,8 @@ export class BodyControlX extends Component {
         //FIND STAGE:
         if (this.getDead())
             state = PlayerStateX.DEAD;
+        else if (this.getHit())
+            state = PlayerStateX.HIT;
         else if (this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {
             if (this.AttackHold)
                 state = PlayerStateX.ATTACK_HOLD;
@@ -951,8 +953,6 @@ export class BodyControlX extends Component {
         }
         else if (this.m_dash)
             state = PlayerStateX.DASH;
-        // else if (this.getHit())
-        //     state = PlayerStateX.HIT;
         else if (!this.m_bodyCheck.m_isBot) {
             if (this.m_rigidbody.linearVelocity.y > 0)
                 state = PlayerStateX.JUMP;
