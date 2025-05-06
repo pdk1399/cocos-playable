@@ -64,6 +64,7 @@ export class BodyControlXY extends Component {
     m_attack: boolean = false;
 
     m_control: boolean = true;
+    m_controlByDirector: boolean = false; //Set TRUE later onLoad
     m_end: boolean = false;
 
     m_lockInput: boolean = false;
@@ -115,6 +116,9 @@ export class BodyControlXY extends Component {
     //EVENT:
 
     protected onControlByDirector(state: boolean, full: boolean = true) {
+        if (this.m_controlByDirector)
+            return;
+        this.m_controlByDirector = true;
         if (state) {
             director.on(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick, this);
 
@@ -168,6 +172,9 @@ export class BodyControlXY extends Component {
     }
 
     protected onControlByNode(state: boolean) {
+        if (!this.m_controlByDirector)
+            return;
+        this.m_controlByDirector = false;
         if (state) {
             this.node.on(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick, this);
 

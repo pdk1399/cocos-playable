@@ -162,6 +162,7 @@ export class BodyControlX extends Component {
     m_pickUpSiblingIndex: number = 0;
 
     m_control: boolean = true;
+    m_controlByDirector: boolean = false; //Set TRUE later onLoad
     m_end: boolean = false;
     m_endReady: boolean = false;
     m_endCentre: Vec3;
@@ -226,6 +227,9 @@ export class BodyControlX extends Component {
     //EVENT:
 
     protected onControlByDirector(state: boolean, full: boolean = true) {
+        if (this.m_controlByDirector)
+            return;
+        this.m_controlByDirector = true;
         if (state) {
             director.on(ConstantBase.CONTROL_UP, this.onMoveUp, this);
             director.on(ConstantBase.CONTROL_DOWN, this.onMoveDown, this);
@@ -303,6 +307,9 @@ export class BodyControlX extends Component {
     }
 
     protected onControlByNode(state: boolean) {
+        if (!this.m_controlByDirector)
+            return;
+        this.m_controlByDirector = false;
         if (state) {
             this.node.on(ConstantBase.CONTROL_UP, this.onMoveUp, this);
             this.node.on(ConstantBase.CONTROL_DOWN, this.onMoveDown, this);

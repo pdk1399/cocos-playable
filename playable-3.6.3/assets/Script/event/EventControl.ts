@@ -21,32 +21,39 @@ export class EventControl extends Component {
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
 
-    @property({ group: { name: 'Option' }, type: CCBoolean })
+    @property({ group: { name: 'Main' }, type: CCBoolean })
+    Control: boolean = true;
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control; } })
     ControlByNode: boolean = true;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode; } })
     ControlSleep: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode && !this.ControlSleep; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode && !this.ControlSleep; } })
     ControlRelease: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode && !this.ControlSleep && !this.ControlRelease; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode && !this.ControlSleep && !this.ControlRelease; } })
     ControlReleaseX: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode && !this.ControlSleep && !this.ControlRelease; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode && !this.ControlSleep && !this.ControlRelease; } })
     ControlReleaseY: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode && !this.ControlSleep && !this.ControlRelease && !this.ControlReleaseX; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode && !this.ControlSleep && !this.ControlRelease && !this.ControlReleaseX; } })
     ControlLeft: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode && !this.ControlSleep && !this.ControlRelease && !this.ControlReleaseX; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode && !this.ControlSleep && !this.ControlRelease && !this.ControlReleaseX; } })
     ControlRight: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode && !this.ControlSleep && !this.ControlRelease && !this.ControlReleaseY; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode && !this.ControlSleep && !this.ControlRelease && !this.ControlReleaseY; } })
     ControlUp: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode && !this.ControlSleep && !this.ControlRelease && !this.ControlReleaseY; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode && !this.ControlSleep && !this.ControlRelease && !this.ControlReleaseY; } })
     ControlDown: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode && !this.ControlSleep && !this.ControlRelease && !this.ControlReleaseY; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode && !this.ControlSleep && !this.ControlRelease && !this.ControlReleaseY; } })
     ControlJump: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode; } })
     ControlAttack: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode; } })
     ControlInteraction: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EventControl) { return this.ControlByNode && !this.ControlSleep; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EventControl) { return this.Control && this.ControlByNode && !this.ControlSleep; } })
     ControlFixed: boolean = false;
+
+    @property({ group: { name: 'Option' }, type: CCBoolean })
+    BodyX2: boolean = false;
+    @property({ group: { name: 'Option' }, type: CCBoolean })
+    BodyX4: boolean = false;
 
     protected onLoad(): void {
         if (this.OnNode)
@@ -84,6 +91,19 @@ export class EventControl extends Component {
         if (target == null ? true : !target.isValid)
             return;
 
+        //OPTION
+        if (this.BodyX2) {
+            director.emit(ConstantBase.BODY_X2);
+            target.emit(ConstantBase.BODY_X2);
+        }
+        if (this.BodyX4) {
+            director.emit(ConstantBase.BODY_X4);
+            target.emit(ConstantBase.BODY_X4);
+        }
+
+        if (!this.Control)
+            return;
+        //MAIN
         if (this.ControlByNode) {
             director.emit(ConstantBase.CONTROL_LOCK);
             target.emit(ConstantBase.NODE_CONTROL_NODE, true);
