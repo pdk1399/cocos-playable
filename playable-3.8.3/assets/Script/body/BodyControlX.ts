@@ -136,9 +136,7 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'End' }, type: CCBoolean })
     EndRevertX: boolean = false;
 
-    m_baseSize: number = 1;
     m_baseMass: number = 0;
-    m_baseScale: Vec3 = Vec3.ONE;
     m_baseGravity: number = 0;
 
     m_state = PlayerStateX.IDLE;
@@ -172,9 +170,6 @@ export class BodyControlX extends Component {
     m_lockKnockBack: boolean = false;
     m_lockVelocity: boolean = false;
 
-    m_bodyX2: boolean = false;
-    m_bodyX4: boolean = false;
-
     m_body: BodyBase = null;
     m_bodyCheck: BodyCheckX = null;
     m_bodySpine: BodySpine = null;
@@ -205,8 +200,6 @@ export class BodyControlX extends Component {
     }
 
     protected start(): void {
-        this.m_baseScale = this.node.scale.clone();
-        this.m_baseSize = 1;
         this.m_baseGravity = this.m_rigidbody.gravityScale;
         this.m_baseMass = this.m_rigidbody.getMass();
 
@@ -247,8 +240,8 @@ export class BodyControlX extends Component {
             director.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             director.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
-            director.on(ConstantBase.BODY_X2, this.onBodyX2, this);
-            director.on(ConstantBase.BODY_X4, this.onBodyX4, this);
+            director.on(ConstantBase.BODY_X2, this.m_body.onBodyX2, this.m_body);
+            director.on(ConstantBase.BODY_X4, this.m_body.onBodyX4, this.m_body);
 
             if (full)
                 director.on(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
@@ -284,8 +277,8 @@ export class BodyControlX extends Component {
             director.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             director.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
-            director.off(ConstantBase.BODY_X2, this.onBodyX2, this);
-            director.off(ConstantBase.BODY_X4, this.onBodyX4, this);
+            director.off(ConstantBase.BODY_X2, this.m_body.onBodyX2, this.m_body);
+            director.off(ConstantBase.BODY_X4, this.m_body.onBodyX4, this.m_body);
 
             if (full)
                 director.off(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
@@ -327,9 +320,6 @@ export class BodyControlX extends Component {
             this.node.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             this.node.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
-            this.node.on(ConstantBase.BODY_X2, this.onBodyX2, this);
-            this.node.on(ConstantBase.BODY_X4, this.onBodyX4, this);
-
             // if (full)
             //     this.node.on(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
 
@@ -363,9 +353,6 @@ export class BodyControlX extends Component {
 
             this.node.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             this.node.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
-
-            this.node.off(ConstantBase.BODY_X2, this.onBodyX2, this);
-            this.node.off(ConstantBase.BODY_X4, this.onBodyX4, this);
 
             // if (full)
             //     this.node.off(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
@@ -517,7 +504,7 @@ export class BodyControlX extends Component {
                 else if (velocity.x < -moveGroundX)
                     velocity.x = -moveGroundX;
                 if (this.Type == BodyType.BALL)
-                    this.m_rigidbody.applyTorque(-moveDirX * this.TorqueX * (this.m_rigidbody.getMass() / this.m_baseMass) * this.m_baseSize, true);
+                    this.m_rigidbody.applyTorque(-moveDirX * this.TorqueX * (this.m_rigidbody.getMass() / this.m_baseMass) * this.m_body.m_baseSize, true);
             }
             else {
                 let moveAirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? this.MoveAttackAirX : this.MoveAirX;
@@ -878,7 +865,7 @@ export class BodyControlX extends Component {
     //COLLIDE
 
     protected onCollide(target: Node) {
-        if (this.m_bodyX4) {
+        if (this.m_body.m_bodyX4) {
             let bodyTarget = target.getComponent(BodyBase);
             if (bodyTarget != null)
                 bodyTarget.onDead(this.node);
@@ -899,48 +886,6 @@ export class BodyControlX extends Component {
                     .start();
                 break;
         }
-    }
-
-    //X2 - X4
-
-    onBodyX2(state: boolean = true) {
-        this.m_bodyX2 = state;
-        //
-        if (this.m_bodyX4)
-            return;
-        //
-        let baseScale: Vec3 = this.m_baseScale.clone();
-        let ratio = state ? 2 : 1;
-        let colliders = this.getComponents(Collider2D);
-        setTimeout(() => {
-            tween(this.node).to(0.25, { scale: baseScale.clone().multiplyScalar(ratio) }).call(() => {
-                colliders.forEach(c => {
-                    c.apply();
-                });
-            }).start();
-        }, 1);
-        this.m_baseSize = state ? 2 : 1;
-    }
-
-    onBodyX4(state: boolean = true) {
-        this.m_bodyX4 = state;
-        //
-        if (!state && this.m_bodyX2) {
-            this.onBodyX2(true);
-            return;
-        }
-        //
-        let baseScale: Vec3 = this.m_baseScale.clone();
-        let ratio = state ? 4 : 1;
-        let colliders = this.getComponents(Collider2D);
-        setTimeout(() => {
-            tween(this.node).to(0.25, { scale: baseScale.clone().multiplyScalar(ratio) }).call(() => {
-                colliders.forEach(c => {
-                    c.apply();
-                });
-            }).start();
-        }, 1);
-        this.m_baseSize = state ? 4 : 1;
     }
 
     //STAGE:

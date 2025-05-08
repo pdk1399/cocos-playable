@@ -32,7 +32,11 @@ export class BodyAttackX extends Component {
     @property({ group: { name: 'Melee' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Melee; } })
     MeleeAuto: boolean = false;
     @property({ group: { name: 'Melee' }, type: CCInteger, visible(this: BodyAttackX) { return this.Melee; } })
-    MeleeHit: number = 1
+    MeleeHit: number = 1;
+    @property({ group: { name: 'Melee' }, type: CCInteger, visible(this: BodyAttackX) { return this.Melee; } })
+    MeleeHitMultiX2: number = 2;
+    @property({ group: { name: 'Melee' }, type: CCInteger, visible(this: BodyAttackX) { return this.Melee; } })
+    MeleeHitMultiX4: number = 4;
 
     @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.getComponent(ShootBase) != null; } })
     Range: boolean = false;
@@ -296,13 +300,19 @@ export class BodyAttackX extends Component {
     }
 
     onMeleeHit(value: number) {
-        this.MeleeHit = value;
-        if (this.MeleeHit < 1)
-            this.MeleeHit = 1;
+        this.MeleeHit = math.clamp(value, 1, value);
     }
 
     onMeleeUltimate(state: boolean = true) {
         this.m_meleeUltimate = state;
+    }
+
+    getMeleeHitMulti(): number {
+        if (this.m_body.m_bodyX2)
+            return this.MeleeHitMultiX2;
+        if (this.m_body.m_bodyX4)
+            return this.MeleeHitMultiX4;
+        return 1;
     }
 
     //RANGE
@@ -442,7 +452,7 @@ export class BodyAttackX extends Component {
                 this.m_attackIndex = 0;
         }, animAttackDuration);
 
-        this.m_meleeHit = this.MeleeHitAnim[this.m_attackIndex];
+        this.m_meleeHit = this.MeleeHitAnim[this.m_attackIndex] * this.getMeleeHitMulti();
         let attackDelayDuration = this.DelayAttackAnim[this.m_attackIndex];
         this.scheduleOnce(() => this.onAttackProgessInvoke(), attackDelayDuration);
 
