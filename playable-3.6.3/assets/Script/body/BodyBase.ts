@@ -1,4 +1,4 @@
-import { _decorator, Node, AudioSource, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, instantiate, RigidBody2D, Sprite, Vec2, v2, v3, UITransform } from 'cc';
+import { _decorator, Node, AudioSource, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, instantiate, RigidBody2D, Sprite, Vec2, v2, v3, UITransform, tween, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { ValueBar } from '../value/ValueBar';
 const { ccclass, property } = _decorator;
@@ -8,6 +8,8 @@ export class BodyBase extends Component {
 
     @property({ group: { name: 'Body' }, type: CCBoolean })
     Protect: boolean = false;
+    @property({ group: { name: 'Body' }, type: CCBoolean, visible(this: BodyBase) { return !this.Protect; } })
+    ProtectBigSize: boolean = false;
     @property({ group: { name: 'Body' }, type: CCInteger, visible(this: BodyBase) { return !this.Protect; } })
     HitPoint: number = 1;
     @property({ group: { name: 'Body' }, type: CCFloat })
@@ -70,9 +72,15 @@ export class BodyBase extends Component {
     @property({ group: { name: 'Option' }, type: AudioSource })
     AudioDead: AudioSource = null;
 
+    m_baseSize: number = 1;
+    m_baseScale: Vec3 = Vec3.ONE;
+
     m_dead: boolean = false;
     m_hit: boolean = false;
     m_hitPointCurrent: number;
+
+    m_bodyX2: boolean = false;
+    m_bodyX4: boolean = false;
 
     m_rigidbody: RigidBody2D = null;
     m_destroyCollider: Collider2D[] = [];
@@ -97,20 +105,28 @@ export class BodyBase extends Component {
             if (tagIndex >= 0)
                 this.m_destroyCollider.push(colliderCheck as Collider2D)
         })
+
+        this.node.on(ConstantBase.BODY_X2, this.onBodyX2, this);
+        this.node.on(ConstantBase.BODY_X4, this.onBodyX4, this);
     }
 
     protected start(): void {
         this.m_hitPointCurrent = this.HitPoint;
-        if (this.BarMask != null)
-            this.m_maskTransformX = this.m_maskTransform.contentSize.clone().x;
+
+        this.m_baseScale = this.node.scale.clone();
+        this.m_baseSize = 1;
+
         if (this.EffectCentre == null)
             this.EffectCentre = this.node;
+        if (this.EffectSpawm == null)
+            this.EffectSpawm = this.node.parent;
+
         if (this.ValueBar != null ? !this.ValueBar.Hide : false) {
             this.ValueBar.onName(this.Name);
             this.ValueBar.onUpdate(this.m_hitPointCurrent, this.HitPoint);
         }
-        if (this.EffectSpawm == null)
-            this.EffectSpawm = this.node.parent;
+        if (this.BarMask != null)
+            this.m_maskTransformX = this.m_maskTransform.contentSize.clone().x;
     }
 
     protected onDestroy(): void {
@@ -118,7 +134,7 @@ export class BodyBase extends Component {
             director.emit(this.EmitDestroy, this.node);
     }
 
-    //
+    //BODY
 
     onHit(hit: number, from: Node) {
         if (this.m_dead)
@@ -131,7 +147,11 @@ export class BodyBase extends Component {
             this.m_hit = false;
         }, this.HitDelay);
 
-        if (!this.Protect) {
+        if (this.Protect || (this.ProtectBigSize && (this.m_bodyX2 || this.m_bodyX4))) {
+            //Protect
+        }
+        else {
+            //Hurt
             if (this.HitFixed)
                 this.m_hitPointCurrent -= 1;
             else
@@ -228,6 +248,54 @@ export class BodyBase extends Component {
             this.ValueBar.onName(this.Name);
             this.ValueBar.onUpdate(this.m_hitPointCurrent, this.HitPoint);
         }
+    }
+
+    //EVENT:
+
+    protected onControlByDirector(state: boolean, full: boolean = true) {
+
+    }
+
+    //X2 - X4
+
+    onBodyX2(state: boolean = true) {
+        this.m_bodyX2 = state;
+        //
+        if (this.m_bodyX4)
+            return;
+        //
+        let baseScale: Vec3 = this.m_baseScale.clone();
+        let ratio = state ? 2 : 1;
+        let colliders = this.getComponents(Collider2D);
+        setTimeout(() => {
+            tween(this.node).to(0.25, { scale: baseScale.clone().multiplyScalar(ratio) }).call(() => {
+                colliders.forEach(c => {
+                    c.apply();
+                });
+            }).start();
+        }, 1);
+        this.m_baseSize = state ? 2 : 1;
+    }
+
+    onBodyX4(state: boolean = true) {
+        this.m_bodyX4 = state;
+        //
+        if (!state && this.m_bodyX2) {
+            this.onBodyX2(true);
+            return;
+        }
+        //
+        let baseScale: Vec3 = this.m_baseScale.clone();
+        let ratio = state ? 4 : 1;
+        let colliders = this.getComponents(Collider2D);
+        setTimeout(() => {
+            tween(this.node).to(0.25, { scale: baseScale.clone().multiplyScalar(ratio) }).call(() => {
+                colliders.forEach(c => {
+                    c.apply();
+                });
+            }).start();
+        }, 1);
+        this.m_baseSize = state ? 4 : 1;
     }
 
     //DESTROY

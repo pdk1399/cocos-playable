@@ -50,9 +50,6 @@ export class BodyControlXY extends Component {
     @property({ group: { name: 'Switch' }, type: CCInteger, visible(this: BodyControlXY) { return this.SwitchArrow != null; } })
     SwitchIndex: number = 0;
 
-    m_baseSize: number = 1;
-    m_baseScale: Vec3 = Vec3.ONE;
-
     m_state = PlayerStateXY.IDLE;
     m_move: boolean = false;
     m_moveDir: Vec2 = v2();
@@ -70,9 +67,6 @@ export class BodyControlXY extends Component {
     m_lockInput: boolean = false;
     m_lockKnockBack: boolean = false;
     m_lockVelocity: boolean = false;
-
-    m_bodyX2: boolean = false;
-    m_bodyX4: boolean = false;
 
     m_body: BodyBase = null;
     m_bodySpine: BodySpine = null;
@@ -100,9 +94,6 @@ export class BodyControlXY extends Component {
     }
 
     protected start(): void {
-        this.m_baseScale = this.node.scale.clone();
-        this.m_baseSize = 1;
-
         this.m_faceDirX = this.FaceRight ? 1 : -1;
         this.m_faceDir = this.FaceRight ? v2(1, 0) : v2(-1, 0);
         this.onDirUpdate();
@@ -124,8 +115,8 @@ export class BodyControlXY extends Component {
 
             director.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
-            director.on(ConstantBase.BODY_X2, this.onBodyX2, this);
-            director.on(ConstantBase.BODY_X4, this.onBodyX4, this);
+            director.on(ConstantBase.BODY_X2, this.m_body.onBodyX2, this.m_body);
+            director.on(ConstantBase.BODY_X4, this.m_body.onBodyX4, this.m_body);
 
             if (full)
                 director.on(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
@@ -149,8 +140,8 @@ export class BodyControlXY extends Component {
 
             director.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
-            director.off(ConstantBase.BODY_X2, this.onBodyX2, this);
-            director.off(ConstantBase.BODY_X4, this.onBodyX4, this);
+            director.off(ConstantBase.BODY_X2, this.m_body.onBodyX2, this.m_body);
+            director.off(ConstantBase.BODY_X4, this.m_body.onBodyX4, this.m_body);
 
             if (full)
                 director.off(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
@@ -180,9 +171,6 @@ export class BodyControlXY extends Component {
 
             this.node.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
 
-            this.node.on(ConstantBase.BODY_X2, this.onBodyX2, this);
-            this.node.on(ConstantBase.BODY_X4, this.onBodyX4, this);
-
             // if (full)
             //     this.node.on(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
 
@@ -204,9 +192,6 @@ export class BodyControlXY extends Component {
             this.node.off(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick, this);
 
             this.node.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
-
-            this.node.off(ConstantBase.BODY_X2, this.onBodyX2, this);
-            this.node.off(ConstantBase.BODY_X4, this.onBodyX4, this);
 
             // if (full)
             //     this.node.off(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
@@ -406,7 +391,7 @@ export class BodyControlXY extends Component {
     //COLLIDE
 
     protected onCollide(target: Node) {
-        if (this.m_bodyX4) {
+        if (this.m_body.m_bodyX4) {
             let bodyTarget = target.getComponent(BodyBase);
             if (bodyTarget != null)
                 bodyTarget.onDead(this.node);
@@ -417,48 +402,6 @@ export class BodyControlXY extends Component {
 
     protected onFixed() {
         this.onAimReset();
-    }
-
-    //X2 - X4
-
-    onBodyX2(state: boolean = true) {
-        this.m_bodyX2 = state;
-        //
-        if (this.m_bodyX4)
-            return;
-        //
-        let baseScale: Vec3 = this.m_baseScale.clone();
-        let ratio = state ? 2 : 1;
-        let colliders = this.getComponents(Collider2D);
-        setTimeout(() => {
-            tween(this.node).to(0.25, { scale: baseScale.clone().multiplyScalar(ratio) }).call(() => {
-                colliders.forEach(c => {
-                    c.apply();
-                });
-            }).start();
-        }, 1);
-        this.m_baseSize = state ? 2 : 1;
-    }
-
-    onBodyX4(state: boolean = true) {
-        this.m_bodyX4 = state;
-        //
-        if (!state && this.m_bodyX2) {
-            this.onBodyX2(true);
-            return;
-        }
-        //
-        let baseScale: Vec3 = this.m_baseScale.clone();
-        let ratio = state ? 4 : 1;
-        let colliders = this.getComponents(Collider2D);
-        setTimeout(() => {
-            tween(this.node).to(0.25, { scale: baseScale.clone().multiplyScalar(ratio) }).call(() => {
-                colliders.forEach(c => {
-                    c.apply();
-                });
-            }).start();
-        }, 1);
-        this.m_baseSize = state ? 4 : 1;
     }
 
     //STAGE:
