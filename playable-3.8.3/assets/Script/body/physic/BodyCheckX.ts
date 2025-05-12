@@ -64,6 +64,7 @@ export class BodyCheckX extends Component {
         return false;
     }
     set m_isBot(value: boolean | null) { this.m_isBotForce = value; }
+    m_rigidBodyBot: RigidBody2D = null;
     m_isHead: boolean = false;
     m_isBotHead: boolean = false;
 
@@ -153,8 +154,10 @@ export class BodyCheckX extends Component {
                     case this.TagPlatform:
                         if (otherCollider.sensor)
                             break;
-                        if (this.m_countBot == 0)
+                        if (this.m_countBot == 0) {
                             this.m_targetBot = otherCollider.node;
+                            this.m_rigidBodyBot = otherCollider.body;
+                        }
                         this.m_countBot++;
                         let state = this.m_isBotCollide;
                         this.m_isBotCollide = this.m_countBot > 0;
@@ -166,8 +169,10 @@ export class BodyCheckX extends Component {
                     case this.TagBody:
                         if (otherCollider.sensor || !this.TagBodyAsGround)
                             break;
-                        if (this.m_countBot == 0)
+                        if (this.m_countBot == 0) {
                             this.m_targetBot = otherCollider.node;
+                            this.m_rigidBodyBot = otherCollider.body;
+                        }
                         this.m_countBot++;
                         let state2 = this.m_isBotCollide;
                         this.m_isBotCollide = this.m_countBot > 0;
@@ -240,8 +245,10 @@ export class BodyCheckX extends Component {
                         if (otherCollider.sensor)
                             break;
                         this.m_countBot = math.clamp(this.m_countBot - 1, 0, this.m_countBot);
-                        if (this.m_countBot == 0)
+                        if (this.m_countBot == 0) {
                             this.m_targetBot = null;
+                            this.m_rigidBodyBot = null;
+                        }
                         let state = this.m_isBotCollide;
                         this.m_isBotCollide = this.m_countBot > 0;
                         if (state != this.m_isBotCollide) {
@@ -253,8 +260,10 @@ export class BodyCheckX extends Component {
                         if (otherCollider.sensor || !this.TagBodyAsGround)
                             break;
                         this.m_countBot = math.clamp(this.m_countBot - 1, 0, this.m_countBot);
-                        if (this.m_countBot == 0)
+                        if (this.m_countBot == 0) {
                             this.m_targetBot = null;
+                            this.m_rigidBodyBot = null;
+                        }
                         let state2 = this.m_isBotCollide;
                         this.m_isBotCollide = this.m_countBot > 0;
                         if (state2 != this.m_isBotCollide) {
