@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Director, director, Enum, FixedJoint2D, Node, RigidBody2D, Tween, tween, v2, v3, Vec2, Vec3 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, director, Enum, Node, RigidBody2D, tween, v2, v3, Vec2, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { DataRigidbody } from '../data/DataRigidbody';
 import { BodyBase } from './BodyBase';
@@ -170,6 +170,9 @@ export class BodyControlX extends Component {
     m_lockKnockBack: boolean = false;
     m_lockVelocity: boolean = false;
 
+    m_followBody: Node = null;
+    m_followLastPos: Vec3;
+
     m_body: BodyBase = null;
     m_bodyCheck: BodyCheckX = null;
     m_bodySpine: BodySpine = null;
@@ -213,11 +216,12 @@ export class BodyControlX extends Component {
     protected lateUpdate(dt: number): void {
         this.onPhysicUpdateY(dt);
         this.onPhysicUpdateX(dt);
+        this.onFollowUpdate(dt);
         this.onStateUpdate(dt);
         this.onCompleteGroundUpdate(dt);
     }
 
-    //EVENT:
+    //EVENT
 
     protected onControlByDirector(state: boolean, full: boolean = true) {
         if (this.m_controlByDirector)
@@ -373,7 +377,7 @@ export class BodyControlX extends Component {
         }
     }
 
-    //STOP:
+    //STOP
 
     protected onStop() {
         director.emit(ConstantBase.CONTROL_RELEASE);
@@ -385,7 +389,7 @@ export class BodyControlX extends Component {
             this.m_bodyAttack?.onStop(true);
     }
 
-    //RIGIDBODY:
+    //RIGIDBODY
 
     onSleep() {
         this.onJumRelease();
@@ -399,7 +403,7 @@ export class BodyControlX extends Component {
         this.m_rigidbody.wakeUp();
     }
 
-    //FACE:
+    //FACE
 
     onFaceX(face: number) {
         if (face > 0)
@@ -431,7 +435,7 @@ export class BodyControlX extends Component {
         this.onDirUpdate();
     }
 
-    //MOVE:
+    //MOVE
 
     protected onPhysicUpdateX(dt: number) {
         if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
@@ -625,7 +629,7 @@ export class BodyControlX extends Component {
             this.m_bodyAttack?.onDirUpdate(this.m_faceDirX);
     }
 
-    //JUMP:
+    //JUMP
 
     protected onPhysicUpdateY(dt: number) {
         if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
@@ -711,7 +715,7 @@ export class BodyControlX extends Component {
         }
     }
 
-    //DASH:
+    //DASH
 
     onDash() {
         if (!this.m_control || this.m_dash || this.m_dashDelay || this.getAttack(this.DashStopByBodyAttack, this.DashStopByPressAttack) || this.getDead())
@@ -752,7 +756,7 @@ export class BodyControlX extends Component {
             director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.node);
     }
 
-    //ATTACK:
+    //ATTACK
 
     onAttack(state: boolean, update: boolean = true) {
         if (!this.m_control || this.m_lockInput || this.getDead())
@@ -824,7 +828,7 @@ export class BodyControlX extends Component {
         this.scheduleOnce(() => this.m_bodyAttack?.onAttackProgess());
     }
 
-    //INTERACTION:
+    //INTERACTION
 
     onInteraction() {
         if (!this.m_control || !this.Pick)
@@ -923,7 +927,7 @@ export class BodyControlX extends Component {
         }
     }
 
-    //FIXED:
+    //FIXED
 
     protected onFixed() {
         switch (this.Type) {
@@ -939,7 +943,7 @@ export class BodyControlX extends Component {
         }
     }
 
-    //STAGE:
+    //STAGE
 
     protected onStateUpdate(dt: number) {
         let state = PlayerStateX.IDLE;
@@ -1009,7 +1013,7 @@ export class BodyControlX extends Component {
         this.m_state = state;
     }
 
-    //GET:
+    //GET
 
     getHit(): boolean {
         if (this.m_bodySpine != null ? this.m_bodySpine.AnimHitActive : false)
@@ -1037,7 +1041,7 @@ export class BodyControlX extends Component {
         return false;
     }
 
-    //COMPLETE:
+    //COMPLETE
 
     /**Check Player on ground after excute complete and 'EndOnGround' value is TRUE*/
     protected onCompleteGroundUpdate(dt: number) {
@@ -1106,7 +1110,29 @@ export class BodyControlX extends Component {
         }, 0);
     }
 
-    //DEAD:
+    //FOLLOW
+
+    protected onFollowUpdate(dt: number) {
+        if (this.m_dash || this.m_end || this.m_endReady || this.getKnock() || this.getDead())
+            return;
+        if (this.m_bodyCheck.m_isBot) {
+            if (this.m_followBody == null) {
+                this.m_followBody = this.m_bodyCheck.m_botNode;
+                this.m_followLastPos = this.m_followBody.position.clone();
+            }
+            let offsetPos = this.m_followBody.position.clone().subtract(this.m_followLastPos);
+            if (offsetPos.length() > 0.1) {
+                this.m_followLastPos = this.m_followBody.position.clone();
+                this.node.setPosition(this.node.position.clone().add(offsetPos));
+            }
+        }
+        else {
+            this.m_followBody = null;
+            this.m_followLastPos = v3();
+        }
+    }
+
+    //DEAD
 
     protected onDead() {
         director.emit(ConstantBase.CONTROL_RELEASE);

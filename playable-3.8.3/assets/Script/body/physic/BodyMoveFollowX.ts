@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, Component, Enum, Node, RigidBody2D, v2 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, Component, Enum, Node, RigidBody2D, v3, Vec3 } from 'cc';
 import { ConstantBase } from '../../ConstantBase';
 import { SpineBase } from '../../renderer/SpineBase';
 import { BodyBase } from '../BodyBase';
@@ -51,6 +51,9 @@ export class BodyMoveFollowX extends Component {
     m_pick: boolean = false;
     m_picked: boolean = false;
 
+    m_followBody: Node = null;
+    m_followLastPos: Vec3;
+
     m_body: BodyBase = null;
     m_bodyCheck: BodyCheckX = null;
     m_bodySpine: BodySpine = null;
@@ -79,14 +82,15 @@ export class BodyMoveFollowX extends Component {
     }
 
     protected update(dt: number): void {
-        this.onPhysicUpdate();
-        this.onHeadChange();
-        this.onStateUpdate();
+        this.onPhysicUpdateX(dt);
+        this.onFollowUpdate(dt);
+        this.onHeadChange(dt);
+        this.onStateUpdate(dt);
     }
 
-    //
+    //MOVE
 
-    onPhysicUpdate() {
+    protected onPhysicUpdateX(dt: number) {
         if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
             this.m_rigidbody = this.getComponent(RigidBody2D);
         if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
@@ -132,9 +136,7 @@ export class BodyMoveFollowX extends Component {
         this.m_rigidbody.linearVelocity = velocity;
     }
 
-    //
-
-    onHeadChange() {
+    protected onHeadChange(dt: number) {
         if (this.getDead() || this.getHit() || !this.getHeadChange())
             return;
         this.m_dir *= -1;
@@ -167,15 +169,15 @@ export class BodyMoveFollowX extends Component {
             this.m_bodyAttack.onDirUpdate(this.m_dir);
     }
 
-    //
+    //ATTACK
 
-    protected onMeleeFoundTarget() {
+    protected onMeleeFoundTarget(dt: number) {
         this.m_bodySpine.onIdle(true);
     }
 
-    //
+    //GET
 
-    onStateUpdate() {
+    protected onStateUpdate(dt: number) {
         let state = BodyState.IDLE;
         if (this.getDead())
             state = BodyState.DEAD;
@@ -244,5 +246,27 @@ export class BodyMoveFollowX extends Component {
 
     onThrow() {
         this.m_pick = false;
+    }
+
+    //FOLLOW
+
+    protected onFollowUpdate(dt: number) {
+        if (this.getKnock() || this.getDead())
+            return;
+        if (this.m_bodyCheck.m_isBot) {
+            if (this.m_followBody == null) {
+                this.m_followBody = this.m_bodyCheck.m_botNode;
+                this.m_followLastPos = this.m_followBody.position.clone();
+            }
+            let offsetPos = this.m_followBody.position.clone().subtract(this.m_followLastPos);
+            if (offsetPos.length() > 0.1) {
+                this.m_followLastPos = this.m_followBody.position.clone();
+                this.node.setPosition(this.node.position.clone().add(offsetPos));
+            }
+        }
+        else {
+            this.m_followBody = null;
+            this.m_followLastPos = v3();
+        }
     }
 }
