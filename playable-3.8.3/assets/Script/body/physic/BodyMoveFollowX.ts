@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, Component, Enum, Node, RigidBody2D } from 'cc';
+import { _decorator, CCBoolean, CCFloat, Component, Enum, Node, RigidBody2D, v2 } from 'cc';
 import { ConstantBase } from '../../ConstantBase';
 import { SpineBase } from '../../renderer/SpineBase';
 import { BodyBase } from '../BodyBase';
