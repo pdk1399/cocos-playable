@@ -380,6 +380,8 @@ export class BodyControlXY extends Component {
         this.SwitchArrow.active = state;
         this.onControlByDirector(state, false);
         this.onMoveRelease();
+        if (state)
+            director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.node);
     }
 
     //ATTACK:

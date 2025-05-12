@@ -1,5 +1,5 @@
-import { _decorator, Component, Node, CCFloat, view, screen, Vec3, CCBoolean, Camera, Tween, Vec2, director, tween, v2, v3, Rect, TweenEasing, math, Enum, sys } from 'cc';
-import { ConstantBase } from '../ConstantBase';
+import { _decorator, Component, Node, CCFloat, view, screen, Vec3, CCBoolean, Camera, Tween, Vec2, director, tween, v2, v3, Rect, TweenEasing, math, Enum, sys, CCString } from 'cc';
+import { ConstantBase, EaseType } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
 export enum OrientationType {
@@ -69,6 +69,13 @@ export default class CameraBase extends Component {
     RectPortrait: Rect = new Rect(0, 0.25, 1, 0.5);
     @property({ group: { name: 'Rect' }, type: CCBoolean, visible(this: CameraBase) { return this.RectScreen; } })
     RectDebug: boolean = false;
+
+    @property({ group: { name: 'Switch' }, type: CCBoolean })
+    SwitchTween: boolean = false;
+    @property({ group: { name: 'Switch' }, type: CCFloat, visible(this: CameraBase) { return this.SwitchTween; } })
+    SwitchTweenDuration: number = 0.5;
+    @property({ group: { name: 'Switch' }, type: EaseType, visible(this: CameraBase) { return this.SwitchTween; } })
+    SwitchTweenEasing: EaseType = EaseType.linear;
 
     m_camera: Camera = null;
     m_orthoHeight: number = 0;
@@ -169,7 +176,6 @@ export default class CameraBase extends Component {
     //
 
     protected onCanvasInit() {
-
         this.onCanvasCurrent();
     }
 
@@ -302,6 +308,10 @@ export default class CameraBase extends Component {
     onTargetSwitch(Target: Node) {
         if (this.m_tweenTarget != null)
             Tween.stopAllByTarget(this.m_tweenTarget);
+        if (this.SwitchTween) {
+            this.onTargetSwitchTween(Target, this.SwitchTweenDuration, EaseType[this.SwitchTweenEasing] as TweenEasing);
+            return;
+        }
         this.Target = Target;
     }
 

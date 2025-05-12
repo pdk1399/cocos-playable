@@ -39,8 +39,8 @@ export class TriggerCamera extends Component {
     TargetTween: boolean = false;
     @property({ group: { name: 'Target' }, type: CCFloat, visible(this: TriggerCamera) { return this.TargetChange && this.TargetTween; } })
     TargetTweenDuration: number = 0.5;
-    @property({ group: { name: 'Target' }, type: CCString, visible(this: TriggerCamera) { return this.TargetChange && this.TargetTween; } })
-    TargetTweenEasing: TweenEasing = 'linear';
+    @property({ group: { name: 'Target' }, type: EaseType, visible(this: TriggerCamera) { return this.TargetChange && this.TargetTween; } })
+    TargetTweenEasing: EaseType = EaseType.linear;
 
     @property({ group: { name: 'Effect' }, type: CCBoolean })
     Effect: boolean = false;
@@ -98,7 +98,7 @@ export class TriggerCamera extends Component {
 
         if (this.TargetChange) {
             if (this.TargetTween)
-                director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.Target, this.TargetTweenDuration, this.TargetTweenEasing);
+                director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.Target, this.TargetTweenDuration, EaseType[this.TargetTweenEasing] as TweenEasing);
             else
                 director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.Target);
         }

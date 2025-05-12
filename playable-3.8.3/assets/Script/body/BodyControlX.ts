@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, director, Enum, Node, RigidBody2D, Tween, tween, v2, v3, Vec2, Vec3 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Director, director, Enum, Node, RigidBody2D, Tween, tween, v2, v3, Vec2, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { DataRigidbody } from '../data/DataRigidbody';
 import { BodyBase } from './BodyBase';
@@ -750,6 +750,8 @@ export class BodyControlX extends Component {
         this.onControlByDirector(state, false);
         this.onJumRelease();
         this.onMoveRelease();
+        if (state)
+            director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.node);
     }
 
     //ATTACK:
