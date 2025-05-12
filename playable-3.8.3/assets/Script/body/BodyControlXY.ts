@@ -246,6 +246,23 @@ export class BodyControlXY extends Component {
         this.m_rigidbody.wakeUp();
     }
 
+    //FACE:
+
+    onFaceRight() {
+        this.m_faceDirX = 1;
+        this.onDirUpdate();
+    }
+
+    onFaceLeft() {
+        this.m_faceDirX = -1;
+        this.onDirUpdate();
+    }
+
+    onFaceReverseX() {
+        this.m_faceDirX = -this.m_faceDirX;
+        this.onDirUpdate();
+    }
+
     //MOVE:
 
     protected onPhysicUpdate(dt: number) {

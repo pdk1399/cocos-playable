@@ -399,6 +399,38 @@ export class BodyControlX extends Component {
         this.m_rigidbody.wakeUp();
     }
 
+    //FACE:
+
+    onFaceX(face: number) {
+        if (face > 0)
+            this.onFaceRight();
+        else if (face < 0)
+            this.onFaceLeft();
+    }
+
+    onFaceRight() {
+        this.m_faceDirX = 1;
+        this.onDirUpdate();
+    }
+
+    onFaceLeft() {
+        this.m_faceDirX = -1;
+        this.onDirUpdate();
+    }
+
+    onFaceUp() {
+        this.m_faceDirY = 1;
+    }
+
+    onFaceDown() {
+        this.m_faceDirY = -1;
+    }
+
+    onFaceReverseX() {
+        this.m_faceDirX = -this.m_faceDirX;
+        this.onDirUpdate();
+    }
+
     //MOVE:
 
     protected onPhysicUpdateX(dt: number) {
@@ -441,17 +473,19 @@ export class BodyControlX extends Component {
             return;
         }
 
+        let botVelocityX = this.m_bodyCheck.m_botRigidbody?.linearVelocity.clone().x ?? 0;
+
         if (this.MoveForceStop && this.m_moveDirX == 0) {
             switch (this.Type) {
                 case BodyType.STICK:
                     if (this.m_rigidbody.linearVelocity.clone().x != 0) {
-                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
                         return;
                     }
                     break;
                 case BodyType.BALL:
                     if (this.m_rigidbody.angularVelocity != 0) {
-                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
                         this.m_rigidbody.angularVelocity = 0;
                         return;
                     }
@@ -463,22 +497,22 @@ export class BodyControlX extends Component {
             switch (this.Type) {
                 case BodyType.STICK:
                     if (this.m_rigidbody.linearVelocity.clone().x > 0 && this.m_moveDirX < 0) {
-                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
                         return;
                     }
                     if (this.m_rigidbody.linearVelocity.clone().x < 0 && this.m_moveDirX > 0) {
-                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
                         return;
                     }
                     break;
                 case BodyType.BALL:
                     if (this.m_rigidbody.angularVelocity < 0 && this.m_moveDirX < 0) {
-                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
                         this.m_rigidbody.angularVelocity = 1;
                         return;
                     }
                     if (this.m_rigidbody.angularVelocity > 0 && this.m_moveDirX > 0) {
-                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
                         this.m_rigidbody.angularVelocity = -1;
                         return;
                     }
@@ -517,7 +551,7 @@ export class BodyControlX extends Component {
             }
         }
         velocity.x *= this.m_moveRatioX;
-        let damp = current.lerp(velocity, this.MoveDampX * dt);
+        let damp = current.lerp(velocity.add(v2(1, 0).clone().multiplyScalar(botVelocityX)), this.MoveDampX * dt);
         this.m_rigidbody.linearVelocity = damp;
     }
 
@@ -803,11 +837,11 @@ export class BodyControlX extends Component {
             return;
         let delayPick = 0;
         if (this.m_pickUp == null) {
-            if (this.m_bodyCheck.m_targetInteracte.length == 0)
+            if (this.m_bodyCheck.m_interacteNode.length == 0)
                 return;
             this.m_pickUpProgess = true;
             //Add Pick-up Object to current saved
-            this.m_pickUp = this.m_bodyCheck.m_targetInteracte[0];
+            this.m_pickUp = this.m_bodyCheck.m_interacteNode[0];
             this.m_pickUpParent = this.m_pickUp.parent;
             this.m_pickUpSiblingIndex = this.m_pickUp.getSiblingIndex();
             //Save Pick-up Object's Rigidbody imformation before destroy it
@@ -869,7 +903,7 @@ export class BodyControlX extends Component {
     protected onInteractionFound(target: Node, stage: boolean) {
         if (this.m_pickUp != null)
             return;
-        if (this.m_bodyCheck.m_targetInteracte.length == 0) {
+        if (this.m_bodyCheck.m_interacteNode.length == 0) {
             if (this.UiPickBtnActive)
                 director.emit(ConstantBase.UI_INTERACTION_SHOW, false);
             return;
