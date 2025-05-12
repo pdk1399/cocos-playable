@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCInteger, Component, director, Enum, EventTouch, input, Input, KeyCode, Label, math, Node, sys, UIOpacity, Vec2 } from 'cc';
+import { _decorator, CCBoolean, Component, director, Enum, EventTouch, input, Input, Node, sys, UIOpacity } from 'cc';
 import { ManagerEvent } from './ManagerEvent';
 import { ConstantBase, KeyCodeType } from '../ConstantBase';
 import { UiJoystick } from '../ui/UiJoystick';
