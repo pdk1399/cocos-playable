@@ -108,8 +108,6 @@ export class BodyMoveFollowX extends Component {
         if (this.m_lockVelocity)
             return;
 
-        let botVelocityX = this.m_bodyCheck.m_botRigidbody?.linearVelocity.clone().x ?? 0;
-
         let velocity = this.m_rigidbody.linearVelocity.clone();
         if (this.getDead() || this.getHit()) {
             this.m_move = false;
@@ -131,7 +129,7 @@ export class BodyMoveFollowX extends Component {
             this.m_move = this.MoveAirX > 0;
             velocity.x = this.m_dir * this.MoveAirX;
         }
-        this.m_rigidbody.linearVelocity = velocity.add(v2(1, 0).clone().multiplyScalar(botVelocityX));
+        this.m_rigidbody.linearVelocity = velocity;
     }
 
     //

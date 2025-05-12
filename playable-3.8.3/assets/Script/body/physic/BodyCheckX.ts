@@ -51,7 +51,7 @@ export class BodyCheckX extends Component {
     m_countBotHead: number = 0;
 
     m_isBody: boolean = false;
-    m_isTopCollider: boolean = false;
+    m_isTop: boolean = false;
     protected m_isBotCollide: boolean = false;
     protected m_isBotForce?: boolean = null;
     get m_isBot() {
@@ -160,7 +160,7 @@ export class BodyCheckX extends Component {
                             this.m_topRigidbody = otherCollider.body;
                         }
                         this.m_countTop++;
-                        this.m_isTopCollider = this.m_countTop > 0;
+                        this.m_isTop = this.m_countTop > 0;
                         break;
                 }
                 break;
@@ -262,7 +262,7 @@ export class BodyCheckX extends Component {
                             this.m_topNode = null;
                             this.m_topRigidbody = null;
                         }
-                        this.m_isTopCollider = this.m_countTop > 0;
+                        this.m_isTop = this.m_countTop > 0;
                         break;
                 }
                 break;

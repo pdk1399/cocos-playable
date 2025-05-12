@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Director, director, Enum, Node, RigidBody2D, Tween, tween, v2, v3, Vec2, Vec3 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Director, director, Enum, FixedJoint2D, Node, RigidBody2D, Tween, tween, v2, v3, Vec2, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { DataRigidbody } from '../data/DataRigidbody';
 import { BodyBase } from './BodyBase';
@@ -473,19 +473,17 @@ export class BodyControlX extends Component {
             return;
         }
 
-        let botVelocityX = this.m_bodyCheck.m_botRigidbody?.linearVelocity.clone().x ?? 0;
-
         if (this.MoveForceStop && this.m_moveDirX == 0) {
             switch (this.Type) {
                 case BodyType.STICK:
                     if (this.m_rigidbody.linearVelocity.clone().x != 0) {
-                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
                         return;
                     }
                     break;
                 case BodyType.BALL:
                     if (this.m_rigidbody.angularVelocity != 0) {
-                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
                         this.m_rigidbody.angularVelocity = 0;
                         return;
                     }
@@ -497,22 +495,22 @@ export class BodyControlX extends Component {
             switch (this.Type) {
                 case BodyType.STICK:
                     if (this.m_rigidbody.linearVelocity.clone().x > 0 && this.m_moveDirX < 0) {
-                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
                         return;
                     }
                     if (this.m_rigidbody.linearVelocity.clone().x < 0 && this.m_moveDirX > 0) {
-                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
                         return;
                     }
                     break;
                 case BodyType.BALL:
                     if (this.m_rigidbody.angularVelocity < 0 && this.m_moveDirX < 0) {
-                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
                         this.m_rigidbody.angularVelocity = 1;
                         return;
                     }
                     if (this.m_rigidbody.angularVelocity > 0 && this.m_moveDirX > 0) {
-                        this.m_rigidbody.linearVelocity = v2(0 + botVelocityX, this.m_rigidbody.linearVelocity.y);
+                        this.m_rigidbody.linearVelocity = v2(0, this.m_rigidbody.linearVelocity.y);
                         this.m_rigidbody.angularVelocity = -1;
                         return;
                     }
@@ -551,7 +549,7 @@ export class BodyControlX extends Component {
             }
         }
         velocity.x *= this.m_moveRatioX;
-        let damp = current.lerp(velocity.add(v2(1, 0).clone().multiplyScalar(botVelocityX)), this.MoveDampX * dt);
+        let damp = current.lerp(velocity, this.MoveDampX * dt);
         this.m_rigidbody.linearVelocity = damp;
     }
 
