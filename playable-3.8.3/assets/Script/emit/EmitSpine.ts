@@ -1,10 +1,10 @@
-import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node } from 'cc';
-import { EmitBase } from './EmitBase';
+import { _decorator, CCBoolean, CCFloat, CCString, director, Node } from 'cc';
 import { SpineBase } from '../renderer/SpineBase';
+import { EmitBaseFull } from './EmitBaseFull';
 const { ccclass, property } = _decorator;
 
 @ccclass('EmitSpine')
-export class EmitSpine extends EmitBase {
+export class EmitSpine extends EmitBaseFull {
 
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEventFinal: string = '';

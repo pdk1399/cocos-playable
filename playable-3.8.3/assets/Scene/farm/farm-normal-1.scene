@@ -26,7 +26,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 365
+      "__id__": 366
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -57,7 +57,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 366
+      "__id__": 367
     },
     "_id": "af570070-9ffc-4c95-9721-4150a603ba44"
   },
@@ -5126,9 +5126,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 360
-      },
-      {
         "__id__": 361
       },
       {
@@ -5139,6 +5136,9 @@
       },
       {
         "__id__": 364
+      },
+      {
+        "__id__": 365
       }
     ],
     "_prefab": null,
@@ -12021,7 +12021,7 @@
         "__id__": 352
       },
       {
-        "__id__": 355
+        "__id__": 356
       }
     ],
     "_active": true,
@@ -12115,20 +12115,20 @@
     "_enabled": true,
     "__prefab": null,
     "Start": true,
-    "OnNode": false,
     "OnEvent": "",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": false,
     "Delay": 0,
+    "EmitEvent": "",
     "EmitNode": [
       {
         "__id__": 163
       }
     ],
-    "EmitEvent": "",
     "EmitTagTarget": false,
     "Control": true,
     "ControlByNode": true,
@@ -12159,17 +12159,15 @@
     "_enabled": true,
     "__prefab": null,
     "Start": true,
-    "OnNode": false,
     "OnEvent": "",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": false,
     "Delay": 1,
-    "EmitNode": [],
     "EmitEvent": "",
-    "EmitTagTarget": false,
     "View": false,
     "SmoothTime": 0.1,
     "Scale": false,
@@ -12325,16 +12323,16 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnNode": false,
     "OnEvent": "",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": true,
     "Delay": 0,
-    "EmitNode": [],
     "EmitEvent": "",
+    "EmitNode": [],
     "EmitTagTarget": true,
     "Control": true,
     "ControlByNode": true,
@@ -12365,20 +12363,20 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnNode": false,
     "OnEvent": "",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": false,
     "Delay": 0.5,
+    "EmitEvent": "",
     "EmitNode": [
       {
         "__id__": 275
       }
     ],
-    "EmitEvent": "",
     "EmitTagTarget": false,
     "EmitEventFinal": "",
     "AnimStart": "idle",
@@ -12399,14 +12397,15 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnNode": false,
     "OnEvent": "",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": true,
     "Delay": 1,
+    "EmitEvent": "",
     "EmitNode": [
       {
         "__id__": 174
@@ -12415,7 +12414,6 @@
         "__id__": 286
       }
     ],
-    "EmitEvent": "",
     "EmitTagTarget": false,
     "EventType": 0,
     "EventState": 2,
@@ -12432,17 +12430,15 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnNode": false,
     "OnEvent": "",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": true,
     "Delay": 1.5,
-    "EmitNode": [],
     "EmitEvent": "",
-    "EmitTagTarget": false,
     "View": false,
     "SmoothTime": 0.02,
     "Scale": false,
@@ -12481,21 +12477,15 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnNode": false,
     "OnEvent": "",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": false,
     "Delay": 2,
-    "EmitNode": [
-      {
-        "__id__": 348
-      }
-    ],
-    "EmitEvent": "",
-    "EmitTagTarget": false,
+    "EmitEvent": "3-wolf-ready",
     "_id": "a8jUSluhhApob8VkQznDCV"
   },
   {
@@ -12560,20 +12550,20 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnNode": true,
-    "OnEvent": "",
+    "OnEvent": "3-wolf-ready",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": false,
     "Delay": 0,
+    "EmitEvent": "",
     "EmitNode": [
       {
         "__id__": 300
       }
     ],
-    "EmitEvent": "",
     "EmitTagTarget": false,
     "EmitEventFinal": "4-wolf-run",
     "AnimStart": "idle",
@@ -12594,20 +12584,20 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnNode": true,
-    "OnEvent": "",
+    "OnEvent": "3-wolf-ready",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": false,
     "Delay": 1.4,
+    "EmitEvent": "",
     "EmitNode": [
       {
         "__id__": 311
       }
     ],
-    "EmitEvent": "",
     "EmitTagTarget": false,
     "EventType": 0,
     "EventState": 0,
@@ -12624,14 +12614,15 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
+    "OnEvent": "3-wolf-ready",
     "OnNode": false,
-    "OnEvent": "",
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": false,
     "Delay": 0,
+    "EmitEvent": "",
     "EmitNode": [
       {
         "__id__": 174
@@ -12640,7 +12631,6 @@
         "__id__": 286
       }
     ],
-    "EmitEvent": "",
     "EmitTagTarget": false,
     "EventType": 0,
     "EventState": 1,
@@ -12662,6 +12652,9 @@
       },
       {
         "__id__": 354
+      },
+      {
+        "__id__": 355
       }
     ],
     "_prefab": null,
@@ -12695,6 +12688,40 @@
     "_id": "3dyPGmmhxCi4IdQgkRY5xo"
   },
   {
+    "__type__": "6cd76sRD45PTaTetXxChWQd",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 352
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "Start": false,
+    "OnEvent": "4-wolf-run",
+    "OnNode": false,
+    "OnTagBody": 0,
+    "OnTagTarget": [
+      100
+    ],
+    "Once": true,
+    "Delay": 0,
+    "EmitEvent": "",
+    "EmitNode": [
+      {
+        "__id__": 300
+      }
+    ],
+    "EmitTagTarget": false,
+    "EmitEventFinal": "",
+    "AnimStart": "idle",
+    "AnimLoop": "",
+    "AnimLoopDuration": 0,
+    "AnimEnd": "",
+    "AnimEndLoop": false,
+    "_id": "a9RFO1fkdDJ4qkFa4VeZz4"
+  },
+  {
     "__type__": "0346bQAUwBCy7JJlqUFAiQe",
     "_name": "",
     "_objFlags": 0,
@@ -12705,20 +12732,20 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnNode": false,
     "OnEvent": "4-wolf-run",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": true,
-    "Delay": 0,
+    "Delay": 0.1,
+    "EmitEvent": "",
     "EmitNode": [
       {
         "__id__": 300
       }
     ],
-    "EmitEvent": "",
     "EmitTagTarget": false,
     "Control": true,
     "ControlByNode": true,
@@ -12749,20 +12776,20 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnNode": false,
     "OnEvent": "4-wolf-run",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": false,
     "Delay": 0,
+    "EmitEvent": "",
     "EmitNode": [
       {
         "__id__": 311
       }
     ],
-    "EmitEvent": "",
     "EmitTagTarget": false,
     "EventType": 0,
     "EventState": 1,
@@ -12780,9 +12807,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 356
-      },
-      {
         "__id__": 357
       },
       {
@@ -12790,6 +12814,9 @@
       },
       {
         "__id__": 359
+      },
+      {
+        "__id__": 360
       }
     ],
     "_prefab": null,
@@ -12828,7 +12855,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 355
+      "__id__": 356
     },
     "_enabled": true,
     "__prefab": null,
@@ -12856,7 +12883,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 355
+      "__id__": 356
     },
     "_enabled": true,
     "__prefab": null,
@@ -12884,21 +12911,21 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 355
+      "__id__": 356
     },
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnNode": false,
     "OnEvent": "",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": true,
     "Delay": 0,
-    "EmitNode": [],
     "EmitEvent": "",
+    "EmitNode": [],
     "EmitTagTarget": true,
     "Control": true,
     "ControlByNode": true,
@@ -12924,22 +12951,20 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 355
+      "__id__": 356
     },
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnNode": false,
     "OnEvent": "",
+    "OnNode": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
     ],
     "Once": true,
     "Delay": 1,
-    "EmitNode": [],
     "EmitEvent": "",
-    "EmitTagTarget": false,
     "View": false,
     "SmoothTime": 0.1,
     "Scale": false,
@@ -13075,28 +13100,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 367
-    },
-    "shadows": {
       "__id__": 368
     },
-    "_skybox": {
+    "shadows": {
       "__id__": 369
     },
-    "fog": {
+    "_skybox": {
       "__id__": 370
     },
-    "octree": {
+    "fog": {
       "__id__": 371
     },
-    "skin": {
+    "octree": {
       "__id__": 372
     },
-    "lightProbeInfo": {
+    "skin": {
       "__id__": 373
     },
-    "postSettings": {
+    "lightProbeInfo": {
       "__id__": 374
+    },
+    "postSettings": {
+      "__id__": 375
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

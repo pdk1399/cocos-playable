@@ -1,10 +1,10 @@
-import { _decorator, CCBoolean, Component, director, Node } from 'cc';
-import { EmitBase } from './EmitBase';
+import { _decorator, CCBoolean, director, Node } from 'cc';
 import { ConstantBase } from '../ConstantBase';
+import { EmitBaseFull } from './EmitBaseFull';
 const { ccclass, property } = _decorator;
 
 @ccclass('EmitControl')
-export class EmitControl extends EmitBase {
+export class EmitControl extends EmitBaseFull {
 
     @property({ group: { name: 'Main' }, type: CCBoolean })
     Control: boolean = true;

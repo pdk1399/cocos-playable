@@ -1,5 +1,5 @@
-import { _decorator, CCBoolean, Component, Enum, Node, sp } from 'cc';
-import { EmitBase } from './EmitBase';
+import { _decorator, Enum, Node, sp } from 'cc';
+import { EmitBaseFull } from './EmitBaseFull';
 const { ccclass, property } = _decorator;
 
 export enum TargetType {
@@ -17,7 +17,7 @@ export enum ValueType {
 Enum(ValueType);
 
 @ccclass('EmitActive')
-export class EmitActive extends EmitBase {
+export class EmitActive extends EmitBaseFull {
 
     @property({ group: { name: 'Event' }, type: TargetType })
     EventType: TargetType = TargetType.Node;

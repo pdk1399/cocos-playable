@@ -8,10 +8,10 @@ export class EmitBase extends Component {
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
     //ON-EVENT
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EmitBase) { return !this.Start; } })
-    OnNode: boolean = false;
     @property({ group: { name: 'Event' }, type: CCString, visible(this: EmitBase) { return !this.Start; } })
     OnEvent: string = '';
+    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EmitBase) { return !this.Start; } })
+    OnNode: boolean = false;
     //ON-COLLISION-EVENT
     @property({ group: { name: 'Event' }, type: CCInteger, visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
     OnTagBody: number = 0;
@@ -23,13 +23,8 @@ export class EmitBase extends Component {
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
     //EMIT-EVENT
-    @property({ group: { name: 'Event' }, type: [Node] })
-    EmitNode: Node[] = [];
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
-    //EMIT-COLLISION-EVENT
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
-    EmitTagTarget: boolean = false;
 
     protected m_eventActived: boolean = false;
     protected m_eventPhysic: boolean = false;
@@ -71,13 +66,6 @@ export class EmitBase extends Component {
         if (targetIndex < 0)
             return;
 
-        //TARGET
-        if (this.EmitTagTarget) {
-            let targetExistIndex = this.m_targetCollide.findIndex((t) => t == otherCollider.node);
-            if (targetExistIndex < 0)
-                this.m_targetCollide.push(otherCollider.node);
-        }
-
         //EVENT
         this.onEvent();
     }
@@ -92,26 +80,9 @@ export class EmitBase extends Component {
             //#0: Emit Active
             this.onEventActive();
 
-            //#1: Emit Node
-            this.EmitNode.forEach(t => {
-                if (t != null) {
-                    this.onEventActiveNode(t);
-                }
-            });
-
-            //#2: Emit Director
+            //#1: Emit Director
             if (this.EmitEvent != '')
                 director.emit(this.EmitEvent);
-
-            //#3: Emit Node Target
-            if (this.m_eventPhysic && this.EmitTagTarget) {
-                this.m_targetCollide.forEach(t => {
-                    if (t != null) {
-                        this.onEventActiveNode(t);
-                    }
-                });
-                this.m_targetCollide.splice(0, this.m_targetCollide.length); //Reset all targets collide
-            }
 
             //END
             this.m_eventActived = false;
