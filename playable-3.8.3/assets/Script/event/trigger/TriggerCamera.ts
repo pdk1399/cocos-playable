@@ -1,6 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, TweenEasing, v2, Vec2 } from 'cc';
 import { ConstantBase, EaseType } from '../../ConstantBase';
-import { SpineBase } from '../../renderer/SpineBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('TriggerCamera')
@@ -53,6 +52,10 @@ export class TriggerCamera extends Component {
     TagTarget: number[] = [100];
 
     protected onLoad(): void {
+        if (this.OnNode) {
+            this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
+            return;
+        }
         let colliders = this.getComponents(Collider2D);
         colliders.forEach(collider => {
             switch (collider.tag) {
@@ -61,8 +64,6 @@ export class TriggerCamera extends Component {
                     break;
             }
         });
-        if (this.OnNode)
-            this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
     }
 
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
@@ -75,16 +76,6 @@ export class TriggerCamera extends Component {
             if (this.EmitEvent != '')
                 director.emit(this.EmitEvent);
         }, Math.max(this.Delay, 0));
-        if (this.Once) {
-            let colliders = this.getComponents(Collider2D);
-            colliders.forEach(collider => {
-                switch (collider.tag) {
-                    case this.TagBody:
-                        collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-                        break;
-                }
-            });
-        }
     }
 
     onEvent() {
@@ -109,11 +100,16 @@ export class TriggerCamera extends Component {
 
         if (this.EmitEvent != '')
             director.emit(this.EmitEvent);
-    }
 
-    onEventSingle(target: SpineBase) {
-        if (target == null ? true : !target.isValid)
-            return;
-        //...
+        if (this.Once) {
+            let colliders = this.getComponents(Collider2D);
+            colliders.forEach(collider => {
+                switch (collider.tag) {
+                    case this.TagBody:
+                        collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+                        break;
+                }
+            });
+        }
     }
 }
