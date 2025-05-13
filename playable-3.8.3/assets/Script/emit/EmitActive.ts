@@ -24,12 +24,6 @@ export class EmitActive extends EmitBase {
     @property({ group: { name: 'Event' }, type: ValueType })
     EventState: ValueType = ValueType.On;
 
-    onEventActive(): void {
-        this.EmitNode.forEach(target => {
-            this.onEventActiveNode(target);
-        });
-    }
-
     onEventActiveNode(target: Node): void {
         switch (this.EventState) {
             case ValueType.On:
@@ -43,6 +37,8 @@ export class EmitActive extends EmitBase {
                 break;
         }
     }
+
+    //
 
     onEventSingle(target: Node, state: boolean, targetType: TargetType) {
         if (target == null ? true : !target.isValid)
@@ -81,7 +77,7 @@ export class EmitActive extends EmitBase {
             return;
         switch (targetType) {
             case TargetType.Node:
-                target.active = !target.active;
+                target.active = !target.activeInHierarchy; // Can't use 'active' instead
                 break;
             case TargetType.Spine:
                 {

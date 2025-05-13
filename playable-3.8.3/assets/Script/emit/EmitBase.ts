@@ -82,7 +82,6 @@ export class EmitBase extends Component {
         this.onEvent();
     }
 
-    // Re-code onEvent() to fix scheduleOnce & delay events
     onEvent(): void {
         if (this.m_eventActived)
             return;
@@ -95,8 +94,9 @@ export class EmitBase extends Component {
 
             //#1: Emit Node
             this.EmitNode.forEach(t => {
-                if (t != null)
+                if (t != null) {
                     this.onEventActiveNode(t);
+                }
             });
 
             //#2: Emit Director
@@ -106,8 +106,9 @@ export class EmitBase extends Component {
             //#3: Emit Node Target
             if (this.m_eventPhysic && this.EmitTagTarget) {
                 this.m_targetCollide.forEach(t => {
-                    if (t != null)
+                    if (t != null) {
                         this.onEventActiveNode(t);
+                    }
                 });
                 this.m_targetCollide.splice(0, this.m_targetCollide.length); //Reset all targets collide
             }
@@ -135,13 +136,11 @@ export class EmitBase extends Component {
                 });
             }
         }
-    }
+    } // Re-code onEvent() to fix scheduleOnce & delay events
 
-    // Re-code onEventActive() to active main events
-    onEventActive(): void { }
+    //NOTE: Re-Code just once function below
 
-    // Re-code onEventActiveNode() to active node events on target collide
-    onEventActiveNode(target: Node): void {
-        target.emit(ConstantBase.NODE_EVENT);
-    }
+    onEventActive(): void { } // Re-code onEventActive() to active main events
+
+    onEventActiveNode(target: Node): void { target.emit(ConstantBase.NODE_EVENT); } // Re-code onEventActiveNode() to active node events
 }
