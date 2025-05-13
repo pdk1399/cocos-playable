@@ -754,7 +754,7 @@ export class BodyControlX extends Component {
         this.onJumRelease();
         this.onMoveRelease();
         if (state)
-            director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.node);
+            director.emit(ConstantBase.CAMERA_SWITCH, this.node);
     }
 
     //ATTACK

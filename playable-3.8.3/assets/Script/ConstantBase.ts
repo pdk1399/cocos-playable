@@ -93,10 +93,10 @@ export class ConstantBase {
 
     //
 
-    static readonly CAMERA_TARGET_SWITCH: string = 'camera-target-switch';
-    static readonly CAMERA_VALUE_SMOOTH_TIME: string = 'camera-value-smooth-time';
-    static readonly CAMERA_VALUE_OFFSET: string = 'camera-value-offset';
-    static readonly CAMERA_VALUE_SCALE: string = 'camera-value-scale';
+    static readonly CAMERA_SMOOTH_TIME: string = 'camera-smooth-time';
+    static readonly CAMERA_SCALE: string = 'camera-scale';
+    static readonly CAMERA_OFFSET: string = 'camera-offset';
+    static readonly CAMERA_SWITCH: string = 'camera-switch';
     static readonly CAMERA_EFFECT_SHAKE: string = 'camera-effect-shake';
     static readonly CAMERA_EFFECT_SHAKE_ONCE: string = 'camera-effect-shake-once';
 

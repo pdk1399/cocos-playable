@@ -382,7 +382,7 @@ export class BodyControlXY extends Component {
         this.onControlByDirector(state, false);
         this.onMoveRelease();
         if (state)
-            director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.node);
+            director.emit(ConstantBase.CAMERA_SWITCH, this.node);
     }
 
     //ATTACK:

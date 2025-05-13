@@ -65,18 +65,18 @@ export class EventCamera extends Component {
 
     onEvent() {
         if (this.ValueChange) {
-            director.emit(ConstantBase.CAMERA_VALUE_SMOOTH_TIME, this.SmoothTime);
-            director.emit(ConstantBase.CAMERA_VALUE_OFFSET, this.Offset);
+            director.emit(ConstantBase.CAMERA_SMOOTH_TIME, this.SmoothTime);
+            director.emit(ConstantBase.CAMERA_OFFSET, this.Offset);
         }
 
         if (this.ScaleChange)
-            director.emit(ConstantBase.CAMERA_VALUE_SCALE, this.Scale, this.ScaleDuration, this.ScaleEasing);
+            director.emit(ConstantBase.CAMERA_SCALE, this.Scale, this.ScaleDuration, this.ScaleEasing);
 
         if (this.TargetChange) {
             if (this.TargetTween)
-                director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.Target, this.TargetTweenDuration, EaseType[this.TargetTweenEasing] as TweenEasing);
+                director.emit(ConstantBase.CAMERA_SWITCH, this.Target, this.TargetTweenDuration, EaseType[this.TargetTweenEasing] as TweenEasing);
             else
-                director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.Target);
+                director.emit(ConstantBase.CAMERA_SWITCH, this.Target);
         }
 
         if (this.Effect) {
