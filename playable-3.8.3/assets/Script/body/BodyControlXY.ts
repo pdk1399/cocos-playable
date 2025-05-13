@@ -377,7 +377,8 @@ export class BodyControlXY extends Component {
             return;
         let state = index == this.SwitchIndex;
         this.m_control = state;
-        this.SwitchArrow.active = state;
+        if (this.SwitchArrow != null)
+            this.SwitchArrow.active = state;
         this.onControlByDirector(state, false);
         this.onMoveRelease();
         if (state)
