@@ -2,6 +2,8 @@ import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Compon
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
+//Extends this class to create unique event with no other node events excuted
+
 @ccclass('EmitBase')
 export class EmitBase extends Component {
 

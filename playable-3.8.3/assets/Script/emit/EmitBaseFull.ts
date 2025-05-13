@@ -3,6 +3,8 @@ import { EmitBase } from './EmitBase';
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
+//Extends this class to create unique event with other node events excuted (when after delay or collided)
+
 @ccclass('EmitBaseFull')
 export class EmitBaseFull extends EmitBase {
 
