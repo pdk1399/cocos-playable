@@ -72,9 +72,11 @@ export class EmitBase extends Component {
             return;
 
         //TARGET
-        let targetExistIndex = this.m_targetCollide.findIndex((t) => t == otherCollider.node);
-        if (targetExistIndex < 0)
-            this.m_targetCollide.push(otherCollider.node);
+        if (this.EmitTagTarget) {
+            let targetExistIndex = this.m_targetCollide.findIndex((t) => t == otherCollider.node);
+            if (targetExistIndex < 0)
+                this.m_targetCollide.push(otherCollider.node);
+        }
 
         //EVENT
         this.onEvent();
@@ -102,7 +104,7 @@ export class EmitBase extends Component {
                 director.emit(this.EmitEvent);
 
             //#3: Emit Node Target
-            if (this.m_eventPhysic) {
+            if (this.m_eventPhysic && this.EmitTagTarget) {
                 this.m_targetCollide.forEach(t => {
                     if (t != null)
                         this.onEventActiveNode(t);
