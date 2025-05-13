@@ -165,8 +165,13 @@ export default class CameraBase extends Component {
         }
 
         //FINAL:
-        this.m_target = this.m_target.lerp(target, this.SmoothTime);
-        this.node.worldPosition = this.m_target;
+        if (this.SmoothTime > 0) {
+            this.m_target = this.m_target.lerp(target, this.SmoothTime);
+            this.node.worldPosition = this.m_target;
+        }
+        else {
+            this.node.worldPosition = this.m_target;
+        }
     }
 
     private onPositionInit() {
