@@ -68,8 +68,8 @@ export class ManagerInput extends Component {
     SwitchActive: boolean = false;
     @property({ group: { name: 'Switch' }, type: [Node] })
     Switch: Node[] = [];
-    @property({ group: { name: 'Switch' }, type: CCBoolean, visible(this: ManagerInput) { return this.SwitchActive && this.Switch.length >= 2; } })
-    SwitchState: boolean = false;
+    @property({ group: { name: 'Switch' }, type: CCBoolean, visible(this: ManagerInput) { return this.Switch.length >= 2; } })
+    SwitchChoicedState: boolean = false;
 
     @property({ group: { name: 'Other' }, type: [Node] })
     Other: Node[] = [];
@@ -158,7 +158,8 @@ export class ManagerInput extends Component {
     }
 
     protected start(): void {
-        this.onSwitchIndex(this.m_switchIndex);
+        if (this.SwitchActive)
+            this.onSwitchIndex(this.m_switchIndex);
     }
 
     protected update(dt: number) {
@@ -446,14 +447,14 @@ export class ManagerInput extends Component {
                 if (this.Switch[i].getComponent(UIOpacity) != null)
                     this.Switch[i].getComponent(UIOpacity).opacity = 150;
                 else
-                    this.Switch[i].active = this.SwitchState;
+                    this.Switch[i].active = this.SwitchChoicedState;
                 director.emit(ConstantBase.CONTROL_SWITCH, i);
             }
             else {
                 if (this.Switch[i].getComponent(UIOpacity) != null)
                     this.Switch[i].getComponent(UIOpacity).opacity = 255;
                 else
-                    this.Switch[i].active = this.m_avaible && !this.SwitchState;
+                    this.Switch[i].active = this.m_avaible && !this.SwitchChoicedState;
             }
         }
     }
@@ -464,14 +465,14 @@ export class ManagerInput extends Component {
                 if (this.Switch[i].getComponent(UIOpacity) != null)
                     this.Switch[i].getComponent(UIOpacity).opacity = 150;
                 else
-                    this.Switch[i].active = this.SwitchState;
+                    this.Switch[i].active = this.SwitchChoicedState;
                 director.emit(ConstantBase.CONTROL_SWITCH, i);
             }
             else {
                 if (this.Switch[i].getComponent(UIOpacity) != null)
                     this.Switch[i].getComponent(UIOpacity).opacity = 255;
                 else
-                    this.Switch[i].active = this.m_avaible && !this.SwitchState;
+                    this.Switch[i].active = this.m_avaible && !this.SwitchChoicedState;
             }
         }
     }

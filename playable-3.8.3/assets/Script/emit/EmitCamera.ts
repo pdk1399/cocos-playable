@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, Component, director, Node, TweenEasing, v2, Vec2 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, director, Node, TweenEasing, v2, Vec2 } from 'cc';
 import { EmitBase } from './EmitBase';
 import { ConstantBase, EaseType } from '../ConstantBase';
 const { ccclass, property } = _decorator;
@@ -7,30 +7,30 @@ const { ccclass, property } = _decorator;
 export class EmitCamera extends EmitBase {
 
     @property({ group: { name: 'View' }, type: CCBoolean })
-    ValueChange: boolean = false;
-    @property({ group: { name: 'View' }, type: CCFloat, visible(this: EmitCamera) { return this.ValueChange; } })
+    View: boolean = false;
+    @property({ group: { name: 'View' }, type: CCFloat, visible(this: EmitCamera) { return this.View; } })
     SmoothTime: number = 0.1;
-    @property({ group: { name: 'View' }, type: Vec2, visible(this: EmitCamera) { return this.ValueChange; } })
+    @property({ group: { name: 'View' }, type: Vec2, visible(this: EmitCamera) { return this.View; } })
     Offset: Vec2 = v2(0, 0);
 
     @property({ group: { name: 'Scale' }, type: CCBoolean })
-    ScaleChange: boolean = false;
-    @property({ group: { name: 'Scale' }, type: CCFloat, visible(this: EmitCamera) { return this.ScaleChange; } })
-    Scale: number = 1;
-    @property({ group: { name: 'Scale' }, type: CCFloat, visible(this: EmitCamera) { return this.ScaleChange; } })
+    Scale: boolean = false;
+    @property({ group: { name: 'Scale' }, type: CCFloat, visible(this: EmitCamera) { return this.Scale; } })
+    ScaleValue: number = 1;
+    @property({ group: { name: 'Scale' }, type: CCFloat, visible(this: EmitCamera) { return this.Scale; } })
     ScaleDuration: number = 0.5;
-    @property({ group: { name: 'Scale' }, type: EaseType, visible(this: EmitCamera) { return this.ScaleChange; } })
+    @property({ group: { name: 'Scale' }, type: EaseType, visible(this: EmitCamera) { return this.Scale; } })
     ScaleEasing: EaseType = EaseType.linear;
 
     @property({ group: { name: 'Target' }, type: CCBoolean })
-    TargetChange: boolean = false;
-    @property({ group: { name: 'Target' }, type: Node, visible(this: EmitCamera) { return this.TargetChange; } })
-    Target: Node = null;
-    @property({ group: { name: 'Target' }, type: CCBoolean, visible(this: EmitCamera) { return this.TargetChange; } })
+    Target: boolean = false;
+    @property({ group: { name: 'Target' }, type: Node, visible(this: EmitCamera) { return this.Target; } })
+    TargetNode: Node = null;
+    @property({ group: { name: 'Target' }, type: CCBoolean, visible(this: EmitCamera) { return this.Target; } })
     TargetTween: boolean = false;
-    @property({ group: { name: 'Target' }, type: CCFloat, visible(this: EmitCamera) { return this.TargetChange && this.TargetTween; } })
+    @property({ group: { name: 'Target' }, type: CCFloat, visible(this: EmitCamera) { return this.Target && this.TargetTween; } })
     TargetTweenDuration: number = 0.5;
-    @property({ group: { name: 'Target' }, type: EaseType, visible(this: EmitCamera) { return this.TargetChange && this.TargetTween; } })
+    @property({ group: { name: 'Target' }, type: EaseType, visible(this: EmitCamera) { return this.Target && this.TargetTween; } })
     TargetTweenEasing: EaseType = EaseType.linear;
 
     @property({ group: { name: 'Effect' }, type: CCBoolean })
@@ -38,24 +38,20 @@ export class EmitCamera extends EmitBase {
     @property({ group: { name: 'Effect' }, type: CCBoolean, visible(this: EmitCamera) { return this.Effect; } })
     EffectShake: boolean = false;
 
-    protected onLoad(): void {
-        super.onLoad();
-    }
-
     onEventActive(): void {
-        if (this.ValueChange) {
+        if (this.View) {
             director.emit(ConstantBase.CAMERA_VALUE_SMOOTH_TIME, this.SmoothTime);
             director.emit(ConstantBase.CAMERA_VALUE_OFFSET, this.Offset);
         }
 
-        if (this.ScaleChange)
-            director.emit(ConstantBase.CAMERA_VALUE_SCALE, this.Scale, this.ScaleDuration, this.ScaleEasing);
+        if (this.Scale)
+            director.emit(ConstantBase.CAMERA_VALUE_SCALE, this.ScaleValue, this.ScaleDuration, this.ScaleEasing);
 
-        if (this.TargetChange) {
+        if (this.Target) {
             if (this.TargetTween)
-                director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.Target, this.TargetTweenDuration, EaseType[this.TargetTweenEasing] as TweenEasing);
+                director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.TargetNode, this.TargetTweenDuration, EaseType[this.TargetTweenEasing] as TweenEasing);
             else
-                director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.Target);
+                director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.TargetNode);
         }
 
         if (this.Effect) {
