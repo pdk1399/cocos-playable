@@ -40,7 +40,7 @@ export class EmitControl extends EmitBase {
     @property({ group: { name: 'Option' }, type: CCBoolean })
     BodyX4: boolean = false;
 
-    protected onEventActiveNode(target: Node): void {
+    onEventActiveNode(target: Node): void {
         //OPTION
         if (this.BodyX2) {
             if (this.ControlByNode)

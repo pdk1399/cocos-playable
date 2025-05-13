@@ -136,10 +136,10 @@ export class EmitBase extends Component {
     }
 
     // Re-code onEventActive() to active main events
-    protected onEventActive(): void { }
+    onEventActive(): void { }
 
     // Re-code onEventActiveNode() to active node events on target collide
-    protected onEventActiveNode(target: Node): void {
+    onEventActiveNode(target: Node): void {
         target.emit(ConstantBase.NODE_EVENT);
     }
 }
