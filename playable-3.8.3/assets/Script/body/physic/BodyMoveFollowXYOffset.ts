@@ -1,10 +1,10 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, math, Node, v3, Vec3 } from 'cc';
-import { SpineBase } from '../renderer/SpineBase';
+import { SpineBase } from '../../renderer/SpineBase';
 const { ccclass, property, requireComponent } = _decorator;
 
 @ccclass('FollowOffset')
 @requireComponent(SpineBase)
-export class FollowOffset extends Component {
+export class BodyMoveFollowXYOffset extends Component {
 
     //@property({ group: { name: 'Follow' }, type: Node })
     @property(Node)

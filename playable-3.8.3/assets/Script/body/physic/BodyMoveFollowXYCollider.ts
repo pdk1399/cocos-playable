@@ -1,10 +1,10 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D, v2, v3, Vec2 } from 'cc';
-import { SpineBase } from '../renderer/SpineBase';
+import { SpineBase } from '../../renderer/SpineBase';
 const { ccclass, property, requireComponent } = _decorator;
 
 @ccclass('FollowCollider')
 @requireComponent(SpineBase)
-export class FollowCollider extends Component {
+export class BodyMoveFollowXYCollider extends Component {
 
     //@property({ group: { name: 'Follow' }, type: CCBoolean })
     @property(CCBoolean)
