@@ -19,7 +19,7 @@ export class EmitBase extends Component {
     OnTagTarget: number[] = [100];
     //OPTION-EVENT
     @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EmitBase) { return !this.Start; } })
-    Once: boolean = false;
+    Once: boolean = true;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
     //EMIT-EVENT
