@@ -9,11 +9,11 @@ export class EmitSpine extends EmitBaseFull {
 
     @property({ group: { name: 'Main' }, type: CCString })
     AnimStart: string = '';
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Main' }, type: CCString, visible(this: EmitSpine) { return this.AnimStart != ''; } })
     AnimLoop: string = '';
-    @property({ group: { name: 'Main' }, type: CCFloat })
-    AnimLoopDuration: number = 0;
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Main' }, type: CCFloat, visible(this: EmitSpine) { return this.AnimStart != '' && this.AnimLoop != ''; } })
+    AnimDelay: number = 0;
+    @property({ group: { name: 'Main' }, type: CCString, visible(this: EmitSpine) { return this.AnimStart != '' && this.AnimLoop != ''; } })
     AnimEnd: string = '';
     @property({ group: { name: 'Main' }, type: CCBoolean })
     AnimEndLoop: boolean = false;
@@ -80,13 +80,26 @@ export class EmitSpine extends EmitBaseFull {
     onEventSingle(target: SpineBase) {
         if (target == null ? true : !target.isValid)
             return;
-        target.scheduleOnce(() => {
+        if (this.AnimStart == '')
+            return;
+        if (this.AnimLoop != '' && this.AnimEnd != '') {
+            target.scheduleOnce(() => {
+                target.scheduleOnce(() => {
+                    target.scheduleOnce(() => {
+                        this.onEventSingleFinal();
+                    }, target.onAnimation(this.AnimEnd, this.AnimEndLoop));
+                }, Math.max(target.onAnimation(this.AnimLoop, true), this.AnimDelay, 0));
+            }, target.onAnimation(this.AnimStart, false));
+        }
+        if (this.AnimLoop != '') {
             target.scheduleOnce(() => {
                 target.scheduleOnce(() => {
                     this.onEventSingleFinal();
-                }, target.onAnimation(this.AnimEnd, this.AnimEndLoop));
-            }, Math.max(target.onAnimation(this.AnimLoop, true), this.AnimLoopDuration, 0));
-        }, target.onAnimation(this.AnimStart, false));
+                }, Math.max(target.onAnimation(this.AnimLoop, this.AnimEndLoop), this.AnimDelay, 0));
+            }, target.onAnimation(this.AnimStart, false));
+        }
+        else
+            target.scheduleOnce(() => this.onEventSingleFinal(), target.onAnimation(this.AnimStart, this.AnimEndLoop));
     }
 
     onEventSingleFinal() {
