@@ -155,6 +155,9 @@ export class BodyAttackX extends Component {
 
         if (this.Aim)
             this.m_spine.onAimInit(this.AimAnim, this.AimBone, this.AimFrom);
+
+        this.node.on(ConstantBase.BODY_ATTACK_ULTIMATE, this.onMeleeUltimate, this);
+        this.node.on(ConstantBase.BODY_VALUE_MELEE_HIT, this.onMeleeHit, this);
     }
 
     protected start(): void {

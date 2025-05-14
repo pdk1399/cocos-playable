@@ -72,11 +72,11 @@ export class EmitControl extends EmitBaseFull {
         }
 
         if (this.ControlSleep) {
-            target.emit(ConstantBase.BODY_SLEEP);
+            target.emit(ConstantBase.NODE_BODY_SLEEP);
             return;
         }
         else
-            target.emit(ConstantBase.BODY_AWAKE);
+            target.emit(ConstantBase.NODE_BODY_AWAKE);
 
         if (this.ControlRelease)
             target.emit(ConstantBase.CONTROL_RELEASE);

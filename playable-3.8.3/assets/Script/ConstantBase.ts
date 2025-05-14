@@ -22,62 +22,61 @@ export class ConstantBase {
     static readonly CONTROL_LOCK: string = 'control-lock';
     static readonly CONTROL_RESUME: string = 'control-resume';
 
-    static readonly CONTROL_LEFT: string = 'control-left';
-    static readonly CONTROL_RIGHT: string = 'control-right';
     static readonly CONTROL_UP: string = 'control-up';
     static readonly CONTROL_DOWN: string = 'control-down';
+    static readonly CONTROL_LEFT: string = 'control-left';
+    static readonly CONTROL_RIGHT: string = 'control-right';
+    static readonly CONTROL_JOY_STICK: string = 'control-joy-stick';
     static readonly CONTROL_RELEASE: string = 'control-release';
     static readonly CONTROL_RELEASE_X: string = 'control-release-x';
     static readonly CONTROL_RELEASE_Y: string = 'control-release-y';
     static readonly CONTROL_JUMP: string = 'control-jump';
     static readonly CONTROL_JUMP_RELEASE: string = 'control-jump-release';
     static readonly CONTROL_DASH: string = 'control-dash';
-    static readonly CONTROL_JOY_STICK: string = 'control-joy-stick';
-    static readonly CONTROL_ATTACK: string = 'control-attack';
     static readonly CONTROL_INTERACTION: string = 'control-interaction';
     static readonly CONTROL_FIXED: string = 'control-fixed';
     static readonly CONTROL_SWITCH: string = 'control-switch';
+    static readonly CONTROL_ATTACK: string = 'control-attack';
 
     //
 
-    static readonly BODY_SLEEP: string = 'body-sleep';
-    static readonly BODY_AWAKE: string = 'body-awake';
-
-    static readonly BODY_X2 = 'body-x2';
-    static readonly BODY_X4 = 'body-x4';
-    static readonly BODY_ATTACK_ULTIMATE = 'body-attack-ultimate';
-    static readonly BODY_BUBBLE_CELESTE = 'body-bubble-celeste';
+    static readonly BODY_X2: string = 'body-x2';
+    static readonly BODY_X4: string = 'body-x4';
+    static readonly BODY_ATTACK_ULTIMATE: string = 'body-attack-ultimate';
+    static readonly BODY_BUBBLE_CELESTE: string = 'body-bubble-celeste';
 
     static readonly BODY_VALUE_MELEE_HIT: string = 'body-value-melee-hit';
     static readonly BODY_VALUE_HIT_POINT: string = 'body-value-hit-point';
-    static readonly BODY_VALUE_HIT_POINT_CURRENT = 'body-value-hit-point-current';
+    static readonly BODY_VALUE_HIT_POINT_CURRENT: string = 'body-value-hit-point-current';
 
     //
 
-    static readonly NODE_STOP = 'node-stop';
+    static readonly NODE_STOP: string = 'node-stop';
 
-    static readonly NODE_STATE = 'node-state';
-    static readonly NODE_STATE_LOCK = 'node-state-lock';
+    static readonly NODE_STATE: string = 'node-state';
+    static readonly NODE_STATE_LOCK: string = 'node-state-lock';
 
-    static readonly NODE_EVENT = 'node-event'; //<state, target>
+    static readonly NODE_EVENT: string = 'node-event'; //<state, target>
 
-    static readonly NODE_BODY_HIT = 'node-body-hit';
-    static readonly NODE_BODY_DEAD = 'node-body-dead';
-    static readonly NODE_BODY_BOT = 'node-body-bot';
-    static readonly NODE_BODY_INTERACTE = 'node-body-interacte';
-    static readonly NODE_BODY_COLLIDE = 'node-body-collide';
-    static readonly NODE_BODY_MELEE = 'node-body-melee';
-    static readonly NODE_BODY_RANGE = 'node-body-range';
+    static readonly NODE_BODY_SLEEP: string = 'node-body-sleep';
+    static readonly NODE_BODY_AWAKE: string = 'node-body-awake';
+    static readonly NODE_BODY_HIT: string = 'node-body-hit';
+    static readonly NODE_BODY_DEAD: string = 'node-body-dead';
+    static readonly NODE_BODY_BOT: string = 'node-body-bot';
+    static readonly NODE_BODY_INTERACTE: string = 'node-body-interacte';
+    static readonly NODE_BODY_COLLIDE: string = 'node-body-collide';
+    static readonly NODE_BODY_MELEE: string = 'node-body-melee';
+    static readonly NODE_BODY_RANGE: string = 'node-body-range';
 
-    static readonly NODE_CONTROL_DIRECTOR = 'node-control-director';
-    static readonly NODE_CONTROL_NODE = 'node-control-node';
+    static readonly NODE_CONTROL_DIRECTOR: string = 'node-control-director';
+    static readonly NODE_CONTROL_NODE: string = 'node-control-node';
 
-    static readonly NODE_PICK = 'node-pick';
-    static readonly NODE_THROW = 'node-throw';
+    static readonly NODE_PICK: string = 'node-pick';
+    static readonly NODE_THROW: string = 'node-throw';
 
-    static readonly NODE_UI_DRAG_ENTER = 'node-ui-drag-enter';
-    static readonly NODE_UI_DRAG_BACK = 'node-ui-drag-back';
-    static readonly NODE_UI_DRAG_EXIT = 'node-ui-drag-exit';
+    static readonly NODE_UI_DRAG_ENTER: string = 'node-ui-drag-enter';
+    static readonly NODE_UI_DRAG_BACK: string = 'node-ui-drag-back';
+    static readonly NODE_UI_DRAG_EXIT: string = 'node-ui-drag-exit';
 
     //
 
@@ -108,9 +107,9 @@ export class ConstantBase {
     static readonly STICK_BLUE_DEAD: string = 'stick-blue-dead';
     static readonly STICK_RED_DEAD: string = 'stick-red-dead';
 
-    static readonly TAG_FIELD_RENDERER = 10;
-    static readonly TAG_FIELD_BODY = 100;
-    static readonly TAG_FIELD_RANGE = 101;
+    static readonly TAG_FIELD_RENDERER: number = 10;
+    static readonly TAG_FIELD_BODY: number = 100;
+    static readonly TAG_FIELD_RANGE: number = 101;
 }
 
 export enum EaseType {
