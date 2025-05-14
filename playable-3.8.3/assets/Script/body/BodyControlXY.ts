@@ -99,14 +99,13 @@ export class BodyControlXY extends Component {
         director.on(ConstantBase.PLAYER_COMPLETE, this.onComplete, this);
         director.on(ConstantBase.GAME_TIME_OUT, this.onStop, this);
 
-        this.node.on(ConstantBase.NODE_BODY_SLEEP, this.onSleep, this);
-        this.node.on(ConstantBase.NODE_BODY_AWAKE, this.onAwake, this);
-
-        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
-        this.node.on(ConstantBase.NODE_BODY_COLLIDE, this.onCollide, this);
-
         this.node.on(ConstantBase.NODE_CONTROL_DIRECTOR, this.onControlByDirector, this);
         this.node.on(ConstantBase.NODE_CONTROL_NODE, this.onControlByNode, this);
+        this.node.on(ConstantBase.NODE_CONTROL_SLEEP, this.onControlSleep, this);
+        this.node.on(ConstantBase.NODE_CONTROL_AWAKE, this.onControlAwake, this);
+        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onControlDead, this);
+
+        this.node.on(ConstantBase.NODE_COLLIDE_BODY, this.onCollideBody, this);
     }
 
     protected start(): void {
@@ -174,12 +173,12 @@ export class BodyControlXY extends Component {
 
     //RIGIDBODY:
 
-    onSleep() {
+    onControlSleep() {
         this.onMoveRelease();
         this.m_rigidbody.sleep();
     }
 
-    onAwake() {
+    onControlAwake() {
         this.m_rigidbody.wakeUp();
     }
 
@@ -380,7 +379,7 @@ export class BodyControlXY extends Component {
 
     //COLLIDE
 
-    protected onCollide(target: Node) {
+    protected onCollideBody(target: Node) {
         if (this.m_body.m_bodyX4) {
             let bodyTarget = target.getComponent(BodyBase);
             if (bodyTarget != null)
@@ -498,7 +497,7 @@ export class BodyControlXY extends Component {
 
     //DEAD:
 
-    protected onDead() {
+    protected onControlDead() {
         director.emit(ConstantBase.CONTROL_RELEASE);
         director.emit(ConstantBase.CONTROL_JUMP_RELEASE);
         director.emit(ConstantBase.CONTROL_LOCK);

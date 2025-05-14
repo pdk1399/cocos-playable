@@ -44,16 +44,16 @@ export class EmitControl extends EmitBaseFull {
         //OPTION
         if (this.BodyX2) {
             if (this.ControlByNode)
-                target.emit(ConstantBase.BODY_X2);
+                target.emit(ConstantBase.NODE_BODY_X2);
             else
-                director.emit(ConstantBase.BODY_X2);
+                director.emit(ConstantBase.NODE_BODY_X2);
         }
 
         if (this.BodyX4) {
             if (this.ControlByNode)
-                target.emit(ConstantBase.BODY_X4);
+                target.emit(ConstantBase.NODE_BODY_X4);
             else
-                director.emit(ConstantBase.BODY_X4);
+                director.emit(ConstantBase.NODE_BODY_X4);
         }
 
         if (!this.Control)
@@ -72,11 +72,11 @@ export class EmitControl extends EmitBaseFull {
         }
 
         if (this.ControlSleep) {
-            target.emit(ConstantBase.NODE_BODY_SLEEP);
+            target.emit(ConstantBase.NODE_CONTROL_SLEEP);
             return;
         }
         else
-            target.emit(ConstantBase.NODE_BODY_AWAKE);
+            target.emit(ConstantBase.NODE_CONTROL_AWAKE);
 
         if (this.ControlRelease)
             target.emit(ConstantBase.CONTROL_RELEASE);

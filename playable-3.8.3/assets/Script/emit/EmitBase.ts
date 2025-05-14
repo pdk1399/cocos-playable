@@ -17,6 +17,8 @@ export class EmitBase extends Component {
     OnTagBody: number = 0;
     @property({ group: { name: 'Event' }, type: [CCInteger], visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
     OnTagTarget: number[] = [100];
+    @property({ group: { name: 'Event' }, type: [Node], visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
+    OnNodeTarget: Node[] = [];
     //OPTION-EVENT
     @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EmitBase) { return !this.Start; } })
     Once: boolean = true;
@@ -65,9 +67,12 @@ export class EmitBase extends Component {
     }
 
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        let targetIndex = this.OnTagTarget.findIndex((t) => t == otherCollider.tag);
-        if (targetIndex < 0)
-            return;
+        let tagTargetIndex = this.OnTagTarget.findIndex((t) => t == otherCollider.tag);
+        if (tagTargetIndex < 0) {
+            let nodeTargetIndex = this.OnNodeTarget.findIndex((t) => t == otherCollider.node);
+            if (nodeTargetIndex < 0)
+                return;
+        }
 
         //EVENT
         this.onEvent();

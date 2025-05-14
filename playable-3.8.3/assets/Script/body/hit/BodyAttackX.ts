@@ -145,19 +145,19 @@ export class BodyAttackX extends Component {
             collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
 
-        if (this.MeleeAuto)
-            this.node.on(ConstantBase.NODE_BODY_MELEE, this.onMeleeFoundTarget, this);
-        if (this.RangeAuto)
-            this.node.on(ConstantBase.NODE_BODY_RANGE, this.onRangeFoundTarget, this);
-
-        this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
-
         if (this.Aim)
             this.m_spine.onAimInit(this.AimAnim, this.AimBone, this.AimFrom);
 
-        this.node.on(ConstantBase.BODY_ATTACK_ULTIMATE, this.onMeleeUltimate, this);
-        this.node.on(ConstantBase.BODY_VALUE_MELEE_HIT, this.onMeleeHit, this);
+        this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
+        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+
+        if (this.MeleeAuto)
+            this.node.on(ConstantBase.NODE_ATTACK_MELEE_FOUND, this.onMeleeFoundTarget, this);
+        if (this.RangeAuto)
+            this.node.on(ConstantBase.NODE_ATTACK_RANGE_FOUND, this.onRangeFoundTarget, this);
+
+        this.node.on(ConstantBase.NODE_ATTACK_ULTIMATE, this.onMeleeUltimate, this);
+        this.node.on(ConstantBase.NODE_ATTACK_VALUE_MELEE_HIT, this.onMeleeHit, this);
     }
 
     protected start(): void {
@@ -194,7 +194,7 @@ export class BodyAttackX extends Component {
                         if (index >= 0)
                             break;
                         this.m_targetMelee.push(otherCollider.node);
-                        this.node.emit(ConstantBase.NODE_BODY_MELEE, otherCollider.node, true);
+                        this.node.emit(ConstantBase.NODE_ATTACK_MELEE_FOUND, otherCollider.node, true);
                         break;
                 }
                 break;
@@ -205,7 +205,7 @@ export class BodyAttackX extends Component {
                         if (index >= 0)
                             break;
                         this.m_targetRange.push(otherCollider.node);
-                        this.node.emit(ConstantBase.NODE_BODY_RANGE, otherCollider.node, true);
+                        this.node.emit(ConstantBase.NODE_ATTACK_RANGE_FOUND, otherCollider.node, true);
                         break;
                 }
                 break;
@@ -221,7 +221,7 @@ export class BodyAttackX extends Component {
                         if (index < 0)
                             break;
                         this.m_targetMelee.splice(index, 1);
-                        this.node.emit(ConstantBase.NODE_BODY_MELEE, otherCollider.node, false);
+                        this.node.emit(ConstantBase.NODE_ATTACK_MELEE_FOUND, otherCollider.node, false);
                         break;
                 }
                 break;
@@ -232,7 +232,7 @@ export class BodyAttackX extends Component {
                         if (index < 0)
                             break;
                         this.m_targetRange.splice(index, 1);
-                        this.node.emit(ConstantBase.NODE_BODY_RANGE, otherCollider.node, false);
+                        this.node.emit(ConstantBase.NODE_ATTACK_RANGE_FOUND, otherCollider.node, false);
                         break;
                 }
                 break;
@@ -296,7 +296,7 @@ export class BodyAttackX extends Component {
     protected onMeleeTarget() {
         this.m_targetMelee.forEach(target => {
             if (this.m_meleeUltimate)
-                target.emit(ConstantBase.NODE_BODY_DEAD, this.node);
+                target.emit(ConstantBase.NODE_CONTROL_DEAD, this.node);
             else
                 target.emit(ConstantBase.NODE_BODY_HIT, this.m_meleeHit, this.node);
         });

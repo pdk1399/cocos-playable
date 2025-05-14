@@ -40,39 +40,36 @@ export class ConstantBase {
 
     //
 
-    static readonly BODY_X2: string = 'body-x2';
-    static readonly BODY_X4: string = 'body-x4';
-    static readonly BODY_ATTACK_ULTIMATE: string = 'body-attack-ultimate';
-    static readonly BODY_BUBBLE_CELESTE: string = 'body-bubble-celeste';
+    static readonly NODE_EVENT: string = 'node-event'; // Used in most of quick-events in Nodes
 
-    static readonly BODY_VALUE_MELEE_HIT: string = 'body-value-melee-hit';
-    static readonly BODY_VALUE_HIT_POINT: string = 'body-value-hit-point';
-    static readonly BODY_VALUE_HIT_POINT_CURRENT: string = 'body-value-hit-point-current';
+    static readonly NODE_CONTROL_DIRECTOR: string = 'node-control-director';
+    static readonly NODE_CONTROL_NODE: string = 'node-control-node';
+    static readonly NODE_CONTROL_SLEEP: string = 'node-control-sleep';
+    static readonly NODE_CONTROL_AWAKE: string = 'node-control-awake';
+    static readonly NODE_CONTROL_DEAD: string = 'node-control-dead';
 
-    //
+    static readonly NODE_COLLIDE_BODY: string = 'node-collide-collide';
+    static readonly NODE_COLLIDE_BOT: string = 'node-collide-bot';
+    static readonly NODE_COLLIDE_INTERACTE: string = 'node-collide-interacte';
+
+    static readonly NODE_BODY_HIT: string = 'node-body-hit';
+    static readonly NODE_BODY_VALUE_HIT_POINT: string = 'node-body-value-hit-point';
+    static readonly NODE_BODY_VALUE_HIT_POINT_CURRENT: string = 'node-body-value-hit-point-current';
+    static readonly NODE_BODY_X2: string = 'node-body-x2';
+    static readonly NODE_BODY_X4: string = 'node-body-x4';
+
+    static readonly NODE_ATTACK_MELEE_FOUND: string = 'node-attack-melee-found';
+    static readonly NODE_ATTACK_RANGE_FOUND: string = 'node-attack-range-found';
+    static readonly NODE_ATTACK_ULTIMATE: string = 'node-body-attack-ultimate';
+    static readonly NODE_ATTACK_VALUE_MELEE_HIT: string = 'node-body-attack-value-melee-hit';
+
+    static readonly NODE_PICK: string = 'node-pick';
+    static readonly NODE_THROW: string = 'node-throw';
 
     static readonly NODE_STOP: string = 'node-stop';
 
     static readonly NODE_STATE: string = 'node-state';
     static readonly NODE_STATE_LOCK: string = 'node-state-lock';
-
-    static readonly NODE_EVENT: string = 'node-event'; //<state, target>
-
-    static readonly NODE_BODY_SLEEP: string = 'node-body-sleep';
-    static readonly NODE_BODY_AWAKE: string = 'node-body-awake';
-    static readonly NODE_BODY_HIT: string = 'node-body-hit';
-    static readonly NODE_BODY_DEAD: string = 'node-body-dead';
-    static readonly NODE_BODY_BOT: string = 'node-body-bot';
-    static readonly NODE_BODY_INTERACTE: string = 'node-body-interacte';
-    static readonly NODE_BODY_COLLIDE: string = 'node-body-collide';
-    static readonly NODE_BODY_MELEE: string = 'node-body-melee';
-    static readonly NODE_BODY_RANGE: string = 'node-body-range';
-
-    static readonly NODE_CONTROL_DIRECTOR: string = 'node-control-director';
-    static readonly NODE_CONTROL_NODE: string = 'node-control-node';
-
-    static readonly NODE_PICK: string = 'node-pick';
-    static readonly NODE_THROW: string = 'node-throw';
 
     static readonly NODE_UI_DRAG_ENTER: string = 'node-ui-drag-enter';
     static readonly NODE_UI_DRAG_BACK: string = 'node-ui-drag-back';

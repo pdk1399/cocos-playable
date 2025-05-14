@@ -97,7 +97,7 @@ export class BodyBase extends Component {
         }
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
+        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
 
         let collider = this.getComponents(Collider2D);
         collider.forEach(colliderCheck => {
@@ -106,11 +106,11 @@ export class BodyBase extends Component {
                 this.m_destroyCollider.push(colliderCheck as Collider2D)
         })
 
-        this.node.on(ConstantBase.BODY_VALUE_HIT_POINT, this.onHitPoint, this);
-        this.node.on(ConstantBase.BODY_VALUE_HIT_POINT_CURRENT, this.onHitPointCurrent, this);
+        this.node.on(ConstantBase.NODE_BODY_VALUE_HIT_POINT, this.onHitPoint, this);
+        this.node.on(ConstantBase.NODE_BODY_VALUE_HIT_POINT_CURRENT, this.onHitPointCurrent, this);
 
-        this.node.on(ConstantBase.BODY_X2, this.onBodyX2, this);
-        this.node.on(ConstantBase.BODY_X4, this.onBodyX4, this);
+        this.node.on(ConstantBase.NODE_BODY_X2, this.onBodyX2, this);
+        this.node.on(ConstantBase.NODE_BODY_X4, this.onBodyX4, this);
     }
 
     protected start(): void {
@@ -204,7 +204,7 @@ export class BodyBase extends Component {
             }
         }
 
-        this.node.emit(ConstantBase.NODE_BODY_DEAD, from);
+        this.node.emit(ConstantBase.NODE_CONTROL_DEAD, from);
         if (this.EmitDead != '') {
             if (this.EmitFull)
                 director.emit(this.EmitDead, this.node);
@@ -213,7 +213,7 @@ export class BodyBase extends Component {
         }
 
         this.node.off(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.off(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
+        this.node.off(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
     }
 
     onProtect(state: boolean = true) {

@@ -193,15 +193,15 @@ export class BodyControlX extends Component {
         director.on(ConstantBase.PLAYER_COMPLETE, this.onComplete, this);
         director.on(ConstantBase.GAME_TIME_OUT, this.onStop, this);
 
-        this.node.on(ConstantBase.NODE_BODY_SLEEP, this.onSleep, this);
-        this.node.on(ConstantBase.NODE_BODY_AWAKE, this.onAwake, this);
-        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
-        this.node.on(ConstantBase.NODE_BODY_BOT, this.onBot, this);
-        this.node.on(ConstantBase.NODE_BODY_INTERACTE, this.onInteractionFound, this);
-        this.node.on(ConstantBase.NODE_BODY_COLLIDE, this.onCollide, this);
-
         this.node.on(ConstantBase.NODE_CONTROL_DIRECTOR, this.onControlByDirector, this);
         this.node.on(ConstantBase.NODE_CONTROL_NODE, this.onControlByNode, this);
+        this.node.on(ConstantBase.NODE_CONTROL_SLEEP, this.onSleep, this);
+        this.node.on(ConstantBase.NODE_CONTROL_AWAKE, this.onAwake, this);
+        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+
+        this.node.on(ConstantBase.NODE_COLLIDE_BOT, this.onCollideBot, this);
+        this.node.on(ConstantBase.NODE_COLLIDE_INTERACTE, this.onCollideInteraction, this);
+        this.node.on(ConstantBase.NODE_COLLIDE_BODY, this.onCollideBody, this);
     }
 
     protected start(): void {
@@ -630,7 +630,7 @@ export class BodyControlX extends Component {
         }
     }
 
-    protected onBot(stage: boolean) {
+    protected onCollideBot(stage: boolean) {
         switch (stage) {
             case true:
                 this.m_jumpCountCurrent = 0;
@@ -836,7 +836,7 @@ export class BodyControlX extends Component {
             this.scheduleOnce(() => this.m_pickUpProgess = false, delayPick + 0.02);
     }
 
-    protected onInteractionFound(target: Node, stage: boolean) {
+    protected onCollideInteraction(target: Node, stage: boolean) {
         if (this.m_pickUp != null)
             return;
         if (this.m_bodyCheck.m_interacteNode.length == 0) {
@@ -851,7 +851,7 @@ export class BodyControlX extends Component {
 
     //COLLIDE
 
-    protected onCollide(target: Node) {
+    protected onCollideBody(target: Node) {
         if (this.m_body.m_bodyX4) {
             let bodyTarget = target.getComponent(BodyBase);
             if (bodyTarget != null)

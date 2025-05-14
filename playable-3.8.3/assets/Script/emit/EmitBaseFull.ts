@@ -15,9 +15,12 @@ export class EmitBaseFull extends EmitBase {
     EmitTagTarget: boolean = false;
 
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        let targetIndex = this.OnTagTarget.findIndex((t) => t == otherCollider.tag);
-        if (targetIndex < 0)
-            return;
+        let tagTargetIndex = this.OnTagTarget.findIndex((t) => t == otherCollider.tag);
+        if (tagTargetIndex < 0) {
+            let nodeTargetIndex = this.OnNodeTarget.findIndex((t) => t == otherCollider.node);
+            if (nodeTargetIndex < 0)
+                return;
+        }
 
         //TARGET
         if (this.EmitTagTarget) {

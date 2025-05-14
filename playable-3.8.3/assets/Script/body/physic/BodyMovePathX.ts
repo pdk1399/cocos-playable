@@ -78,7 +78,7 @@ export class BodyMovePathX extends Component {
         this.node.on(ConstantBase.NODE_THROW, this.onThrow, this);
 
         if (this.m_bodyAttack != null)
-            this.node.on(ConstantBase.NODE_BODY_MELEE, this.onMeleeFoundTarget, this);
+            this.node.on(ConstantBase.NODE_ATTACK_MELEE_FOUND, this.onMeleeFoundTarget, this);
     }
 
     protected start(): void {
