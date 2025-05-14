@@ -132,13 +132,13 @@ export default class CameraBase extends Component {
     }
 
     protected lateUpdate(dt: number) {
-        let posMoveTo = v3();
+        let posTarget = v3();
         if (this.Target != null) {
-            posMoveTo = this.Target.worldPosition.clone();
-            this.m_posTarget = posMoveTo.clone();
+            posTarget = this.Target.worldPosition.clone();
+            this.m_posTarget = posTarget.clone();
         }
         else {
-            posMoveTo = this.m_posTarget.clone();
+            posTarget = this.m_posTarget.clone();
         }
 
         if (!this.m_update)
@@ -146,81 +146,80 @@ export default class CameraBase extends Component {
 
         //LOCK:
         if (this.LockX)
-            posMoveTo.x = this.m_lock.x;
+            posTarget.x = this.m_lock.x;
         if (this.LockY)
-            posMoveTo.y = this.m_lock.y;
+            posTarget.y = this.m_lock.y;
 
         //OFFSET:
-        posMoveTo.x += this.Offset.x;
-        posMoveTo.y += this.Offset.y;
+        posTarget.x += this.Offset.x;
+        posTarget.y += this.Offset.y;
 
         //LIMIT:
         if (this.Limit) {
             if (!this.LockX) {
-                if (posMoveTo.x > this.LimitMax.x)
-                    posMoveTo.x = this.LimitMax.x;
-                else if (posMoveTo.x < this.LimitMin.x)
-                    posMoveTo.x = this.LimitMin.x;
+                if (posTarget.x > this.LimitMax.x)
+                    posTarget.x = this.LimitMax.x;
+                else if (posTarget.x < this.LimitMin.x)
+                    posTarget.x = this.LimitMin.x;
             }
             if (!this.LockY) {
-                if (posMoveTo.y > this.LimitMax.y)
-                    posMoveTo.y = this.LimitMax.y;
-                else if (posMoveTo.y < this.LimitMin.y)
-                    posMoveTo.y = this.LimitMin.y;
+                if (posTarget.y > this.LimitMax.y)
+                    posTarget.y = this.LimitMax.y;
+                else if (posTarget.y < this.LimitMin.y)
+                    posTarget.y = this.LimitMin.y;
             }
         }
 
         //FINAL:
         if (this.SmoothTime > 0) {
-            this.m_posCurrent = this.m_posCurrent.lerp(posMoveTo, this.SmoothTime);
+            this.m_posCurrent = this.m_posCurrent.lerp(posTarget, this.SmoothTime);
             this.node.worldPosition = this.m_posCurrent.clone();
         }
         else {
-            this.m_posCurrent = posMoveTo.clone();
+            this.m_posCurrent = posTarget.clone();
             this.node.worldPosition = this.m_posCurrent.clone();
         }
     }
 
     private onPositionInit() {
-        this.m_posCurrent = this.node.worldPosition.clone();
-        this.m_posTarget = this.node.worldPosition.clone();
-
-        let posMoveTo = v3();
+        let posTarget = v3();
         if (this.Target != null) {
-            posMoveTo = this.Target.worldPosition.clone();
-            this.m_posTarget = posMoveTo.clone();
+            posTarget = this.Target.worldPosition.clone();
+            this.m_posTarget = posTarget.clone();
         }
-        else
-            posMoveTo = this.m_posTarget.clone();
+        else {
+            posTarget = this.node.worldPosition.clone();
+            this.m_posTarget = posTarget.clone();
+        }
 
         //LOCK:
         if (this.LockX)
-            posMoveTo.x = this.m_lock.x;
+            posTarget.x = this.m_lock.x;
         if (this.LockY)
-            posMoveTo.y = this.m_lock.y;
+            posTarget.y = this.m_lock.y;
 
         //OFFSET:
-        posMoveTo.x += this.Offset.x;
-        posMoveTo.y += this.Offset.y;
+        posTarget.x += this.Offset.x;
+        posTarget.y += this.Offset.y;
 
         //LIMIT:
         if (this.Limit) {
             if (!this.LockX) {
-                if (posMoveTo.x > this.LimitMax.x)
-                    posMoveTo.x = this.LimitMax.x;
-                else if (posMoveTo.x < this.LimitMin.x)
-                    posMoveTo.x = this.LimitMin.x;
+                if (posTarget.x > this.LimitMax.x)
+                    posTarget.x = this.LimitMax.x;
+                else if (posTarget.x < this.LimitMin.x)
+                    posTarget.x = this.LimitMin.x;
             }
             if (!this.LockY) {
-                if (posMoveTo.y > this.LimitMax.y)
-                    posMoveTo.y = this.LimitMax.y;
-                else if (posMoveTo.y < this.LimitMin.y)
-                    posMoveTo.y = this.LimitMin.y;
+                if (posTarget.y > this.LimitMax.y)
+                    posTarget.y = this.LimitMax.y;
+                else if (posTarget.y < this.LimitMin.y)
+                    posTarget.y = this.LimitMin.y;
             }
         }
 
         //FINAL:
-        this.m_posCurrent = posMoveTo.clone();
+        this.m_posCurrent = posTarget.clone();
         this.node.worldPosition = this.m_posCurrent.clone();
     }
 
