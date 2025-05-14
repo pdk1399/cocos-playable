@@ -77,7 +77,8 @@ export default class CameraBase extends Component {
 
     m_camera: Camera = null;
     m_orthoHeight: number = 0;
-    m_target: Vec3;
+    m_posCurrent: Vec3;
+    m_posTarget: Vec3;
 
     m_orientation = OrientationType.LANDSCAPE;
     m_solution: math.Size;
@@ -121,7 +122,6 @@ export default class CameraBase extends Component {
     }
 
     protected start() {
-        this.m_target = this.node.worldPosition.clone();
         this.onPositionInit();
 
         //NOTE: This event must add from Start to get event!
@@ -132,84 +132,96 @@ export default class CameraBase extends Component {
     }
 
     protected lateUpdate(dt: number) {
-        if (!this.m_update || this.Target == null)
-            return;
+        let posMoveTo = v3();
+        if (this.Target != null) {
+            posMoveTo = this.Target.worldPosition.clone();
+            this.m_posTarget = posMoveTo.clone();
+        }
+        else {
+            posMoveTo = this.m_posTarget.clone();
+        }
 
-        let target = v3();
-        target = this.Target.worldPosition.clone();
+        if (!this.m_update)
+            return;
 
         //LOCK:
         if (this.LockX)
-            target.x = this.m_lock.x;
+            posMoveTo.x = this.m_lock.x;
         if (this.LockY)
-            target.y = this.m_lock.y;
+            posMoveTo.y = this.m_lock.y;
 
         //OFFSET:
-        target.x += this.Offset.x;
-        target.y += this.Offset.y;
+        posMoveTo.x += this.Offset.x;
+        posMoveTo.y += this.Offset.y;
 
         //LIMIT:
         if (this.Limit) {
             if (!this.LockX) {
-                if (target.x > this.LimitMax.x)
-                    target.x = this.LimitMax.x;
-                else if (target.x < this.LimitMin.x)
-                    target.x = this.LimitMin.x;
+                if (posMoveTo.x > this.LimitMax.x)
+                    posMoveTo.x = this.LimitMax.x;
+                else if (posMoveTo.x < this.LimitMin.x)
+                    posMoveTo.x = this.LimitMin.x;
             }
             if (!this.LockY) {
-                if (target.y > this.LimitMax.y)
-                    target.y = this.LimitMax.y;
-                else if (target.y < this.LimitMin.y)
-                    target.y = this.LimitMin.y;
+                if (posMoveTo.y > this.LimitMax.y)
+                    posMoveTo.y = this.LimitMax.y;
+                else if (posMoveTo.y < this.LimitMin.y)
+                    posMoveTo.y = this.LimitMin.y;
             }
         }
 
         //FINAL:
         if (this.SmoothTime > 0) {
-            this.m_target = this.m_target.lerp(target, this.SmoothTime);
-            this.node.worldPosition = this.m_target;
+            this.m_posCurrent = this.m_posCurrent.lerp(posMoveTo, this.SmoothTime);
+            this.node.worldPosition = this.m_posCurrent.clone();
         }
         else {
-            this.node.worldPosition = this.m_target;
+            this.m_posCurrent = posMoveTo.clone();
+            this.node.worldPosition = this.m_posCurrent.clone();
         }
     }
 
     private onPositionInit() {
-        if (this.Target == null)
-            return;
+        this.m_posCurrent = this.node.worldPosition.clone();
+        this.m_posTarget = this.node.worldPosition.clone();
 
-        let target = v3();
-        target = this.Target.worldPosition.clone();
+        let posMoveTo = v3();
+        if (this.Target != null) {
+            posMoveTo = this.Target.worldPosition.clone();
+            this.m_posTarget = posMoveTo.clone();
+        }
+        else
+            posMoveTo = this.m_posTarget.clone();
 
         //LOCK:
         if (this.LockX)
-            target.x = this.m_lock.x;
+            posMoveTo.x = this.m_lock.x;
         if (this.LockY)
-            target.y = this.m_lock.y;
+            posMoveTo.y = this.m_lock.y;
 
         //OFFSET:
-        target.x += this.Offset.x;
-        target.y += this.Offset.y;
+        posMoveTo.x += this.Offset.x;
+        posMoveTo.y += this.Offset.y;
 
         //LIMIT:
         if (this.Limit) {
             if (!this.LockX) {
-                if (target.x > this.LimitMax.x)
-                    target.x = this.LimitMax.x;
-                else if (target.x < this.LimitMin.x)
-                    target.x = this.LimitMin.x;
+                if (posMoveTo.x > this.LimitMax.x)
+                    posMoveTo.x = this.LimitMax.x;
+                else if (posMoveTo.x < this.LimitMin.x)
+                    posMoveTo.x = this.LimitMin.x;
             }
             if (!this.LockY) {
-                if (target.y > this.LimitMax.y)
-                    target.y = this.LimitMax.y;
-                else if (target.y < this.LimitMin.y)
-                    target.y = this.LimitMin.y;
+                if (posMoveTo.y > this.LimitMax.y)
+                    posMoveTo.y = this.LimitMax.y;
+                else if (posMoveTo.y < this.LimitMin.y)
+                    posMoveTo.y = this.LimitMin.y;
             }
         }
 
         //FINAL:
-        this.m_target = target;
-        this.node.worldPosition = this.m_target;
+        this.m_posCurrent = posMoveTo.clone();
+        this.node.worldPosition = this.m_posCurrent.clone();
     }
 
     //EVENT
@@ -363,6 +375,7 @@ export default class CameraBase extends Component {
             return;
         }
         this.Target = Target;
+        this.m_posTarget = Target.worldPosition.clone();
     }
 
     onSwitchTween(target: Node, duration: number, easing: TweenEasing) {
@@ -373,25 +386,28 @@ export default class CameraBase extends Component {
         if (this.m_tweenSwitch != null)
             Tween.stopAllByTarget(this.m_tweenSwitch);
         this.Target = target;
-        this.m_target = target.worldPosition.clone();
-        this.m_update = false;
+        this.m_posTarget = target.worldPosition.clone();
+
+        this.m_update = false; // Stop Update
 
         if (this.LockX)
-            this.m_target.x = this.m_lock.x;
+            this.m_posTarget.x = this.m_lock.x;
         if (this.LockY)
-            this.m_target.y = this.m_lock.y;
+            this.m_posTarget.y = this.m_lock.y;
+
+        this.m_posCurrent = this.m_posTarget.clone(); // After complete tween, set current position to target position to avoid double lerp
 
         this.m_tweenSwitch = new NodeTweener();
         this.m_tweenSwitch.Base = this;
         this.m_tweenSwitch.Value = this.node.worldPosition;
         tween(this.m_tweenSwitch)
-            .to(duration, { Value: this.m_target }, {
+            .to(duration, { Value: this.m_posTarget }, {
                 easing: easing,
                 onUpdate(Info: NodeTweener) {
                     Info.Base.node.worldPosition = Info.Value;
                 },
                 onComplete(Info: NodeTweener) {
-                    Info.Base.m_update = true;
+                    Info.Base.m_update = true; // Continue Update
                 }
             })
             .start();
