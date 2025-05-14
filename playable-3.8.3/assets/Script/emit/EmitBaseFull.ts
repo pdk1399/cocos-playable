@@ -61,6 +61,10 @@ export class EmitBaseFull extends EmitBase {
                 this.m_targetCollide.splice(0, this.m_targetCollide.length); //Reset all targets collide
             }
 
+            //NEXT
+            if (this.EmitNodeNext != null)
+                this.EmitNodeNext.emit(ConstantBase.NODE_EVENT);
+
             //END
             this.m_eventActived = false;
         }, Math.max(this.Delay, 0));

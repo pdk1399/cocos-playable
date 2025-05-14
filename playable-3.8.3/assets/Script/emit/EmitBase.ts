@@ -12,8 +12,6 @@ export class EmitBase extends Component {
     //ON-EVENT
     @property({ group: { name: 'Event' }, type: CCString, visible(this: EmitBase) { return !this.Start; } })
     OnEvent: string = '';
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EmitBase) { return !this.Start; } })
-    OnNode: boolean = false;
     //ON-COLLISION-EVENT
     @property({ group: { name: 'Event' }, type: CCInteger, visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
     OnTagBody: number = 0;
@@ -27,6 +25,9 @@ export class EmitBase extends Component {
     //EMIT-EVENT
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
+    //NEXT-EVENT
+    @property({ group: { name: 'Event', displayOrder: 99999 }, type: Node })
+    EmitNodeNext: Node = null;
 
     protected m_eventActived: boolean = false;
     protected m_eventPhysic: boolean = false;
@@ -85,6 +86,10 @@ export class EmitBase extends Component {
             //#1: Emit Director
             if (this.EmitEvent != '')
                 director.emit(this.EmitEvent);
+
+            //NEXT
+            if (this.EmitNodeNext != null)
+                this.EmitNodeNext.emit(ConstantBase.NODE_EVENT);
 
             //END
             this.m_eventActived = false;
