@@ -42,26 +42,33 @@ export class ConstantBase {
 
     static readonly NODE_EVENT: string = 'node-event'; // Used in most of quick-events in Nodes
 
+    static readonly NODE_BODY_HIT: string = 'node-body-hit';
+    static readonly NODE_BODY_X2: string = 'node-body-x2';
+    static readonly NODE_BODY_X4: string = 'node-body-x4';
+
+    static readonly NODE_COLLIDE_BODY: string = 'node-collide-collide';
+    static readonly NODE_COLLIDE_BOT: string = 'node-collide-bot';
+    static readonly NODE_COLLIDE_INTERACTE: string = 'node-collide-interacte';
+
+    static readonly NODE_CONTROL_FACE_X_RIGHT: string = 'node-control-face-x-right';
+    static readonly NODE_CONTROL_FACE_X_LEFT: string = 'node-control-face-x-left';
+    static readonly NODE_CONTROL_FACE_X_REVERSE: string = 'node-control-face-x-reverse';
+    static readonly NODE_CONTROL_FACE_Y_UP: string = 'node-control-face-y-up';
+    static readonly NODE_CONTROL_FACE_Y_DOWN: string = 'node-control-face-y-down';
+    static readonly NODE_CONTROL_FACE_Y_REVERSE: string = 'node-control-face-y-reverse';
+
     static readonly NODE_CONTROL_DIRECTOR: string = 'node-control-director';
     static readonly NODE_CONTROL_NODE: string = 'node-control-node';
     static readonly NODE_CONTROL_SLEEP: string = 'node-control-sleep';
     static readonly NODE_CONTROL_AWAKE: string = 'node-control-awake';
     static readonly NODE_CONTROL_DEAD: string = 'node-control-dead';
 
-    static readonly NODE_COLLIDE_BODY: string = 'node-collide-collide';
-    static readonly NODE_COLLIDE_BOT: string = 'node-collide-bot';
-    static readonly NODE_COLLIDE_INTERACTE: string = 'node-collide-interacte';
-
-    static readonly NODE_BODY_HIT: string = 'node-body-hit';
-    static readonly NODE_BODY_X2: string = 'node-body-x2';
-    static readonly NODE_BODY_X4: string = 'node-body-x4';
+    static readonly NODE_PICK: string = 'node-pick';
+    static readonly NODE_THROW: string = 'node-throw';
 
     static readonly NODE_ATTACK_MELEE_FOUND: string = 'node-attack-melee-found';
     static readonly NODE_ATTACK_RANGE_FOUND: string = 'node-attack-range-found';
     static readonly NODE_ATTACK_ULTIMATE: string = 'node-body-attack-ultimate';
-
-    static readonly NODE_PICK: string = 'node-pick';
-    static readonly NODE_THROW: string = 'node-throw';
 
     static readonly NODE_VALUE: string = 'node-value'; // Used to help value-event excute it's child event
     static readonly NODE_VALUE_HIT_POINT: string = 'node-value-hit-point';

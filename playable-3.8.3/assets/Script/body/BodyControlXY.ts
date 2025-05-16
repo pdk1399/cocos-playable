@@ -99,13 +99,17 @@ export class BodyControlXY extends Component {
         director.on(ConstantBase.PLAYER_COMPLETE, this.onComplete, this);
         director.on(ConstantBase.GAME_TIME_OUT, this.onStop, this);
 
+        this.node.on(ConstantBase.NODE_COLLIDE_BODY, this.onCollideBody, this);
+
+        this.node.on(ConstantBase.NODE_CONTROL_FACE_X_RIGHT, this.onFaceRight, this);
+        this.node.on(ConstantBase.NODE_CONTROL_FACE_X_LEFT, this.onFaceLeft, this);
+        this.node.on(ConstantBase.NODE_CONTROL_FACE_X_REVERSE, this.onFaceReverseX, this);
+
         this.node.on(ConstantBase.NODE_CONTROL_DIRECTOR, this.onControlByDirector, this);
         this.node.on(ConstantBase.NODE_CONTROL_NODE, this.onControlByNode, this);
         this.node.on(ConstantBase.NODE_CONTROL_SLEEP, this.onControlSleep, this);
         this.node.on(ConstantBase.NODE_CONTROL_AWAKE, this.onControlAwake, this);
         this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onControlDead, this);
-
-        this.node.on(ConstantBase.NODE_COLLIDE_BODY, this.onCollideBody, this);
 
         this.node.on(ConstantBase.NODE_VALUE_LOCK_X, this.onValueLockX, this);
         this.node.on(ConstantBase.NODE_VALUE_LOCK_Y, this.onValueLockY, this);

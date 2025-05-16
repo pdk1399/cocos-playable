@@ -24,6 +24,20 @@ export enum ReleaseType {
 }
 Enum(ReleaseType);
 
+export enum FaceXType {
+    None,
+    Right,
+    Left,
+}
+Enum(FaceXType);
+
+export enum FaceYType {
+    None,
+    Up,
+    Down,
+}
+Enum(FaceYType);
+
 @ccclass('EmitControl')
 export class EmitControl extends EmitBaseFull {
 
@@ -45,15 +59,21 @@ export class EmitControl extends EmitBaseFull {
     @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EmitControl) { return this.Control >= ControlType.Node && this.ControlBody >= BodyType.Awake && this.ControlRelease != ReleaseType.XY && this.ControlRelease != ReleaseType.Y; } })
     ControlJump: boolean = false;
 
+    @property({ group: { name: 'Option' }, type: FaceXType })
+    ControlFaceX: FaceXType = FaceXType.None;
+    @property({ group: { name: 'Option' }, type: FaceYType })
+    ControlFaceY: FaceYType = FaceYType.None;
+
     @property({ group: { name: 'Option' }, type: CCBoolean })
     BodyX2: boolean = false;
     @property({ group: { name: 'Option' }, type: CCBoolean })
     BodyX4: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EmitControl) { return this.Control >= ControlType.Node; } })
+
+    @property({ group: { name: 'Option' }, type: CCBoolean })
     ControlAttack: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EmitControl) { return this.Control >= ControlType.Node; } })
+    @property({ group: { name: 'Option' }, type: CCBoolean })
     ControlInteraction: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EmitControl) { return this.Control >= ControlType.Node && this.ControlBody >= BodyType.Awake; } })
+    @property({ group: { name: 'Option' }, type: CCBoolean })
     ControlFixed: boolean = false;
 
     onEventActiveNode(target: Node): void {
@@ -62,9 +82,31 @@ export class EmitControl extends EmitBaseFull {
     }
 
     private onEventActiveOption(target: Node): void {
+        switch (this.ControlFaceX) {
+            case FaceXType.None:
+                break;
+            case FaceXType.Right:
+                target.emit(ConstantBase.NODE_CONTROL_FACE_X_RIGHT);
+                break;
+            case FaceXType.Left:
+                target.emit(ConstantBase.NODE_CONTROL_FACE_X_LEFT);
+                break;
+        }
+        switch (this.ControlFaceY) {
+            case FaceYType.None:
+                break;
+            case FaceYType.Up:
+                target.emit(ConstantBase.NODE_CONTROL_FACE_Y_UP);
+                break;
+            case FaceYType.Down:
+                target.emit(ConstantBase.NODE_CONTROL_FACE_Y_DOWN);
+                break;
+        }
+
         if (this.BodyX2)
             target.emit(ConstantBase.NODE_BODY_X2);
         if (this.BodyX4)
+
             target.emit(ConstantBase.NODE_BODY_X4);
         if (this.ControlAttack)
             target.emit(ConstantBase.CONTROL_ATTACK);
