@@ -157,7 +157,7 @@ export class BodyAttackX extends Component {
             this.node.on(ConstantBase.NODE_ATTACK_RANGE_FOUND, this.onRangeFoundTarget, this);
 
         this.node.on(ConstantBase.NODE_ATTACK_ULTIMATE, this.onMeleeUltimate, this);
-        this.node.on(ConstantBase.NODE_ATTACK_VALUE_MELEE_HIT, this.onMeleeHit, this);
+        this.node.on(ConstantBase.NODE_VALUE_MELEE_HIT, this.onMeleeHit, this);
     }
 
     protected start(): void {

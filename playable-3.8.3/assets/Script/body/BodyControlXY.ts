@@ -28,19 +28,19 @@ export class BodyControlXY extends Component {
     @property({ group: { name: 'MoveXY' }, type: CCBoolean })
     FaceRight: boolean = true;
     @property({ group: { name: 'MoveXY' }, type: CCFloat, visible(this: BodyControlXY) { return !this.LockX; } })
-    MoveGround = 40;
+    MoveGround: number = 40;
     @property({ group: { name: 'MoveXY' }, type: CCFloat, visible(this: BodyControlXY) { return !this.LockX; } })
-    MoveDamp = 40;
+    MoveDamp: number = 40;
     @property({ group: { name: 'MoveXY' }, type: CCFloat, visible(this: BodyControlXY) { return !this.LockX; } })
-    MoveDash = 5000;
+    MoveDash: number = 5000;
     @property({ group: { name: 'MoveXY' }, type: CCFloat, visible(this: BodyControlXY) { return !this.LockX; } })
-    DelayDash = 0.5;
+    DelayDash: number = 0.5;
     @property({ group: { name: 'MoveXY' }, type: CCBoolean, visible(this: BodyControlXY) { return this.getComponent(BodyAttackX) != null; } })
-    MoveStopAttack = false;
+    MoveStopAttack: boolean = false;
     @property({ group: { name: 'MoveXY' }, type: CCBoolean, visible(this: BodyControlXY) { return !this.MoveStopAttack && this.getComponent(BodyAttackX) != null; } })
-    MoveStopByBodyAttack = true;
+    MoveStopByBodyAttack: boolean = true;
     @property({ group: { name: 'MoveXY' }, type: CCBoolean, visible(this: BodyControlXY) { return !this.MoveStopAttack && this.getComponent(BodyAttackX) != null; } })
-    MoveStopByPressAttack = true;
+    MoveStopByPressAttack: boolean = true;
 
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlXY) { return this.getComponent(BodyAttackX) != null; } })
     AttackHold: boolean = false;
@@ -49,13 +49,13 @@ export class BodyControlXY extends Component {
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlXY) { return this.getComponent(BodyAttackX) != null; } })
     AttackAimReset: boolean = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlXY) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    DashStopByBodyAttack = false;
+    DashStopByBodyAttack: boolean = false;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlXY) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    DashStopByPressAttack = false;
+    DashStopByPressAttack: boolean = false;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlXY) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    MoveAttackReset = true;
+    MoveAttackReset: boolean = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlXY) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    DashAttackReset = true;
+    DashAttackReset: boolean = true;
 
     @property({ group: { name: 'Switch' }, type: Node })
     SwitchArrow: Node = null;
@@ -106,6 +106,10 @@ export class BodyControlXY extends Component {
         this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onControlDead, this);
 
         this.node.on(ConstantBase.NODE_COLLIDE_BODY, this.onCollideBody, this);
+
+        this.node.on(ConstantBase.NODE_VALUE_LOCK_X, this.onValueLockX, this);
+        this.node.on(ConstantBase.NODE_VALUE_LOCK_Y, this.onValueLockY, this);
+        this.node.on(ConstantBase.NODE_VALUE_MOVE_GROUND, this.onValueMoveGround, this);
     }
 
     protected start(): void {
@@ -517,4 +521,10 @@ export class BodyControlXY extends Component {
             }, this.m_bodySpine.onDead());
         }, 0);
     }
+
+    //VALUE
+
+    onValueLockX(value: boolean) { this.LockX = value; }
+    onValueLockY(value: boolean) { this.LockY = value; }
+    onValueMoveGround(value: number) { this.MoveGround = value; }
 }

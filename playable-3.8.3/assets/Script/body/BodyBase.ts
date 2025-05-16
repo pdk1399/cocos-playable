@@ -106,8 +106,8 @@ export class BodyBase extends Component {
                 this.m_destroyCollider.push(colliderCheck as Collider2D)
         })
 
-        this.node.on(ConstantBase.NODE_BODY_VALUE_HIT_POINT, this.onHitPoint, this);
-        this.node.on(ConstantBase.NODE_BODY_VALUE_HIT_POINT_CURRENT, this.onHitPointCurrent, this);
+        this.node.on(ConstantBase.NODE_VALUE_HIT_POINT, this.onHitPoint, this);
+        this.node.on(ConstantBase.NODE_VALUE_HIT_POINT_CURRENT, this.onHitPointCurrent, this);
 
         this.node.on(ConstantBase.NODE_BODY_X2, this.onBodyX2, this);
         this.node.on(ConstantBase.NODE_BODY_X4, this.onBodyX4, this);

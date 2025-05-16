@@ -45,6 +45,10 @@ export class EmitControl extends EmitBaseFull {
     @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: EmitControl) { return this.Control >= ControlType.Node && this.ControlBody >= BodyType.Awake && this.ControlRelease != ReleaseType.XY && this.ControlRelease != ReleaseType.Y; } })
     ControlJump: boolean = false;
 
+    @property({ group: { name: 'Option' }, type: CCBoolean })
+    BodyX2: boolean = false;
+    @property({ group: { name: 'Option' }, type: CCBoolean })
+    BodyX4: boolean = false;
     @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EmitControl) { return this.Control >= ControlType.Node; } })
     ControlAttack: boolean = false;
     @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EmitControl) { return this.Control >= ControlType.Node; } })
@@ -52,26 +56,25 @@ export class EmitControl extends EmitBaseFull {
     @property({ group: { name: 'Option' }, type: CCBoolean, visible(this: EmitControl) { return this.Control >= ControlType.Node && this.ControlBody >= BodyType.Awake; } })
     ControlFixed: boolean = false;
 
-    @property({ group: { name: 'Option' }, type: CCBoolean })
-    BodyX2: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean })
-    BodyX4: boolean = false;
-
     onEventActiveNode(target: Node): void {
-        //OPTION
+        this.onEventActiveOption(target);
+        this.onEventActiiveMain(target);
+    }
+
+    private onEventActiveOption(target: Node): void {
         if (this.BodyX2)
             target.emit(ConstantBase.NODE_BODY_X2);
         if (this.BodyX4)
             target.emit(ConstantBase.NODE_BODY_X4);
-
         if (this.ControlAttack)
             target.emit(ConstantBase.CONTROL_ATTACK);
         if (this.ControlInteraction)
             target.emit(ConstantBase.CONTROL_INTERACTION);
         if (this.ControlFixed)
             target.emit(ConstantBase.CONTROL_FIXED);
+    }
 
-        //MAIN
+    private onEventActiiveMain(target: Node): void {
         switch (this.Control) {
             case ControlType.None:
                 return;

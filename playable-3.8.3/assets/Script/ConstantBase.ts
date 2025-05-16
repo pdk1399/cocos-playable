@@ -53,18 +53,24 @@ export class ConstantBase {
     static readonly NODE_COLLIDE_INTERACTE: string = 'node-collide-interacte';
 
     static readonly NODE_BODY_HIT: string = 'node-body-hit';
-    static readonly NODE_BODY_VALUE_HIT_POINT: string = 'node-body-value-hit-point';
-    static readonly NODE_BODY_VALUE_HIT_POINT_CURRENT: string = 'node-body-value-hit-point-current';
     static readonly NODE_BODY_X2: string = 'node-body-x2';
     static readonly NODE_BODY_X4: string = 'node-body-x4';
 
     static readonly NODE_ATTACK_MELEE_FOUND: string = 'node-attack-melee-found';
     static readonly NODE_ATTACK_RANGE_FOUND: string = 'node-attack-range-found';
     static readonly NODE_ATTACK_ULTIMATE: string = 'node-body-attack-ultimate';
-    static readonly NODE_ATTACK_VALUE_MELEE_HIT: string = 'node-body-attack-value-melee-hit';
 
     static readonly NODE_PICK: string = 'node-pick';
     static readonly NODE_THROW: string = 'node-throw';
+
+    static readonly NODE_VALUE: string = 'node-value'; // Used to help value-event excute it's child event
+    static readonly NODE_VALUE_HIT_POINT: string = 'node-value-hit-point';
+    static readonly NODE_VALUE_HIT_POINT_CURRENT: string = 'node-value-hit-point-current';
+    static readonly NODE_VALUE_LOCK_X: string = 'node-value-lock-x';
+    static readonly NODE_VALUE_LOCK_Y: string = 'node-value-lock-y';
+    static readonly NODE_VALUE_MOVE_GROUND: string = 'node-value-move-ground';
+    static readonly NODE_VALUE_MOVE_JUMP: string = 'node-value-move-jump';
+    static readonly NODE_VALUE_MELEE_HIT: string = 'node-value-melee-hit';
 
     static readonly NODE_STOP: string = 'node-stop';
 

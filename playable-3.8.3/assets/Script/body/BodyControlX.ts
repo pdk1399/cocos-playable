@@ -46,18 +46,17 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
     MoveAirX: number = 40;
     @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
-    MoveDampX = 40;
+    MoveDampX: number = 40;
     @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
-    MoveDashX = 5000;
+    MoveDashX: number = 5000;
     @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX; } })
-    DelayDashX = 0.5;
+    DelayDashX: number = 0.5;
     @property({ group: { name: 'MoveX' }, type: CCFloat, visible(this: BodyControlX) { return !this.LockX && this.Type == BodyType.BALL; } })
-    TorqueX = 2000;
+    TorqueX: number = 2000;
     @property({ group: { name: 'MoveX' }, type: CCBoolean, visible(this: BodyControlX) { return !this.LockX; } })
-    MoveForceStop = true;
+    MoveForceStop: boolean = true;
     @property({ group: { name: 'MoveX' }, type: CCBoolean, visible(this: BodyControlX) { return !this.LockX; } })
-    MoveForceFlip = true;
-
+    MoveForceFlip: boolean = true;
 
     @property({ group: { name: 'MoveY' }, type: CCBoolean })
     LockY: boolean = false;
@@ -80,30 +79,30 @@ export class BodyControlX extends Component {
     AttackAimReset: boolean = true;
 
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    DirStopByBodyAttack = true;
+    DirStopByBodyAttack: boolean = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    DirStopByPressAttack = true;
+    DirStopByPressAttack: boolean = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    MoveStopByBodyAttack = true;
+    MoveStopByBodyAttack: boolean = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    MoveStopByPressAttack = true;
+    MoveStopByPressAttack: boolean = true;
     @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    MoveAttackGroundX = 0;
+    MoveAttackGroundX: number = 0;
     @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
     MoveAttackAirX: number = 0;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    MoveAttackByFace = true;
+    MoveAttackByFace: boolean = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    DashStopByBodyAttack = false;
+    DashStopByBodyAttack: boolean = false;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    DashStopByPressAttack = false;
+    DashStopByPressAttack: boolean = false;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    MoveAttackReset = true;
+    MoveAttackReset: boolean = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
-    DashAttackReset = true;
+    DashAttackReset: boolean = true;
 
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockY; } })
-    FallAttackStop = false;
+    FallAttackStop: boolean = false;
     @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockY && !this.FallAttackStop; } })
     FallAttackForce: number = 0; //Default -0.2f for slow fall down while attack
 
@@ -202,6 +201,11 @@ export class BodyControlX extends Component {
         this.node.on(ConstantBase.NODE_COLLIDE_BOT, this.onCollideBot, this);
         this.node.on(ConstantBase.NODE_COLLIDE_INTERACTE, this.onCollideInteraction, this);
         this.node.on(ConstantBase.NODE_COLLIDE_BODY, this.onCollideBody, this);
+
+        this.node.on(ConstantBase.NODE_VALUE_LOCK_X, this.onValueLockX, this);
+        this.node.on(ConstantBase.NODE_VALUE_LOCK_Y, this.onValueLockY, this);
+        this.node.on(ConstantBase.NODE_VALUE_MOVE_GROUND, this.onValueMoveGround, this);
+        this.node.on(ConstantBase.NODE_VALUE_MOVE_JUMP, this.onValueMoveJump, this);
     }
 
     protected start(): void {
@@ -1092,4 +1096,11 @@ export class BodyControlX extends Component {
             }, this.m_bodySpine.onDead());
         }, 0);
     }
+
+    //VALUE
+
+    onValueLockX(value: boolean) { this.LockX = value; }
+    onValueLockY(value: boolean) { this.LockY = value; }
+    onValueMoveGround(value: number) { this.MoveGroundX = value; }
+    onValueMoveJump(value: number) { this.JumpUpY = value; }
 }
