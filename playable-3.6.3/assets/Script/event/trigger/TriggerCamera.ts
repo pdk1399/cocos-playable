@@ -1,6 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, TweenEasing, v2, Vec2 } from 'cc';
 import { ConstantBase, EaseType } from '../../ConstantBase';
-import { SpineBase } from '../../renderer/SpineBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('TriggerCamera')
@@ -39,8 +38,8 @@ export class TriggerCamera extends Component {
     TargetTween: boolean = false;
     @property({ group: { name: 'Target' }, type: CCFloat, visible(this: TriggerCamera) { return this.TargetChange && this.TargetTween; } })
     TargetTweenDuration: number = 0.5;
-    @property({ group: { name: 'Target' }, type: CCString, visible(this: TriggerCamera) { return this.TargetChange && this.TargetTween; } })
-    TargetTweenEasing: TweenEasing = 'linear';
+    @property({ group: { name: 'Target' }, type: EaseType, visible(this: TriggerCamera) { return this.TargetChange && this.TargetTween; } })
+    TargetTweenEasing: EaseType = EaseType.linear;
 
     @property({ group: { name: 'Effect' }, type: CCBoolean })
     Effect: boolean = false;
@@ -53,6 +52,10 @@ export class TriggerCamera extends Component {
     TagTarget: number[] = [100];
 
     protected onLoad(): void {
+        if (this.OnNode) {
+            this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
+            return;
+        }
         let colliders = this.getComponents(Collider2D);
         colliders.forEach(collider => {
             switch (collider.tag) {
@@ -61,8 +64,6 @@ export class TriggerCamera extends Component {
                     break;
             }
         });
-        if (this.OnNode)
-            this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
     }
 
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
@@ -75,6 +76,31 @@ export class TriggerCamera extends Component {
             if (this.EmitEvent != '')
                 director.emit(this.EmitEvent);
         }, Math.max(this.Delay, 0));
+    }
+
+    onEvent() {
+        if (this.ValueChange) {
+            director.emit(ConstantBase.CAMERA_SMOOTH_TIME, this.SmoothTime);
+            director.emit(ConstantBase.CAMERA_OFFSET, this.Offset);
+        }
+
+        if (this.ScaleChange)
+            director.emit(ConstantBase.CAMERA_SCALE, this.Scale, this.ScaleDuration, this.ScaleEasing);
+
+        if (this.TargetChange) {
+            if (this.TargetTween)
+                director.emit(ConstantBase.CAMERA_SWITCH, this.Target, this.TargetTweenDuration, EaseType[this.TargetTweenEasing] as TweenEasing);
+            else
+                director.emit(ConstantBase.CAMERA_SWITCH, this.Target);
+        }
+
+        if (this.Effect) {
+            director.emit(ConstantBase.CAMERA_EFFECT_SHAKE, this.EffectShake);
+        }
+
+        if (this.EmitEvent != '')
+            director.emit(this.EmitEvent);
+
         if (this.Once) {
             let colliders = this.getComponents(Collider2D);
             colliders.forEach(collider => {
@@ -85,35 +111,5 @@ export class TriggerCamera extends Component {
                 }
             });
         }
-    }
-
-    onEvent() {
-        if (this.ValueChange) {
-            director.emit(ConstantBase.CAMERA_VALUE_SMOOTH_TIME, this.SmoothTime);
-            director.emit(ConstantBase.CAMERA_VALUE_OFFSET, this.Offset);
-        }
-
-        if (this.ScaleChange)
-            director.emit(ConstantBase.CAMERA_VALUE_SCALE, this.Scale, this.ScaleDuration, this.ScaleEasing);
-
-        if (this.TargetChange) {
-            if (this.TargetTween)
-                director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.Target, this.TargetTweenDuration, this.TargetTweenEasing);
-            else
-                director.emit(ConstantBase.CAMERA_TARGET_SWITCH, this.Target);
-        }
-
-        if (this.Effect) {
-            director.emit(ConstantBase.CAMERA_EFFECT_SHAKE, this.EffectShake);
-        }
-
-        if (this.EmitEvent != '')
-            director.emit(this.EmitEvent);
-    }
-
-    onEventSingle(target: SpineBase) {
-        if (target == null ? true : !target.isValid)
-            return;
-        //...
     }
 }

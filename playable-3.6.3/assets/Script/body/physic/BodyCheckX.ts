@@ -30,9 +30,11 @@ export class BodyCheckX extends Component {
     TagHead: number = 97;
     @property({ group: { name: 'Self' }, type: CCInteger, visible(this: BodyCheckX) { return !this.Raycast; } })
     TagBotHead: number = 96;
-
     @property({ group: { name: 'Self' }, type: CCInteger })
     TagInteraction: number = 103;
+
+    @property({ group: { name: 'Other' }, type: CCBoolean })
+    TagBodyAsGround: boolean = false;
     @property({ group: { name: 'Other' }, type: CCInteger })
     TagGround: number = -1;
     @property({ group: { name: 'Other' }, type: CCInteger })
@@ -43,11 +45,13 @@ export class BodyCheckX extends Component {
     m_dir: number = 1;
 
     m_countBody: number = 0;
+    m_countTop: number = 0;
     m_countBot: number = 0;
     m_countHead: number = 0;
     m_countBotHead: number = 0;
 
     m_isBody: boolean = false;
+    m_isTop: boolean = false;
     protected m_isBotCollide: boolean = false;
     protected m_isBotForce?: boolean = null;
     get m_isBot() {
@@ -68,8 +72,11 @@ export class BodyCheckX extends Component {
     m_offsetHeadX: number;
     m_offsetBotHeadX: number;
 
-    m_targetBot: Node = null;
-    m_targetInteracte: Node[] = [];
+    m_topNode: Node = null;
+    m_topRigidbody: RigidBody2D = null;
+    m_botNode: Node = null;
+    m_botRigidbody: RigidBody2D = null;
+    m_interacteNode: Node[] = [];
 
     m_raycastSchedule: Function = null;
 
@@ -139,11 +146,23 @@ export class BodyCheckX extends Component {
                     default:
                         if (otherCollider.getComponent(BodyPlatformX) != null)
                             break;
-                        this.node.emit(ConstantBase.NODE_BODY_COLLIDE, otherCollider.node, true);
+                        this.node.emit(ConstantBase.NODE_COLLIDE_BODY, otherCollider.node, true);
                         break;
                 }
                 break;
             case this.TagTop:
+                switch (otherCollider.tag) {
+                    case this.TagBody:
+                        if (otherCollider.sensor || !this.TagBodyAsGround)
+                            break;
+                        if (this.m_countTop == 0) {
+                            this.m_topNode = otherCollider.node;
+                            this.m_topRigidbody = otherCollider.body;
+                        }
+                        this.m_countTop++;
+                        this.m_isTop = this.m_countTop > 0;
+                        break;
+                }
                 break;
             case this.TagBot:
                 switch (otherCollider.tag) {
@@ -151,14 +170,31 @@ export class BodyCheckX extends Component {
                     case this.TagPlatform:
                         if (otherCollider.sensor)
                             break;
-                        if (this.m_countBot == 0)
-                            this.m_targetBot = otherCollider.node;
+                        if (this.m_countBot == 0) {
+                            this.m_botNode = otherCollider.node;
+                            this.m_botRigidbody = otherCollider.body;
+                        }
                         this.m_countBot++;
                         let state = this.m_isBotCollide;
                         this.m_isBotCollide = this.m_countBot > 0;
                         if (state != this.m_isBotCollide) {
                             this.m_isBotForce = null;
-                            this.node.emit(ConstantBase.NODE_BODY_BOT, this.m_isBotCollide);
+                            this.node.emit(ConstantBase.NODE_COLLIDE_BOT, this.m_isBotCollide);
+                        }
+                        break;
+                    case this.TagBody:
+                        if (otherCollider.sensor || !this.TagBodyAsGround)
+                            break;
+                        if (this.m_countBot == 0) {
+                            this.m_botNode = otherCollider.node;
+                            this.m_botRigidbody = otherCollider.body;
+                        }
+                        this.m_countBot++;
+                        let state2 = this.m_isBotCollide;
+                        this.m_isBotCollide = this.m_countBot > 0;
+                        if (state2 != this.m_isBotCollide) {
+                            this.m_isBotForce = null;
+                            this.node.emit(ConstantBase.NODE_COLLIDE_BOT, this.m_isBotCollide);
                         }
                         break;
                 }
@@ -188,11 +224,11 @@ export class BodyCheckX extends Component {
             case this.TagInteraction:
                 switch (otherCollider.tag) {
                     case this.TagBox:
-                        let index = this.m_targetInteracte.findIndex(t => t == otherCollider.node);
+                        let index = this.m_interacteNode.findIndex(t => t == otherCollider.node);
                         if (index >= 0)
                             break;
-                        this.m_targetInteracte.push(otherCollider.node);
-                        this.node.emit(ConstantBase.NODE_BODY_INTERACTE, otherCollider.node, true);
+                        this.m_interacteNode.push(otherCollider.node);
+                        this.node.emit(ConstantBase.NODE_COLLIDE_INTERACTE, otherCollider.node, true);
                         break;
                 }
                 break;
@@ -212,11 +248,23 @@ export class BodyCheckX extends Component {
                     default:
                         if (otherCollider.getComponent(BodyPlatformX) != null)
                             break;
-                        this.node.emit(ConstantBase.NODE_BODY_COLLIDE, otherCollider.node, false);
+                        this.node.emit(ConstantBase.NODE_COLLIDE_BODY, otherCollider.node, false);
                         break;
                 }
                 break;
             case this.TagTop:
+                switch (otherCollider.tag) {
+                    case this.TagBody:
+                        if (otherCollider.sensor || !this.TagBodyAsGround)
+                            break;
+                        this.m_countTop = math.clamp(this.m_countTop - 1, 0, this.m_countTop);
+                        if (this.m_countTop == 0) {
+                            this.m_topNode = null;
+                            this.m_topRigidbody = null;
+                        }
+                        this.m_isTop = this.m_countTop > 0;
+                        break;
+                }
                 break;
             case this.TagBot:
                 switch (otherCollider.tag) {
@@ -225,13 +273,30 @@ export class BodyCheckX extends Component {
                         if (otherCollider.sensor)
                             break;
                         this.m_countBot = math.clamp(this.m_countBot - 1, 0, this.m_countBot);
-                        if (this.m_countBot == 0)
-                            this.m_targetBot = null;
+                        if (this.m_countBot == 0) {
+                            this.m_botNode = null;
+                            this.m_botRigidbody = null;
+                        }
                         let state = this.m_isBotCollide;
                         this.m_isBotCollide = this.m_countBot > 0;
                         if (state != this.m_isBotCollide) {
                             this.m_isBotForce = null;
-                            this.node.emit(ConstantBase.NODE_BODY_BOT, this.m_isBotCollide);
+                            this.node.emit(ConstantBase.NODE_COLLIDE_BOT, this.m_isBotCollide);
+                        }
+                        break;
+                    case this.TagBody:
+                        if (otherCollider.sensor || !this.TagBodyAsGround)
+                            break;
+                        this.m_countBot = math.clamp(this.m_countBot - 1, 0, this.m_countBot);
+                        if (this.m_countBot == 0) {
+                            this.m_botNode = null;
+                            this.m_botRigidbody = null;
+                        }
+                        let state2 = this.m_isBotCollide;
+                        this.m_isBotCollide = this.m_countBot > 0;
+                        if (state2 != this.m_isBotCollide) {
+                            this.m_isBotForce = null;
+                            this.node.emit(ConstantBase.NODE_COLLIDE_BOT, this.m_isBotCollide);
                         }
                         break;
                 }
@@ -260,11 +325,11 @@ export class BodyCheckX extends Component {
             case this.TagInteraction:
                 switch (otherCollider.tag) {
                     case this.TagBox:
-                        let index = this.m_targetInteracte.findIndex(t => t == otherCollider.node);
+                        let index = this.m_interacteNode.findIndex(t => t == otherCollider.node);
                         if (index < 0)
                             break;
-                        this.m_targetInteracte.splice(index, 1);
-                        this.node.emit(ConstantBase.NODE_BODY_INTERACTE, otherCollider.node, false);
+                        this.m_interacteNode.splice(index, 1);
+                        this.node.emit(ConstantBase.NODE_COLLIDE_INTERACTE, otherCollider.node, false);
                         break;
                 }
                 break;
@@ -284,7 +349,7 @@ export class BodyCheckX extends Component {
 
     protected onRaycastBot() {
         if (this.m_isBotForce != null) {
-            this.node.emit(ConstantBase.NODE_BODY_BOT, this.m_isBotForce);
+            this.node.emit(ConstantBase.NODE_COLLIDE_BOT, this.m_isBotForce);
             this.m_isBotForce = null;
             return;
         }
@@ -314,6 +379,12 @@ export class BodyCheckX extends Component {
                         this.m_isBotCollide = true;
                         out = true;
                         break;
+                    case this.TagBody:
+                        if (results[i].collider.sensor || !this.TagBodyAsGround)
+                            break;
+                        this.m_isBotCollide = true;
+                        out = true;
+                        break;
                     default:
                         this.m_isBotCollide = false;
                         break;
@@ -323,7 +394,7 @@ export class BodyCheckX extends Component {
             }
         }
         if (state != this.m_isBotCollide)
-            this.node.emit(ConstantBase.NODE_BODY_BOT, this.m_isBotCollide);
+            this.node.emit(ConstantBase.NODE_COLLIDE_BOT, this.m_isBotCollide);
     }
 
     protected onRaycastHead() {

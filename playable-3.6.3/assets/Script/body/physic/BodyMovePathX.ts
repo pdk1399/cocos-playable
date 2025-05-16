@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, Component, Enum, RigidBody2D } from 'cc';
+import { _decorator, CCBoolean, CCFloat, Component, Enum, RigidBody2D, Vec3, Node, v3 } from 'cc';
 import { ConstantBase } from '../../ConstantBase';
 import { SpineBase } from '../../renderer/SpineBase';
 import { BodyBase } from '../BodyBase';
@@ -56,6 +56,9 @@ export class BodyMovePathX extends Component {
     m_pick: boolean = false;
     m_picked: boolean = false;
 
+    m_followBody: Node = null;
+    m_followLastPos: Vec3;
+
     m_body: BodyBase = null;
     m_bodyCheck: BodyCheckX = null;
     m_bodySpine: BodySpine = null;
@@ -75,7 +78,7 @@ export class BodyMovePathX extends Component {
         this.node.on(ConstantBase.NODE_THROW, this.onThrow, this);
 
         if (this.m_bodyAttack != null)
-            this.node.on(ConstantBase.NODE_BODY_MELEE, this.onMeleeFoundTarget, this);
+            this.node.on(ConstantBase.NODE_ATTACK_MELEE_FOUND, this.onMeleeFoundTarget, this);
     }
 
     protected start(): void {
@@ -88,14 +91,15 @@ export class BodyMovePathX extends Component {
     }
 
     protected update(dt: number): void {
-        this.onPhysicUpdate();
-        this.onHeadChange();
-        this.onStateUpdate();
+        this.onPhysicUpdateX(dt);
+        this.onFollowUpdate(dt);
+        this.onHeadChange(dt);
+        this.onStateUpdate(dt);
     }
 
-    //
+    //MOVE
 
-    onPhysicUpdate() {
+    protected onPhysicUpdateX(dt: number) {
         if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
             this.m_rigidbody = this.getComponent(RigidBody2D);
         if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
@@ -137,9 +141,7 @@ export class BodyMovePathX extends Component {
         this.m_rigidbody.linearVelocity = velocity;
     }
 
-    //
-
-    onHeadChange() {
+    protected onHeadChange(dt: number) {
         if (this.getDead() || this.getHit() || !this.getHeadChange())
             return;
         this.m_dir *= -1;
@@ -169,15 +171,15 @@ export class BodyMovePathX extends Component {
             this.m_bodyAttack.onDirUpdate(this.m_dir);
     }
 
-    //
+    //ATTACK
 
-    protected onMeleeFoundTarget() {
+    protected onMeleeFoundTarget(dt: number) {
         this.m_bodySpine.onIdle(true);
     }
 
-    //
+    //GET
 
-    onStateUpdate() {
+    protected onStateUpdate(dt: number) {
         let state = BodyState.IDLE;
         //FIND STAGE:
         if (this.getDead())
@@ -242,5 +244,27 @@ export class BodyMovePathX extends Component {
 
     onThrow() {
         this.m_pick = false;
+    }
+
+    //FOLLOW
+
+    protected onFollowUpdate(dt: number) {
+        if (this.getKnock() || this.getDead())
+            return;
+        if (this.m_bodyCheck.m_isBot) {
+            if (this.m_followBody == null) {
+                this.m_followBody = this.m_bodyCheck.m_botNode;
+                this.m_followLastPos = this.m_followBody.position.clone();
+            }
+            let offsetPos = this.m_followBody.position.clone().subtract(this.m_followLastPos);
+            if (offsetPos.length() > 0.1) {
+                this.m_followLastPos = this.m_followBody.position.clone();
+                this.node.setPosition(this.node.position.clone().add(offsetPos));
+            }
+        }
+        else {
+            this.m_followBody = null;
+            this.m_followLastPos = v3();
+        }
     }
 }

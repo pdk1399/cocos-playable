@@ -1,5 +1,5 @@
-import { _decorator, Component, Node, CCFloat, view, screen, Vec3, CCBoolean, Camera, Tween, Vec2, director, tween, v2, v3, Rect, TweenEasing, math, Enum, sys } from 'cc';
-import { ConstantBase } from '../ConstantBase';
+import { _decorator, Component, Node, CCFloat, view, screen, Vec3, CCBoolean, Camera, Tween, Vec2, director, tween, v2, v3, Rect, TweenEasing, math, Enum, sys, CCString } from 'cc';
+import { ConstantBase, EaseType } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
 export enum OrientationType {
@@ -34,8 +34,6 @@ export default class CameraBase extends Component {
     LockX: boolean = false;
     @property({ group: { name: 'Main' }, type: CCBoolean })
     LockY: boolean = false;
-    // @property({ group: { name: 'Main' }, type: Node })
-    // Background: Node | null = null;
 
     @property({ group: { name: 'Limit' }, type: CCBoolean })
     Limit: boolean = false;
@@ -70,10 +68,17 @@ export default class CameraBase extends Component {
     @property({ group: { name: 'Rect' }, type: CCBoolean, visible(this: CameraBase) { return this.RectScreen; } })
     RectDebug: boolean = false;
 
+    @property({ group: { name: 'Switch' }, type: CCBoolean })
+    SwitchTween: boolean = false;
+    @property({ group: { name: 'Switch' }, type: CCFloat, visible(this: CameraBase) { return this.SwitchTween; } })
+    SwitchTweenDuration: number = 0.5;
+    @property({ group: { name: 'Switch' }, type: EaseType, visible(this: CameraBase) { return this.SwitchTween; } })
+    SwitchTweenEasing: EaseType = EaseType.linear;
+
     m_camera: Camera = null;
     m_orthoHeight: number = 0;
-    m_syncY: boolean = false;
-    m_target: Vec3;
+    m_posCurrent: Vec3;
+    m_posTarget: Vec3;
 
     m_orientation = OrientationType.LANDSCAPE;
     m_solution: math.Size;
@@ -85,25 +90,25 @@ export default class CameraBase extends Component {
     m_lock: Vec3;
     m_shake: boolean = false;
 
+    m_tweenOffset: NodeTweener = null;
+    m_tweenSwitch: NodeTweener = null;
+    m_tweenScale: NodeTweener = null;
     m_tweenShake: Tween<Node> = null;
     m_tweenShakeOnce: Tween<Node> = null;
-    m_tweenTarget: NodeTweener = null;
-    m_tweenScale: NodeTweener = null;
 
     //
 
     protected onLoad() {
         CameraBase.instance = this;
 
-        director.on(ConstantBase.CAMERA_TARGET_SWITCH, this.onTargetSwitch, this);
-        director.on(ConstantBase.CAMERA_TARGET_SWITCH, this.onTargetSwitchTween, this);
-        director.on(ConstantBase.CAMERA_VALUE_SMOOTH_TIME, this.onValueSmoothTime, this);
-        director.on(ConstantBase.CAMERA_VALUE_OFFSET, this.onValueOffset, this);
-        director.on(ConstantBase.CAMERA_VALUE_SCALE, this.onValueScale, this);
+        director.on(ConstantBase.CAMERA_SWITCH, this.onSwitchTween, this);
+        director.on(ConstantBase.CAMERA_SMOOTH_TIME, this.onSmoothTime, this);
+        director.on(ConstantBase.CAMERA_OFFSET, this.onOffsetTween, this);
+        director.on(ConstantBase.CAMERA_SCALE, this.onScaleTween, this);
         director.on(ConstantBase.CAMERA_EFFECT_SHAKE, this.onShake, this);
         director.on(ConstantBase.CAMERA_EFFECT_SHAKE_ONCE, this.onShakeOnce, this);
 
-        director.on(ConstantBase.BODY_X4, this.onShake, this);
+        director.on(ConstantBase.NODE_BODY_X4, this.onShake, this);
 
         if (this.m_camera == null)
             this.m_camera = this.getComponent(Camera);
@@ -117,59 +122,110 @@ export default class CameraBase extends Component {
     }
 
     protected start() {
+        this.onPositionInit();
+
         //NOTE: This event must add from Start to get event!
         view.on('canvas-resize', () => {
             this.onCanvasResize();
-            this.onUpdateBackground();
         });
         this.onCanvasResize();
-        this.onUpdateBackground();
-        //
-        this.m_target = this.node.worldPosition.clone();
     }
 
     protected lateUpdate(dt: number) {
-        if (!this.m_update || this.Target == null)
-            return;
+        let posTarget = v3();
+        if (this.Target != null) {
+            posTarget = this.Target.worldPosition.clone();
+            this.m_posTarget = posTarget.clone();
+        }
+        else {
+            posTarget = this.m_posTarget.clone();
+        }
 
-        let target = v3();
-        target = this.Target.worldPosition.clone();
+        if (!this.m_update)
+            return;
 
         //LOCK:
         if (this.LockX)
-            target.x = this.m_lock.x;
+            posTarget.x = this.m_lock.x;
         if (this.LockY)
-            target.y = this.m_lock.y;
+            posTarget.y = this.m_lock.y;
 
         //OFFSET:
-        target.x += this.Offset.x;
-        target.y += this.Offset.y;
+        posTarget.x += this.Offset.x;
+        posTarget.y += this.Offset.y;
 
         //LIMIT:
         if (this.Limit) {
             if (!this.LockX) {
-                if (target.x > this.LimitMax.x)
-                    target.x = this.LimitMax.x;
-                else if (target.x < this.LimitMin.x)
-                    target.x = this.LimitMin.x;
+                if (posTarget.x > this.LimitMax.x)
+                    posTarget.x = this.LimitMax.x;
+                else if (posTarget.x < this.LimitMin.x)
+                    posTarget.x = this.LimitMin.x;
             }
             if (!this.LockY) {
-                if (target.y > this.LimitMax.y)
-                    target.y = this.LimitMax.y;
-                else if (target.y < this.LimitMin.y)
-                    target.y = this.LimitMin.y;
+                if (posTarget.y > this.LimitMax.y)
+                    posTarget.y = this.LimitMax.y;
+                else if (posTarget.y < this.LimitMin.y)
+                    posTarget.y = this.LimitMin.y;
             }
         }
 
         //FINAL:
-        this.m_target = this.m_target.lerp(target, this.SmoothTime);
-        this.node.worldPosition = this.m_target;
+        if (this.SmoothTime > 0) {
+            this.m_posCurrent = this.m_posCurrent.lerp(posTarget, this.SmoothTime);
+            this.node.worldPosition = this.m_posCurrent.clone();
+        }
+        else {
+            this.m_posCurrent = posTarget.clone();
+            this.node.worldPosition = this.m_posCurrent.clone();
+        }
     }
 
-    //
+    private onPositionInit() {
+        let posTarget = v3();
+        if (this.Target != null) {
+            posTarget = this.Target.worldPosition.clone();
+            this.m_posTarget = posTarget.clone();
+        }
+        else {
+            posTarget = this.node.worldPosition.clone();
+            this.m_posTarget = posTarget.clone();
+        }
+
+        //LOCK:
+        if (this.LockX)
+            posTarget.x = this.m_lock.x;
+        if (this.LockY)
+            posTarget.y = this.m_lock.y;
+
+        //OFFSET:
+        posTarget.x += this.Offset.x;
+        posTarget.y += this.Offset.y;
+
+        //LIMIT:
+        if (this.Limit) {
+            if (!this.LockX) {
+                if (posTarget.x > this.LimitMax.x)
+                    posTarget.x = this.LimitMax.x;
+                else if (posTarget.x < this.LimitMin.x)
+                    posTarget.x = this.LimitMin.x;
+            }
+            if (!this.LockY) {
+                if (posTarget.y > this.LimitMax.y)
+                    posTarget.y = this.LimitMax.y;
+                else if (posTarget.y < this.LimitMin.y)
+                    posTarget.y = this.LimitMin.y;
+            }
+        }
+
+        //FINAL:
+        this.m_posCurrent = posTarget.clone();
+        this.node.worldPosition = this.m_posCurrent.clone();
+    }
+
+    //EVENT
 
     protected onCanvasInit() {
-
         this.onCanvasCurrent();
     }
 
@@ -195,7 +251,7 @@ export default class CameraBase extends Component {
         }
     }
 
-    //
+    //OTHOR
 
     protected onCameraOrthoHeight() {
         if (!this.OrthoScreen)
@@ -210,7 +266,7 @@ export default class CameraBase extends Component {
         }
     }
 
-    //
+    //RECT
 
     protected onCameraRectScreen() {
         if (!this.RectScreen)
@@ -247,16 +303,116 @@ export default class CameraBase extends Component {
         this.m_camera.rect = rect;
     }
 
-    //
+    //SMOOTH
 
-    protected onUpdateBackground() {
-        // if (this.Background == null)
-        //     return;
-        // let ratio = (540) / this.m_camera.orthoHeight;
-        // this.Background.scale = new Vec3(2 / ratio, 2 / ratio, 1);
+    onSmoothTime(smoothTime: number) {
+        this.SmoothTime = smoothTime;
     }
 
-    //
+    //SCALE
+
+    onScale(scale: number) {
+        this.Scale = scale;
+        this.onCameraOrthoHeight();
+    }
+
+    onScaleTween(scale: number, duration: number, easing: TweenEasing) {
+        if (duration == null || easing == null) {
+            this.onScale(scale);
+            return;
+        }
+        if (this.m_tweenScale != null)
+            Tween.stopAllByTarget(this.m_tweenScale);
+        this.m_tweenScale = new NodeTweener();
+        this.m_tweenScale.Base = this;
+        this.m_tweenScale.Value = this.Scale;
+        tween(this.m_tweenScale)
+            .to(duration, { Value: scale }, {
+                easing: easing,
+                onUpdate(Info: NodeTweener) {
+                    Info.Base.Scale = Info.Value;
+                    Info.Base.onCameraOrthoHeight();
+                },
+            })
+            .start();
+    }
+
+    //OFFSET
+
+    onOffset(offset: Vec2) {
+        this.Offset = offset;
+    }
+
+    onOffsetTween(offset: Vec2, duration: number, easing: TweenEasing) {
+        if (duration == null || easing == null) {
+            this.onOffset(offset);
+            return;
+        }
+        if (this.m_tweenOffset != null)
+            Tween.stopAllByTarget(this.m_tweenOffset);
+        this.m_tweenOffset = new NodeTweener();
+        this.m_tweenOffset.Base = this;
+        this.m_tweenOffset.Value = this.Offset.multiplyScalar(1.0);
+        tween(this.m_tweenOffset)
+            .to(duration, { Value: offset }, {
+                easing: easing,
+                onUpdate(Info: NodeTweener) {
+                    Info.Base.Offset = Info.Value;
+                    Info.Base.Offset = Info.Value;
+                },
+            })
+            .start();
+    }
+
+    //SWITCH
+
+    onSwitch(Target: Node) {
+        if (this.m_tweenSwitch != null)
+            Tween.stopAllByTarget(this.m_tweenSwitch);
+        if (this.SwitchTween) {
+            this.onSwitchTween(Target, this.SwitchTweenDuration, EaseType[this.SwitchTweenEasing] as TweenEasing);
+            return;
+        }
+        this.Target = Target;
+        this.m_posTarget = Target.worldPosition.clone();
+    }
+
+    onSwitchTween(target: Node, duration: number, easing: TweenEasing) {
+        if (duration == null || easing == null) {
+            this.onSwitch(target);
+            return;
+        }
+        if (this.m_tweenSwitch != null)
+            Tween.stopAllByTarget(this.m_tweenSwitch);
+        this.Target = target;
+        this.m_posTarget = target.worldPosition.clone();
+
+        this.m_update = false; // Stop Update
+
+        if (this.LockX)
+            this.m_posTarget.x = this.m_lock.x;
+        if (this.LockY)
+            this.m_posTarget.y = this.m_lock.y;
+
+        this.m_posCurrent = this.m_posTarget.clone(); // After complete tween, set current position to target position to avoid double lerp
+
+        this.m_tweenSwitch = new NodeTweener();
+        this.m_tweenSwitch.Base = this;
+        this.m_tweenSwitch.Value = this.node.worldPosition;
+        tween(this.m_tweenSwitch)
+            .to(duration, { Value: this.m_posTarget }, {
+                easing: easing,
+                onUpdate(Info: NodeTweener) {
+                    Info.Base.node.worldPosition = Info.Value;
+                },
+                onComplete(Info: NodeTweener) {
+                    Info.Base.m_update = true; // Continue Update
+                }
+            })
+            .start();
+    }
+
+    //SHAKE
 
     onShake(stage: boolean) {
         if (this.m_shake == stage)
@@ -285,81 +441,5 @@ export default class CameraBase extends Component {
             let rotate2 = tween(this.node).to(0.025, { eulerAngles: v3(0, 0, -0.5) });
             this.m_tweenShakeOnce = tween(this.node).sequence(rotate1, rotate2).start();
         }
-    }
-
-    //
-
-    protected onPlayerBubble() {
-        this.m_syncY = true;
-    }
-
-    protected onPlayerNormal() {
-        this.m_syncY = false;
-    }
-
-    //
-
-    onTargetSwitch(Target: Node) {
-        if (this.m_tweenTarget != null)
-            Tween.stopAllByTarget(this.m_tweenTarget);
-        this.Target = Target;
-    }
-
-    onTargetSwitchTween(target: Node, duration: number, easing: TweenEasing) {
-        if (duration == null || easing == null)
-            return;
-        if (this.m_tweenTarget != null)
-            Tween.stopAllByTarget(this.m_tweenTarget);
-        this.Target = target;
-        this.m_target = target.worldPosition.clone();
-        this.m_update = false;
-
-        if (this.LockX)
-            this.m_target.x = this.m_lock.x;
-        if (this.LockY)
-            this.m_target.y = this.m_lock.y;
-
-        this.m_tweenTarget = new NodeTweener();
-        this.m_tweenTarget.Base = this;
-        this.m_tweenTarget.Value = this.node.worldPosition;
-        tween(this.m_tweenTarget)
-            .to(duration, { Value: this.m_target }, {
-                easing: easing,
-                onUpdate(Info: NodeTweener) {
-                    Info.Base.node.worldPosition = Info.Value;
-                },
-                onComplete(Info: NodeTweener) {
-                    Info.Base.m_update = true;
-                }
-            })
-            .start();
-    }
-
-    //
-
-    onValueSmoothTime(smoothTime: number) {
-        this.SmoothTime = smoothTime;
-    }
-
-    onValueOffset(offset: Vec2) {
-        this.Offset = offset;
-    }
-
-    onValueScale(scale: number, duration: number, easing: TweenEasing) {
-        if (this.m_tweenScale != null)
-            Tween.stopAllByTarget(this.m_tweenScale);
-        this.m_tweenScale = new NodeTweener();
-        this.m_tweenScale.Base = this;
-        this.m_tweenScale.Value = this.Scale;
-        tween(this.m_tweenScale)
-            .to(duration, { Value: scale }, {
-                easing: easing,
-                onUpdate(Info: NodeTweener) {
-                    Info.Base.Scale = Info.Value;
-                    Info.Base.onCameraOrthoHeight();
-                    Info.Base.onUpdateBackground();
-                },
-            })
-            .start();
     }
 }

@@ -105,12 +105,12 @@ export class TriggerControl extends Component {
 
         //OPTION
         if (this.BodyX2) {
-            director.emit(ConstantBase.BODY_X2);
-            target.emit(ConstantBase.BODY_X2);
+            director.emit(ConstantBase.NODE_BODY_X2);
+            target.emit(ConstantBase.NODE_BODY_X2);
         }
         if (this.BodyX4) {
-            director.emit(ConstantBase.BODY_X4);
-            target.emit(ConstantBase.BODY_X4);
+            director.emit(ConstantBase.NODE_BODY_X4);
+            target.emit(ConstantBase.NODE_BODY_X4);
         }
 
         if (!this.Control)
@@ -129,11 +129,11 @@ export class TriggerControl extends Component {
         }
 
         if (this.ControlSleep) {
-            target.emit(ConstantBase.BODY_SLEEP);
+            target.emit(ConstantBase.NODE_CONTROL_SLEEP);
             return;
         }
         else
-            target.emit(ConstantBase.BODY_AWAKE);
+            target.emit(ConstantBase.NODE_CONTROL_AWAKE);
 
         if (this.ControlRelease)
             target.emit(ConstantBase.CONTROL_RELEASE);
