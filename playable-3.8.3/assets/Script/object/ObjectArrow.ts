@@ -11,19 +11,19 @@ export class ObjectArrow extends Component {
 
     // @property({ group: { name: 'Main' }, type: [Node] })
     @property([Node])
-    SwitchRenderer: Node[] = [];
+    SwitchArrow: Node[] = [];
 
     // @property({ group: { name: 'Main' }, type: [Vec2] })
     @property([Vec2])
     SwitchOffset: Vec2[] = [];
 
     m_target: Node;
-    m_renderer: Node;
+    m_arrow: Node;
     m_offset: Vec3;
 
     protected onLoad(): void {
-        if (this.SwitchTarget.length != this.SwitchRenderer.length) {
-            console.error("SwitchTarget and SwitchRenderer length mismatch");
+        if (this.SwitchTarget.length != this.SwitchArrow.length) {
+            console.error("SwitchTarget and SwitchArrow length mismatch");
             return;
         }
 
@@ -31,9 +31,9 @@ export class ObjectArrow extends Component {
 
         this.m_target = this.SwitchTarget[0];
 
-        this.m_renderer = this.SwitchRenderer[0];
-        this.SwitchRenderer.forEach(t => {
-            if (t != this.m_renderer)
+        this.m_arrow = this.SwitchArrow[0];
+        this.SwitchArrow.forEach(t => {
+            if (t != this.m_arrow)
                 t.active = false;
         });
 
@@ -50,9 +50,9 @@ export class ObjectArrow extends Component {
     onSwitch(index: number) {
         this.m_target = this.SwitchTarget[index];
 
-        this.m_renderer.active = false;
-        this.m_renderer = this.SwitchRenderer[index];
-        this.m_renderer.active = true;
+        this.m_arrow.active = false;
+        this.m_arrow = this.SwitchArrow[index];
+        this.m_arrow.active = true;
 
         this.m_offset = new Vec3(this.SwitchOffset[index].x, this.SwitchOffset[index].y, 0);
     }
