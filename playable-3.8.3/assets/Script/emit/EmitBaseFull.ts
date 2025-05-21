@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, Collider2D, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D } from 'cc';
-import { EmitBase } from './EmitBase';
+import { EmitBase, OnceType } from './EmitBase';
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
@@ -73,23 +73,6 @@ export class EmitBaseFull extends EmitBase {
         }, Math.max(this.Delay, 0));
 
         //ONCE
-        if (this.Once) {
-            //ON-EVENT
-            this.node.off(ConstantBase.NODE_EVENT, this.onEvent, this);
-            if (this.OnEvent != '')
-                director.off(this.OnEvent, this.onEvent, this);
-
-            //ON-COLLISION-EVENT
-            if (this.m_eventPhysic) {
-                let colliders = this.getComponents(Collider2D);
-                colliders.forEach(collider => {
-                    switch (collider.tag) {
-                        case this.OnTagBody:
-                            collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-                            break;
-                    }
-                });
-            }
-        }
+        this.onEventOnceCheck();
     } // Re-code onEvent() to fix scheduleOnce & delay events
 }
