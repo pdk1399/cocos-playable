@@ -443,19 +443,22 @@ export class ManagerInput extends Component {
     onSwitchStart(event: EventTouch) {
         const target = event.target as Node; //NOTE: Check Btn's index in list, then excute Index event
         for (let i = 0; i < this.Switch.length; i++) {
-            if (this.Switch[i] == target) {
-                if (this.Switch[i].getComponent(UIOpacity) != null)
-                    this.Switch[i].getComponent(UIOpacity).opacity = 150;
-                else
-                    this.Switch[i].active = this.SwitchChoicedState;
-                director.emit(ConstantBase.CONTROL_SWITCH, i);
-            }
-            else {
-                if (this.Switch[i].getComponent(UIOpacity) != null)
-                    this.Switch[i].getComponent(UIOpacity).opacity = 255;
-                else
-                    this.Switch[i].active = this.m_avaible && !this.SwitchChoicedState;
-            }
+            if (!this.m_avaible)
+                this.Switch[i].active = false;
+            else
+                if (this.Switch[i] == target) {
+                    if (this.Switch[i].getComponent(UIOpacity) != null)
+                        this.Switch[i].getComponent(UIOpacity).opacity = this.SwitchChoicedState ? 250 : 150;
+                    else
+                        this.Switch[i].active = this.SwitchChoicedState;
+                    director.emit(ConstantBase.CONTROL_SWITCH, i);
+                }
+                else {
+                    if (this.Switch[i].getComponent(UIOpacity) != null)
+                        this.Switch[i].getComponent(UIOpacity).opacity = !this.SwitchChoicedState ? 250 : 150;
+                    else
+                        this.Switch[i].active = !this.SwitchChoicedState;
+                }
         }
     }
 

@@ -11,7 +11,7 @@
   },
   {
     "__type__": "cc.Scene",
-    "_name": "ball-capypara-rescue",
+    "_name": "ball-fake-rescue-village",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -202,7 +202,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 640.3751465416178,
+    "_orthoHeight": 577.9264214046823,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -1271,6 +1271,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -1311,8 +1312,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "",
+    "Once": false,
     "Delay": 0,
     "EmitTo": true,
     "EmitBack": true,
@@ -1640,6 +1641,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -2270,6 +2272,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -2474,6 +2477,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -3154,6 +3158,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -3358,6 +3363,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -4038,6 +4044,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -4242,6 +4249,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -4657,12 +4665,13 @@
     "DirectStore": true,
     "OnDirectStore": "direct-store",
     "DelayDirectStore": 0,
+    "AndroidDefault": true,
     "Android": "https://play.google.com/store/apps/details?id=com.platformer.red.ball.capybara&gl=us",
     "IOS": "",
     "AdsType": 0,
-    "DebugStore": false,
+    "LinkOpen": false,
     "DirectPress": false,
-    "DirectPressStopEvent": false,
+    "DirectPressOnce": false,
     "EmitDirectPress": "direct-press",
     "LimitActive": false,
     "LimitDuration": 30,
@@ -4682,7 +4691,6 @@
     "_enabled": true,
     "__prefab": null,
     "DirectStore": true,
-    "DebugUpdate": null,
     "KeyUp": 38,
     "KeyDown": 40,
     "KeyLeft": 37,
@@ -4710,9 +4718,9 @@
     "KeyInteracte": 65,
     "BtnInteraction": null,
     "IconInteraction": [],
-    "SwitchStart": true,
-    "SwitchStartIndex": 0,
+    "SwitchActive": false,
     "Switch": [],
+    "SwitchChoicedState": false,
     "Other": [],
     "_id": "25YzXMg1NFd7O/CJk2ix7O"
   },
@@ -4959,8 +4967,8 @@
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
+      "x": 1.6,
+      "y": 1.6,
       "z": 1
     },
     "_mobility": 0,
@@ -5007,8 +5015,8 @@
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 1.5,
-      "y": 1.5,
+      "x": 2,
+      "y": 2,
       "z": 1
     },
     "_mobility": 0,
@@ -5146,29 +5154,8 @@
       "x": 0,
       "y": 0
     },
-    "Background": {
-      "__id__": 136
-    },
     "LockX": false,
     "LockY": true,
-    "OrthoScreen": true,
-    "OrthoLandscape": 1,
-    "OrthoPortrait": 1.5,
-    "RectScreen": true,
-    "RectLandScape": {
-      "__type__": "cc.Rect",
-      "x": 0,
-      "y": 0,
-      "width": 1,
-      "height": 1
-    },
-    "RectPortrait": {
-      "__type__": "cc.Rect",
-      "x": 0,
-      "y": 0.25,
-      "width": 1,
-      "height": 0.5
-    },
     "Limit": false,
     "LimitMax": {
       "__type__": "cc.Vec2",
@@ -5180,6 +5167,33 @@
       "x": -1000,
       "y": -1000
     },
+    "OrthoScreen": true,
+    "OrthoLandscape": 1,
+    "OrthoPortrait": 1.5,
+    "RectScreen": true,
+    "RectTarget": 1,
+    "RectTargetLandscape": 1,
+    "RectTargetPortrait": 0.5625,
+    "RectLandScapeFixed": false,
+    "RectLandscape": {
+      "__type__": "cc.Rect",
+      "x": 0,
+      "y": 0,
+      "width": 1,
+      "height": 1
+    },
+    "RectPortraitFixed": false,
+    "RectPortrait": {
+      "__type__": "cc.Rect",
+      "x": 0,
+      "y": 0.25,
+      "width": 1,
+      "height": 0.5
+    },
+    "RectDebug": false,
+    "SwitchTween": false,
+    "SwitchTweenDuration": 0.5,
+    "SwitchTweenEasing": 0,
     "_id": "56JUr9rgpNW6uDavNkM5Tr"
   },
   {
@@ -8857,7 +8871,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 75,
+    "_radius": 80,
     "_id": "69twCpKoJF2Lsfe38WxJID"
   },
   {
@@ -9070,7 +9084,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 75,
+    "_radius": 80,
     "_id": "b9JocXulRC/5SZQR9yttHf"
   },
   {
@@ -9283,7 +9297,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 75,
+    "_radius": 80,
     "_id": "41rcv2QY1EAK1jtCmjvtOk"
   },
   {
@@ -9496,7 +9510,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 75,
+    "_radius": 80,
     "_id": "f871B+HtRJxY3meQYITDkp"
   },
   {
@@ -9709,7 +9723,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 75,
+    "_radius": 80,
     "_id": "97/rwJY2lGrLw1rmf3bhmU"
   },
   {
@@ -9925,7 +9939,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 75,
+    "_radius": 80,
     "_id": "f7T3znxBJM87NplRR1EYdp"
   },
   {
@@ -10283,8 +10297,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 268.78076171875,
-      "height": 132
+      "width": 267,
+      "height": 130
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -10338,6 +10352,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -10378,8 +10393,8 @@
     "__prefab": null,
     "Target": null,
     "Start": true,
-    "Once": false,
     "OnEvent": "",
+    "Once": false,
     "Delay": 0,
     "EmitTo": true,
     "EmitBack": true,
@@ -11045,6 +11060,7 @@
     "_enabled": true,
     "__prefab": null,
     "Protect": false,
+    "ProtectBigSize": false,
     "HitPoint": 1,
     "HitDelay": 1,
     "HitFixed": false,
@@ -11093,11 +11109,13 @@
     "__prefab": null,
     "Type": 1,
     "LockX": false,
-    "MoveForceX": 10,
-    "MoveDampX": 40,
-    "TorqueX": 2000,
+    "FaceRight": true,
     "MoveGroundX": 25,
     "MoveAirX": 25,
+    "MoveDampX": 40,
+    "MoveDashX": 5000,
+    "DelayDashX": 0.5,
+    "TorqueX": 2000,
     "MoveForceStop": false,
     "MoveForceFlip": false,
     "LockY": false,
@@ -11107,9 +11125,21 @@
     "JumpFall": true,
     "JumpAuto": false,
     "AttackHold": false,
-    "AttackStopMoveAnim": true,
-    "AttackStopMovePress": true,
-    "AttackStopFall": false,
+    "AttackDegOffset": 0,
+    "AttackAimReset": true,
+    "DirStopByBodyAttack": true,
+    "DirStopByPressAttack": true,
+    "MoveStopByBodyAttack": true,
+    "MoveStopByPressAttack": true,
+    "MoveAttackGroundX": 0,
+    "MoveAttackAirX": 0,
+    "MoveAttackByFace": true,
+    "DashStopByBodyAttack": false,
+    "DashStopByPressAttack": false,
+    "MoveAttackReset": true,
+    "DashAttackReset": true,
+    "FallAttackStop": false,
+    "FallAttackForce": 0,
     "Pick": false,
     "PickHold": false,
     "PickJumpOnce": true,
@@ -11122,6 +11152,7 @@
     "UiPickBtnActive": true,
     "UiPickIconIndex": 0,
     "UiThrowIconIndex": 1,
+    "SwitchIndex": 0,
     "EndPickDestroy": true,
     "EndOnGround": false,
     "EndRevertX": false,
@@ -11137,20 +11168,18 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "UpdateRaycast": true,
-    "DirMelee": false,
-    "DirRange": false,
+    "Raycast": false,
+    "RaycastBot": true,
+    "RaycastHead": false,
     "TagBody": 100,
     "TagTop": 99,
     "TagBot": 98,
     "TagHead": 97,
     "TagBotHead": 96,
-    "TagMelee": 101,
-    "TagRange": 102,
     "TagInteraction": 103,
+    "TagBodyAsGround": false,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagTarget": 200,
     "TagBox": 300,
     "_id": "21pKIENz1GC7tdmT6CsQMq"
   },
@@ -11180,15 +11209,12 @@
     "AnimPick": "pinkup",
     "AnimPickLoop": "pinkup_idle",
     "AnimThrow": "throw",
-    "AnimPickIndex": 2,
     "AnimFinish": "home_end",
     "AnimFinishLoop": false,
     "AudioJump": {
       "__id__": 301
     },
-    "AudioHurt": {
-      "__id__": 303
-    },
+    "AudioHit": null,
     "AudioFinish": {
       "__id__": 305
     },
@@ -11267,7 +11293,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 75,
+    "_radius": 80,
     "_id": "13SYMiyuhP3Jx8t/hOSusB"
   },
   {
@@ -11448,15 +11474,14 @@
     "_enabled": true,
     "__prefab": null,
     "Target": [],
-    "TargetSelf": false,
     "TargetContact": true,
     "OnNode": false,
     "Once": false,
     "Delay": 0,
     "EmitEvent": "",
-    "ControlActive": true,
+    "Control": true,
+    "ControlByNode": true,
     "ControlSleep": false,
-    "ControlJump": false,
     "ControlRelease": false,
     "ControlReleaseX": false,
     "ControlReleaseY": false,
@@ -11464,9 +11489,12 @@
     "ControlRight": true,
     "ControlUp": false,
     "ControlDown": false,
+    "ControlJump": false,
     "ControlAttack": false,
     "ControlInteraction": false,
     "ControlFixed": false,
+    "BodyX2": false,
+    "BodyX4": false,
     "TagBody": 0,
     "TagTarget": [
       100
@@ -11591,15 +11619,14 @@
     "_enabled": true,
     "__prefab": null,
     "Target": [],
-    "TargetSelf": false,
     "TargetContact": true,
     "OnNode": false,
     "Once": false,
     "Delay": 0,
     "EmitEvent": "",
-    "ControlActive": true,
+    "Control": true,
+    "ControlByNode": true,
     "ControlSleep": false,
-    "ControlJump": false,
     "ControlRelease": false,
     "ControlReleaseX": true,
     "ControlReleaseY": false,
@@ -11607,9 +11634,12 @@
     "ControlRight": false,
     "ControlUp": false,
     "ControlDown": false,
+    "ControlJump": false,
     "ControlAttack": false,
     "ControlInteraction": false,
     "ControlFixed": false,
+    "BodyX2": false,
+    "BodyX4": false,
     "TagBody": 0,
     "TagTarget": [
       100
@@ -11743,15 +11773,14 @@
     "_enabled": true,
     "__prefab": null,
     "Target": [],
-    "TargetSelf": false,
     "TargetContact": true,
     "OnNode": false,
     "Once": false,
     "Delay": 0,
     "EmitEvent": "",
-    "ControlActive": true,
+    "Control": true,
+    "ControlByNode": true,
     "ControlSleep": true,
-    "ControlJump": false,
     "ControlRelease": false,
     "ControlReleaseX": true,
     "ControlReleaseY": false,
@@ -11759,9 +11788,12 @@
     "ControlRight": false,
     "ControlUp": false,
     "ControlDown": false,
+    "ControlJump": false,
     "ControlAttack": false,
     "ControlInteraction": false,
     "ControlFixed": true,
+    "BodyX2": false,
+    "BodyX4": false,
     "TagBody": 0,
     "TagTarget": [
       100
@@ -11779,15 +11811,14 @@
     "_enabled": true,
     "__prefab": null,
     "Target": [],
-    "TargetSelf": false,
     "TargetContact": true,
     "OnNode": false,
     "Once": false,
     "Delay": 0.02,
     "EmitEvent": "",
-    "ControlActive": true,
+    "Control": true,
+    "ControlByNode": true,
     "ControlSleep": false,
-    "ControlJump": false,
     "ControlRelease": false,
     "ControlReleaseX": false,
     "ControlReleaseY": false,
@@ -11795,9 +11826,12 @@
     "ControlRight": false,
     "ControlUp": false,
     "ControlDown": false,
+    "ControlJump": false,
     "ControlAttack": false,
     "ControlInteraction": false,
     "ControlFixed": true,
+    "BodyX2": false,
+    "BodyX4": false,
     "TagBody": 0,
     "TagTarget": [
       100
@@ -11819,7 +11853,6 @@
         "__id__": 276
       }
     ],
-    "TargetSelf": false,
     "TargetContact": false,
     "OnNode": false,
     "Once": false,
@@ -11995,15 +12028,14 @@
     "_enabled": true,
     "__prefab": null,
     "Target": [],
-    "TargetSelf": false,
     "TargetContact": true,
     "OnNode": false,
     "Once": false,
     "Delay": 4,
     "EmitEvent": "",
-    "ControlActive": true,
+    "Control": true,
+    "ControlByNode": true,
     "ControlSleep": false,
-    "ControlJump": false,
     "ControlRelease": false,
     "ControlReleaseX": false,
     "ControlReleaseY": false,
@@ -12011,9 +12043,12 @@
     "ControlRight": true,
     "ControlUp": false,
     "ControlDown": false,
+    "ControlJump": false,
     "ControlAttack": false,
     "ControlInteraction": false,
     "ControlFixed": false,
+    "BodyX2": false,
+    "BodyX4": false,
     "TagBody": 0,
     "TagTarget": [
       100
@@ -12138,15 +12173,14 @@
     "_enabled": true,
     "__prefab": null,
     "Target": [],
-    "TargetSelf": false,
     "TargetContact": true,
     "OnNode": false,
     "Once": false,
     "Delay": 0,
     "EmitEvent": "",
-    "ControlActive": true,
+    "Control": true,
+    "ControlByNode": true,
     "ControlSleep": false,
-    "ControlJump": false,
     "ControlRelease": false,
     "ControlReleaseX": true,
     "ControlReleaseY": false,
@@ -12154,9 +12188,12 @@
     "ControlRight": false,
     "ControlUp": false,
     "ControlDown": false,
+    "ControlJump": false,
     "ControlAttack": false,
     "ControlInteraction": false,
     "ControlFixed": false,
+    "BodyX2": false,
+    "BodyX4": false,
     "TagBody": 0,
     "TagTarget": [
       100
@@ -12293,15 +12330,14 @@
     "_enabled": true,
     "__prefab": null,
     "Target": [],
-    "TargetSelf": false,
     "TargetContact": true,
     "OnNode": false,
     "Once": false,
     "Delay": 0,
     "EmitEvent": "",
-    "ControlActive": true,
+    "Control": true,
+    "ControlByNode": true,
     "ControlSleep": true,
-    "ControlJump": false,
     "ControlRelease": false,
     "ControlReleaseX": true,
     "ControlReleaseY": false,
@@ -12309,9 +12345,12 @@
     "ControlRight": false,
     "ControlUp": false,
     "ControlDown": false,
+    "ControlJump": false,
     "ControlAttack": false,
     "ControlInteraction": false,
     "ControlFixed": true,
+    "BodyX2": false,
+    "BodyX4": false,
     "TagBody": 0,
     "TagTarget": [
       100
@@ -12329,15 +12368,14 @@
     "_enabled": true,
     "__prefab": null,
     "Target": [],
-    "TargetSelf": false,
     "TargetContact": true,
     "OnNode": false,
     "Once": false,
     "Delay": 0.02,
     "EmitEvent": "",
-    "ControlActive": true,
+    "Control": true,
+    "ControlByNode": true,
     "ControlSleep": false,
-    "ControlJump": false,
     "ControlRelease": false,
     "ControlReleaseX": false,
     "ControlReleaseY": false,
@@ -12345,9 +12383,12 @@
     "ControlRight": false,
     "ControlUp": false,
     "ControlDown": false,
+    "ControlJump": false,
     "ControlAttack": false,
     "ControlInteraction": false,
     "ControlFixed": true,
+    "BodyX2": false,
+    "BodyX4": false,
     "TagBody": 0,
     "TagTarget": [
       100
@@ -12369,7 +12410,6 @@
         "__id__": 276
       }
     ],
-    "TargetSelf": false,
     "TargetContact": false,
     "OnNode": false,
     "Once": false,
@@ -12437,6 +12477,8 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "TargetStart": false,
+    "TargetStartState": false,
     "Target": [
       {
         "__id__": 126
@@ -12445,13 +12487,12 @@
         "__id__": 30
       }
     ],
-    "TargetSelf": false,
     "TargetContact": false,
     "OnNode": false,
+    "OnEventState": true,
     "Once": false,
     "Delay": 0,
     "EmitEvent": "",
-    "StateActive": true,
     "TagBody": 0,
     "TagTarget": [
       100
@@ -12468,6 +12509,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "AudioDebug": false,
     "AudioMusic": null,
     "_id": "3dXw552XFFX4AW5x61DoIC"
   },

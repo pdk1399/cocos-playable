@@ -123,9 +123,7 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'Pick&Throw' }, type: CCInteger, visible(this: BodyControlX) { return this.Pick; } })
     UiThrowIconIndex: number = 1;
 
-    @property({ group: { name: 'Switch' }, type: Node })
-    SwitchArrow: Node = null;
-    @property({ group: { name: 'Switch' }, type: CCInteger, visible(this: BodyControlX) { return this.SwitchArrow != null; } })
+    @property({ group: { name: 'Switch' }, type: CCInteger })
     SwitchIndex: number = 0;
 
     @property({ group: { name: 'End' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
@@ -686,8 +684,6 @@ export class BodyControlX extends Component {
             return;
         let state = index == this.SwitchIndex;
         this.m_control = state;
-        if (this.SwitchArrow != null)
-            this.SwitchArrow.active = state;
         if (controlByDirector)
             this.onControlByDirector(state);
         else
