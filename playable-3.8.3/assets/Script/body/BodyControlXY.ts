@@ -404,6 +404,8 @@ export class BodyControlXY extends Component {
     //STAGE:
 
     protected onStateUpdate(dt: number) {
+        if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
+            return;
         let state = PlayerStateXY.IDLE;
         //FIND STAGE:
         if (this.getDead())

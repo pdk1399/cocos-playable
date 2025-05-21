@@ -888,6 +888,8 @@ export class BodyControlX extends Component {
     //STAGE
 
     protected onStateUpdate(dt: number) {
+        if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
+            return;
         let state = PlayerStateX.IDLE;
         //FIND STAGE:
         if (this.getDead())
