@@ -205,7 +205,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 571.1827956989248,
+    "_orthoHeight": 577.9264214046823,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -1475,6 +1475,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -2105,6 +2106,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -2309,6 +2311,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -2989,6 +2992,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -3193,6 +3197,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -3873,6 +3878,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -4077,6 +4083,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -4533,8 +4540,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 219.9658203125,
-      "height": 136
+      "width": 208,
+      "height": 130
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4588,6 +4595,7 @@
       "b": 0,
       "a": 255
     },
+    "_outlineWidth": 2,
     "_enableShadow": false,
     "_shadowColor": {
       "__type__": "cc.Color",
@@ -4899,7 +4907,7 @@
     "IconInteraction": [],
     "SwitchActive": false,
     "Switch": [],
-    "SwitchState": false,
+    "SwitchChoicedState": false,
     "Other": [],
     "_id": "25YzXMg1NFd7O/CJk2ix7O"
   },
@@ -5375,6 +5383,9 @@
     "OrthoLandscape": 1,
     "OrthoPortrait": 1,
     "RectScreen": true,
+    "RectTarget": 1,
+    "RectTargetLandscape": 1,
+    "RectTargetPortrait": 0.5625,
     "RectLandScapeFixed": false,
     "RectLandscape": {
       "__type__": "cc.Rect",
@@ -5391,6 +5402,10 @@
       "width": 1,
       "height": 0.5
     },
+    "RectDebug": false,
+    "SwitchTween": false,
+    "SwitchTweenDuration": 0.5,
+    "SwitchTweenEasing": 0,
     "_id": "56JUr9rgpNW6uDavNkM5Tr"
   },
   {
@@ -5781,6 +5796,7 @@
     "_enabled": true,
     "__prefab": null,
     "Protect": false,
+    "ProtectBigSize": false,
     "HitPoint": 1,
     "HitDelay": 1,
     "HitFixed": false,
@@ -5833,6 +5849,8 @@
     "MoveGroundX": 30,
     "MoveAirX": 30,
     "MoveDampX": 30,
+    "MoveDashX": 5000,
+    "DelayDashX": 0.5,
     "TorqueX": 2000,
     "MoveForceStop": false,
     "MoveForceFlip": true,
@@ -5843,11 +5861,21 @@
     "JumpFall": true,
     "JumpAuto": false,
     "AttackHold": false,
-    "AttackStopByBody": true,
-    "AttackStopByPress": true,
-    "AttackStopFall": false,
     "AttackDegOffset": 0,
     "AttackAimReset": true,
+    "DirStopByBodyAttack": true,
+    "DirStopByPressAttack": true,
+    "MoveStopByBodyAttack": true,
+    "MoveStopByPressAttack": true,
+    "MoveAttackGroundX": 0,
+    "MoveAttackAirX": 0,
+    "MoveAttackByFace": true,
+    "DashStopByBodyAttack": false,
+    "DashStopByPressAttack": false,
+    "MoveAttackReset": true,
+    "DashAttackReset": true,
+    "FallAttackStop": false,
+    "FallAttackForce": 0,
     "Pick": false,
     "PickHold": false,
     "PickJumpOnce": true,
@@ -5886,6 +5914,7 @@
     "TagHead": 97,
     "TagBotHead": 96,
     "TagInteraction": 103,
+    "TagBodyAsGround": false,
     "TagGround": -1,
     "TagPlatform": -2,
     "TagBox": 300,
@@ -6724,6 +6753,7 @@
     "_enabled": true,
     "__prefab": null,
     "Protect": false,
+    "ProtectBigSize": false,
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
@@ -7162,6 +7192,7 @@
     "_enabled": true,
     "__prefab": null,
     "Protect": false,
+    "ProtectBigSize": false,
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
@@ -7712,6 +7743,7 @@
     "_enabled": true,
     "__prefab": null,
     "Protect": false,
+    "ProtectBigSize": false,
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
@@ -9996,6 +10028,7 @@
     "_enabled": true,
     "__prefab": null,
     "Protect": false,
+    "ProtectBigSize": false,
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
@@ -10291,6 +10324,7 @@
     "_enabled": true,
     "__prefab": null,
     "Protect": false,
+    "ProtectBigSize": false,
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
@@ -10586,6 +10620,7 @@
     "_enabled": true,
     "__prefab": null,
     "Protect": false,
+    "ProtectBigSize": false,
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
@@ -10881,6 +10916,7 @@
     "_enabled": true,
     "__prefab": null,
     "Protect": false,
+    "ProtectBigSize": false,
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
@@ -11176,6 +11212,7 @@
     "_enabled": true,
     "__prefab": null,
     "Protect": false,
+    "ProtectBigSize": false,
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
@@ -11626,7 +11663,7 @@
     "_id": "2fUEPFDFtE2JbGRTvezm8V"
   },
   {
-    "__type__": "ae063I0qLhDiqC1AQr7jPg1",
+    "__type__": "0346bQAUwBCy7JJlqUFAiQe",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -11635,21 +11672,35 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Target": [
-      {
-        "__id__": 315
-      }
-    ],
-    "TargetContact": false,
-    "OnNode": false,
-    "Once": true,
-    "Delay": 0,
-    "EmitEvent": "body-x4",
-    "TagBody": 0,
-    "TagTarget": [
+    "Start": false,
+    "OnEvent": "",
+    "OnTagBody": 0,
+    "OnTagTarget": [
       100
     ],
-    "_id": "adeKafpehBILFyDod7lGWX"
+    "OnNodeTarget": [],
+    "Once": 2,
+    "Delay": 0,
+    "EmitEvent": "",
+    "EmitNodeNext": null,
+    "EmitNode": [],
+    "EmitTagTarget": false,
+    "Control": 0,
+    "ControlBody": 1,
+    "ControlRelease": 0,
+    "ControlLeft": false,
+    "ControlRight": false,
+    "ControlUp": false,
+    "ControlDown": false,
+    "ControlJump": false,
+    "ControlFaceX": 0,
+    "ControlFaceY": 0,
+    "BodyX2": false,
+    "BodyX4": true,
+    "ControlAttack": false,
+    "ControlInteraction": false,
+    "ControlFixed": false,
+    "_id": "d5Ly98FalKUqD+Pr4OVCV0"
   },
   {
     "__type__": "6ea48F7zVtMgr9mtOjOCJsU",
