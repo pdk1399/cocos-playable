@@ -7,7 +7,8 @@ const { ccclass, property } = _decorator;
 export enum OnceType {
     None = 0,
     Once = 1,
-    Destroy = 2,
+    DeActive = 2,
+    Destroy = 3,
 }
 Enum(OnceType);
 
@@ -138,7 +139,13 @@ export class EmitBase extends Component {
                 });
             }
         }
-        if (this.Once == OnceType.Destroy)
-            this.scheduleOnce(() => this.node.destroy(), 0.02);
+        switch (this.Once) {
+            case OnceType.DeActive:
+                this.scheduleOnce(() => this.node.active = false, 0.02);
+                break;
+            case OnceType.Destroy:
+                this.scheduleOnce(() => this.node.destroy(), Math.max(this.Delay, 0) + 0.02);
+                break;
+        }
     }
 }
