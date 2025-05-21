@@ -1,8 +1,16 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, ERigidBody2DType, IPhysics2DContact, Node, RigidBody2D } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, Enum, ERigidBody2DType, IPhysics2DContact, Node, RigidBody2D } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
 //Extends this class to create unique event with no other node events excuted
+
+export enum OnceType {
+    None = 0,
+    Once = 1,
+    DeActive = 2,
+    Destroy = 3,
+}
+Enum(OnceType);
 
 @ccclass('EmitBase')
 export class EmitBase extends Component {
@@ -20,8 +28,8 @@ export class EmitBase extends Component {
     @property({ group: { name: 'Event' }, type: [Node], visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
     OnNodeTarget: Node[] = [];
     //OPTION-EVENT
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EmitBase) { return !this.Start; } })
-    Once: boolean = true;
+    @property({ group: { name: 'Event' }, type: OnceType, visible(this: EmitBase) { return !this.Start; } })
+    Once: OnceType = OnceType.Once;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
     //EMIT-EVENT
@@ -101,7 +109,19 @@ export class EmitBase extends Component {
         }, Math.max(this.Delay, 0));
 
         //ONCE
-        if (this.Once) {
+        this.onEventOnceCheck();
+    } // Re-code onEvent() to fix scheduleOnce & delay events
+
+    //NOTE: Re-Code just once function below
+
+    onEventActive(): void { } // Re-code onEventActive() to active main events
+
+    onEventActiveNode(target: Node): void { target.emit(ConstantBase.NODE_EVENT); } // Re-code onEventActiveNode() to active node events
+
+    //NOTE: Don't re-code any function below, or re-code them with caution
+
+    onEventOnceCheck() {
+        if (this.Once != OnceType.None) {
             //ON-EVENT
             this.node.off(ConstantBase.NODE_EVENT, this.onEvent, this);
             if (this.OnEvent != '')
@@ -119,11 +139,13 @@ export class EmitBase extends Component {
                 });
             }
         }
-    } // Re-code onEvent() to fix scheduleOnce & delay events
-
-    //NOTE: Re-Code just once function below
-
-    onEventActive(): void { } // Re-code onEventActive() to active main events
-
-    onEventActiveNode(target: Node): void { target.emit(ConstantBase.NODE_EVENT); } // Re-code onEventActiveNode() to active node events
+        switch (this.Once) {
+            case OnceType.DeActive:
+                this.scheduleOnce(() => this.node.active = false, 0.02);
+                break;
+            case OnceType.Destroy:
+                this.scheduleOnce(() => this.node.destroy(), Math.max(this.Delay, 0) + 0.02);
+                break;
+        }
+    }
 }

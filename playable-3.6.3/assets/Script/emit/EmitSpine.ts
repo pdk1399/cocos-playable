@@ -2,6 +2,7 @@ import { _decorator, CCBoolean, CCFloat, CCString, Collider2D, Contact2DType, di
 import { SpineBase } from '../renderer/SpineBase';
 import { EmitBaseFull } from './EmitBaseFull';
 import { ConstantBase } from '../ConstantBase';
+import { OnceType } from './EmitBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('EmitSpine')
@@ -41,29 +42,10 @@ export class EmitSpine extends EmitBaseFull {
                 });
                 this.m_targetCollide.splice(0, this.m_targetCollide.length); //Reset all targets collide
             }
-
-
         }, Math.max(this.Delay, 0));
 
         //ONCE
-        if (this.Once) {
-            //ON-EVENT
-            this.node.off(ConstantBase.NODE_EVENT, this.onEvent, this);
-            if (this.OnEvent != '')
-                director.off(this.OnEvent, this.onEvent, this);
-
-            //ON-COLLISION-EVENT
-            if (this.m_eventPhysic) {
-                let colliders = this.getComponents(Collider2D);
-                colliders.forEach(collider => {
-                    switch (collider.tag) {
-                        case this.OnTagBody:
-                            collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-                            break;
-                    }
-                });
-            }
-        }
+        this.onEventOnceCheck();
     } // Re-code onEvent() to fix scheduleOnce & delay events
 
     onEventActiveNode(target: Node): void {

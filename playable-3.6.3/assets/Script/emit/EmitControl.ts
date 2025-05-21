@@ -106,7 +106,6 @@ export class EmitControl extends EmitBaseFull {
         if (this.BodyX2)
             target.emit(ConstantBase.NODE_BODY_X2);
         if (this.BodyX4)
-
             target.emit(ConstantBase.NODE_BODY_X4);
         if (this.ControlAttack)
             target.emit(ConstantBase.CONTROL_ATTACK);

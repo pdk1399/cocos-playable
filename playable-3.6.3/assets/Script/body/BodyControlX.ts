@@ -123,9 +123,7 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'Pick&Throw' }, type: CCInteger, visible(this: BodyControlX) { return this.Pick; } })
     UiThrowIconIndex: number = 1;
 
-    @property({ group: { name: 'Switch' }, type: Node })
-    SwitchArrow: Node = null;
-    @property({ group: { name: 'Switch' }, type: CCInteger, visible(this: BodyControlX) { return this.SwitchArrow != null; } })
+    @property({ group: { name: 'Switch' }, type: CCInteger })
     SwitchIndex: number = 0;
 
     @property({ group: { name: 'End' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
@@ -686,8 +684,6 @@ export class BodyControlX extends Component {
             return;
         let state = index == this.SwitchIndex;
         this.m_control = state;
-        if (this.SwitchArrow != null)
-            this.SwitchArrow.active = state;
         if (controlByDirector)
             this.onControlByDirector(state);
         else
@@ -888,6 +884,8 @@ export class BodyControlX extends Component {
     //STAGE
 
     protected onStateUpdate(dt: number) {
+        if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
+            return;
         let state = PlayerStateX.IDLE;
         //FIND STAGE:
         if (this.getDead())
@@ -1060,12 +1058,15 @@ export class BodyControlX extends Component {
         if (this.m_bodyCheck.m_isBot) {
             if (this.m_followBody == null) {
                 this.m_followBody = this.m_bodyCheck.m_botNode;
-                this.m_followLastPos = this.m_followBody.position.clone();
+                if (this.m_followBody != null)
+                    this.m_followLastPos = this.m_followBody.position.clone();
             }
-            let offsetPos = this.m_followBody.position.clone().subtract(this.m_followLastPos);
-            if (offsetPos.length() > 0.1) {
-                this.m_followLastPos = this.m_followBody.position.clone();
-                this.node.setPosition(this.node.position.clone().add(offsetPos));
+            if (this.m_followBody != null) {
+                let offsetPos = this.m_followBody.position.clone().subtract(this.m_followLastPos);
+                if (offsetPos.length() > 0) {
+                    this.m_followLastPos = this.m_followBody.position.clone();
+                    this.node.setPosition(this.node.position.clone().add(offsetPos));
+                }
             }
         }
         else {
