@@ -22,6 +22,11 @@ export class ManagerEvent extends Component {
     @property({ group: { name: 'Store' }, type: CCBoolean })
     LinkOpen: boolean = false;
 
+    @property({ group: { name: 'End' }, type: CCBoolean })
+    LoopComplete: boolean = false;
+    @property({ group: { name: 'End' }, type: CCBoolean })
+    LoopLose: boolean = false;
+
     @property({ group: { name: 'Press' }, type: CCBoolean })
     DirectPress: boolean = false;
     @property({ group: { name: 'Press' }, type: CCBoolean })
@@ -50,33 +55,45 @@ export class ManagerEvent extends Component {
         game.frameRate = 59;
         PhysicsSystem2D.instance.enable = true;
 
-        director.on(ConstantBase.PLAYER_COMPLETE, this.onStop, this);
-        director.on(ConstantBase.PLAYER_DEAD, this.onStop, this);
-        director.on(ConstantBase.GAME_COMPLETE, this.onStop, this);
-        director.on(ConstantBase.GAME_LOSE, this.onStop, this);
-        director.on(ConstantBase.GAME_TIME_OUT, this.onStop, this);
+        this.m_directPress = this.node.getChildByName('press');
+
+        if (ManagerEvent.Finish) {
+            this.m_directPress.on(Input.EventType.TOUCH_START, this.onStore, this);
+            return;
+        }
 
         director.on(this.OnDirectStore, this.onStore, this);
 
-        this.m_directPress = this.node.getChildByName('press');
-
-        if (ManagerEvent.Finish)
-            this.m_directPress.on(Input.EventType.TOUCH_START, this.onStore, this);
+        director.on(ConstantBase.PLAYER_COMPLETE, this.onStop, this);
+        director.on(ConstantBase.PLAYER_DEAD, this.onStop, this);
+        if (this.LoopComplete)
+            director.on(ConstantBase.GAME_COMPLETE, this.onRestart, this);
+        else
+            director.on(ConstantBase.GAME_COMPLETE, this.onStop, this);
+        if (this.LoopLose) {
+            director.on(ConstantBase.GAME_LOSE, this.onRestart, this);
+            director.on(ConstantBase.GAME_TIME_OUT, this.onRestart, this);
+        }
         else {
-            if (this.DirectStore) {
-                if (this.DirectPress) {
-                    director.on(ConstantBase.GAME_COMPLETE, this.onPressStoreInit, this);
-                    director.on(ConstantBase.GAME_LOSE, this.onPressStoreInit, this);
-                    director.on(ConstantBase.GAME_TIME_OUT, this.onPressStoreInit, this);
-                }
-                else
-                    this.m_directPress.on(Input.EventType.TOUCH_START, this.onStore, this);
-            }
-            if (this.DirectPress) {
-                this.m_directPress.on(Input.EventType.TOUCH_START, this.onPress, this);
-                director.on(ConstantBase.CONTROL_LOCK, this.onLock, this);
-                director.on(ConstantBase.CONTROL_RESUME, this.onResume, this);
-            }
+            director.on(ConstantBase.GAME_LOSE, this.onStop, this);
+            director.on(ConstantBase.GAME_TIME_OUT, this.onStop, this);
+        }
+
+        if (this.DirectStore && this.DirectPress) {
+            //First press not open store yet
+            director.on(ConstantBase.GAME_COMPLETE, this.onPressStoreInit, this);
+            director.on(ConstantBase.GAME_LOSE, this.onPressStoreInit, this);
+            director.on(ConstantBase.GAME_TIME_OUT, this.onPressStoreInit, this);
+        }
+        else if (this.DirectStore) {
+            //First press open store
+            this.m_directPress.on(Input.EventType.TOUCH_START, this.onStore, this);
+        }
+        else if (this.DirectPress) {
+            //Press to emit event
+            this.m_directPress.on(Input.EventType.TOUCH_START, this.onPress, this);
+            director.on(ConstantBase.CONTROL_LOCK, this.onLock, this);
+            director.on(ConstantBase.CONTROL_RESUME, this.onResume, this);
         }
     }
 
@@ -93,6 +110,8 @@ export class ManagerEvent extends Component {
         //mintegral
         window.gameReady && window.gameReady();
     }
+
+    //STORE:
 
     onStore() {
         this.scheduleOnce(() => {
@@ -129,18 +148,17 @@ export class ManagerEvent extends Component {
         }, this.DelayDirectStore);
     }
 
+    //GAME:
+
     onRestart() {
         ManagerEvent.Finish = true;
-        director.loadScene(director.getScene().name);
+        director.loadScene(director.getScene().name); //NOTE: Only work after build
+        console.log('restart scene');
     }
 
-    onPress() {
-        director.emit(this.EmitDirectPress);
-        if (this.DirectPressOnce) {
-            this.m_directPress.off(Input.EventType.TOUCH_START, this.onPress, this);
-            director.off(ConstantBase.CONTROL_LOCK, this.onLock, this);
-            director.off(ConstantBase.CONTROL_RESUME, this.onResume, this);
-        }
+    onStop() {
+        this.unscheduleAllCallbacks();
+        this.onPressStoreInit();
     }
 
     onLock() {
@@ -151,9 +169,15 @@ export class ManagerEvent extends Component {
         this.m_directPress.on(Input.EventType.TOUCH_START, this.onPress, this);
     }
 
-    onStop() {
-        this.unscheduleAllCallbacks();
-        this.onPressStoreInit();
+    //PRESS:
+
+    onPress() {
+        director.emit(this.EmitDirectPress);
+        if (this.DirectPressOnce) {
+            this.m_directPress.off(Input.EventType.TOUCH_START, this.onPress, this);
+            director.off(ConstantBase.CONTROL_LOCK, this.onLock, this);
+            director.off(ConstantBase.CONTROL_RESUME, this.onResume, this);
+        }
     }
 
     onPressStoreInit() {
@@ -164,6 +188,8 @@ export class ManagerEvent extends Component {
         if (this.DirectStore || ManagerEvent.Finish)
             this.m_directPress.on(Input.EventType.TOUCH_START, this.onStore, this);
     }
+
+    //LIMIT:
 
     onLimitCountdown() {
         //Label show time
