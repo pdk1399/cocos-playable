@@ -10,31 +10,30 @@ export class BodyKnockX extends Component {
 
     @property({ group: { name: 'Hit' }, type: CCBoolean })
     Hit: boolean = true;
-    @property({ group: { name: 'Hit' }, type: CCFloat })
+    @property({ group: { name: 'Hit' }, type: CCFloat, visible(this: BodyKnockX) { return this.Hit; } })
     HitDeg: number = 50;
-    @property({ group: { name: 'Hit' }, type: CCFloat })
+    @property({ group: { name: 'Hit' }, type: CCFloat, visible(this: BodyKnockX) { return this.Hit; } })
     HitForce: number = 25;
-    @property({ group: { name: 'Hit' }, type: CCFloat })
+    @property({ group: { name: 'Hit' }, type: CCFloat, visible(this: BodyKnockX) { return this.Hit; } })
     HitDuration: number = 0.2; //Used by another progess instead of this component
 
     @property({ group: { name: 'Dead' }, type: CCBoolean })
     Dead: boolean = false;
-    @property({ group: { name: 'Dead' }, type: CCFloat })
+    @property({ group: { name: 'Dead' }, type: CCFloat, visible(this: BodyKnockX) { return this.Dead; } })
     DeadDeg: number = 50;
-    @property({ group: { name: 'Dead' }, type: CCFloat })
+    @property({ group: { name: 'Dead' }, type: CCFloat, visible(this: BodyKnockX) { return this.Dead; } })
     DeadForce: number = 25;
-    @property({ group: { name: 'Dead' }, type: CCFloat })
+    @property({ group: { name: 'Dead' }, type: CCFloat, visible(this: BodyKnockX) { return this.Dead; } })
     DeadDuration: number = 0.2; //Used by another progess instead of this component
-
-    @property({ group: { name: 'Option' }, type: CCBoolean })
+    @property({ group: { name: 'Dead' }, type: CCBoolean, visible(this: BodyKnockX) { return this.Dead; } })
     DeadFlow: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean })
+    @property({ group: { name: 'Dead' }, type: CCBoolean, visible(this: BodyKnockX) { return this.Dead; } })
     DeadRotate: boolean = false;
-    @property({ group: { name: 'Option' }, type: CCBoolean })
+    @property({ group: { name: 'Dead' }, type: CCBoolean, visible(this: BodyKnockX) { return this.Dead && this.DeadRotate; } })
     DeadRotateRight: boolean = true;
-    @property({ group: { name: 'Option' }, type: CCFloat })
+    @property({ group: { name: 'Dead' }, type: CCFloat, visible(this: BodyKnockX) { return this.Dead && this.DeadRotate; } })
     DeadRotateDuration: number = 0.5;
-    @property({ group: { name: 'Option' }, type: Node })
+    @property({ group: { name: 'Dead' }, type: Node, visible(this: BodyKnockX) { return this.Dead && this.DeadRotate; } })
     DeadRotateNode: Node = null;
 
     m_from: Node = null;
@@ -86,8 +85,10 @@ export class BodyKnockX extends Component {
                 this.scheduleOnce(() => this.m_rigidbody.wakeUp(), 0.02);
             }, this.DeadDuration);
         }
-        else
+        else {
+            this.m_rigidbody.linearDamping = 0;
             this.m_rigidbody.gravityScale = 0;
+        }
         this.onKnock(from, this.DeadDeg, this.DeadForce);
 
         if (this.DeadRotate) {
