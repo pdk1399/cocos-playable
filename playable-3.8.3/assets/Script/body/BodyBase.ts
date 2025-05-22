@@ -313,14 +313,17 @@ export class BodyBase extends Component {
                 return;
         }
 
-        if (this.DestroyBody)
+        if (this.DestroyBody) {
+            this.m_destroyCollider.forEach(colliderCheck => {
+                colliderCheck.sensor = true;
+                colliderCheck.enabled = false;
+            });
             this.scheduleOnce(() => {
                 if (this.DestroyRigidbody)
                     this.m_rigidbody.destroy();
-                this.m_destroyCollider.forEach(colliderCheck => {
-                    colliderCheck.destroy();
-                });
+                this.m_destroyCollider.forEach(colliderCheck => { colliderCheck.destroy(); });
             }, Math.max(this.DestroyBodyDelay, 0.02));
+        }
     }
 
     //EFFECT
