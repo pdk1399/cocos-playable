@@ -29,10 +29,15 @@ export class ObjectWater extends Component {
     }
 
     protected lateUpdate(dt: number): void {
+        //NOTE: 
+        //- Property 'Density' of collider(s) on target affects the mass of their rigidbody, which will affect the water's force applied to them.
+        //- Set the property 'Density' of un-necessary collider(s) on them to 0 to avoid water affecting these.
         this.m_target.forEach(target => {
-            if (target.linearVelocity.y < this.VelLimitB && target.linearVelocity.y < 0)
+            if (target.linearVelocity.y < 0 && target.linearVelocity.y < this.VelLimitB)
+                //Stop the object from sinking down
                 target.applyForceToCenter(v2(0, -target.linearVelocity.y / 0.02), true);
             if (target.linearVelocity.y < this.VelLimitT)
+                //Make the object float up
                 target.applyForceToCenter(v2(0, this.Force), true);
         });
     }
