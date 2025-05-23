@@ -208,6 +208,7 @@ export class BodyControlX extends Component {
 
         this.node.on(ConstantBase.NODE_VALUE_LOCK_X, this.onValueLockX, this);
         this.node.on(ConstantBase.NODE_VALUE_LOCK_Y, this.onValueLockY, this);
+        this.node.on(ConstantBase.NODE_VALUE_LOCK_ROTATE, this.onValueLockRotate, this);
         this.node.on(ConstantBase.NODE_VALUE_MOVE_GROUND, this.onValueMoveGround, this);
         this.node.on(ConstantBase.NODE_VALUE_MOVE_JUMP, this.onValueMoveJump, this);
     }
@@ -1108,6 +1109,10 @@ export class BodyControlX extends Component {
 
     onValueLockX(value: boolean) { this.LockX = value; }
     onValueLockY(value: boolean) { this.LockY = value; }
+    onValueLockRotate(value: boolean) {
+        if (this.Type == BodyType.BALL)
+            this.m_rigidbody.fixedRotation = value;
+    }
     onValueMoveGround(value: number) { this.MoveGroundX = value; }
     onValueMoveJump(value: number) { this.JumpUpY = value; }
 }

@@ -75,6 +75,7 @@ export class ConstantBase {
     static readonly NODE_VALUE_HIT_POINT_CURRENT: string = 'node-value-hit-point-current';
     static readonly NODE_VALUE_LOCK_X: string = 'node-value-lock-x';
     static readonly NODE_VALUE_LOCK_Y: string = 'node-value-lock-y';
+    static readonly NODE_VALUE_LOCK_ROTATE: string = 'node-value-lock-rotate';
     static readonly NODE_VALUE_MOVE_GROUND: string = 'node-value-move-ground';
     static readonly NODE_VALUE_MOVE_JUMP: string = 'node-value-move-jump';
     static readonly NODE_VALUE_MELEE_HIT: string = 'node-value-melee-hit';
