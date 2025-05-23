@@ -1,19 +1,16 @@
-import { _decorator, CCInteger, Collider2D, Component, Contact2DType, IPhysics2DContact, Node, RigidBody2D, v2, Vec2 } from 'cc';
+import { _decorator, CCFloat, CCInteger, Collider2D, Component, Contact2DType, IPhysics2DContact, Node, RigidBody2D, v2, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('ObjectWater')
 export class ObjectWater extends Component {
 
-    @property({ group: { name: 'Physics' }, type: CCInteger })
-    Force: number = 10000;
-    @property({ group: { name: 'Physics' }, type: CCInteger })
-    VelLimitT: number = 10;
-    @property({ group: { name: 'Physics' }, type: CCInteger })
-    VelLimitB: number = -10;
+    @property({ group: { name: 'Body' }, type: CCFloat })
+    LinearDensity: number = 1000;
 
     @property({ group: { name: 'Tag' }, type: CCInteger })
     TagBody: number = 0;
 
+    m_topY: number = null;
     m_target: RigidBody2D[] = [];
 
     protected onLoad(): void {
@@ -26,6 +23,7 @@ export class ObjectWater extends Component {
                     break;
             }
         });
+        this.m_topY = this.node.worldPosition.clone().y;
     }
 
     protected lateUpdate(dt: number): void {
@@ -33,12 +31,12 @@ export class ObjectWater extends Component {
         //- Property 'Density' of collider(s) on target affects the mass of their rigidbody, which will affect the water's force applied to them.
         //- Set the property 'Density' of un-necessary collider(s) on them to 0 to avoid water affecting these.
         this.m_target.forEach(target => {
-            if (target.linearVelocity.y < 0 && target.linearVelocity.y < this.VelLimitB)
-                //Stop the object from sinking down
-                target.applyForceToCenter(v2(0, -target.linearVelocity.y / 0.02), true);
-            if (target.linearVelocity.y < this.VelLimitT)
-                //Make the object float up
-                target.applyForceToCenter(v2(0, this.Force), true);
+            if (this.m_topY > target.node.worldPosition.clone().y) {
+                let targetDepth = Math.abs(this.m_topY - target.node.worldPosition.clone().y);
+                //Archimedes: F = ρ * V * g
+                let force = v2(0, this.LinearDensity * targetDepth * target.gravityScale * dt * 9.81);
+                target.applyForceToCenter(force, true);
+            }
         });
     }
 
