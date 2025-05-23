@@ -23,7 +23,7 @@ export class ObjectWater extends Component {
                     break;
             }
         });
-        this.m_topY = this.node.worldPosition.clone().y;
+        this.m_topY = this.node.worldPosition.clone().y; //Check from centre of the water object
     }
 
     protected lateUpdate(dt: number): void {
@@ -31,10 +31,12 @@ export class ObjectWater extends Component {
         //- Property 'Density' of collider(s) on target affects the mass of their rigidbody, which will affect the water's force applied to them.
         //- Set the property 'Density' of un-necessary collider(s) on them to 0 to avoid water affecting these.
         this.m_target.forEach(target => {
+            //Check from centre of the target
             if (this.m_topY > target.node.worldPosition.clone().y) {
-                let targetDepth = Math.abs(this.m_topY - target.node.worldPosition.clone().y);
+                //If the target is above the water surface, apply buoyancy force to it
+                let depth = Math.abs(this.m_topY - target.node.worldPosition.clone().y);
                 //Archimedes: F = ρ * V * g
-                let force = v2(0, this.LinearDensity * targetDepth * target.gravityScale * dt * 9.81);
+                let force = v2(0, this.LinearDensity * depth * target.gravityScale * dt * 9.81);
                 target.applyForceToCenter(force, true);
             }
         });
