@@ -10,6 +10,8 @@ export class BodyBase extends Component {
     Protect: boolean = false;
     @property({ group: { name: 'Body' }, type: CCBoolean, visible(this: BodyBase) { return !this.Protect; } })
     ProtectBigSize: boolean = false;
+    @property({ group: { name: 'Body' }, type: CCBoolean, visible(this: BodyBase) { return !this.Protect; } })
+    ProtectHit: boolean = true;
     @property({ group: { name: 'Body' }, type: CCInteger, visible(this: BodyBase) { return !this.Protect; } })
     HitPoint: number = 1;
     @property({ group: { name: 'Body' }, type: CCFloat })
@@ -97,6 +99,7 @@ export class BodyBase extends Component {
             this.m_maskTransform = this.BarMask.getComponent(UITransform);
         }
 
+        this.node.on(ConstantBase.NODE_VALUE_PROTECT, this.onProtect, this);
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
         this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
 
@@ -218,7 +221,10 @@ export class BodyBase extends Component {
     }
 
     onProtect(state: boolean = true) {
-        this.Protect = state;
+        if (state)
+            this.Protect = state;
+        else
+            this.scheduleOnce(() => this.Protect = false, 0.02);
     }
 
     onHitPoint(value: number) {

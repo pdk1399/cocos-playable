@@ -71,6 +71,7 @@ export class ConstantBase {
     static readonly NODE_ATTACK_ULTIMATE: string = 'node-body-attack-ultimate';
 
     static readonly NODE_VALUE: string = 'node-value'; // Used to help value-event excute it's child event
+    static readonly NODE_VALUE_PROTECT: string = 'node-value-protect';
     static readonly NODE_VALUE_HIT_POINT: string = 'node-value-hit-point';
     static readonly NODE_VALUE_HIT_POINT_CURRENT: string = 'node-value-hit-point-current';
     static readonly NODE_VALUE_LOCK_X: string = 'node-value-lock-x';

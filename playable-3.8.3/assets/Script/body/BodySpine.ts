@@ -102,14 +102,16 @@ export class BodySpine extends Component {
         return this.m_spine.onAnimation(this.AnimIdle, this.AnimIdleLoop);
     }
 
-    onHit(audioForce: boolean = true): number {
+    onHit(): number {
         if (this.m_hit || this.m_dead)
             return 0;
         if (!this.AnimHitActive)
             return 0;
         if (this.m_lockAttack)
             return 0;
-        if (this.AudioHit != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimHit : true))
+        if (this.m_body.Protect && this.m_body.ProtectHit)
+            return;
+        if (this.AudioHit != null)
             this.AudioHit.play();
         this.m_hit = true;
         let animHitDuration = this.m_spine.onAnimationForceUnSave(this.AnimHit, false);
@@ -121,8 +123,10 @@ export class BodySpine extends Component {
         return animHitDuration;
     }
 
-    onDead(audioForce: boolean = true): number {
-        if (this.AudioDead != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimDead : true))
+    onDead(): number {
+        if (this.m_body.Protect && this.m_body.ProtectHit)
+            return;
+        if (this.AudioDead != null)
             this.AudioDead.play();
         this.m_dead = true;
         if (!this.AnimDeadActive)

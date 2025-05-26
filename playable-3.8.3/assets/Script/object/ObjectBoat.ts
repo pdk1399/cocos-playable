@@ -35,6 +35,7 @@ export class ObjectBoat extends Component {
             switch (collider.tag) {
                 case this.TagBody:
                     this.m_colliderBody.push(collider);
+                    collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
                     break;
                 case this.TagWall:
                     this.m_colliderWall.push(collider);
@@ -68,16 +69,26 @@ export class ObjectBoat extends Component {
     }
 
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        switch (otherCollider.tag) {
-            case this.TagPlayer:
-                if (this.m_player != null)
-                    break;
-                this.m_player = otherCollider.body.node;
-                this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_ROTATE, true);
-                this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_X, true);
-                this.m_player.emit(ConstantBase.NODE_CONTROL_DIRECTOR, false);
-                this.m_player.emit(ConstantBase.NODE_CONTROL_NODE, true);
-                this.onEventActive(true);
+        switch (selfCollider.tag) {
+            case this.TagBody:
+                switch (otherCollider.tag) {
+                    case this.TagPlayer:
+                        break;
+                }
+                break;
+            case this.TagActive:
+                switch (otherCollider.tag) {
+                    case this.TagPlayer:
+                        if (this.m_player != null)
+                            break;
+                        this.m_player = otherCollider.body.node;
+                        this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_ROTATE, true);
+                        this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_X, true);
+                        this.m_player.emit(ConstantBase.NODE_CONTROL_DIRECTOR, false);
+                        this.m_player.emit(ConstantBase.NODE_CONTROL_NODE, true);
+                        this.onEventActive(true);
+                        break;
+                }
                 break;
         }
     }

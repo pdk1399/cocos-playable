@@ -205,6 +205,7 @@ export class BodyControlX extends Component {
         this.node.on(ConstantBase.NODE_CONTROL_NODE, this.onControlByNode, this);
         this.node.on(ConstantBase.NODE_CONTROL_SLEEP, this.onSleep, this);
         this.node.on(ConstantBase.NODE_CONTROL_AWAKE, this.onAwake, this);
+        
         this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
 
         this.node.on(ConstantBase.NODE_VALUE_LOCK_X, this.onValueLockX, this);
