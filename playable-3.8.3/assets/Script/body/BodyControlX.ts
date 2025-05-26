@@ -205,7 +205,7 @@ export class BodyControlX extends Component {
         this.node.on(ConstantBase.NODE_CONTROL_NODE, this.onControlByNode, this);
         this.node.on(ConstantBase.NODE_CONTROL_SLEEP, this.onSleep, this);
         this.node.on(ConstantBase.NODE_CONTROL_AWAKE, this.onAwake, this);
-        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
 
         this.node.on(ConstantBase.NODE_VALUE_LOCK_X, this.onValueLockX, this);
         this.node.on(ConstantBase.NODE_VALUE_LOCK_Y, this.onValueLockY, this);
@@ -640,8 +640,8 @@ export class BodyControlX extends Component {
         }
     }
 
-    protected onCollideBot(stage: boolean) {
-        switch (stage) {
+    protected onCollideBot(state: boolean) {
+        switch (state) {
             case true:
                 this.m_jumpCountCurrent = 0;
                 this.m_jumpContinue = false;
@@ -848,7 +848,7 @@ export class BodyControlX extends Component {
             this.scheduleOnce(() => this.m_pickUpProgess = false, delayPick + 0.02);
     }
 
-    protected onCollideInteraction(target: Node, stage: boolean) {
+    protected onCollideInteraction(target: Node, state: boolean) {
         if (this.m_pickUp != null)
             return;
         if (this.m_bodyCheck.m_interacteNode.length == 0) {
@@ -887,13 +887,13 @@ export class BodyControlX extends Component {
         }
     }
 
-    //STAGE
+    //STATE
 
     protected onStateUpdate(dt: number) {
         if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
             return;
         let state = PlayerStateX.IDLE;
-        //FIND STAGE:
+        //FIND STATE:
         if (this.getDead())
             state = PlayerStateX.DEAD;
         else if (this.getHit())
@@ -920,7 +920,7 @@ export class BodyControlX extends Component {
             else
                 state = PlayerStateX.PUSH;
         }
-        //UPDATE STAGE:
+        //UPDATE STATE:
         if (this.m_state == state)
             return;
         this.m_state = state;

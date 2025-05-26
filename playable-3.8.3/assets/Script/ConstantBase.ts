@@ -43,6 +43,7 @@ export class ConstantBase {
     static readonly NODE_EVENT: string = 'node-event'; // Used in most of quick-events in Nodes
 
     static readonly NODE_BODY_HIT: string = 'node-body-hit';
+    static readonly NODE_BODY_DEAD: string = 'node-body-dead';
     static readonly NODE_BODY_X2: string = 'node-body-x2';
     static readonly NODE_BODY_X4: string = 'node-body-x4';
 
@@ -61,7 +62,6 @@ export class ConstantBase {
     static readonly NODE_CONTROL_NODE: string = 'node-control-node';
     static readonly NODE_CONTROL_SLEEP: string = 'node-control-sleep';
     static readonly NODE_CONTROL_AWAKE: string = 'node-control-awake';
-    static readonly NODE_CONTROL_DEAD: string = 'node-control-dead';
 
     static readonly NODE_PICK: string = 'node-pick';
     static readonly NODE_THROW: string = 'node-throw';

@@ -42,7 +42,7 @@ export class ShootInstant extends Component {
     @property({ group: { name: 'Tag' }, type: [CCInteger] })
     TagTarget: number[] = [100];
 
-    m_shootStage: boolean = false;
+    m_shootState: boolean = false;
 
     m_targetInRange: Node[] = [];
     m_targetPos: Vec2 = v2();
@@ -97,7 +97,7 @@ export class ShootInstant extends Component {
             return;
         this.m_targetInRange.push(target);
         //
-        if (!this.m_shootStage && this.Auto) {
+        if (!this.m_shootState && this.Auto) {
             this.Target = this.m_targetInRange.find(t => t != null);
             this.onShoot();
         }
@@ -109,16 +109,16 @@ export class ShootInstant extends Component {
             return;
         this.m_targetInRange.splice(targetIndex, 1);
         //
-        if (this.m_shootStage && this.m_targetInRange.length == 0) {
+        if (this.m_shootState && this.m_targetInRange.length == 0) {
             this.unscheduleAllCallbacks();
-            this.m_shootStage = false;
+            this.m_shootState = false;
         }
         else
             this.Target = this.m_targetInRange.find(t => t != null);
     }
 
     onShoot() {
-        this.m_shootStage = true;
+        this.m_shootState = true;
         if (this.Target == null) {
             if (this.Auto) {
                 if (this.m_targetInRange.length == 0) {

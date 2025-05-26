@@ -414,11 +414,11 @@ export default class CameraBase extends Component {
 
     //SHAKE
 
-    onShake(stage: boolean) {
-        if (this.m_shake == stage)
+    onShake(state: boolean) {
+        if (this.m_shake == state)
             return;
-        this.m_shake = stage;
-        if (stage) {
+        this.m_shake = state;
+        if (state) {
             if (this.m_tweenShake != null)
                 this.m_tweenShake.start();
             else {

@@ -181,7 +181,7 @@ export class BodyMovePathX extends Component {
 
     protected onStateUpdate(dt: number) {
         let state = BodyState.IDLE;
-        //FIND STAGE:
+        //FIND STATE:
         if (this.getDead())
             state = BodyState.DEAD;
         else if (this.getHit())
@@ -192,7 +192,7 @@ export class BodyMovePathX extends Component {
             state = BodyState.MOVE;
         else
             state = BodyState.IDLE;
-        //UPDATE STAGE:
+        //UPDATE STATE:
         if (state == this.m_state)
             return;
         this.m_state = state;

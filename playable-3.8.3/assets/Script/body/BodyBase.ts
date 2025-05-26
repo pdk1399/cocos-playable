@@ -48,13 +48,13 @@ export class BodyBase extends Component {
     @property({ group: { name: 'Effect' }, type: Node })
     EffectCentre: Node = null;
     @property({ group: { name: 'Effect' }, type: Node })
+    EffectSpawm: Node = null;
+    @property({ group: { name: 'Effect' }, type: Node })
     EffectHit: Node = null;
     @property({ group: { name: 'Effect' }, type: Node })
     EffectDead: Node = null;
     @property({ group: { name: 'Effect' }, type: Node })
     EffectDestroy: Node = null;
-    @property({ group: { name: 'Effect' }, type: Node })
-    EffectSpawm: Node = null;
 
     @property({ group: { name: 'Camera' }, type: CCBoolean })
     ShakeHit: boolean = false;
@@ -97,7 +97,7 @@ export class BodyBase extends Component {
         }
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
 
         let collider = this.getComponents(Collider2D);
         collider.forEach(colliderCheck => {
@@ -204,7 +204,7 @@ export class BodyBase extends Component {
             }
         }
 
-        this.node.emit(ConstantBase.NODE_CONTROL_DEAD, from);
+        this.node.emit(ConstantBase.NODE_BODY_DEAD, from);
         if (this.EmitDead != '') {
             if (this.EmitFull)
                 director.emit(this.EmitDead, this.node);
@@ -213,7 +213,7 @@ export class BodyBase extends Component {
         }
 
         this.node.off(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.off(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+        this.node.off(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
     }
 
     onProtect(state: boolean = true) {

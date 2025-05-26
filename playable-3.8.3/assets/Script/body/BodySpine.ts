@@ -71,7 +71,7 @@ export class BodySpine extends Component {
         this.m_spine = this.getComponent(SpineBase);
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
     }
 
     //

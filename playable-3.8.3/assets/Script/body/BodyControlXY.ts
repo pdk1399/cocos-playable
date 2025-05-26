@@ -108,7 +108,7 @@ export class BodyControlXY extends Component {
         this.node.on(ConstantBase.NODE_CONTROL_NODE, this.onControlByNode, this);
         this.node.on(ConstantBase.NODE_CONTROL_SLEEP, this.onControlSleep, this);
         this.node.on(ConstantBase.NODE_CONTROL_AWAKE, this.onControlAwake, this);
-        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onControlDead, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onControlDead, this);
 
         this.node.on(ConstantBase.NODE_VALUE_LOCK_X, this.onValueLockX, this);
         this.node.on(ConstantBase.NODE_VALUE_LOCK_Y, this.onValueLockY, this);
@@ -402,13 +402,13 @@ export class BodyControlXY extends Component {
         this.onAimReset();
     }
 
-    //STAGE:
+    //STATE:
 
     protected onStateUpdate(dt: number) {
         if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
             return;
         let state = PlayerStateXY.IDLE;
-        //FIND STAGE:
+        //FIND STATE:
         if (this.getDead())
             state = PlayerStateXY.DEAD;
         else if (this.getHit())
@@ -423,7 +423,7 @@ export class BodyControlXY extends Component {
             state = PlayerStateXY.DASH;
         else if (this.m_move)
             state = PlayerStateXY.MOVE;
-        //UPDATE STAGE:
+        //UPDATE STATE:
         if (this.m_state == state)
             return;
         this.m_state = state;
