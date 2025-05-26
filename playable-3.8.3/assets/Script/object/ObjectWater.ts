@@ -1,11 +1,20 @@
-import { _decorator, CCFloat, CCInteger, Collider2D, Component, Contact2DType, IPhysics2DContact, Node, RigidBody2D, v2, Vec2 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Contact2DType, Enum, IPhysics2DContact, Node, RigidBody2D, v2, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
+
+export enum ForceFixedType {
+    None,
+    Level1,
+    Level2,
+}
+Enum(ForceFixedType);
 
 @ccclass('ObjectWater')
 export class ObjectWater extends Component {
 
     @property({ group: { name: 'Body' }, type: CCFloat })
     LinearDensity: number = 1000;
+    @property({ group: { name: 'Body' }, type: ForceFixedType })
+    ForceFixed: ForceFixedType = ForceFixedType.Level2;
 
     @property({ group: { name: 'Tag' }, type: CCInteger })
     TagBody: number = 0;
@@ -34,10 +43,39 @@ export class ObjectWater extends Component {
             //Check from centre of the target
             if (this.m_topY > target.node.worldPosition.clone().y) {
                 //If the target is above the water surface, apply buoyancy force to it
+
                 let depth = Math.abs(this.m_topY - target.node.worldPosition.clone().y);
-                //Archimedes: F = ρ * V * g
-                let force = v2(0, this.LinearDensity * depth * target.gravityScale * dt * 9.81);
-                target.applyForceToCenter(force, true);
+                let forceU = this.LinearDensity * depth * target.gravityScale * 9.81 * dt; //Archimedes: F = ρ * V * g
+
+                switch (this.ForceFixed) {
+                    case ForceFixedType.None:
+                        let force = v2(0, forceU);
+                        target.applyForceToCenter(force, true);
+                        break;
+                    case ForceFixedType.Level1:
+                        if (target.linearVelocity.y < 0) {
+                            let force = v2(0, forceU);
+                            target.applyForceToCenter(force, true);
+                        }
+                        break;
+                    case ForceFixedType.Level2:
+                        if (target.linearVelocity.y < 0) {
+                            let force = v2(0, forceU);
+                            target.applyForceToCenter(force, true);
+                        }
+                        else {
+                            let forceD = target.getMass() * target.gravityScale * 9.81; //Sinking force
+                            if (target.linearVelocity.y < forceD && forceU < forceD) {
+                                let force = v2(0, forceU);
+                                target.applyForceToCenter(force, true);
+                            }
+                            else {
+                                let force = v2(0, forceD);
+                                target.applyForceToCenter(force, true);
+                            }
+                        }
+                        break;
+                }
             }
         });
     }
