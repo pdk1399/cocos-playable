@@ -57,7 +57,7 @@ export class BodyControlXY extends Component {
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlXY) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
     DashAttackReset: boolean = true;
 
-    @property({ group: { name: 'Switch' }, type: CCInteger, visible(this: BodyControlXY) { return this.SwitchArrow != null; } })
+    @property({ group: { name: 'Switch' }, type: CCInteger })
     SwitchIndex: number = 0;
 
     m_state = PlayerStateXY.IDLE;
