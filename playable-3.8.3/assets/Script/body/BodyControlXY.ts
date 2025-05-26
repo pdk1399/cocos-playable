@@ -57,8 +57,6 @@ export class BodyControlXY extends Component {
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlXY) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
     DashAttackReset: boolean = true;
 
-    @property({ group: { name: 'Switch' }, type: Node })
-    SwitchArrow: Node = null;
     @property({ group: { name: 'Switch' }, type: CCInteger, visible(this: BodyControlXY) { return this.SwitchArrow != null; } })
     SwitchIndex: number = 0;
 
@@ -74,7 +72,8 @@ export class BodyControlXY extends Component {
     m_attack: boolean = false;
 
     m_control: boolean = true;
-    m_controlByDirector: boolean = false; //Set TRUE later onLoad
+    m_controlByDirector: boolean = null;
+    m_controlByNode: boolean = null;
     m_end: boolean = false;
 
     m_lockInput: boolean = false;
@@ -130,9 +129,9 @@ export class BodyControlXY extends Component {
     //EVENT:
 
     protected onControlByDirector(state: boolean) {
-        if (this.m_controlByDirector)
+        if (this.m_controlByDirector == state)
             return;
-        this.m_controlByDirector = true;
+        this.m_controlByDirector = state;
         if (state) {
             director.on(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick, this);
             director.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
@@ -150,9 +149,9 @@ export class BodyControlXY extends Component {
     }
 
     protected onControlByNode(state: boolean) {
-        if (!this.m_controlByDirector)
+        if (this.m_controlByNode == state)
             return;
-        this.m_controlByDirector = false;
+        this.m_controlByNode = state;
         if (state) {
             this.node.on(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick, this);
             this.node.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
@@ -321,12 +320,14 @@ export class BodyControlXY extends Component {
             return;
         let state = index == this.SwitchIndex;
         this.m_control = state;
-        if (this.SwitchArrow != null)
-            this.SwitchArrow.active = state;
-        if (controlByDirector)
+        if (controlByDirector) {
             this.onControlByDirector(state);
-        else
+            this.onControlByNode(!state);
+        }
+        else {
+            this.onControlByDirector(!state);
             this.onControlByNode(state);
+        }
         this.onMoveRelease();
         if (state)
             director.emit(ConstantBase.CAMERA_SWITCH, this.node);

@@ -157,7 +157,8 @@ export class BodyControlX extends Component {
     m_pickUpSiblingIndex: number = 0;
 
     m_control: boolean = true;
-    m_controlByDirector: boolean = false; //Set TRUE later onLoad
+    m_controlByDirector: boolean = null;
+    m_controlByNode: boolean = null;
     m_end: boolean = false;
     m_endReady: boolean = false;
     m_endCentre: Vec3;
@@ -235,9 +236,9 @@ export class BodyControlX extends Component {
     //EVENT
 
     protected onControlByDirector(state: boolean) {
-        if (this.m_controlByDirector)
+        if (this.m_controlByDirector == state)
             return;
-        this.m_controlByDirector = true;
+        this.m_controlByDirector = state;
         if (state) {
             director.on(ConstantBase.CONTROL_UP, this.onMoveUp, this);
             director.on(ConstantBase.CONTROL_DOWN, this.onMoveDown, this);
@@ -275,9 +276,9 @@ export class BodyControlX extends Component {
     }
 
     protected onControlByNode(state: boolean) {
-        if (!this.m_controlByDirector)
+        if (this.m_controlByNode == state)
             return;
-        this.m_controlByDirector = false;
+        this.m_controlByNode = state;
         if (state) {
             this.node.on(ConstantBase.CONTROL_UP, this.onMoveUp, this);
             this.node.on(ConstantBase.CONTROL_DOWN, this.onMoveDown, this);
@@ -685,10 +686,14 @@ export class BodyControlX extends Component {
             return;
         let state = index == this.SwitchIndex;
         this.m_control = state;
-        if (controlByDirector)
+        if (controlByDirector) {
             this.onControlByDirector(state);
-        else
+            this.onControlByNode(!state);
+        }
+        else {
+            this.onControlByDirector(!state);
             this.onControlByNode(state);
+        }
         this.onJumRelease();
         this.onMoveRelease();
         if (state)
