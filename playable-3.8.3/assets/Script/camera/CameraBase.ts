@@ -133,7 +133,7 @@ export default class CameraBase extends Component {
 
     protected lateUpdate(dt: number) {
         let posTarget = v3();
-        if (this.Target != null) {
+        if (this.Target != null ? this.Target.isValid : false) {
             posTarget = this.Target.worldPosition.clone();
             this.m_posTarget = posTarget.clone();
         }
