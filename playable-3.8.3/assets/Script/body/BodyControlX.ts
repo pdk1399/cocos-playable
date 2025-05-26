@@ -106,21 +106,21 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockY && !this.FallAttackStop; } })
     FallAttackForce: number = 0; //Default -0.2f for slow fall down while attack
 
-    @property({ group: { name: 'Pick&Throw' }, type: CCBoolean })
+    @property({ group: { name: 'Pick' }, type: CCBoolean })
     Pick: boolean = false;
-    @property({ group: { name: 'Pick&Throw' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
     PickHold: boolean = false;
-    @property({ group: { name: 'Pick&Throw' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
     PickJumpOnce: boolean = true;
-    @property({ group: { name: 'Pick&Throw' }, type: Vec2, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: Vec2, visible(this: BodyControlX) { return this.Pick; } })
     ThrowForce: Vec2 = v2(20, 20);
-    @property({ group: { name: 'Pick&Throw' }, type: Node, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: Node, visible(this: BodyControlX) { return this.Pick; } })
     PickUpPoint: Node = null;
-    @property({ group: { name: 'Pick&Throw' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
     UiPickBtnActive: boolean = true;
-    @property({ group: { name: 'Pick&Throw' }, type: CCInteger, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: CCInteger, visible(this: BodyControlX) { return this.Pick; } })
     UiPickIconIndex: number = 0;
-    @property({ group: { name: 'Pick&Throw' }, type: CCInteger, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: CCInteger, visible(this: BodyControlX) { return this.Pick; } })
     UiThrowIconIndex: number = 1;
 
     @property({ group: { name: 'Switch' }, type: CCInteger })

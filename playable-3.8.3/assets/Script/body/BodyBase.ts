@@ -56,6 +56,11 @@ export class BodyBase extends Component {
     @property({ group: { name: 'Effect' }, type: Node })
     EffectDestroy: Node = null;
 
+    @property({ group: { name: 'Audio' }, type: AudioSource })
+    AudioHit: AudioSource = null;
+    @property({ group: { name: 'Audio' }, type: AudioSource })
+    AudioDead: AudioSource = null;
+
     @property({ group: { name: 'Camera' }, type: CCBoolean })
     ShakeHit: boolean = false;
     @property({ group: { name: 'Camera' }, type: CCBoolean })
@@ -67,10 +72,6 @@ export class BodyBase extends Component {
     ValueBar: ValueBar = null;
     @property({ group: { name: 'Option' }, type: Node })
     BarMask: Node = null;
-    @property({ group: { name: 'Option' }, type: AudioSource })
-    AudioHit: AudioSource = null;
-    @property({ group: { name: 'Option' }, type: AudioSource })
-    AudioDead: AudioSource = null;
 
     m_baseSize: number = 1;
     m_baseScale: Vec3 = Vec3.ONE;
