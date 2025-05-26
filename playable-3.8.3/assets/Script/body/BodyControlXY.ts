@@ -347,10 +347,8 @@ export class BodyControlXY extends Component {
                 }
                 break;
             case false:
-                if (this.AttackHold) {
+                if (this.AttackHold)
                     this.onAttackProgess();
-                    this.onAimReset();
-                }
                 break;
         }
     }
@@ -383,7 +381,11 @@ export class BodyControlXY extends Component {
             return;
         if (!this.MoveStopAttack && (this.MoveStopByBodyAttack || this.MoveStopByPressAttack))
             this.m_bodySpine.onIdle(true);
-        this.scheduleOnce(() => this.m_bodyAttack?.onAttackProgess());
+        this.scheduleOnce(() => {
+            this.scheduleOnce(() => {
+                this.onAimReset();
+            }, this.m_bodyAttack?.onAttackProgess());
+        });
     }
 
     //COLLIDE
@@ -435,8 +437,6 @@ export class BodyControlXY extends Component {
                 if (this.MoveStopAttack)
                     this.m_bodyAttack?.onStop(false);
                 this.m_bodySpine.onMove();
-                break;
-            case PlayerStateXY.HIT:
                 break;
             case PlayerStateXY.DASH:
                 this.m_bodySpine.onDash();

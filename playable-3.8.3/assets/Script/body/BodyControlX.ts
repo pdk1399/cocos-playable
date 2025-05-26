@@ -733,10 +733,8 @@ export class BodyControlX extends Component {
                         this.m_rigidbody.linearVelocity = v2(this.m_rigidbody.linearVelocity.clone().x, -0.02); //Fix bug not fall after attack
                     }
                 }
-                if (this.AttackHold) {
+                if (this.AttackHold)
                     this.onAttackProgess();
-                    this.onAimReset();
-                }
                 break;
         }
     }
@@ -769,7 +767,11 @@ export class BodyControlX extends Component {
             return;
         if (this.MoveStopByBodyAttack || this.MoveStopByPressAttack)
             this.m_bodySpine.onIdle(true);
-        this.scheduleOnce(() => this.m_bodyAttack?.onAttackProgess());
+        this.scheduleOnce(() => {
+            this.scheduleOnce(() => {
+                this.onAimReset();
+            }, this.m_bodyAttack?.onAttackProgess());
+        });
     }
 
     //INTERACTION
@@ -940,14 +942,10 @@ export class BodyControlX extends Component {
             case PlayerStateX.AIR:
                 this.m_bodySpine.onAirOff();
                 break;
-            // case PlayerStateX.HIT:
-            //     break;
             case PlayerStateX.DASH:
                 this.m_bodySpine.onDash();
                 break;
             case PlayerStateX.ATTACK:
-                if (this.AttackHold)
-                    this.m_bodyAttack?.onAnimAttackUnReady();
                 break;
             case PlayerStateX.ATTACK_HOLD:
                 if (this.AttackHold) {

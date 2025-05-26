@@ -562,6 +562,8 @@ export class BodyAttackX extends Component {
 
     onAnimAttackUnReady() {
         this.unschedule(this.m_readySchedule);
+        if (this.m_continue)
+            return;
         this.m_readyIndex = 0;
     }
 
