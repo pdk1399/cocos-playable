@@ -45,13 +45,11 @@ export class EmitValue extends EmitBaseFull {
     @property({ group: { name: 'Main' }, type: Vec3, visible(this: EmitValue) { return this.showFieldEditor(this.Value, ParamType.Vec3); } })
     ParamVec3: Vec3 = new Vec3(0, 0, 0);
 
-    onEventActive(): void {
-        this.EmitNode.forEach(t => {
-            t.emit(this.getValue(), this.getParam(this.Value));
-        });
+    onEventActiveNode(target: Node): void {
+        target.emit(this.getValue(), this.getParam(this.Value));
     }
 
-    getValue(): string {
+    private getValue(): string {
         switch (this.Value) {
             case ValueType.HitPoint:
                 return ConstantBase.NODE_VALUE_HIT_POINT;
@@ -71,7 +69,7 @@ export class EmitValue extends EmitBaseFull {
         return '';
     }
 
-    getParam(value: ValueType): any {
+    private getParam(value: ValueType): any {
         switch (value) {
             case ValueType.HitPoint:
             case ValueType.HitPointCurrent:
@@ -86,7 +84,7 @@ export class EmitValue extends EmitBaseFull {
         return null;
     }
 
-    showFieldEditor(value: ValueType, param: ParamType): boolean {
+    private showFieldEditor(value: ValueType, param: ParamType): boolean {
         if (value == ValueType.HitPoint && param == ParamType.Number)
             return true;
         if (value == ValueType.HitPointCurrent && param == ParamType.Number)
