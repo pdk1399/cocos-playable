@@ -18,6 +18,8 @@ export class BodyBase extends Component {
     HitDelay: number = 0.2;
     @property({ group: { name: 'Body' }, type: CCBoolean })
     HitFixed: boolean = false;
+    @property({ group: { name: 'Body' }, type: CCBoolean })
+    SwimWater: boolean = false;
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     EmitHitDead: boolean = false;
@@ -84,6 +86,7 @@ export class BodyBase extends Component {
 
     m_bodyX2: boolean = false;
     m_bodyX4: boolean = false;
+    m_bodySinking: boolean = false;
 
     m_rigidbody: RigidBody2D = null;
     m_destroyCollider: Collider2D[] = [];
@@ -99,9 +102,15 @@ export class BodyBase extends Component {
             this.m_maskTransform = this.BarMask.getComponent(UITransform);
         }
 
-        this.node.on(ConstantBase.NODE_VALUE_PROTECT, this.onProtect, this);
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
         this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_X2, this.onBodyX2, this);
+        this.node.on(ConstantBase.NODE_BODY_X4, this.onBodyX4, this);
+        this.node.on(ConstantBase.NODE_BODY_SINKING, this.onSinking, this);
+
+        this.node.on(ConstantBase.NODE_VALUE_PROTECT, this.onProtect, this);
+        this.node.on(ConstantBase.NODE_VALUE_HIT_POINT, this.onHitPoint, this);
+        this.node.on(ConstantBase.NODE_VALUE_HIT_POINT_CURRENT, this.onHitPointCurrent, this);
 
         let collider = this.getComponents(Collider2D);
         collider.forEach(colliderCheck => {
@@ -109,12 +118,6 @@ export class BodyBase extends Component {
             if (tagIndex >= 0)
                 this.m_destroyCollider.push(colliderCheck as Collider2D)
         })
-
-        this.node.on(ConstantBase.NODE_VALUE_HIT_POINT, this.onHitPoint, this);
-        this.node.on(ConstantBase.NODE_VALUE_HIT_POINT_CURRENT, this.onHitPointCurrent, this);
-
-        this.node.on(ConstantBase.NODE_BODY_X2, this.onBodyX2, this);
-        this.node.on(ConstantBase.NODE_BODY_X4, this.onBodyX4, this);
     }
 
     protected start(): void {
@@ -306,6 +309,16 @@ export class BodyBase extends Component {
             }).start();
         }, 1);
         this.m_baseSize = state ? 4 : 1;
+    }
+
+    //SINKING
+
+    onSinking(state: boolean = true) {
+        if (this.m_bodySinking == state)
+            return;
+        this.m_bodySinking = state;
+        if (!this.SwimWater && state)
+            this.onDead(null);
     }
 
     //DESTROY

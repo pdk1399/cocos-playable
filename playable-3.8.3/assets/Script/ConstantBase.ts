@@ -46,6 +46,7 @@ export class ConstantBase {
     static readonly NODE_BODY_DEAD: string = 'node-body-dead';
     static readonly NODE_BODY_X2: string = 'node-body-x2';
     static readonly NODE_BODY_X4: string = 'node-body-x4';
+    static readonly NODE_BODY_SINKING: string = 'node-body-sinking';
 
     static readonly NODE_COLLIDE_BODY: string = 'node-collide-collide';
     static readonly NODE_COLLIDE_BOT: string = 'node-collide-bot';

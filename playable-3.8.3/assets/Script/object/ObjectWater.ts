@@ -1,4 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Contact2DType, Enum, IPhysics2DContact, Node, RigidBody2D, v2, Vec2 } from 'cc';
+import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
 export enum ForceFixedType {
@@ -21,6 +22,7 @@ export class ObjectWater extends Component {
 
     m_topY: number = null;
     m_target: RigidBody2D[] = [];
+    m_targetSinking: RigidBody2D[] = [];
 
     protected onLoad(): void {
         let colliders = this.getComponents(Collider2D);
@@ -76,21 +78,42 @@ export class ObjectWater extends Component {
                         }
                         break;
                 }
+
+                let targetSinkingIndex = this.m_targetSinking.findIndex((t) => t == target);
+                if (targetSinkingIndex < 0) {
+                    this.m_targetSinking.push(target);
+                    target.node.emit(ConstantBase.NODE_BODY_SINKING, true);
+                }
+            }
+            else {
+                let targetSinkingIndex = this.m_targetSinking.findIndex((t) => t == target);
+                if (targetSinkingIndex >= 0) {
+                    this.m_targetSinking.splice(targetSinkingIndex, 1);
+                    target.node.emit(ConstantBase.NODE_BODY_SINKING, false);
+                }
             }
         });
     }
 
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        let index = this.m_target.findIndex((t) => t == otherCollider.body);
+        let target = otherCollider.body;
+        let index = this.m_target.findIndex((t) => t == target);
         if (index >= 0)
             return;
         this.m_target.push(otherCollider.body);
     }
 
     protected onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        let index = this.m_target.findIndex((t) => t == otherCollider.body);
+        let target = otherCollider.body;
+        let index = this.m_target.findIndex((t) => t == target);
         if (index < 0)
             return;
         this.m_target.splice(index, 1);
+
+        let targetSinkingIndex = this.m_targetSinking.findIndex((t) => t == target);
+        if (targetSinkingIndex >= 0) {
+            this.m_targetSinking.splice(targetSinkingIndex, 1);
+            target.node.emit(ConstantBase.NODE_BODY_SINKING, false);
+        }
     }
 }
