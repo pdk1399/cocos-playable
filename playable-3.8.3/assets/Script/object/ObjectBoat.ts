@@ -58,7 +58,7 @@ export class ObjectBoat extends Component {
     }
 
     protected lateUpdate(dt: number): void {
-        this.m_rigidBody.linearVelocity = v2(this.SpeedX * this.m_moveDirX, this.m_rigidBody.linearVelocity.y);
+        this.m_rigidBody.linearVelocity = v2(this.SpeedX * this.m_moveDirX, this.m_rigidBody.linearVelocity.clone().y);
 
         if (this.m_player == null ? false : this.m_player.isValid) {
             let offsetY = this.node.worldPosition.clone().y - this.m_lastPosY;
@@ -84,6 +84,7 @@ export class ObjectBoat extends Component {
                         this.m_player = otherCollider.body.node;
                         this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_ROTATE, true);
                         this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_X, true);
+                        this.m_player.emit(ConstantBase.NODE_CONTROL_SLEEP);
                         this.m_player.emit(ConstantBase.NODE_CONTROL_DIRECTOR, false);
                         this.m_player.emit(ConstantBase.NODE_CONTROL_NODE, true);
                         this.onEventActive(true);
@@ -146,6 +147,7 @@ export class ObjectBoat extends Component {
         this.m_player.emit(ConstantBase.CONTROL_JUMP);
         this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_ROTATE, false);
         this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_X, false);
+        this.m_player.emit(ConstantBase.NODE_CONTROL_AWAKE);
         this.m_player.emit(ConstantBase.NODE_CONTROL_DIRECTOR, true);
         this.m_player.emit(ConstantBase.NODE_CONTROL_NODE, false);
         this.m_player = null;
