@@ -1,9 +1,9 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D } from 'cc';
-import { ConstantBase } from '../../ConstantBase';
+import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node } from 'cc';
+import { ConstantBase } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('TriggerDestroy')
-export class TriggerDestroy extends Component {
+@ccclass('TriggerIndex')
+export class TriggerIndex extends Component {
 
     @property({ group: { name: 'Target' }, type: [Node] })
     Target: Node[] = [];
@@ -12,6 +12,8 @@ export class TriggerDestroy extends Component {
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     OnNode: boolean = false;
+    @property({ group: { name: 'Event' }, type: CCInteger })
+    OnEventIndex: number = 0;
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
@@ -36,7 +38,7 @@ export class TriggerDestroy extends Component {
         if (this.OnNode)
             this.node.on(ConstantBase.NODE_EVENT, this.onEventList, this);
     }
-
+    //
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         let targetIndex = this.TagTarget.findIndex((t) => t == otherCollider.tag);
         if (targetIndex < 0)
@@ -70,6 +72,6 @@ export class TriggerDestroy extends Component {
     onEventSingle(target: Node) {
         if (target == null ? true : !target.isValid)
             return;
-        target.destroy();
+        target.setSiblingIndex(this.OnEventIndex);
     }
 }

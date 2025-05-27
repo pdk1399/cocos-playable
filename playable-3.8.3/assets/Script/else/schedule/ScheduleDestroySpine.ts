@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, math, sp } from 'cc';
-import { SpineBase } from '../renderer/SpineBase';
+import { SpineBase } from '../../renderer/SpineBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('ScheduleDestroySpine')

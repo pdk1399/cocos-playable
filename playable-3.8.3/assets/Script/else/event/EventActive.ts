@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Color, Component, director, Enum, Node, sp } from 'cc';
-import { ConstantBase } from '../ConstantBase';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 export enum TargetType {

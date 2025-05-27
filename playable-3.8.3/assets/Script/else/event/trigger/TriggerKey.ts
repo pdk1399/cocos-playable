@@ -1,13 +1,12 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node } from 'cc';
-import { ConstantBase } from '../../ConstantBase';
-import { SpineBase } from '../../renderer/SpineBase';
+import { ConstantBase } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('TriggerSpine')
-export class TriggerSpine extends Component {
+@ccclass('TriggerKey')
+export class TriggerKey extends Component {
 
-    @property({ group: { name: 'Target' }, type: [SpineBase] })
-    Target: SpineBase[] = [];
+    @property({ group: { name: 'Target' }, type: [Node] })
+    Target: Node[] = [];
     @property({ group: { name: 'Target' }, type: CCBoolean })
     TargetContact: boolean = false;
 
@@ -19,19 +18,6 @@ export class TriggerSpine extends Component {
     Delay: number = 0;
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
-    @property({ group: { name: 'Event' }, type: CCString })
-    EmitEventFinal: string = '';
-
-    @property({ group: { name: 'Main' }, type: CCString })
-    AnimStart: string = '';
-    @property({ group: { name: 'Main' }, type: CCString })
-    AnimLoop: string = '';
-    @property({ group: { name: 'Main' }, type: CCFloat })
-    AnimLoopDuration: number = 0;
-    @property({ group: { name: 'Main' }, type: CCString })
-    AnimEnd: string = '';
-    @property({ group: { name: 'Main' }, type: CCBoolean })
-    AnimEndLoop: boolean = false;
 
     @property({ group: { name: 'Tag' }, type: CCInteger })
     TagBody: number = 0;
@@ -59,9 +45,7 @@ export class TriggerSpine extends Component {
         this.scheduleOnce(() => {
             this.onEventList();
             if (this.TargetContact)
-                this.onEventSingle(otherCollider.node.getComponent(SpineBase));
-            if (this.EmitEvent != '')
-                director.emit(this.EmitEvent);
+                this.onEventSingle(otherCollider.node);
         }, Math.max(this.Delay, 0));
         if (this.Once) {
             let colliders = this.getComponents(Collider2D);
@@ -81,16 +65,10 @@ export class TriggerSpine extends Component {
         this.Target = this.Target.filter(t => t != null);
     }
 
-    onEventSingle(target: SpineBase) {
+    onEventSingle(target: Node) {
         if (target == null ? true : !target.isValid)
             return;
-        target.scheduleOnce(() => {
-            target.scheduleOnce(() => {
-                target.scheduleOnce(() => {
-                    if (this.EmitEvent != '')
-                        director.emit(this.EmitEventFinal);
-                }, target.onAnimation(this.AnimEnd, this.AnimEndLoop));
-            }, Math.max(target.onAnimation(this.AnimLoop, true), this.AnimLoopDuration, 0));
-        }, target.onAnimation(this.AnimStart, false));
+
+        //...
     }
 }

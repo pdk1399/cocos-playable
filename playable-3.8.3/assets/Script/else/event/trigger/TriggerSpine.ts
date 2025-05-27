@@ -1,25 +1,37 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node } from 'cc';
-import { ConstantBase } from '../../ConstantBase';
+import { ConstantBase } from '../../../ConstantBase';
+import { SpineBase } from '../../../renderer/SpineBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('TriggerIndex')
-export class TriggerIndex extends Component {
+@ccclass('TriggerSpine')
+export class TriggerSpine extends Component {
 
-    @property({ group: { name: 'Target' }, type: [Node] })
-    Target: Node[] = [];
+    @property({ group: { name: 'Target' }, type: [SpineBase] })
+    Target: SpineBase[] = [];
     @property({ group: { name: 'Target' }, type: CCBoolean })
     TargetContact: boolean = false;
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     OnNode: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCInteger })
-    OnEventIndex: number = 0;
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
+    @property({ group: { name: 'Event' }, type: CCString })
+    EmitEventFinal: string = '';
+
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimStart: string = '';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimLoop: string = '';
+    @property({ group: { name: 'Main' }, type: CCFloat })
+    AnimLoopDuration: number = 0;
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimEnd: string = '';
+    @property({ group: { name: 'Main' }, type: CCBoolean })
+    AnimEndLoop: boolean = false;
 
     @property({ group: { name: 'Tag' }, type: CCInteger })
     TagBody: number = 0;
@@ -38,7 +50,7 @@ export class TriggerIndex extends Component {
         if (this.OnNode)
             this.node.on(ConstantBase.NODE_EVENT, this.onEventList, this);
     }
-    //
+
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         let targetIndex = this.TagTarget.findIndex((t) => t == otherCollider.tag);
         if (targetIndex < 0)
@@ -47,7 +59,7 @@ export class TriggerIndex extends Component {
         this.scheduleOnce(() => {
             this.onEventList();
             if (this.TargetContact)
-                this.onEventSingle(otherCollider.node);
+                this.onEventSingle(otherCollider.node.getComponent(SpineBase));
             if (this.EmitEvent != '')
                 director.emit(this.EmitEvent);
         }, Math.max(this.Delay, 0));
@@ -69,9 +81,16 @@ export class TriggerIndex extends Component {
         this.Target = this.Target.filter(t => t != null);
     }
 
-    onEventSingle(target: Node) {
+    onEventSingle(target: SpineBase) {
         if (target == null ? true : !target.isValid)
             return;
-        target.setSiblingIndex(this.OnEventIndex);
+        target.scheduleOnce(() => {
+            target.scheduleOnce(() => {
+                target.scheduleOnce(() => {
+                    if (this.EmitEvent != '')
+                        director.emit(this.EmitEventFinal);
+                }, target.onAnimation(this.AnimEnd, this.AnimEndLoop));
+            }, Math.max(target.onAnimation(this.AnimLoop, true), this.AnimLoopDuration, 0));
+        }, target.onAnimation(this.AnimStart, false));
     }
 }

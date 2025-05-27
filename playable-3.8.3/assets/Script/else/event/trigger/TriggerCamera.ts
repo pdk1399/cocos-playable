@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, TweenEasing, v2, Vec2 } from 'cc';
-import { ConstantBase, EaseType } from '../../ConstantBase';
+import { ConstantBase, EaseType } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('TriggerCamera')

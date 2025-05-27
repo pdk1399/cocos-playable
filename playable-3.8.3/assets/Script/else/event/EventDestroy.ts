@@ -1,9 +1,9 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node } from 'cc';
-import { ConstantBase } from '../ConstantBase';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('EventKey')
-export class EventKey extends Component {
+@ccclass('EventDestroy')
+export class EventDestroy extends Component {
 
     @property({ group: { name: 'Target' }, type: [Node] })
     Target: Node[] = [];
@@ -12,7 +12,7 @@ export class EventKey extends Component {
     Start: boolean = false;
     @property({ group: { name: 'Event' }, type: CCBoolean })
     OnNode: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventKey) { return !this.OnNode; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: EventDestroy) { return !this.OnNode; } })
     OnEvent: string = '';
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
@@ -34,6 +34,7 @@ export class EventKey extends Component {
     }
 
     onEvent() {
+        this.unscheduleAllCallbacks();
         this.scheduleOnce(() => {
             this.onEventList();
             if (this.EmitEvent != '')
@@ -56,7 +57,6 @@ export class EventKey extends Component {
     onEventSingle(target: Node) {
         if (target == null ? true : !target.isValid)
             return;
-
-        //...
+        target.destroy();
     }
 }

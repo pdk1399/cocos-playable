@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node, TweenEasing, v2, Vec2 } from 'cc';
-import { EaseType, ConstantBase } from '../ConstantBase';
+import { EaseType, ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('EventCamera')

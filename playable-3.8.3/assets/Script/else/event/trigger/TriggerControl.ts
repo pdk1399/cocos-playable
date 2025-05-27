@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D } from 'cc';
-import { ConstantBase } from '../../ConstantBase';
+import { ConstantBase } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('TriggerControl')

@@ -1,6 +1,6 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director } from 'cc';
-import { ConstantBase } from '../ConstantBase';
-import { SpineBase } from '../renderer/SpineBase';
+import { ConstantBase } from '../../ConstantBase';
+import { SpineBase } from '../../renderer/SpineBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('EventSpine')

@@ -1,17 +1,19 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node } from 'cc';
-import { ConstantBase } from '../../ConstantBase';
+import { _decorator, Component, AudioSource, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Contact2DType, director, IPhysics2DContact } from 'cc';
+import { ConstantBase } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('TriggerKey')
-export class TriggerKey extends Component {
+@ccclass('TriggerSound')
+export class TriggerSound extends Component {
 
-    @property({ group: { name: 'Target' }, type: [Node] })
-    Target: Node[] = [];
+    @property({ group: { name: 'Target' }, type: [AudioSource] })
+    Target: AudioSource[] = [];
     @property({ group: { name: 'Target' }, type: CCBoolean })
     TargetContact: boolean = false;
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     OnNode: boolean = false;
+    @property({ group: { name: 'Event' }, type: CCBoolean })
+    OnEventState: boolean = true;
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
@@ -43,9 +45,11 @@ export class TriggerKey extends Component {
             return;
         this.unscheduleAllCallbacks();
         this.scheduleOnce(() => {
-            this.onEventList();
+            this.onEventList(this.OnEventState);
             if (this.TargetContact)
-                this.onEventSingle(otherCollider.node);
+                this.onEventSingle(otherCollider.getComponent(AudioSource), this.OnEventState);
+            if (this.EmitEvent != '')
+                director.emit(this.EmitEvent);
         }, Math.max(this.Delay, 0));
         if (this.Once) {
             let colliders = this.getComponents(Collider2D);
@@ -59,16 +63,18 @@ export class TriggerKey extends Component {
         }
     }
 
-    onEventList() {
+    onEventList(state?: boolean) {
         this.Target = this.Target.filter(t => t != null);
-        this.Target.forEach(target => this.onEventSingle(target));
+        this.Target.forEach(target => this.onEventSingle(target, state));
         this.Target = this.Target.filter(t => t != null);
     }
 
-    onEventSingle(target: Node) {
+    onEventSingle(target: AudioSource, state?: boolean) {
         if (target == null ? true : !target.isValid)
             return;
-
-        //...
+        if (state != null ? state : this.OnEventState)
+            target.play();
+        else
+            target.stop();
     }
 }
