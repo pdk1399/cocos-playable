@@ -72,6 +72,8 @@ export class BodyCheckX extends Component {
     m_isHead: boolean = false;
     m_isBotHead: boolean = false;
 
+    m_sizeBody: Vec2;
+
     m_offsetHeadX: number;
     m_offsetBotHeadX: number;
 
@@ -130,6 +132,10 @@ export class BodyCheckX extends Component {
     }
 
     protected start(): void {
+        if (this.m_colliderBody != null) {
+            let bodySize = this.m_colliderBody.worldAABB.size.clone();
+            this.m_sizeBody = v2(bodySize.x, bodySize.y);
+        }
         if (this.m_colliderHead != null)
             this.m_offsetHeadX = this.m_colliderHead.offset.x;
         if (this.m_colliderBotHead != null)

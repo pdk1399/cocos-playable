@@ -10,8 +10,6 @@ export class BodyBase extends Component {
     Protect: boolean = false;
     @property({ group: { name: 'Body' }, type: CCBoolean, visible(this: BodyBase) { return !this.Protect; } })
     ProtectBigSize: boolean = false;
-    @property({ group: { name: 'Body' }, type: CCBoolean, visible(this: BodyBase) { return !this.Protect; } })
-    ProtectHit: boolean = true;
     @property({ group: { name: 'Body' }, type: CCInteger, visible(this: BodyBase) { return !this.Protect; } })
     HitPoint: number = 1;
     @property({ group: { name: 'Body' }, type: CCFloat })

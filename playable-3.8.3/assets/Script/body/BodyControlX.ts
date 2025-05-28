@@ -869,8 +869,23 @@ export class BodyControlX extends Component {
     protected onCollideEnermy(state: boolean, target: Collider2D) {
         let bodyTarget = target.getComponent(BodyBase);
         if (bodyTarget != null && bodyTarget.isValid) {
-            if (this.m_body.m_bodyX4 && state)
-                bodyTarget.onDead(this.node);
+            if (state) {
+                if (this.m_body.m_bodyX4)
+                    bodyTarget.onDead(this.node);
+
+                let currentBotY = this.node.worldPosition.clone().y + this.m_bodyCheck.m_sizeBody.y * 0.5;
+                let targetSizeY = target.worldAABB.size.clone().y;
+                let targetTopY = target.node.worldPosition.clone().y + targetSizeY * 0.5;
+                if (currentBotY > targetTopY) {
+                    this.onJumpForce(this.JumpUpY * 0.5);
+                    bodyTarget.node.emit(ConstantBase.NODE_BODY_HIT, 1, this.node);
+                }
+                else
+                    this.node.emit(ConstantBase.NODE_BODY_HIT, 1, bodyTarget.node);
+            }
+            else {
+                //...
+            }
         }
     }
 
