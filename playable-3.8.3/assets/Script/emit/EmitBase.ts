@@ -5,10 +5,10 @@ const { ccclass, property } = _decorator;
 //Extends this class to create unique event with no other node events excuted
 
 export enum OnceType {
-    None = 0,
-    Once = 1,
-    DeActive = 2,
-    Destroy = 3,
+    None,
+    Once,
+    DeActive,
+    Destroy,
 }
 Enum(OnceType);
 
@@ -38,6 +38,8 @@ export class EmitBase extends Component {
     //NEXT-EVENT
     @property({ group: { name: 'Event', displayOrder: 99999 }, type: Node })
     EmitNodeNext: Node = null;
+
+    //NOTE: 'displayOrder' count every items (field name, field value, etc) to draw order
 
     protected m_eventActived: boolean = false;
     protected m_eventPhysic: boolean = false;
@@ -121,7 +123,7 @@ export class EmitBase extends Component {
     //NOTE: Don't re-code any function below, or re-code them with caution
 
     onEventOnceCheck() {
-        if (this.Once != OnceType.None) {
+        if (this.Once >= OnceType.Once) {
             //ON-EVENT
             this.node.off(ConstantBase.NODE_EVENT, this.onEvent, this);
             if (this.OnEvent != '')
@@ -139,13 +141,9 @@ export class EmitBase extends Component {
                 });
             }
         }
-        switch (this.Once) {
-            case OnceType.DeActive:
-                this.scheduleOnce(() => this.node.active = false, 0.02);
-                break;
-            case OnceType.Destroy:
-                this.scheduleOnce(() => this.node.destroy(), Math.max(this.Delay, 0) + 0.02);
-                break;
-        }
+        if (this.Once >= OnceType.DeActive)
+            this.scheduleOnce(() => this.node.active = false, 0.02);
+        if (this.Once >= OnceType.Destroy)
+            this.scheduleOnce(() => this.node.destroy(), Math.max(this.Delay, 0) + 0.02);
     }
 }

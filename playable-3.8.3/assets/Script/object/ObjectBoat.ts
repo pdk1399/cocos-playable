@@ -60,12 +60,12 @@ export class ObjectBoat extends Component {
     protected lateUpdate(dt: number): void {
         this.m_rigidBody.linearVelocity = v2(this.SpeedX * this.m_moveDirX, this.m_rigidBody.linearVelocity.clone().y);
 
-        if (this.m_player == null ? false : this.m_player.isValid) {
-            let offsetY = this.node.worldPosition.clone().y - this.m_lastPosY;
-            this.m_player.setPosition(this.m_player.position.x, this.m_player.position.y + offsetY, this.m_player.position.z);
-        }
+        // if (this.m_player == null ? false : this.m_player.isValid) {
+        //     let offsetY = this.node.worldPosition.clone().y - this.m_lastPosY;
+        //     this.m_player.setPosition(this.m_player.position.x, this.m_player.position.y + offsetY, this.m_player.position.z);
+        // }
 
-        this.m_lastPosY = this.node.worldPosition.clone().y;
+        // this.m_lastPosY = this.node.worldPosition.clone().y;
     }
 
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
