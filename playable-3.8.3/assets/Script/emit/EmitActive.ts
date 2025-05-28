@@ -1,4 +1,4 @@
-import { _decorator, Enum, Node, sp } from 'cc';
+import { _decorator, AudioSource, Enum, Node, sp } from 'cc';
 import { EmitBaseFull } from './EmitBaseFull';
 const { ccclass, property } = _decorator;
 
@@ -6,6 +6,7 @@ export enum TargetType {
     Node,
     Spine,
     SpineColor,
+    Audio,
 }
 Enum(TargetType);
 
@@ -69,6 +70,16 @@ export class EmitActive extends EmitBaseFull {
                     targetSpine.color = targetSpineColor;
                 }
                 break;
+            case TargetType.Audio:
+                let targetAudio = target.getComponent(AudioSource);
+                if (targetAudio == null) {
+                    this.onEventSingle(target, state, TargetType.Node);
+                    return;
+                }
+                if (state)
+                    targetAudio.play();
+                else
+                    targetAudio.stop();
         }
     }
 
@@ -101,6 +112,16 @@ export class EmitActive extends EmitBaseFull {
                     targetSpine.color = targetSpineColor;
                 }
                 break;
+            case TargetType.Audio:
+                let targetAudio = target.getComponent(AudioSource);
+                if (targetAudio == null) {
+                    this.onEventSingleRevert(target, TargetType.Node);
+                    return;
+                }
+                if (targetAudio.playing)
+                    targetAudio.stop();
+                else
+                    targetAudio.play();
         }
     }
 }
