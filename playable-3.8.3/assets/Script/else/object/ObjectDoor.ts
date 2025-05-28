@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, macro, PhysicsSystem2D, VERSION } from 'cc';
-import { ConstantBase } from '../ConstantBase';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('ObjectDoor')

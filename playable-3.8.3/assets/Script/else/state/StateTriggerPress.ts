@@ -1,6 +1,6 @@
 import { _decorator, Node, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Contact2DType, Enum, IPhysics2DContact, RigidBody2D, tween, Vec3 } from 'cc';
 import { StateBase } from './StateBase';
-import { ConstantBase } from '../ConstantBase';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 export enum PressType {

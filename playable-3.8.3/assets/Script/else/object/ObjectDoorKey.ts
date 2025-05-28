@@ -1,6 +1,6 @@
 import { _decorator, Component } from 'cc';
 import { ObjectDoor } from './ObjectDoor';
-import { ConstantBase } from '../ConstantBase';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('ObjectDoorKey')

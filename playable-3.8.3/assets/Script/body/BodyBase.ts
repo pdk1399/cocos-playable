@@ -1,6 +1,6 @@
 import { _decorator, Node, AudioSource, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, instantiate, RigidBody2D, Sprite, Vec2, v2, v3, UITransform, tween, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
-import { ValueBar } from '../value/ValueBar';
+import { ValueBar } from '../else/value/ValueBar';
 const { ccclass, property } = _decorator;
 
 @ccclass('BodyBase')

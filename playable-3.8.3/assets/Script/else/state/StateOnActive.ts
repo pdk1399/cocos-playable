@@ -1,6 +1,6 @@
 import { _decorator, CCBoolean, CCFloat, Component, Node } from 'cc';
 import { StateBase } from './StateBase';
-import { ConstantBase } from '../ConstantBase';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property, requireComponent } = _decorator;
 
 @ccclass('StateOnActive')

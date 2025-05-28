@@ -1,6 +1,6 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, RigidBody2D } from 'cc';
 import { StateBase } from './StateBase';
-import { ConstantBase } from '../ConstantBase';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('StateOnCollider')

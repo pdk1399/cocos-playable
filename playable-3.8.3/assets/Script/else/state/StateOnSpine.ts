@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, Node, sp } from 'cc';
-import { ConstantBase } from '../ConstantBase';
+import { ConstantBase } from '../../ConstantBase';
 import { StateBase } from './StateBase';
 const { ccclass, property, requireComponent } = _decorator;
 
