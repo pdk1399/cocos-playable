@@ -1076,12 +1076,13 @@ export class BodyControlX extends Component {
         if (this.m_dash || this.m_end || this.m_endReady || this.getKnock() || this.getDead())
             return;
         if (this.m_bodyCheck.m_isBotFinal) {
-            if (this.m_followBody == null) {
-                this.m_followBody = this.m_bodyCheck.m_currentBot.node;
-                if (this.m_followBody != null)
+            if (this.m_followBody == null || !this.m_followBody.isValid) {
+                let currentBot = this.m_bodyCheck.m_currentBot;
+                this.m_followBody = currentBot != null ? currentBot.node : null;
+                if (this.m_followBody != null && this.m_followBody.isValid)
                     this.m_followLastPos = this.m_followBody.position.clone();
             }
-            if (this.m_followBody != null) {
+            if (this.m_followBody != null && this.m_followBody.isValid) {
                 let offsetPos = this.m_followBody.position.clone().subtract(this.m_followLastPos);
                 if (offsetPos.length() > 0) {
                     this.m_followLastPos = this.m_followBody.position.clone();
