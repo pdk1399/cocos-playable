@@ -67,7 +67,7 @@ export class BodyHurt extends Component {
         }
     }
 
-    private onBot(state: boolean) {
+    private onBot(state: boolean, target: Collider2D,) {
         this.m_isBot = state;
     }
 

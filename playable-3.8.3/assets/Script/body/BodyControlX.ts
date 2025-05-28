@@ -193,7 +193,7 @@ export class BodyControlX extends Component {
 
         this.node.on(ConstantBase.NODE_COLLIDE_BOT, this.onCollideBot, this);
         this.node.on(ConstantBase.NODE_COLLIDE_INTERACTE, this.onCollideInteraction, this);
-        this.node.on(ConstantBase.NODE_COLLIDE_BODY, this.onCollideBody, this);
+        this.node.on(ConstantBase.NODE_COLLIDE_ENERMY, this.onCollideEnermy, this);
 
         this.node.on(ConstantBase.NODE_CONTROL_FACE_X_RIGHT, this.onFaceRight, this);
         this.node.on(ConstantBase.NODE_CONTROL_FACE_X_LEFT, this.onFaceLeft, this);
@@ -205,7 +205,7 @@ export class BodyControlX extends Component {
         this.node.on(ConstantBase.NODE_CONTROL_NODE, this.onControlByNode, this);
         this.node.on(ConstantBase.NODE_CONTROL_SLEEP, this.onSleep, this);
         this.node.on(ConstantBase.NODE_CONTROL_AWAKE, this.onAwake, this);
-        
+
         this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
 
         this.node.on(ConstantBase.NODE_VALUE_LOCK_X, this.onValueLockX, this);
@@ -470,7 +470,7 @@ export class BodyControlX extends Component {
                 this.m_rigidbody.angularVelocity = 0;
         }
         else {
-            if (this.m_bodyCheck.m_isBot) {
+            if (this.m_bodyCheck.m_isBotFinal) {
                 let moveGroundX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? this.MoveAttackGroundX : this.MoveGroundX;
                 let moveDirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? (this.MoveAttackByFace ? this.m_faceDirX : this.m_moveDirX) : this.m_moveDirX;
                 velocity.x += moveDirX * moveGroundX;
@@ -584,7 +584,7 @@ export class BodyControlX extends Component {
             return;
         }
 
-        if (this.JumpAuto && this.m_bodyCheck.m_isBot)
+        if (this.JumpAuto && this.m_bodyCheck.m_isBotFinal)
             this.onJump(dt);
 
         if (!this.FallAttackStop && this.FallAttackForce != 0 && this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {
@@ -641,7 +641,7 @@ export class BodyControlX extends Component {
         }
     }
 
-    protected onCollideBot(state: boolean) {
+    protected onCollideBot(state: boolean, target: Collider2D) {
         switch (state) {
             case true:
                 this.m_jumpCountCurrent = 0;
@@ -670,7 +670,7 @@ export class BodyControlX extends Component {
             this.m_rigidbody.gravityScale = this.m_baseGravity;
             //
             //Fix bug Dash while Jump cancel current Jump progress, don't remove code below
-            if (this.m_bodyCheck.m_isBot) {
+            if (this.m_bodyCheck.m_isBotFinal) {
                 this.m_jumpCountCurrent = 0;
                 this.m_jumpContinue = false;
             }
@@ -788,11 +788,11 @@ export class BodyControlX extends Component {
             return;
         let delayPick = 0;
         if (this.m_pickUp == null) {
-            if (this.m_bodyCheck.m_interacteNode.length == 0)
+            if (this.m_bodyCheck.m_currentInteracte.length == 0)
                 return;
             this.m_pickUpProgess = true;
             //Add Pick-up Object to current saved
-            this.m_pickUp = this.m_bodyCheck.m_interacteNode[0];
+            this.m_pickUp = this.m_bodyCheck.m_currentInteracte[0].node;
             this.m_pickUpParent = this.m_pickUp.parent;
             this.m_pickUpSiblingIndex = this.m_pickUp.getSiblingIndex();
             //Save Pick-up Object's Rigidbody imformation before destroy it
@@ -851,10 +851,10 @@ export class BodyControlX extends Component {
             this.scheduleOnce(() => this.m_pickUpProgess = false, delayPick + 0.02);
     }
 
-    protected onCollideInteraction(target: Node, state: boolean) {
+    protected onCollideInteraction(state: boolean, target: Node) {
         if (this.m_pickUp != null)
             return;
-        if (this.m_bodyCheck.m_interacteNode.length == 0) {
+        if (this.m_bodyCheck.m_currentInteracte.length == 0) {
             if (this.UiPickBtnActive)
                 director.emit(ConstantBase.UI_INTERACTION_SHOW, false);
             return;
@@ -866,10 +866,10 @@ export class BodyControlX extends Component {
 
     //COLLIDE
 
-    protected onCollideBody(target: Node) {
-        if (this.m_body.m_bodyX4) {
-            let bodyTarget = target.getComponent(BodyBase);
-            if (bodyTarget != null)
+    protected onCollideEnermy(state: boolean, target: Collider2D) {
+        let bodyTarget = target.getComponent(BodyBase);
+        if (bodyTarget != null && bodyTarget.isValid) {
+            if (this.m_body.m_bodyX4 && state)
                 bodyTarget.onDead(this.node);
         }
     }
@@ -909,7 +909,7 @@ export class BodyControlX extends Component {
         }
         else if (this.m_dash)
             state = PlayerStateX.DASH;
-        else if (!this.m_bodyCheck.m_isBot) {
+        else if (!this.m_bodyCheck.m_isBotFinal) {
             if (this.m_rigidbody.linearVelocity.y > 0)
                 state = PlayerStateX.JUMP;
             else if (this.m_rigidbody.linearVelocity.y < 0)
@@ -992,7 +992,7 @@ export class BodyControlX extends Component {
     protected onCompleteGroundUpdate(dt: number) {
         if (!this.EndOnGround)
             return;
-        if (!this.m_end || !this.m_endReady || !this.m_bodyCheck.m_isBot)
+        if (!this.m_end || !this.m_endReady || !this.m_bodyCheck.m_isBotFinal)
             return;
         this.m_endReady = false;
         this.onCompleteProgess();
@@ -1060,9 +1060,9 @@ export class BodyControlX extends Component {
     protected onFollowUpdate(dt: number) {
         if (this.m_dash || this.m_end || this.m_endReady || this.getKnock() || this.getDead())
             return;
-        if (this.m_bodyCheck.m_isBot) {
+        if (this.m_bodyCheck.m_isBotFinal) {
             if (this.m_followBody == null) {
-                this.m_followBody = this.m_bodyCheck.m_botNode;
+                this.m_followBody = this.m_bodyCheck.m_currentBot.node;
                 if (this.m_followBody != null)
                     this.m_followLastPos = this.m_followBody.position.clone();
             }

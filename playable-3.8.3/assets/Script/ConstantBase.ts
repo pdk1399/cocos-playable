@@ -48,9 +48,9 @@ export class ConstantBase {
     static readonly NODE_BODY_X4: string = 'node-body-x4';
     static readonly NODE_BODY_SINKING: string = 'node-body-sinking';
 
-    static readonly NODE_COLLIDE_BODY: string = 'node-collide-collide';
-    static readonly NODE_COLLIDE_BOT: string = 'node-collide-bot';
-    static readonly NODE_COLLIDE_INTERACTE: string = 'node-collide-interacte';
+    static readonly NODE_COLLIDE_ENERMY: string = 'node-collide-enermy'; //<Collider - State>
+    static readonly NODE_COLLIDE_BOT: string = 'node-collide-bot'; //<Collider - State>
+    static readonly NODE_COLLIDE_INTERACTE: string = 'node-collide-interacte'; //<Collider - State>
 
     static readonly NODE_CONTROL_FACE_X_RIGHT: string = 'node-control-face-x-right';
     static readonly NODE_CONTROL_FACE_X_LEFT: string = 'node-control-face-x-left';

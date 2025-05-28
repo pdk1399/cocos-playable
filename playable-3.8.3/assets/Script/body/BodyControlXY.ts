@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, Component, director, Enum, Node, RigidBody2D, v2, Vec2 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, director, Enum, Node, RigidBody2D, v2, Vec2 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { BodyBase } from './BodyBase';
 import { BodySpine } from './BodySpine';
@@ -98,7 +98,7 @@ export class BodyControlXY extends Component {
         director.on(ConstantBase.PLAYER_COMPLETE, this.onComplete, this);
         director.on(ConstantBase.GAME_TIME_OUT, this.onStop, this);
 
-        this.node.on(ConstantBase.NODE_COLLIDE_BODY, this.onCollideBody, this);
+        this.node.on(ConstantBase.NODE_COLLIDE_ENERMY, this.onCollideEnermy, this);
 
         this.node.on(ConstantBase.NODE_CONTROL_FACE_X_RIGHT, this.onFaceRight, this);
         this.node.on(ConstantBase.NODE_CONTROL_FACE_X_LEFT, this.onFaceLeft, this);
@@ -391,10 +391,10 @@ export class BodyControlXY extends Component {
 
     //COLLIDE
 
-    protected onCollideBody(target: Node) {
-        if (this.m_body.m_bodyX4) {
-            let bodyTarget = target.getComponent(BodyBase);
-            if (bodyTarget != null)
+    protected onCollideEnermy(state: boolean, target: Collider2D) {
+        let bodyTarget = target.getComponent(BodyBase);
+        if (bodyTarget != null && bodyTarget.isValid) {
+            if (this.m_body.m_bodyX4 && state)
                 bodyTarget.onDead(this.node);
         }
     }
