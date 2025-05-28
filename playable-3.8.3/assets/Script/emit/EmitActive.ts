@@ -49,22 +49,15 @@ export class EmitActive extends EmitBaseFull {
                 target.active = state;
                 break;
             case TargetType.Spine:
-                {
-                    let targetSpine = target.getComponent(sp.Skeleton);
-                    if (targetSpine == null) {
-                        this.onEventSingle(target, state, TargetType.Node);
-                        return;
-                    }
-                    targetSpine.enabled = state;
-                }
-                break;
             case TargetType.SpineColor:
-                {
-                    let targetSpine = target.getComponent(sp.Skeleton);
-                    if (targetSpine == null) {
-                        this.onEventSingle(target, state, TargetType.Node);
-                        return;
-                    }
+                let targetSpine = target.getComponent(sp.Skeleton);
+                if (targetSpine == null) {
+                    this.onEventSingle(target, state, TargetType.Node);
+                    break;
+                }
+                if (targetType == TargetType.Spine)
+                    targetSpine.enabled = state;
+                else {
                     let targetSpineColor = targetSpine.color;
                     targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, state ? 255 : 0);
                     targetSpine.color = targetSpineColor;
@@ -74,7 +67,7 @@ export class EmitActive extends EmitBaseFull {
                 let targetAudio = target.getComponent(AudioSource);
                 if (targetAudio == null) {
                     this.onEventSingle(target, state, TargetType.Node);
-                    return;
+                    break;
                 }
                 if (state)
                     targetAudio.play();
@@ -91,22 +84,15 @@ export class EmitActive extends EmitBaseFull {
                 target.active = !target.activeInHierarchy; // Can't use 'active' instead
                 break;
             case TargetType.Spine:
-                {
-                    let targetSpine = target.getComponent(sp.Skeleton);
-                    if (targetSpine == null) {
-                        this.onEventSingleRevert(target, TargetType.Node);
-                        return;
-                    }
-                    targetSpine.enabled = !targetSpine.enabled;
-                }
-                break;
             case TargetType.SpineColor:
-                {
-                    let targetSpine = target.getComponent(sp.Skeleton);
-                    if (targetSpine == null) {
-                        this.onEventSingleRevert(target, TargetType.Node);
-                        return;
-                    }
+                let targetSpine = target.getComponent(sp.Skeleton);
+                if (targetSpine == null) {
+                    this.onEventSingleRevert(target, TargetType.Node);
+                    break;
+                }
+                if (targetType)
+                    targetSpine.enabled = !targetSpine.enabled;
+                else {
                     let targetSpineColor = targetSpine.color;
                     targetSpineColor.set(targetSpineColor.r, targetSpineColor.g, targetSpineColor.b, targetSpineColor.a != 255 ? 255 : 0);
                     targetSpine.color = targetSpineColor;
@@ -116,7 +102,7 @@ export class EmitActive extends EmitBaseFull {
                 let targetAudio = target.getComponent(AudioSource);
                 if (targetAudio == null) {
                     this.onEventSingleRevert(target, TargetType.Node);
-                    return;
+                    break;
                 }
                 if (targetAudio.playing)
                     targetAudio.stop();
