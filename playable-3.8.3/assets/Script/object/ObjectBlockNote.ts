@@ -1,4 +1,4 @@
-import { _decorator, CCFloat, CCInteger, BoxCollider2D, Component, Contact2DType, IPhysics2DContact, Node, RigidBody2D, Tween, tween, TweenEasing, UITransform, v2, v3, Size, CCString, sp, SpriteFrame, Sprite } from 'cc';
+import { _decorator, CCFloat, CCInteger, BoxCollider2D, Component, Contact2DType, IPhysics2DContact, Node, RigidBody2D, Tween, tween, TweenEasing, UITransform, v2, v3, Size, CCString, sp, SpriteFrame, Sprite, CCBoolean } from 'cc';
 import { EaseType } from '../ConstantBase';
 const { ccclass, property, playOnFocus } = _decorator;
 
@@ -6,13 +6,15 @@ const { ccclass, property, playOnFocus } = _decorator;
 @playOnFocus()
 export class ObjectBlockNote extends Component {
 
-    @property({ group: { name: 'Main' }, type: UITransform })
+    @property({ group: { name: 'Tween' }, type: UITransform })
     TweenTarget: UITransform = null;
-    @property({ group: { name: 'Main' }, type: CCFloat })
+    @property({ group: { name: 'Tween' }, type: CCFloat })
     TweenDuration: number = 0.05;
-    @property({ group: { name: 'Main' }, type: EaseType })
+    @property({ group: { name: 'Tween' }, type: EaseType })
     TweenEase: EaseType = EaseType.linear;
 
+    @property({ group: { name: 'Anim' }, type: CCBoolean })
+    FirstState: boolean = false;
     @property({ group: { name: 'Anim' }, type: CCString, visible(this: ObjectBlockNote) { return this.getEditorSpineAvaible(); } })
     AnimOff: string = 'off';
     @property({ group: { name: 'Anim' }, type: CCString, visible(this: ObjectBlockNote) { return this.getEditorSpineAvaible(); } })
@@ -59,6 +61,8 @@ export class ObjectBlockNote extends Component {
         this.m_posYC = this.TweenTarget.node.position.clone().y;
         this.m_posYD = this.m_posYC - this.m_offsetY;
         this.m_posYU = this.m_posYC + this.m_offsetY;
+        if (this.FirstState)
+            this.onAnimTrigged();
     }
 
     onFocusInEditor(): void {
