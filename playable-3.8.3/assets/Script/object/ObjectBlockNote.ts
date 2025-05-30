@@ -1,5 +1,4 @@
-import { _decorator, CCFloat, CCInteger, BoxCollider2D, Component, Contact2DType, IPhysics2DContact, Node, RigidBody2D, Tween, tween, TweenEasing, UITransform, v2, v3, Size } from 'cc';
-import { SpineBase } from '../renderer/SpineBase';
+import { _decorator, CCFloat, CCInteger, BoxCollider2D, Component, Contact2DType, IPhysics2DContact, Node, RigidBody2D, Tween, tween, TweenEasing, UITransform, v2, v3, Size, CCString, sp, SpriteFrame, Sprite } from 'cc';
 import { EaseType } from '../ConstantBase';
 const { ccclass, property, playOnFocus } = _decorator;
 
@@ -14,10 +13,21 @@ export class ObjectBlockNote extends Component {
     @property({ group: { name: 'Main' }, type: EaseType })
     TweenEase: EaseType = EaseType.linear;
 
+    @property({ group: { name: 'Anim' }, type: CCString, visible(this: ObjectBlockNote) { return this.getEditorSpineAvaible(); } })
+    AnimOff: string = 'off';
+    @property({ group: { name: 'Anim' }, type: CCString, visible(this: ObjectBlockNote) { return this.getEditorSpineAvaible(); } })
+    AnimOn: string = 'on';
+    @property({ group: { name: 'Anim' }, type: SpriteFrame, visible(this: ObjectBlockNote) { return this.getEditorSpriteAvaible(); } })
+    SpriteOff: SpriteFrame = null;
+    @property({ group: { name: 'Anim' }, type: SpriteFrame, visible(this: ObjectBlockNote) { return this.getEditorSpriteAvaible(); } })
+    SpriteOn: SpriteFrame = null;
+
     @property({ group: { name: 'Tag' }, type: CCInteger })
     TagBody: number = -1;
     @property({ group: { name: 'Tag' }, type: CCInteger })
     TagTop: number = 0;
+
+    m_trigged: boolean = false;
 
     m_offsetY: number = 0;
     m_posYC: number = 0;
@@ -26,10 +36,12 @@ export class ObjectBlockNote extends Component {
 
     m_targetTop: RigidBody2D[] = [];
 
-    m_spine: SpineBase = null;
+    m_spine: sp.Skeleton = null;
+    m_sprite: Sprite = null;
 
     protected onLoad(): void {
-        this.m_spine = this.getComponent(SpineBase);
+        this.m_spine = this.TweenTarget.getComponent(sp.Skeleton);
+        this.m_sprite = this.TweenTarget.getComponent(Sprite);
 
         let colliders = this.getComponents(BoxCollider2D);
         colliders.forEach(collider => {
@@ -50,11 +62,11 @@ export class ObjectBlockNote extends Component {
     }
 
     onFocusInEditor(): void {
-        this.onColliderFixed();
+        this.onEditorFixed();
     }
 
     onLostFocusInEditor(): void {
-        this.onColliderFixed();
+        this.onEditorFixed();
     }
 
     protected onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
@@ -63,8 +75,10 @@ export class ObjectBlockNote extends Component {
         if (index >= 0)
             return;
         this.m_targetTop.push(otherCollider.body);
-        if (this.m_targetTop.length == 1)
-            this.onBlockStateChange(true);
+        if (this.m_targetTop.length == 1) {
+            this.onTopTrigger(true);
+            this.onAnimTrigged();
+        }
     }
 
     protected onEndContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
@@ -74,12 +88,39 @@ export class ObjectBlockNote extends Component {
             return;
         this.m_targetTop.splice(index, 1);
         if (this.m_targetTop.length == 0)
-            this.onBlockStateChange(false);
+            this.onTopTrigger(false);
     }
 
     //
 
-    protected onColliderFixed() {
+    protected onTopTrigger(state: boolean) {
+        if (state)
+            this.onTweenMove(this.m_posYD);
+        else
+            this.onTweenMove(this.m_posYC);
+    }
+
+    protected onTweenMove(posY: number) {
+        Tween.stopAllByTarget(this.TweenTarget.node);
+        let posTo = v3(this.TweenTarget.node.position.x, posY, this.TweenTarget.node.position.z);
+        tween(this.TweenTarget.node)
+            .to(this.TweenDuration, { position: posTo }, { easing: EaseType[this.TweenEase] as TweenEasing })
+            .start();
+    }
+
+    protected onAnimTrigged() {
+        if (this.m_trigged)
+            return;
+        this.m_trigged = true;
+        if (this.m_spine != null && this.m_spine.isValid)
+            this.m_spine.setAnimation(0, this.AnimOn, true);
+        else if (this.m_sprite != null && this.m_sprite.isValid)
+            this.m_sprite.spriteFrame = this.SpriteOn;
+    }
+
+    //
+
+    protected onEditorFixed() {
         if (this.TweenTarget == null || !this.TweenTarget.isValid)
             return;
         if (this.TweenTarget.node.parent != this.node)
@@ -103,18 +144,19 @@ export class ObjectBlockNote extends Component {
         });
     }
 
-    protected onBlockStateChange(state: boolean) {
-        if (state)
-            this.onTweenMove(this.m_posYD);
-        else
-            this.onTweenMove(this.m_posYC);
+    protected getEditorSpineAvaible(): boolean {
+        if (this.TweenTarget == null || !this.TweenTarget.isValid)
+            return false;
+        if (this.TweenTarget.getComponent(sp.Skeleton) == null)
+            return false;
+        return true;
     }
 
-    protected onTweenMove(posY: number) {
-        Tween.stopAllByTarget(this.TweenTarget.node);
-        let posTo = v3(this.TweenTarget.node.position.x, posY, this.TweenTarget.node.position.z);
-        tween(this.TweenTarget.node)
-            .to(this.TweenDuration, { position: posTo }, { easing: EaseType[this.TweenEase] as TweenEasing })
-            .start();
+    protected getEditorSpriteAvaible(): boolean {
+        if (this.TweenTarget == null || !this.TweenTarget.isValid)
+            return false;
+        if (this.TweenTarget.getComponent(Sprite) == null)
+            return false;
+        return true;
     }
 }
