@@ -69,7 +69,7 @@ export class ScaleRestart extends Component {
         if (this.Limit) {
             tween(this.Target)
                 .repeat(this.LimitCount, tween(this.Target)
-                    .call(() => this.node.scale = this.m_valueA.clone())
+                    .call(() => this.Target.scale = this.m_valueA.clone())
                     .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .call(() => {
                         if (this.EmitEvent != '')
@@ -82,7 +82,7 @@ export class ScaleRestart extends Component {
         else {
             tween(this.Target)
                 .repeatForever(tween(this.Target)
-                    .call(() => this.node.scale = this.m_valueA.clone())
+                    .call(() => this.Target.scale = this.m_valueA.clone())
                     .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .call(() => {
                         if (this.EmitEvent != '')

@@ -64,7 +64,7 @@ export class ScaleOnce extends Component {
     private onTween() {
         Tween.stopAllByTarget(this.Target);
         tween(this.Target)
-            .call(() => this.node.scale = this.m_valueA.clone())
+            .call(() => this.Target.scale = this.m_valueA.clone())
             .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
             .call(() => {
                 if (this.EmitEvent != '')
@@ -72,7 +72,7 @@ export class ScaleOnce extends Component {
             })
             .call(() => {
                 if (this.CompleteDestroy)
-                    this.scheduleOnce(() => this.node.destroy(), this.Fixed ? 0.02 : 0);
+                    this.scheduleOnce(() => this.Target.destroy(), this.Fixed ? 0.02 : 0);
             })
             .start();
     }

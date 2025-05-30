@@ -69,7 +69,7 @@ export class SpriteFillOnce extends Component {
             })
             .call(() => {
                 if (this.CompleteDestroy)
-                    this.scheduleOnce(() => this.node.destroy(), this.Fixed ? 0.02 : 0);
+                    this.scheduleOnce(() => this.Target.destroy(), this.Fixed ? 0.02 : 0);
             })
             .start();
     }

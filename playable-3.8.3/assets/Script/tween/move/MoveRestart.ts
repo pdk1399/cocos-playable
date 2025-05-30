@@ -76,7 +76,7 @@ export class MoveRestart extends Component {
             if (this.Limit) {
                 tween(this.Target)
                     .repeat(this.LimitCount, tween(this.Target)
-                        .call(() => this.node.worldPosition = this.m_valueA.clone())
+                        .call(() => this.Target.worldPosition = this.m_valueA.clone())
                         .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                         .call(() => {
                             if (this.EmitEvent != '')
@@ -89,7 +89,7 @@ export class MoveRestart extends Component {
             else {
                 tween(this.Target)
                     .repeatForever(tween(this.Target)
-                        .call(() => this.node.worldPosition = this.m_valueA.clone())
+                        .call(() => this.Target.worldPosition = this.m_valueA.clone())
                         .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                         .call(() => {
                             if (this.EmitEvent != '')
@@ -105,7 +105,7 @@ export class MoveRestart extends Component {
             if (this.Limit) {
                 tween(this.Target)
                     .repeat(this.LimitCount, tween(this.Target)
-                        .call(() => this.node.position = this.m_valueA.clone())
+                        .call(() => this.Target.position = this.m_valueA.clone())
                         .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                         .call(() => {
                             if (this.EmitEvent != '')
@@ -118,7 +118,7 @@ export class MoveRestart extends Component {
             else {
                 tween(this.Target)
                     .repeatForever(tween(this.Target)
-                        .call(() => this.node.position = this.m_valueA.clone())
+                        .call(() => this.Target.position = this.m_valueA.clone())
                         .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                         .call(() => {
                             if (this.EmitEvent != '')

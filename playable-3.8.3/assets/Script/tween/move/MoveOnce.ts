@@ -71,7 +71,7 @@ export class MoveOnce extends Component {
         if (this.MoveToWorld) {
             //World
             tween(this.Target)
-                .call(() => this.node.worldPosition = this.m_valueA.clone())
+                .call(() => this.Target.worldPosition = this.m_valueA.clone())
                 .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                 .call(() => {
                     if (this.EmitEvent != '')
@@ -79,14 +79,14 @@ export class MoveOnce extends Component {
                 })
                 .call(() => {
                     if (this.CompleteDestroy)
-                        this.scheduleOnce(() => this.node.destroy(), this.Fixed ? 0.02 : 0);
+                        this.scheduleOnce(() => this.Target.destroy(), this.Fixed ? 0.02 : 0);
                 })
                 .start();
         }
         else {
             //Local
             tween(this.Target)
-                .call(() => this.node.position = this.m_valueA.clone())
+                .call(() => this.Target.position = this.m_valueA.clone())
                 .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                 .call(() => {
                     if (this.EmitEvent != '')
@@ -94,7 +94,7 @@ export class MoveOnce extends Component {
                 })
                 .call(() => {
                     if (this.CompleteDestroy)
-                        this.scheduleOnce(() => this.node.destroy(), this.Fixed ? 0.02 : 0);
+                        this.scheduleOnce(() => this.Target.destroy(), this.Fixed ? 0.02 : 0);
                 })
                 .start();
         }
