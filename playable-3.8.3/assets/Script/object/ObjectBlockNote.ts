@@ -1,10 +1,10 @@
-import { _decorator, CCFloat, CCInteger, Collider2D, Component, Contact2DType, IPhysics2DContact, Node, RigidBody2D, Tween, tween, TweenEasing, UITransform, v2, v3 } from 'cc';
-import { MoveOnce } from '../tween/move/MoveOnce';
+import { _decorator, CCFloat, CCInteger, BoxCollider2D, Component, Contact2DType, IPhysics2DContact, Node, RigidBody2D, Tween, tween, TweenEasing, UITransform, v2, v3, Size } from 'cc';
 import { SpineBase } from '../renderer/SpineBase';
 import { EaseType } from '../ConstantBase';
-const { ccclass, property } = _decorator;
+const { ccclass, property, playOnFocus } = _decorator;
 
 @ccclass('ObjectBlockNote')
+@playOnFocus()
 export class ObjectBlockNote extends Component {
 
     @property({ group: { name: 'Main' }, type: UITransform })
@@ -14,6 +14,8 @@ export class ObjectBlockNote extends Component {
     @property({ group: { name: 'Main' }, type: EaseType })
     TweenEase: EaseType = EaseType.linear;
 
+    @property({ group: { name: 'Tag' }, type: CCInteger })
+    TagBody: number = -1;
     @property({ group: { name: 'Tag' }, type: CCInteger })
     TagTop: number = 0;
 
@@ -29,7 +31,7 @@ export class ObjectBlockNote extends Component {
     protected onLoad(): void {
         this.m_spine = this.getComponent(SpineBase);
 
-        let colliders = this.getComponents(Collider2D);
+        let colliders = this.getComponents(BoxCollider2D);
         colliders.forEach(collider => {
             switch (collider.tag) {
                 case this.TagTop:
@@ -47,7 +49,15 @@ export class ObjectBlockNote extends Component {
         this.m_posYU = this.m_posYC + this.m_offsetY;
     }
 
-    protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+    onFocusInEditor(): void {
+        this.onColliderFixed();
+    }
+
+    onLostFocusInEditor(): void {
+        this.onColliderFixed();
+    }
+
+    protected onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
         let target = otherCollider.body;
         let index = this.m_targetTop.findIndex((t) => t == target);
         if (index >= 0)
@@ -57,7 +67,7 @@ export class ObjectBlockNote extends Component {
             this.onBlockStateChange(true);
     }
 
-    protected onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+    protected onEndContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
         let target = otherCollider.body;
         let index = this.m_targetTop.findIndex((t) => t == target);
         if (index < 0)
@@ -68,6 +78,30 @@ export class ObjectBlockNote extends Component {
     }
 
     //
+
+    protected onColliderFixed() {
+        if (this.TweenTarget == null || !this.TweenTarget.isValid)
+            return;
+        if (this.TweenTarget.node.parent != this.node)
+            return;
+        let targetSize = this.TweenTarget.contentSize.clone();
+        this.TweenTarget.node.position = v3(0, targetSize.y * 0.5);
+        let colliders = this.getComponents(BoxCollider2D);
+        colliders.forEach(collider => {
+            switch (collider.tag) {
+                case this.TagBody:
+                    collider.size.set(targetSize.x, targetSize.y * 0.5);
+                    collider.offset.set(0, this.TweenTarget.contentSize.clone().y * 0.25);
+                    collider.apply();
+                    break;
+                case this.TagTop:
+                    collider.size.set(targetSize.x - 5, 10);
+                    collider.offset.set(0, this.TweenTarget.contentSize.clone().y * 0.5);
+                    collider.apply();
+                    break;
+            }
+        });
+    }
 
     protected onBlockStateChange(state: boolean) {
         if (state)
