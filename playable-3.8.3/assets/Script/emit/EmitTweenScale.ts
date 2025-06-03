@@ -18,15 +18,12 @@ export class EmitTweenScale extends EmitTween {
         let valueB = v3(this.Value.x, this.Value.y, this.m_valueA.z);
         switch (this.To) {
             case ValueType.Directly:
-                console.log('scale directly');
                 this.m_valueB = v3(valueB.x, valueB.y, this.m_valueA.z);
                 break;
             case ValueType.Offset:
-                console.log('scale offset');
                 this.m_valueB = v3(this.m_valueA.x + valueB.x, this.m_valueA.y + valueB.y, this.m_valueA.z);
                 break;
         }
-        console.log('scale ' + this.To);
     }
 
     onTweenOnce(target: Node): void {
