@@ -118,8 +118,6 @@ export class EmitBase extends Component {
 
     onEventActive(): void { } // Re-code onEventActive() to active main events
 
-    onEventActiveNode(target: Node): void { target.emit(ConstantBase.NODE_EVENT); } // Re-code onEventActiveNode() to active node events
-
     //NOTE: Don't re-code any function below, or re-code them with caution
 
     onEventOnceCheck() {
