@@ -1,17 +1,17 @@
 import { _decorator, CCBoolean, Collider2D, director, IPhysics2DContact, Node, RigidBody2D } from 'cc';
-import { EmitBase } from './EmitBase';
 import { ConstantBase } from '../ConstantBase';
+import { EmitBaseEvent } from './EmitBaseEvent';
 const { ccclass, property } = _decorator;
 
-//Extends this class to create unique event with other node events excuted (when after delay or collided)
+//Extends this class to create unique event with focus on node events executed
 
-@ccclass('EmitBaseFull')
-export class EmitBaseFull extends EmitBase {
+@ccclass('EmitBaseNode')
+export class EmitBaseNode extends EmitBaseEvent {
 
-    @property({ group: { name: 'Event' }, type: [Node] })
+    @property({ group: { name: 'Event', displayOrder: 16 }, type: [Node] })
     EmitNode: Node[] = [];
     //EMIT-COLLISION-EVENT
-    @property({ group: { name: 'Event' }, type: CCBoolean, visible(this: EmitBaseFull) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
+    @property({ group: { name: 'Event', displayOrder: 18 }, type: CCBoolean, visible(this: EmitBaseNode) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
     EmitTagTarget: boolean = false;
 
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {

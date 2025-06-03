@@ -1,6 +1,6 @@
 import { _decorator, CCBoolean, director, Enum, Node } from 'cc';
 import { ConstantBase } from '../ConstantBase';
-import { EmitBaseFull } from './EmitBaseFull';
+import { EmitBaseNode } from './EmitBaseNode';
 const { ccclass, property } = _decorator;
 
 export enum ControlType {
@@ -39,7 +39,7 @@ export enum FaceYType {
 Enum(FaceYType);
 
 @ccclass('EmitControl')
-export class EmitControl extends EmitBaseFull {
+export class EmitControl extends EmitBaseNode {
 
     @property({ group: { name: 'Main' }, type: ControlType })
     Control: ControlType = ControlType.Node;

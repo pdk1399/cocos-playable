@@ -1,8 +1,6 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, Enum, ERigidBody2DType, IPhysics2DContact, Node, RigidBody2D } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Contact2DType, Enum, ERigidBody2DType, IPhysics2DContact, Node, RigidBody2D } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
-
-//Extends this class to create unique event with no other node events excuted
 
 export enum OnceType {
     None,
@@ -12,44 +10,35 @@ export enum OnceType {
 }
 Enum(OnceType);
 
+//Extends this class to create unique event with focus on next event
+
 @ccclass('EmitBase')
 export class EmitBase extends Component {
 
-    @property({ group: { name: 'Event' }, type: CCBoolean })
+    @property({ group: { name: 'Event', displayOrder: 0 }, type: CCBoolean })
     Start: boolean = false;
-    //ON-EVENT
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: EmitBase) { return !this.Start; } })
-    OnEvent: string = '';
     //ON-COLLISION-EVENT
-    @property({ group: { name: 'Event' }, type: CCInteger, visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
+    @property({ group: { name: 'Event', displayOrder: 4 }, type: CCInteger, visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
     OnTagBody: number = 0;
-    @property({ group: { name: 'Event' }, type: [CCInteger], visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
+    @property({ group: { name: 'Event', displayOrder: 6 }, type: [CCInteger], visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
     OnTagTarget: number[] = [100];
-    @property({ group: { name: 'Event' }, type: [Node], visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
+    @property({ group: { name: 'Event', displayOrder: 8 }, type: [Node], visible(this: EmitBase) { return !this.Start && this.getComponent(RigidBody2D) != null; } })
     OnNodeTarget: Node[] = [];
     //OPTION-EVENT
-    @property({ group: { name: 'Event' }, type: OnceType, visible(this: EmitBase) { return !this.Start; } })
+    @property({ group: { name: 'Event', displayOrder: 10 }, type: OnceType })
     Once: OnceType = OnceType.Once;
-    @property({ group: { name: 'Event' }, type: CCFloat })
+    @property({ group: { name: 'Event', displayOrder: 12 }, type: CCFloat })
     Delay: number = 0;
-    //EMIT-EVENT
-    @property({ group: { name: 'Event' }, type: CCString })
-    EmitEvent: string = '';
     //NEXT-EVENT
     @property({ group: { name: 'Event', displayOrder: 99999 }, type: Node })
     EmitNodeNext: Node = null;
 
-    //NOTE: 'displayOrder' count every items (field name, field value, etc) to draw order
-
     protected m_eventActived: boolean = false;
     protected m_eventPhysic: boolean = false;
-    protected m_targetCollide: Node[] = [];
 
     protected onLoad(): void {
-        //ON-EVENT
-        this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
-        if (this.OnEvent != '')
-            director.on(this.OnEvent, this.onEvent, this);
+        if (this.Start)
+            return;
 
         //ON-COLLISION-EVENT
         let rigidBody = this.getComponent(RigidBody2D);
@@ -95,13 +84,6 @@ export class EmitBase extends Component {
 
         //DELAY
         this.scheduleOnce(() => {
-            //#0: Emit Active
-            this.onEventActive();
-
-            //#1: Emit Director
-            if (this.EmitEvent != '')
-                director.emit(this.EmitEvent);
-
             //NEXT
             if (this.EmitNodeNext != null)
                 this.EmitNodeNext.emit(ConstantBase.NODE_EVENT);
@@ -112,32 +94,23 @@ export class EmitBase extends Component {
 
         //ONCE
         this.onEventOnceCheck();
-    } // Re-code onEvent() to fix scheduleOnce & delay events
+    }
 
-    onEventActive(): void { } // Re-code onEventActive() to active main events
-
-    onEventOnceCheck() {
+    onEventOnceCheck(): void {
         if (this.Once >= OnceType.Once) {
-            //ON-EVENT
-            this.node.off(ConstantBase.NODE_EVENT, this.onEvent, this);
-            if (this.OnEvent != '')
-                director.off(this.OnEvent, this.onEvent, this);
-
             //ON-COLLISION-EVENT
-            if (this.m_eventPhysic) {
-                let colliders = this.getComponents(Collider2D);
-                colliders.forEach(collider => {
-                    switch (collider.tag) {
-                        case this.OnTagBody:
-                            collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-                            break;
-                    }
-                });
-            }
+            let colliders = this.getComponents(Collider2D);
+            colliders.forEach(collider => {
+                switch (collider.tag) {
+                    case this.OnTagBody:
+                        collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+                        break;
+                }
+            });
         }
         if (this.Once >= OnceType.DeActive)
             this.scheduleOnce(() => this.node.active = false, 0.02);
-        if (this.Once >= OnceType.Destroy)
-            this.scheduleOnce(() => this.node.destroy(), Math.max(this.Delay, 0) + 0.02);
-    } // Re-code onEventOnceCheck() to check once events
+        else if (this.Once >= OnceType.Destroy)
+            this.scheduleOnce(() => this.node.destroy(), 0.02);
+    }
 }

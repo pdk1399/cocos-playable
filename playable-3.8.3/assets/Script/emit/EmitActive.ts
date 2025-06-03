@@ -1,5 +1,5 @@
 import { _decorator, AudioSource, Enum, Node, sp } from 'cc';
-import { EmitBaseFull } from './EmitBaseFull';
+import { EmitBaseNode } from './EmitBaseNode';
 const { ccclass, property } = _decorator;
 
 export enum TargetType {
@@ -18,7 +18,7 @@ export enum ValueType {
 Enum(ValueType);
 
 @ccclass('EmitActive')
-export class EmitActive extends EmitBaseFull {
+export class EmitActive extends EmitBaseNode {
 
     @property({ group: { name: 'Event' }, type: TargetType })
     EventType: TargetType = TargetType.Node;

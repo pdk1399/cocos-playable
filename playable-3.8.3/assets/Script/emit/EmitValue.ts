@@ -1,6 +1,6 @@
 import { _decorator, Enum, Node, Vec2, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
-import { EmitBaseFull } from './EmitBaseFull';
+import { EmitBaseNode } from './EmitBaseNode';
 const { ccclass, property } = _decorator;
 
 export enum ValueType {
@@ -27,7 +27,7 @@ export enum ParamType {
 Enum(ParamType);
 
 @ccclass('EmitValue')
-export class EmitValue extends EmitBaseFull {
+export class EmitValue extends EmitBaseNode {
 
     @property({ group: { name: 'Main' }, type: ValueType })
     Value: ValueType = ValueType.None;

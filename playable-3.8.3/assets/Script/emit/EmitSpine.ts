@@ -1,11 +1,11 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Collider2D, Contact2DType, director, Node } from 'cc';
 import { SpineBase } from '../renderer/SpineBase';
-import { EmitBaseFull } from './EmitBaseFull';
+import { EmitBaseNode } from './EmitBaseNode';
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('EmitSpine')
-export class EmitSpine extends EmitBaseFull {
+export class EmitSpine extends EmitBaseNode {
 
     @property({ group: { name: 'Main' }, type: CCString })
     AnimStart: string = '';
