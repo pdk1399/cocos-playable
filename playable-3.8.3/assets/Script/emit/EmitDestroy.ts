@@ -1,6 +1,5 @@
-import { _decorator, CCBoolean, Component, Node } from 'cc';
+import { _decorator, Node } from 'cc';
 import { EmitBaseFull } from './EmitBaseFull';
-import { OnceType } from './EmitBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('EmitDestroy')

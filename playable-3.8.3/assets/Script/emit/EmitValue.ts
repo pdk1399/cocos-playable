@@ -1,6 +1,5 @@
 import { _decorator, Enum, Node, Vec2, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
-import { EmitBase } from './EmitBase';
 import { EmitBaseFull } from './EmitBaseFull';
 const { ccclass, property } = _decorator;
 

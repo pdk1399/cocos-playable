@@ -1,5 +1,5 @@
-import { _decorator, CCBoolean, Collider2D, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D } from 'cc';
-import { EmitBase, OnceType } from './EmitBase';
+import { _decorator, CCBoolean, Collider2D, director, IPhysics2DContact, Node, RigidBody2D } from 'cc';
+import { EmitBase } from './EmitBase';
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 

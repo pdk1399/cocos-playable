@@ -2,7 +2,6 @@ import { _decorator, CCBoolean, CCFloat, CCString, Collider2D, Contact2DType, di
 import { SpineBase } from '../renderer/SpineBase';
 import { EmitBaseFull } from './EmitBaseFull';
 import { ConstantBase } from '../ConstantBase';
-import { OnceType } from './EmitBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('EmitSpine')
