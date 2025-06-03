@@ -114,11 +114,7 @@ export class EmitBase extends Component {
         this.onEventOnceCheck();
     } // Re-code onEvent() to fix scheduleOnce & delay events
 
-    //NOTE: Re-Code just once function below
-
     onEventActive(): void { } // Re-code onEventActive() to active main events
-
-    //NOTE: Don't re-code any function below, or re-code them with caution
 
     onEventOnceCheck() {
         if (this.Once >= OnceType.Once) {
@@ -143,5 +139,5 @@ export class EmitBase extends Component {
             this.scheduleOnce(() => this.node.active = false, 0.02);
         if (this.Once >= OnceType.Destroy)
             this.scheduleOnce(() => this.node.destroy(), Math.max(this.Delay, 0) + 0.02);
-    }
+    } // Re-code onEventOnceCheck() to check once events
 }

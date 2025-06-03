@@ -76,7 +76,5 @@ export class EmitBaseFull extends EmitBase {
         this.onEventOnceCheck();
     } // Re-code onEvent() to fix scheduleOnce & delay events
 
-    //NOTE: Re-Code just once function below
-
     onEventActiveNode(target: Node): void { target.emit(ConstantBase.NODE_EVENT); } // Re-code onEventActiveNode() to active node events
 }
