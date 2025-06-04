@@ -21,7 +21,7 @@ export class SpawmActive extends Component {
     @property({ group: { name: 'Spawm' }, type: CCFloat })
     Delay: number = 1;
     @property({ group: { name: 'Spawm' }, type: Node })
-    Group: Node = null;
+    List: Node = null;
 
     m_progess: boolean = false;
     m_delay: boolean = false;
@@ -33,10 +33,10 @@ export class SpawmActive extends Component {
     }
 
     protected start(): void {
-        if (this.Group == null)
-            this.Group = this.node;
-        for (let i = 0; i < this.Group.children.length; i++)
-            this.Group.children[i].active = false;
+        if (this.List == null)
+            this.List = this.node;
+        for (let i = 0; i < this.List.children.length; i++)
+            this.List.children[i].active = false;
         if (this.Start)
             this.onStart();
     }
@@ -54,8 +54,8 @@ export class SpawmActive extends Component {
     }
 
     onSpawm() {
-        for (let i = 0; i < this.Group.children.length; i++) {
-            let target = this.Group.children[i];
+        for (let i = 0; i < this.List.children.length; i++) {
+            let target = this.List.children[i];
 
             //Target's Body Spawm component init
             let bodySpawm = target.getComponent(BodySpawm);
