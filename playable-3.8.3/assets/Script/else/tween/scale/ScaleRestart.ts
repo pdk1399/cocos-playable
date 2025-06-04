@@ -1,16 +1,16 @@
-import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node, Tween, tween, TweenEasing, v3, Vec3 } from 'cc';
-import { EaseType } from '../../ConstantBase';
+import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node, Tween, tween, TweenEasing, v2, v3, Vec2, Vec3 } from 'cc';
+import { EaseType } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('RotateRestart')
-export class RotateRestart extends Component {
+@ccclass('ScaleRestart')
+export class ScaleRestart extends Component {
 
     @property(Node)
     Target: Node = null;
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: RotateRestart) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: ScaleRestart) { return !this.Start; } })
     OnEvent: string = '';
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
@@ -19,8 +19,8 @@ export class RotateRestart extends Component {
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
 
-    @property({ group: { name: 'Main' }, type: CCFloat })
-    RotateTo: number = 0;
+    @property({ group: { name: 'Main' }, type: Vec2 })
+    ScaleTo: Vec2 = v2();
     @property({ group: { name: 'Main' }, type: CCFloat })
     Duration: number = 1;
     @property({ group: { name: 'Main' }, type: EaseType })
@@ -54,8 +54,8 @@ export class RotateRestart extends Component {
     //
 
     onEvent() {
-        this.m_valueA = v3(0, 0, this.Target.eulerAngles.clone().z);
-        this.m_valueB = v3(0, 0, this.RotateTo.valueOf());
+        this.m_valueA = v3(this.Target.scale.clone().x, this.Target.scale.clone().y, this.Target.scale.clone().z);
+        this.m_valueB = v3(this.ScaleTo.clone().x, this.ScaleTo.clone().y, this.Target.scale.clone().z);
 
         this.unscheduleAllCallbacks();
         this.scheduleOnce(() => this.onTween(), this.Delay + (this.Fixed ? 0.02 : 0));
@@ -69,8 +69,8 @@ export class RotateRestart extends Component {
         if (this.Limit) {
             tween(this.Target)
                 .repeat(this.LimitCount, tween(this.Target)
-                    .call(() => this.Target.eulerAngles = this.m_valueA.clone())
-                    .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .call(() => this.Target.scale = this.m_valueA.clone())
+                    .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .call(() => {
                         if (this.EmitEvent != '')
                             director.emit(this.EmitEvent);
@@ -82,8 +82,8 @@ export class RotateRestart extends Component {
         else {
             tween(this.Target)
                 .repeatForever(tween(this.Target)
-                    .call(() => this.Target.eulerAngles = this.m_valueA.clone())
-                    .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .call(() => this.Target.scale = this.m_valueA.clone())
+                    .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .call(() => {
                         if (this.EmitEvent != '')
                             director.emit(this.EmitEvent);

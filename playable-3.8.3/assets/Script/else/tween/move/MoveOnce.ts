@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node, Tween, tween, TweenEasing, v2, v3, Vec2, Vec3 } from 'cc';
-import { EaseType } from '../../ConstantBase';
+import { EaseType } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('MoveOnce')

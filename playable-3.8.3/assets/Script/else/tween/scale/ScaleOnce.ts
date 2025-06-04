@@ -1,16 +1,16 @@
-import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node, Sprite, tween, TweenEasing } from 'cc';
-import { EaseType } from '../../ConstantBase';
+import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node, Tween, tween, TweenEasing, v2, v3, Vec2, Vec3 } from 'cc';
+import { EaseType } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('SpriteFillOnce')
-export class SpriteFillOnce extends Component {
+@ccclass('ScaleOnce')
+export class ScaleOnce extends Component {
 
-    @property(Sprite)
-    Target: Sprite = null;
+    @property(Node)
+    Target: Node = null;
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: SpriteFillOnce) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: ScaleOnce) { return !this.Start; } })
     OnEvent: string = '';
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
@@ -19,8 +19,8 @@ export class SpriteFillOnce extends Component {
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
 
-    @property({ group: { name: 'Main' }, type: CCFloat })
-    FillTo: number = 0;
+    @property({ group: { name: 'Main' }, type: Vec2 })
+    ScaleTo: Vec2 = v2();
     @property({ group: { name: 'Main' }, type: CCFloat })
     Duration: number = 1;
     @property({ group: { name: 'Main' }, type: EaseType })
@@ -31,8 +31,10 @@ export class SpriteFillOnce extends Component {
     @property({ group: { name: 'Option' }, type: CCBoolean })
     CompleteDestroy: boolean = false;
 
-    m_valueA: number;
-    m_valueB: number;
+    m_valueA: Vec3;
+    m_valueB: Vec3;
+
+    //
 
     protected onLoad(): void {
         if (this.OnEvent != '')
@@ -41,7 +43,7 @@ export class SpriteFillOnce extends Component {
 
     protected start(): void {
         if (this.Target == null)
-            this.Target = this.getComponent(Sprite);
+            this.Target = this.node;
         if (this.Start)
             this.onEvent();
     }
@@ -49,8 +51,8 @@ export class SpriteFillOnce extends Component {
     //
 
     onEvent() {
-        this.m_valueA = this.Target.fillRange;
-        this.m_valueB = this.FillTo;
+        this.m_valueA = v3(this.Target.scale.clone().x, this.Target.scale.clone().y, this.Target.scale.clone().z);
+        this.m_valueB = v3(this.ScaleTo.clone().x, this.ScaleTo.clone().y, this.Target.scale.clone().z);
 
         this.unscheduleAllCallbacks();
         this.scheduleOnce(() => this.onTween(), this.Delay + (this.Fixed ? 0.02 : 0));
@@ -60,9 +62,10 @@ export class SpriteFillOnce extends Component {
     }
 
     private onTween() {
+        Tween.stopAllByTarget(this.Target);
         tween(this.Target)
-            .call(() => this.Target.fillRange = this.m_valueA)
-            .to(this.Duration, { fillRange: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+            .call(() => this.Target.scale = this.m_valueA.clone())
+            .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
             .call(() => {
                 if (this.EmitEvent != '')
                     director.emit(this.EmitEvent);

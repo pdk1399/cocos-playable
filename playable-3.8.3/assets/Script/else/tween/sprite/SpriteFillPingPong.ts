@@ -1,23 +1,27 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node, Sprite, Tween, tween, TweenEasing } from 'cc';
-import { EaseType } from '../../ConstantBase';
+import { EaseType } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('SpriteFillRestart')
-export class SpriteFillRestart extends Component {
+@ccclass('SpriteFillPingPong')
+export class SpriteFillPingPong extends Component {
 
     @property(Sprite)
     Target: Sprite = null;
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: SpriteFillRestart) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: SpriteFillPingPong) { return !this.Start; } })
     OnEvent: string = '';
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
+    @property({ group: { name: 'Event' }, type: CCBoolean })
+    EmitTo: boolean = true;
+    @property({ group: { name: 'Event' }, type: CCBoolean })
+    EmitBack: boolean = true;
     @property({ group: { name: 'Event' }, type: CCString })
-    EmitEvent: string = ''
+    EmitEvent: string = '';
 
     @property({ group: { name: 'Main' }, type: CCFloat })
     FillTo: number = 0;
@@ -26,7 +30,9 @@ export class SpriteFillRestart extends Component {
     @property({ group: { name: 'Main' }, type: EaseType })
     Ease: EaseType = EaseType.linear;
     @property({ group: { name: 'Main' }, type: CCFloat })
-    DelayEach: number = 0;
+    DelayTo: number = 0;
+    @property({ group: { name: 'Main' }, type: CCFloat })
+    DelayBack: number = 0;
     @property({ group: { name: 'Main' }, type: CCBoolean })
     Fixed: boolean = true;
     @property({ group: { name: 'Main' }, type: CCBoolean })
@@ -36,8 +42,6 @@ export class SpriteFillRestart extends Component {
 
     m_valueA: number;
     m_valueB: number;
-
-    //
 
     protected onLoad(): void {
         if (this.OnEvent != '')
@@ -69,26 +73,36 @@ export class SpriteFillRestart extends Component {
         if (this.Limit) {
             tween(this.Target)
                 .repeat(this.LimitCount, tween(this.Target)
-                    .call(() => this.Target.fillRange = this.m_valueA)
                     .to(this.Duration, { fillRange: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .call(() => {
-                        if (this.EmitEvent != '')
+                        if (this.EmitTo && this.EmitEvent != '')
                             director.emit(this.EmitEvent);
                     })
-                    .delay(this.DelayEach)
+                    .delay(this.DelayTo)
+                    .to(this.Duration, { fillRange: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .call(() => {
+                        if (this.EmitBack && this.EmitEvent != '')
+                            director.emit(this.EmitEvent);
+                    })
+                    .delay(this.DelayBack)
                 )
                 .start();
         }
         else {
             tween(this.Target)
                 .repeatForever(tween(this.Target)
-                    .call(() => this.Target.fillRange = this.m_valueA)
                     .to(this.Duration, { fillRange: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .call(() => {
-                        if (this.EmitEvent != '')
+                        if (this.EmitTo && this.EmitEvent != '')
                             director.emit(this.EmitEvent);
                     })
-                    .delay(this.DelayEach)
+                    .delay(this.DelayTo)
+                    .to(this.Duration, { fillRange: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .call(() => {
+                        if (this.EmitBack && this.EmitEvent != '')
+                            director.emit(this.EmitEvent);
+                    })
+                    .delay(this.DelayBack)
                 )
                 .start();
         }

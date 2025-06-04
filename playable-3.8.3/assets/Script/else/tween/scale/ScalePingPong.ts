@@ -1,21 +1,25 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Node, Tween, tween, TweenEasing, v2, v3, Vec2, Vec3 } from 'cc';
-import { EaseType } from '../../ConstantBase';
+import { EaseType } from '../../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('ScaleRestart')
-export class ScaleRestart extends Component {
+@ccclass('ScalePingPong')
+export class ScalePingPong extends Component {
 
     @property(Node)
     Target: Node = null;
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Start: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString, visible(this: ScaleRestart) { return !this.Start; } })
+    @property({ group: { name: 'Event' }, type: CCString, visible(this: ScalePingPong) { return !this.Start; } })
     OnEvent: string = '';
     @property({ group: { name: 'Event' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
+    @property({ group: { name: 'Event' }, type: CCBoolean })
+    EmitTo: boolean = true;
+    @property({ group: { name: 'Event' }, type: CCBoolean })
+    EmitBack: boolean = true;
     @property({ group: { name: 'Event' }, type: CCString })
     EmitEvent: string = '';
 
@@ -26,7 +30,9 @@ export class ScaleRestart extends Component {
     @property({ group: { name: 'Main' }, type: EaseType })
     Ease: EaseType = EaseType.linear;
     @property({ group: { name: 'Main' }, type: CCFloat })
-    DelayEach: number = 0;
+    DelayTo: number = 0;
+    @property({ group: { name: 'Main' }, type: CCFloat })
+    DelayBack: number = 0;
     @property({ group: { name: 'Main' }, type: CCBoolean })
     Fixed: boolean = true;
     @property({ group: { name: 'Main' }, type: CCBoolean })
@@ -69,27 +75,35 @@ export class ScaleRestart extends Component {
         if (this.Limit) {
             tween(this.Target)
                 .repeat(this.LimitCount, tween(this.Target)
-                    .call(() => this.Target.scale = this.m_valueA.clone())
                     .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .call(() => {
-                        if (this.EmitEvent != '')
+                        if (this.EmitTo && this.EmitEvent != '')
                             director.emit(this.EmitEvent);
                     })
-                    .delay(this.DelayEach)
-                )
+                    .delay(this.DelayTo)
+                    .to(this.Duration, { scale: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .call(() => {
+                        if (this.EmitBack && this.EmitEvent != '')
+                            director.emit(this.EmitEvent);
+                    })
+                    .delay(this.DelayBack))
                 .start();
         }
         else {
             tween(this.Target)
                 .repeatForever(tween(this.Target)
-                    .call(() => this.Target.scale = this.m_valueA.clone())
                     .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .call(() => {
-                        if (this.EmitEvent != '')
+                        if (this.EmitTo && this.EmitEvent != '')
                             director.emit(this.EmitEvent);
                     })
-                    .delay(this.DelayEach)
-                )
+                    .delay(this.DelayTo)
+                    .to(this.Duration, { scale: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .call(() => {
+                        if (this.EmitBack && this.EmitEvent != '')
+                            director.emit(this.EmitEvent);
+                    })
+                    .delay(this.DelayBack))
                 .start();
         }
     }
