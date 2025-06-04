@@ -1,5 +1,5 @@
 import { _decorator, CCString, Collider2D, Contact2DType, director, ERigidBody2DType, IPhysics2DContact, Node, RigidBody2D } from 'cc';
-import { ConstantBase } from '../ConstantBase';
+import { ConstantBase } from '../../ConstantBase';
 import { EmitBase, OnceType } from './EmitBase';
 const { ccclass, property } = _decorator;
 

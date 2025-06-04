@@ -1,6 +1,6 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, Component, Enum, Node } from 'cc';
-import { EmitBaseEvent } from './EmitBaseEvent';
-import { EaseType } from '../ConstantBase';
+import { EmitBaseEvent } from '../base/EmitBaseEvent';
+import { EaseType } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 export enum TweenType {

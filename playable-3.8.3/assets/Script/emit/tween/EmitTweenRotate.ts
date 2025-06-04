@@ -1,27 +1,27 @@
-import { _decorator, director, Node, tween, Tween, TweenEasing, v2, v3, Vec2, Vec3 } from 'cc';
+import { _decorator, CCFloat, director, Node, Tween, tween, TweenEasing, v3, Vec3 } from 'cc';
 import { EmitTween, ValueType } from './EmitTween';
-import { EaseType } from '../ConstantBase';
+import { EaseType } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('EmitTweenScale')
-export class EmitTweenScale extends EmitTween {
+@ccclass('EmitTweenRotate')
+export class EmitTweenRotate extends EmitTween {
 
-    @property({ group: { name: 'Main' }, type: Vec2 })
-    Value: Vec2 = v2()
+    @property({ group: { name: 'Main', displayOrder: 8 }, type: CCFloat })
+    Value: number = 0;
 
     m_valueA: Vec3;
     m_valueB: Vec3;
 
     protected onLoad(): void {
         super.onLoad();
-        this.m_valueA = this.EmitNode.scale.clone();
-        let valueB = v3(this.Value.x, this.Value.y, this.m_valueA.z);
+        this.m_valueA = v3(0, 0, this.EmitNode.eulerAngles.clone().z);
+        let valueB = v3(0, 0, this.Value);
         switch (this.To) {
             case ValueType.Directly:
-                this.m_valueB = v3(valueB.x, valueB.y, this.m_valueA.z);
+                this.m_valueB = v3(0, 0, valueB.z);
                 break;
             case ValueType.Offset:
-                this.m_valueB = v3(this.m_valueA.x + valueB.x, this.m_valueA.y + valueB.y, this.m_valueA.z);
+                this.m_valueB = v3(0, 0, this.m_valueA.z + valueB.z);
                 break;
         }
     }
@@ -29,8 +29,8 @@ export class EmitTweenScale extends EmitTween {
     onTweenOnce(target: Node): void {
         Tween.stopAllByTarget(target);
         tween(target)
-            .call(() => target.scale = this.m_valueA.clone())
-            .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+            .call(() => target.eulerAngles = this.m_valueA.clone())
+            .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
             .call(() => {
                 if (this.EmitEvent != '')
                     director.emit(this.EmitEvent);
@@ -47,8 +47,8 @@ export class EmitTweenScale extends EmitTween {
         if (this.Limit > 0) {
             tween(target)
                 .repeat(this.Limit, tween(target)
-                    .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
-                    .to(this.Duration, { scale: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .to(this.Duration, { eulerAngles: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
                 )
                 .call(() => {
                     if (this.CompleteDestroy)
@@ -59,8 +59,8 @@ export class EmitTweenScale extends EmitTween {
         else {
             tween(target)
                 .repeatForever(tween(target)
-                    .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
-                    .to(this.Duration, { scale: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .to(this.Duration, { eulerAngles: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
                 )
                 .start();
         }
@@ -71,8 +71,8 @@ export class EmitTweenScale extends EmitTween {
         if (this.Limit > 0) {
             tween(target)
                 .repeat(this.Limit, tween(target)
-                    .call(() => target.scale = this.m_valueA.clone())
-                    .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .call(() => target.eulerAngles = this.m_valueA.clone())
+                    .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                 )
                 .call(() => {
                     if (this.CompleteDestroy)
@@ -83,8 +83,8 @@ export class EmitTweenScale extends EmitTween {
         else {
             tween(target)
                 .repeatForever(tween(target)
-                    .call(() => target.scale = this.m_valueA.clone())
-                    .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+                    .call(() => target.eulerAngles = this.m_valueA.clone())
+                    .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                 )
                 .start();
         }

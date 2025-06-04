@@ -1,6 +1,6 @@
 import { _decorator, CCBoolean, director, Node, tween, Tween, TweenEasing, v2, v3, Vec2, Vec3 } from 'cc';
 import { EmitTween, ValueType } from './EmitTween';
-import { EaseType } from '../ConstantBase';
+import { EaseType } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('EmitTweenMove')

@@ -1,6 +1,6 @@
 import { _decorator, Enum, Node, Vec2, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
-import { EmitBaseNode } from './EmitBaseNode';
+import { EmitBaseNode } from './base/EmitBaseNode';
 const { ccclass, property } = _decorator;
 
 export enum ValueType {

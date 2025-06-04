@@ -1,6 +1,6 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Collider2D, Contact2DType, director, Node } from 'cc';
 import { SpineBase } from '../renderer/SpineBase';
-import { EmitBaseNode } from './EmitBaseNode';
+import { EmitBaseNode } from './base/EmitBaseNode';
 import { ConstantBase } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 

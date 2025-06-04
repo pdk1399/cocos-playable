@@ -1,5 +1,5 @@
 import { _decorator, Node } from 'cc';
-import { EmitBaseNode } from './EmitBaseNode';
+import { EmitBaseNode } from './base/EmitBaseNode';
 const { ccclass, property } = _decorator;
 
 @ccclass('EmitDestroy')

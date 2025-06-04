@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, director, Node, TweenEasing, v2, Vec2 } from 'cc';
-import { EmitBaseEvent } from './EmitBaseEvent';
+import { EmitBaseEvent } from './base/EmitBaseEvent';
 import { ConstantBase, EaseType } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
