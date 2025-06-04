@@ -11,7 +11,7 @@
   },
   {
     "__type__": "cc.Scene",
-    "_name": "ball-fake-canon-big-2",
+    "_name": "ball-v-fake-canon-big-2",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -202,7 +202,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 577.9264214046823,
+    "_orthoHeight": 760.1173020527859,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -4736,6 +4736,8 @@
     "IOS": "https://apps.apple.com/us/app/ball-w-red-wonder-island/id6465693025",
     "AdsType": 0,
     "LinkOpen": false,
+    "LoopComplete": false,
+    "LoopLose": false,
     "DirectPress": false,
     "DirectPressOnce": true,
     "EmitDirectPress": "on-player-jump",
@@ -9340,13 +9342,13 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 107.91,
-      "height": 107.91
+      "width": 107.91999816894531,
+      "height": 107.91999816894531
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
+      "x": 0.500092681026688,
+      "y": 0.4974981424912462
     },
     "_id": "71OTBeB1JJ+ZPSP2d6gVRS"
   },
@@ -9371,10 +9373,10 @@
       "a": 255
     },
     "_skeletonData": {
-      "__uuid__": "9c595477-16b6-47ca-ba74-27f46d06dc94",
+      "__uuid__": "c06a514a-86e6-4f6e-a49c-9a966a3219c4",
       "__expectedType__": "sp.SkeletonData"
     },
-    "defaultSkin": "1",
+    "defaultSkin": "s1",
     "defaultAnimation": "idle",
     "_premultipliedAlpha": false,
     "_timeScale": 1,
@@ -9920,13 +9922,13 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 147.66,
-      "height": 146.1
+      "width": 107.91999816894531,
+      "height": 107.91999816894531
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
+      "x": 0.500092681026688,
+      "y": 0.4974981424912462
     },
     "_id": "10YB8WdOhHrYu6Nbcq2wSK"
   },
@@ -9951,11 +9953,11 @@
       "a": 255
     },
     "_skeletonData": {
-      "__uuid__": "9c595477-16b6-47ca-ba74-27f46d06dc94",
+      "__uuid__": "c06a514a-86e6-4f6e-a49c-9a966a3219c4",
       "__expectedType__": "sp.SkeletonData"
     },
-    "defaultSkin": "1",
-    "defaultAnimation": "idle",
+    "defaultSkin": "s1",
+    "defaultAnimation": "tayphai",
     "_premultipliedAlpha": false,
     "_timeScale": 1,
     "_preCacheMode": 0,
@@ -10176,6 +10178,7 @@
     "HitPoint": 1,
     "HitDelay": 1,
     "HitFixed": false,
+    "SwimWater": false,
     "EmitHitDead": true,
     "EmitHit": "event-player-health",
     "EmitDead": "player-dead",
@@ -10196,17 +10199,17 @@
       "y": 40
     },
     "EffectCentre": null,
+    "EffectSpawm": null,
     "EffectHit": null,
     "EffectDead": null,
     "EffectDestroy": null,
-    "EffectSpawm": null,
+    "AudioHit": null,
+    "AudioDead": null,
     "ShakeHit": false,
     "ShakeDead": false,
     "Name": "",
     "ValueBar": null,
     "BarMask": null,
-    "AudioHit": null,
-    "AudioDead": null,
     "_id": "b22Qn+119KeIZr11QKT/Qb"
   },
   {
@@ -10288,11 +10291,12 @@
     "TagBot": 98,
     "TagHead": 97,
     "TagBotHead": 96,
-    "TagInteraction": 103,
+    "TagInteracte": 103,
     "TagBodyAsGround": false,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagBox": 300,
+    "TagInteract": 300,
+    "TagEnermy": [],
     "_id": "14LzDB1yhIbrso8ZEO7RPO"
   },
   {

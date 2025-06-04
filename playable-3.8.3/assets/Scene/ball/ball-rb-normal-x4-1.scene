@@ -205,7 +205,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 577.9264214046823,
+    "_orthoHeight": 760.1173020527859,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -5552,13 +5552,13 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 147.66,
-      "height": 146.1
+      "width": 107.91999816894531,
+      "height": 107.91999816894531
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
+      "x": 0.500092681026688,
+      "y": 0.4974981424912462
     },
     "_id": "a2r0dG2atO45469YOgVbWP"
   },
@@ -5583,10 +5583,10 @@
       "a": 255
     },
     "_skeletonData": {
-      "__uuid__": "9c595477-16b6-47ca-ba74-27f46d06dc94",
+      "__uuid__": "c357b189-2c7c-4f3f-b1de-6081171d99cf",
       "__expectedType__": "sp.SkeletonData"
     },
-    "defaultSkin": "1",
+    "defaultSkin": "s1",
     "defaultAnimation": "idle",
     "_premultipliedAlpha": false,
     "_timeScale": 1,
@@ -5805,6 +5805,7 @@
     "HitPoint": 1,
     "HitDelay": 1,
     "HitFixed": false,
+    "SwimWater": false,
     "EmitHitDead": true,
     "EmitHit": "event-player-health",
     "EmitDead": "player-dead",
@@ -5825,17 +5826,17 @@
       "y": 40
     },
     "EffectCentre": null,
+    "EffectSpawm": null,
     "EffectHit": null,
     "EffectDead": null,
     "EffectDestroy": null,
-    "EffectSpawm": null,
+    "AudioHit": null,
+    "AudioDead": null,
     "ShakeHit": false,
     "ShakeDead": false,
     "Name": "",
     "ValueBar": null,
     "BarMask": null,
-    "AudioHit": null,
-    "AudioDead": null,
     "_id": "75d3wi7GlB8qtivBu+7kPh"
   },
   {
@@ -5917,11 +5918,12 @@
     "TagBot": 98,
     "TagHead": 97,
     "TagBotHead": 96,
-    "TagInteraction": 103,
+    "TagInteracte": 103,
     "TagBodyAsGround": false,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagBox": 300,
+    "TagInteract": 300,
+    "TagEnermy": [],
     "_id": "82w8P9lXVPJ6SQRcUBHMTb"
   },
   {
@@ -6761,6 +6763,7 @@
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
+    "SwimWater": false,
     "EmitHitDead": false,
     "EmitHit": "",
     "EmitDead": "",
@@ -6781,17 +6784,17 @@
       "y": 0
     },
     "EffectCentre": null,
+    "EffectSpawm": null,
     "EffectHit": null,
     "EffectDead": null,
     "EffectDestroy": null,
-    "EffectSpawm": null,
+    "AudioHit": null,
+    "AudioDead": null,
     "ShakeHit": false,
     "ShakeDead": true,
     "Name": "",
     "ValueBar": null,
     "BarMask": null,
-    "AudioHit": null,
-    "AudioDead": null,
     "_id": "11EkDzjQZNW4xsB8tIBVyQ"
   },
   {
@@ -7200,6 +7203,7 @@
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
+    "SwimWater": false,
     "EmitHitDead": false,
     "EmitHit": "",
     "EmitDead": "",
@@ -7220,17 +7224,17 @@
       "y": 0
     },
     "EffectCentre": null,
+    "EffectSpawm": null,
     "EffectHit": null,
     "EffectDead": null,
     "EffectDestroy": null,
-    "EffectSpawm": null,
+    "AudioHit": null,
+    "AudioDead": null,
     "ShakeHit": false,
     "ShakeDead": true,
     "Name": "",
     "ValueBar": null,
     "BarMask": null,
-    "AudioHit": null,
-    "AudioDead": null,
     "_id": "1eMtLegAJARZ7roH8tw4nW"
   },
   {
@@ -7751,6 +7755,7 @@
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
+    "SwimWater": false,
     "EmitHitDead": false,
     "EmitHit": "",
     "EmitDead": "",
@@ -7771,17 +7776,17 @@
       "y": 0
     },
     "EffectCentre": null,
+    "EffectSpawm": null,
     "EffectHit": null,
     "EffectDead": null,
     "EffectDestroy": null,
-    "EffectSpawm": null,
+    "AudioHit": null,
+    "AudioDead": null,
     "ShakeHit": false,
     "ShakeDead": true,
     "Name": "",
     "ValueBar": null,
     "BarMask": null,
-    "AudioHit": null,
-    "AudioDead": null,
     "_id": "7cMM3qgAxLtJaS/0Kxck9V"
   },
   {
@@ -10039,6 +10044,7 @@
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
+    "SwimWater": false,
     "EmitHitDead": false,
     "EmitHit": "",
     "EmitDead": "",
@@ -10059,17 +10065,17 @@
       "y": 0
     },
     "EffectCentre": null,
+    "EffectSpawm": null,
     "EffectHit": null,
     "EffectDead": null,
     "EffectDestroy": null,
-    "EffectSpawm": null,
+    "AudioHit": null,
+    "AudioDead": null,
     "ShakeHit": false,
     "ShakeDead": true,
     "Name": "",
     "ValueBar": null,
     "BarMask": null,
-    "AudioHit": null,
-    "AudioDead": null,
     "_id": "7afE2J3JtA4agJGV1M2jav"
   },
   {
@@ -10366,6 +10372,7 @@
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
+    "SwimWater": false,
     "EmitHitDead": false,
     "EmitHit": "",
     "EmitDead": "",
@@ -10386,17 +10393,17 @@
       "y": 0
     },
     "EffectCentre": null,
+    "EffectSpawm": null,
     "EffectHit": null,
     "EffectDead": null,
     "EffectDestroy": null,
-    "EffectSpawm": null,
+    "AudioHit": null,
+    "AudioDead": null,
     "ShakeHit": false,
     "ShakeDead": true,
     "Name": "",
     "ValueBar": null,
     "BarMask": null,
-    "AudioHit": null,
-    "AudioDead": null,
     "_id": "2b9SlqkaBNj46gTnvkARbd"
   },
   {
@@ -10693,6 +10700,7 @@
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
+    "SwimWater": false,
     "EmitHitDead": false,
     "EmitHit": "",
     "EmitDead": "",
@@ -10713,17 +10721,17 @@
       "y": 0
     },
     "EffectCentre": null,
+    "EffectSpawm": null,
     "EffectHit": null,
     "EffectDead": null,
     "EffectDestroy": null,
-    "EffectSpawm": null,
+    "AudioHit": null,
+    "AudioDead": null,
     "ShakeHit": false,
     "ShakeDead": true,
     "Name": "",
     "ValueBar": null,
     "BarMask": null,
-    "AudioHit": null,
-    "AudioDead": null,
     "_id": "a42TCnUGtCZLWfnBevUcsm"
   },
   {
@@ -11020,6 +11028,7 @@
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
+    "SwimWater": false,
     "EmitHitDead": false,
     "EmitHit": "",
     "EmitDead": "",
@@ -11040,17 +11049,17 @@
       "y": 0
     },
     "EffectCentre": null,
+    "EffectSpawm": null,
     "EffectHit": null,
     "EffectDead": null,
     "EffectDestroy": null,
-    "EffectSpawm": null,
+    "AudioHit": null,
+    "AudioDead": null,
     "ShakeHit": false,
     "ShakeDead": true,
     "Name": "",
     "ValueBar": null,
     "BarMask": null,
-    "AudioHit": null,
-    "AudioDead": null,
     "_id": "f0s7VR2v1As4hROHITpWoF"
   },
   {
@@ -11347,6 +11356,7 @@
     "HitPoint": 1,
     "HitDelay": 0.2,
     "HitFixed": false,
+    "SwimWater": false,
     "EmitHitDead": false,
     "EmitHit": "",
     "EmitDead": "",
@@ -11367,17 +11377,17 @@
       "y": 0
     },
     "EffectCentre": null,
+    "EffectSpawm": null,
     "EffectHit": null,
     "EffectDead": null,
     "EffectDestroy": null,
-    "EffectSpawm": null,
+    "AudioHit": null,
+    "AudioDead": null,
     "ShakeHit": false,
     "ShakeDead": true,
     "Name": "",
     "ValueBar": null,
     "BarMask": null,
-    "AudioHit": null,
-    "AudioDead": null,
     "_id": "e7WtEjUwhMprqOXqUYLxH8"
   },
   {
@@ -11832,7 +11842,6 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "OnEvent": "",
     "OnTagBody": 0,
     "OnTagTarget": [
       100
@@ -11840,8 +11849,9 @@
     "OnNodeTarget": [],
     "Once": 2,
     "Delay": 0,
-    "EmitEvent": "",
     "EmitNodeNext": null,
+    "OnEvent": "",
+    "EmitEvent": "",
     "EmitNode": [],
     "EmitTagTarget": true,
     "Control": 0,
@@ -11997,13 +12007,13 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 147.66,
-      "height": 146.1
+      "width": 107.91999816894531,
+      "height": 107.91999816894531
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
+      "x": 0.500092681026688,
+      "y": 0.4974981424912462
     },
     "_id": "bagNnY+IZIG5Ai8jg4joBu"
   },
@@ -12028,10 +12038,10 @@
       "a": 255
     },
     "_skeletonData": {
-      "__uuid__": "9c595477-16b6-47ca-ba74-27f46d06dc94",
+      "__uuid__": "c357b189-2c7c-4f3f-b1de-6081171d99cf",
       "__expectedType__": "sp.SkeletonData"
     },
-    "defaultSkin": "2",
+    "defaultSkin": "s2",
     "defaultAnimation": "idle",
     "_premultipliedAlpha": false,
     "_timeScale": 1,
@@ -12253,6 +12263,7 @@
     "HitPoint": 1,
     "HitDelay": 1,
     "HitFixed": false,
+    "SwimWater": false,
     "EmitHitDead": true,
     "EmitHit": "event-player-health",
     "EmitDead": "player-dead",
@@ -12273,17 +12284,17 @@
       "y": 40
     },
     "EffectCentre": null,
+    "EffectSpawm": null,
     "EffectHit": null,
     "EffectDead": null,
     "EffectDestroy": null,
-    "EffectSpawm": null,
+    "AudioHit": null,
+    "AudioDead": null,
     "ShakeHit": false,
     "ShakeDead": false,
     "Name": "",
     "ValueBar": null,
     "BarMask": null,
-    "AudioHit": null,
-    "AudioDead": null,
     "_id": "c7cOWNs/FNZ4wWgy3ar+41"
   },
   {
@@ -12365,11 +12376,12 @@
     "TagBot": 98,
     "TagHead": 97,
     "TagBotHead": 96,
-    "TagInteraction": 103,
+    "TagInteracte": 103,
     "TagBodyAsGround": false,
     "TagGround": -1,
     "TagPlatform": -2,
-    "TagBox": 300,
+    "TagInteract": 300,
+    "TagEnermy": [],
     "_id": "a4DwI0h45KppwrQwN4cBxj"
   },
   {
