@@ -22,8 +22,9 @@ export class EmitSpawm extends EmitBaseEvent {
         super.onLoad();
         if (this.List == null)
             this.List = this.node;
-        for (let i = 0; i < this.List.children.length; i++)
-            this.List.children[i].active = false;
+        if (!this.Start)
+            for (let i = 0; i < this.List.children.length; i++)
+                this.List.children[i].active = false;
         if (this.Spawm == null)
             this.Spawm = this.node;
     }
@@ -36,13 +37,21 @@ export class EmitSpawm extends EmitBaseEvent {
             director.on(this.OnDestroy, this.onTargetDestroy, this);
     }
 
-    onTargetDestroy() {
+    onTargetDestroy(target: Node) {
         if (!this.m_progess)
             return;
-        for (let i = this.m_spawm.length - 1; i >= 0; i--) {
-            if (this.m_spawm[i] != null && this.m_spawm[i].isValid)
-                continue;
-            this.m_spawm.splice(i, 1);
+        if (target != null) {
+            let index = this.m_spawm.findIndex(t => t == target);
+            if (index < 0)
+                return;
+            this.m_spawm.splice(index, 1);
+        }
+        else {
+            for (let i = this.m_spawm.length - 1; i >= 0; i--) {
+                if (this.m_spawm[i].isValid)
+                    continue;
+                this.m_spawm.splice(i, 1);
+            }
         }
     }
 
