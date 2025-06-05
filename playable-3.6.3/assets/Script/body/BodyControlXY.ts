@@ -98,6 +98,7 @@ export class BodyControlXY extends Component {
         director.on(ConstantBase.PLAYER_COMPLETE, this.onComplete, this);
         director.on(ConstantBase.GAME_TIME_OUT, this.onStop, this);
 
+        this.node.on(ConstantBase.NODE_COLLIDE_OBJECT, this.onCollideObject, this);
         this.node.on(ConstantBase.NODE_COLLIDE_ENERMY, this.onCollideEnermy, this);
 
         this.node.on(ConstantBase.NODE_CONTROL_FACE_X_RIGHT, this.onFaceRight, this);
@@ -390,6 +391,14 @@ export class BodyControlXY extends Component {
     }
 
     //COLLIDE
+
+    protected onCollideObject(state: boolean, target: Collider2D) {
+        let bodyTarget = target.getComponent(BodyBase);
+        if (bodyTarget != null && bodyTarget.isValid) {
+            if (this.m_body.m_bodyX4 && state)
+                bodyTarget.onDead(this.node);
+        }
+    }
 
     protected onCollideEnermy(state: boolean, target: Collider2D) {
         let bodyTarget = target.getComponent(BodyBase);

@@ -42,6 +42,8 @@ export class BodyCheckX extends Component {
     @property({ group: { name: 'Other' }, type: CCInteger })
     TagInteract: number = 300;
     @property({ group: { name: 'Other' }, type: [CCInteger] })
+    TagObject: number[] = [];
+    @property({ group: { name: 'Other' }, type: [CCInteger] })
     TagEnermy: number[] = [];
 
     m_dir: number = 1;
@@ -160,6 +162,9 @@ export class BodyCheckX extends Component {
                     case this.TagInteract:
                         break;
                     default:
+                        let objectTagIndex = this.TagObject.findIndex(t => t == otherCollider.tag);
+                        if (objectTagIndex >= 0)
+                            this.node.emit(ConstantBase.NODE_COLLIDE_OBJECT, true, otherCollider);
                         let enermyTagIndex = this.TagEnermy.findIndex(t => t == otherCollider.tag);
                         if (enermyTagIndex >= 0)
                             this.node.emit(ConstantBase.NODE_COLLIDE_ENERMY, true, otherCollider);
@@ -264,6 +269,9 @@ export class BodyCheckX extends Component {
                     case this.TagInteract:
                         break;
                     default:
+                        let objectTagIndex = this.TagObject.findIndex(t => t == otherCollider.tag);
+                        if (objectTagIndex >= 0)
+                            this.node.emit(ConstantBase.NODE_COLLIDE_OBJECT, false, otherCollider);
                         let enermyTagIndex = this.TagEnermy.findIndex(t => t == otherCollider.tag);
                         if (enermyTagIndex >= 0)
                             this.node.emit(ConstantBase.NODE_COLLIDE_ENERMY, false, otherCollider);

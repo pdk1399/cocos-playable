@@ -193,6 +193,7 @@ export class BodyControlX extends Component {
 
         this.node.on(ConstantBase.NODE_COLLIDE_BOT, this.onCollideBot, this);
         this.node.on(ConstantBase.NODE_COLLIDE_INTERACTE, this.onCollideInteraction, this);
+        this.node.on(ConstantBase.NODE_COLLIDE_OBJECT, this.onCollideObject, this);
         this.node.on(ConstantBase.NODE_COLLIDE_ENERMY, this.onCollideEnermy, this);
 
         this.node.on(ConstantBase.NODE_CONTROL_FACE_X_RIGHT, this.onFaceRight, this);
@@ -866,22 +867,31 @@ export class BodyControlX extends Component {
 
     //COLLIDE
 
+    protected onCollideObject(state: boolean, target: Collider2D) {
+        let bodyTarget = target.getComponent(BodyBase);
+        if (bodyTarget != null && bodyTarget.isValid) {
+            if (this.m_body.m_bodyX4 && state)
+                bodyTarget.onDead(this.node);
+        }
+    }
+
     protected onCollideEnermy(state: boolean, target: Collider2D) {
         let bodyTarget = target.getComponent(BodyBase);
         if (bodyTarget != null && bodyTarget.isValid) {
             if (state) {
                 if (this.m_body.m_bodyX4)
                     bodyTarget.onDead(this.node);
-
-                let currentBotY = this.node.worldPosition.clone().y + this.m_bodyCheck.m_sizeBody.y * 0.5;
-                let targetSizeY = target.worldAABB.size.clone().y;
-                let targetTopY = target.node.worldPosition.clone().y + targetSizeY * 0.5;
-                if (currentBotY > targetTopY) {
-                    this.onJumpForce(this.JumpUpY * 0.5);
-                    bodyTarget.node.emit(ConstantBase.NODE_BODY_HIT, 1, this.node);
+                else {
+                    let currentBotY = this.node.worldPosition.clone().y + this.m_bodyCheck.m_sizeBody.y * 0.5;
+                    let targetSizeY = target.worldAABB.size.clone().y;
+                    let targetTopY = target.node.worldPosition.clone().y + targetSizeY * 0.5;
+                    if (currentBotY > targetTopY) {
+                        this.onJumpForce(this.JumpUpY * 0.5);
+                        bodyTarget.node.emit(ConstantBase.NODE_BODY_HIT, 1, this.node);
+                    }
+                    else
+                        this.node.emit(ConstantBase.NODE_BODY_HIT, 1, bodyTarget.node);
                 }
-                else
-                    this.node.emit(ConstantBase.NODE_BODY_HIT, 1, bodyTarget.node);
             }
             else {
                 //...
