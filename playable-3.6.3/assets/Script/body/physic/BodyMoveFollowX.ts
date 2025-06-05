@@ -104,7 +104,7 @@ export class BodyMoveFollowX extends Component {
             //Rigidbody unable move when in knock state
             return;
 
-        if (this.m_picked && !this.m_pick && this.m_bodyCheck.m_isBot) {
+        if (this.m_picked && !this.m_pick && this.m_bodyCheck.m_isBotFinal) {
             this.m_picked = false;
             this.m_lockVelocity = false;
         }
@@ -125,7 +125,7 @@ export class BodyMoveFollowX extends Component {
             this.m_move = false;
             velocity.x = 0;
         }
-        else if (this.m_bodyCheck.m_isBot) {
+        else if (this.m_bodyCheck.m_isBotFinal) {
             this.m_move = this.MoveGroundX > 0;
             velocity.x = this.m_dir * this.MoveGroundX;
         }
@@ -155,7 +155,7 @@ export class BodyMoveFollowX extends Component {
                 return true;
             return false;
         }
-        if (this.CheckBotHead && this.m_bodyCheck.m_isBotHead && this.m_bodyCheck.m_isBot)
+        if (this.CheckBotHead && this.m_bodyCheck.m_isBotHead && this.m_bodyCheck.m_isBotFinal)
             return true;
         if (this.CheckHead && this.m_bodyCheck.m_isHead)
             return true;
@@ -253,15 +253,19 @@ export class BodyMoveFollowX extends Component {
     protected onFollowUpdate(dt: number) {
         if (this.getKnock() || this.getDead())
             return;
-        if (this.m_bodyCheck.m_isBot) {
-            if (this.m_followBody == null) {
-                this.m_followBody = this.m_bodyCheck.m_botNode;
-                this.m_followLastPos = this.m_followBody.position.clone();
+        if (this.m_bodyCheck.m_isBotFinal) {
+            if (this.m_followBody == null || !this.m_followBody.isValid) {
+                let currentBot = this.m_bodyCheck.m_currentBot;
+                this.m_followBody = currentBot != null ? currentBot.node : null;
+                if (this.m_followBody != null && this.m_followBody.isValid)
+                    this.m_followLastPos = this.m_followBody.position.clone();
             }
-            let offsetPos = this.m_followBody.position.clone().subtract(this.m_followLastPos);
-            if (offsetPos.length() > 0.1) {
-                this.m_followLastPos = this.m_followBody.position.clone();
-                this.node.setPosition(this.node.position.clone().add(offsetPos));
+            if (this.m_followBody != null && this.m_followBody.isValid) {
+                let offsetPos = this.m_followBody.position.clone().subtract(this.m_followLastPos);
+                if (offsetPos.length() > 0) {
+                    this.m_followLastPos = this.m_followBody.position.clone();
+                    this.node.setPosition(this.node.position.clone().add(offsetPos));
+                }
             }
         }
         else {

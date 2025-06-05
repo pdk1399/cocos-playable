@@ -419,8 +419,8 @@ export class ManagerInput extends Component {
             director.emit(ConstantBase.CONTROL_ATTACK, false);
     }
 
-    onAttackShow(stage: boolean) {
-        this.BtnAttack.active = this.m_avaible && stage;
+    onAttackShow(state: boolean) {
+        this.BtnAttack.active = this.m_avaible && state;
     }
 
     //Interaction
@@ -429,8 +429,8 @@ export class ManagerInput extends Component {
         director.emit(ConstantBase.CONTROL_INTERACTION);
     }
 
-    onInteractionShow(stage: boolean) {
-        this.BtnInteraction.active = this.m_avaible && stage;
+    onInteractionShow(state: boolean) {
+        this.BtnInteraction.active = this.m_avaible && state;
     }
 
     onInteractionIcon(index: number) {

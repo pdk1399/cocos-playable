@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCInteger, Collider2D, Component, Contact2DType, IPhysics2DContact, macro, PhysicsSystem2D, RigidBody2D, VERSION } from 'cc';
-import { StateBase } from '../../state/StateBase';
+import { StateBase } from '../../else/state/StateBase';
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property, requireComponent } = _decorator;
 

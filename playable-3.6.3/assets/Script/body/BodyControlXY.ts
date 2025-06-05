@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, Component, director, Enum, Node, RigidBody2D, v2, Vec2 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, director, Enum, Node, RigidBody2D, v2, Vec2 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { BodyBase } from './BodyBase';
 import { BodySpine } from './BodySpine';
@@ -57,9 +57,7 @@ export class BodyControlXY extends Component {
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlXY) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
     DashAttackReset: boolean = true;
 
-    @property({ group: { name: 'Switch' }, type: Node })
-    SwitchArrow: Node = null;
-    @property({ group: { name: 'Switch' }, type: CCInteger, visible(this: BodyControlXY) { return this.SwitchArrow != null; } })
+    @property({ group: { name: 'Switch' }, type: CCInteger })
     SwitchIndex: number = 0;
 
     m_state = PlayerStateXY.IDLE;
@@ -74,7 +72,8 @@ export class BodyControlXY extends Component {
     m_attack: boolean = false;
 
     m_control: boolean = true;
-    m_controlByDirector: boolean = false; //Set TRUE later onLoad
+    m_controlByDirector: boolean = null;
+    m_controlByNode: boolean = null;
     m_end: boolean = false;
 
     m_lockInput: boolean = false;
@@ -99,7 +98,7 @@ export class BodyControlXY extends Component {
         director.on(ConstantBase.PLAYER_COMPLETE, this.onComplete, this);
         director.on(ConstantBase.GAME_TIME_OUT, this.onStop, this);
 
-        this.node.on(ConstantBase.NODE_COLLIDE_BODY, this.onCollideBody, this);
+        this.node.on(ConstantBase.NODE_COLLIDE_ENERMY, this.onCollideEnermy, this);
 
         this.node.on(ConstantBase.NODE_CONTROL_FACE_X_RIGHT, this.onFaceRight, this);
         this.node.on(ConstantBase.NODE_CONTROL_FACE_X_LEFT, this.onFaceLeft, this);
@@ -109,7 +108,8 @@ export class BodyControlXY extends Component {
         this.node.on(ConstantBase.NODE_CONTROL_NODE, this.onControlByNode, this);
         this.node.on(ConstantBase.NODE_CONTROL_SLEEP, this.onControlSleep, this);
         this.node.on(ConstantBase.NODE_CONTROL_AWAKE, this.onControlAwake, this);
-        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onControlDead, this);
+
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onControlDead, this);
 
         this.node.on(ConstantBase.NODE_VALUE_LOCK_X, this.onValueLockX, this);
         this.node.on(ConstantBase.NODE_VALUE_LOCK_Y, this.onValueLockY, this);
@@ -130,9 +130,9 @@ export class BodyControlXY extends Component {
     //EVENT:
 
     protected onControlByDirector(state: boolean) {
-        if (this.m_controlByDirector)
+        if (this.m_controlByDirector == state)
             return;
-        this.m_controlByDirector = true;
+        this.m_controlByDirector = state;
         if (state) {
             director.on(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick, this);
             director.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
@@ -150,9 +150,9 @@ export class BodyControlXY extends Component {
     }
 
     protected onControlByNode(state: boolean) {
-        if (!this.m_controlByDirector)
+        if (this.m_controlByNode == state)
             return;
-        this.m_controlByDirector = false;
+        this.m_controlByNode = state;
         if (state) {
             this.node.on(ConstantBase.CONTROL_JOY_STICK, this.onJoyStick, this);
             this.node.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
@@ -321,12 +321,14 @@ export class BodyControlXY extends Component {
             return;
         let state = index == this.SwitchIndex;
         this.m_control = state;
-        if (this.SwitchArrow != null)
-            this.SwitchArrow.active = state;
-        if (controlByDirector)
+        if (controlByDirector) {
             this.onControlByDirector(state);
-        else
+            this.onControlByNode(!state);
+        }
+        else {
+            this.onControlByDirector(!state);
             this.onControlByNode(state);
+        }
         this.onMoveRelease();
         if (state)
             director.emit(ConstantBase.CAMERA_SWITCH, this.node);
@@ -346,10 +348,8 @@ export class BodyControlXY extends Component {
                 }
                 break;
             case false:
-                if (this.AttackHold) {
+                if (this.AttackHold)
                     this.onAttackProgess();
-                    this.onAimReset();
-                }
                 break;
         }
     }
@@ -382,15 +382,19 @@ export class BodyControlXY extends Component {
             return;
         if (!this.MoveStopAttack && (this.MoveStopByBodyAttack || this.MoveStopByPressAttack))
             this.m_bodySpine.onIdle(true);
-        this.scheduleOnce(() => this.m_bodyAttack?.onAttackProgess());
+        this.scheduleOnce(() => {
+            this.scheduleOnce(() => {
+                this.onAimReset();
+            }, this.m_bodyAttack?.onAttackProgess());
+        });
     }
 
     //COLLIDE
 
-    protected onCollideBody(target: Node) {
-        if (this.m_body.m_bodyX4) {
-            let bodyTarget = target.getComponent(BodyBase);
-            if (bodyTarget != null)
+    protected onCollideEnermy(state: boolean, target: Collider2D) {
+        let bodyTarget = target.getComponent(BodyBase);
+        if (bodyTarget != null && bodyTarget.isValid) {
+            if (this.m_body.m_bodyX4 && state)
                 bodyTarget.onDead(this.node);
         }
     }
@@ -401,13 +405,13 @@ export class BodyControlXY extends Component {
         this.onAimReset();
     }
 
-    //STAGE:
+    //STATE:
 
     protected onStateUpdate(dt: number) {
         if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
             return;
         let state = PlayerStateXY.IDLE;
-        //FIND STAGE:
+        //FIND STATE:
         if (this.getDead())
             state = PlayerStateXY.DEAD;
         else if (this.getHit())
@@ -422,7 +426,7 @@ export class BodyControlXY extends Component {
             state = PlayerStateXY.DASH;
         else if (this.m_move)
             state = PlayerStateXY.MOVE;
-        //UPDATE STAGE:
+        //UPDATE STATE:
         if (this.m_state == state)
             return;
         this.m_state = state;
@@ -434,8 +438,6 @@ export class BodyControlXY extends Component {
                 if (this.MoveStopAttack)
                     this.m_bodyAttack?.onStop(false);
                 this.m_bodySpine.onMove();
-                break;
-            case PlayerStateXY.HIT:
                 break;
             case PlayerStateXY.DASH:
                 this.m_bodySpine.onDash();

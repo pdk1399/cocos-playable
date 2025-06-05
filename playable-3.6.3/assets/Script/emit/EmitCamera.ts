@@ -1,10 +1,10 @@
 import { _decorator, CCBoolean, CCFloat, director, Node, TweenEasing, v2, Vec2 } from 'cc';
-import { EmitBase } from './EmitBase';
+import { EmitBaseEvent } from './base/EmitBaseEvent';
 import { ConstantBase, EaseType } from '../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('EmitCamera')
-export class EmitCamera extends EmitBase {
+export class EmitCamera extends EmitBaseEvent {
 
     @property({ group: { name: 'View' }, type: CCBoolean })
     View: boolean = false;

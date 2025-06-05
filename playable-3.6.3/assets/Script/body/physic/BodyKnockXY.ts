@@ -43,7 +43,7 @@ export class BodyKnockXY extends Component {
         this.m_rigidbody = this.getComponent(RigidBody2D);
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
     }
 
     protected start(): void {

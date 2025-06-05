@@ -1,6 +1,6 @@
 import { _decorator, Node, AudioSource, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, instantiate, RigidBody2D, Sprite, Vec2, v2, v3, UITransform, tween, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
-import { ValueBar } from '../value/ValueBar';
+import { ValueBar } from '../else/value/ValueBar';
 const { ccclass, property } = _decorator;
 
 @ccclass('BodyBase')
@@ -16,6 +16,8 @@ export class BodyBase extends Component {
     HitDelay: number = 0.2;
     @property({ group: { name: 'Body' }, type: CCBoolean })
     HitFixed: boolean = false;
+    @property({ group: { name: 'Body' }, type: CCBoolean })
+    SwimWater: boolean = false;
 
     @property({ group: { name: 'Event' }, type: CCBoolean })
     EmitHitDead: boolean = false;
@@ -48,13 +50,18 @@ export class BodyBase extends Component {
     @property({ group: { name: 'Effect' }, type: Node })
     EffectCentre: Node = null;
     @property({ group: { name: 'Effect' }, type: Node })
+    EffectSpawm: Node = null;
+    @property({ group: { name: 'Effect' }, type: Node })
     EffectHit: Node = null;
     @property({ group: { name: 'Effect' }, type: Node })
     EffectDead: Node = null;
     @property({ group: { name: 'Effect' }, type: Node })
     EffectDestroy: Node = null;
-    @property({ group: { name: 'Effect' }, type: Node })
-    EffectSpawm: Node = null;
+
+    @property({ group: { name: 'Audio' }, type: AudioSource })
+    AudioHit: AudioSource = null;
+    @property({ group: { name: 'Audio' }, type: AudioSource })
+    AudioDead: AudioSource = null;
 
     @property({ group: { name: 'Camera' }, type: CCBoolean })
     ShakeHit: boolean = false;
@@ -67,10 +74,6 @@ export class BodyBase extends Component {
     ValueBar: ValueBar = null;
     @property({ group: { name: 'Option' }, type: Node })
     BarMask: Node = null;
-    @property({ group: { name: 'Option' }, type: AudioSource })
-    AudioHit: AudioSource = null;
-    @property({ group: { name: 'Option' }, type: AudioSource })
-    AudioDead: AudioSource = null;
 
     m_baseSize: number = 1;
     m_baseScale: Vec3 = Vec3.ONE;
@@ -81,6 +84,7 @@ export class BodyBase extends Component {
 
     m_bodyX2: boolean = false;
     m_bodyX4: boolean = false;
+    m_bodySinking: boolean = false;
 
     m_rigidbody: RigidBody2D = null;
     m_destroyCollider: Collider2D[] = [];
@@ -97,7 +101,14 @@ export class BodyBase extends Component {
         }
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_X2, this.onBodyX2, this);
+        this.node.on(ConstantBase.NODE_BODY_X4, this.onBodyX4, this);
+        this.node.on(ConstantBase.NODE_BODY_SINKING, this.onSinking, this);
+
+        this.node.on(ConstantBase.NODE_VALUE_PROTECT, this.onProtect, this);
+        this.node.on(ConstantBase.NODE_VALUE_HIT_POINT, this.onHitPoint, this);
+        this.node.on(ConstantBase.NODE_VALUE_HIT_POINT_CURRENT, this.onHitPointCurrent, this);
 
         let collider = this.getComponents(Collider2D);
         collider.forEach(colliderCheck => {
@@ -105,12 +116,6 @@ export class BodyBase extends Component {
             if (tagIndex >= 0)
                 this.m_destroyCollider.push(colliderCheck as Collider2D)
         })
-
-        this.node.on(ConstantBase.NODE_VALUE_HIT_POINT, this.onHitPoint, this);
-        this.node.on(ConstantBase.NODE_VALUE_HIT_POINT_CURRENT, this.onHitPointCurrent, this);
-
-        this.node.on(ConstantBase.NODE_BODY_X2, this.onBodyX2, this);
-        this.node.on(ConstantBase.NODE_BODY_X4, this.onBodyX4, this);
     }
 
     protected start(): void {
@@ -204,7 +209,7 @@ export class BodyBase extends Component {
             }
         }
 
-        this.node.emit(ConstantBase.NODE_CONTROL_DEAD, from);
+        this.node.emit(ConstantBase.NODE_BODY_DEAD, from);
         if (this.EmitDead != '') {
             if (this.EmitFull)
                 director.emit(this.EmitDead, this.node);
@@ -213,11 +218,14 @@ export class BodyBase extends Component {
         }
 
         this.node.off(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.off(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+        this.node.off(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
     }
 
     onProtect(state: boolean = true) {
-        this.Protect = state;
+        if (state)
+            this.Protect = state;
+        else
+            this.scheduleOnce(() => this.Protect = false, 0.02);
     }
 
     onHitPoint(value: number) {
@@ -299,6 +307,16 @@ export class BodyBase extends Component {
             }).start();
         }, 1);
         this.m_baseSize = state ? 4 : 1;
+    }
+
+    //SINKING
+
+    onSinking(state: boolean = true) {
+        if (this.m_bodySinking == state)
+            return;
+        this.m_bodySinking = state;
+        if (!this.SwimWater && state)
+            this.onDead(null);
     }
 
     //DESTROY

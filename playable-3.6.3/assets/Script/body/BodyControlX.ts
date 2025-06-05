@@ -106,21 +106,21 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockY && !this.FallAttackStop; } })
     FallAttackForce: number = 0; //Default -0.2f for slow fall down while attack
 
-    @property({ group: { name: 'Pick&Throw' }, type: CCBoolean })
+    @property({ group: { name: 'Pick' }, type: CCBoolean })
     Pick: boolean = false;
-    @property({ group: { name: 'Pick&Throw' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
     PickHold: boolean = false;
-    @property({ group: { name: 'Pick&Throw' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
     PickJumpOnce: boolean = true;
-    @property({ group: { name: 'Pick&Throw' }, type: Vec2, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: Vec2, visible(this: BodyControlX) { return this.Pick; } })
     ThrowForce: Vec2 = v2(20, 20);
-    @property({ group: { name: 'Pick&Throw' }, type: Node, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: Node, visible(this: BodyControlX) { return this.Pick; } })
     PickUpPoint: Node = null;
-    @property({ group: { name: 'Pick&Throw' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
     UiPickBtnActive: boolean = true;
-    @property({ group: { name: 'Pick&Throw' }, type: CCInteger, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: CCInteger, visible(this: BodyControlX) { return this.Pick; } })
     UiPickIconIndex: number = 0;
-    @property({ group: { name: 'Pick&Throw' }, type: CCInteger, visible(this: BodyControlX) { return this.Pick; } })
+    @property({ group: { name: 'Pick' }, type: CCInteger, visible(this: BodyControlX) { return this.Pick; } })
     UiThrowIconIndex: number = 1;
 
     @property({ group: { name: 'Switch' }, type: CCInteger })
@@ -157,7 +157,8 @@ export class BodyControlX extends Component {
     m_pickUpSiblingIndex: number = 0;
 
     m_control: boolean = true;
-    m_controlByDirector: boolean = false; //Set TRUE later onLoad
+    m_controlByDirector: boolean = null;
+    m_controlByNode: boolean = null;
     m_end: boolean = false;
     m_endReady: boolean = false;
     m_endCentre: Vec3;
@@ -192,7 +193,7 @@ export class BodyControlX extends Component {
 
         this.node.on(ConstantBase.NODE_COLLIDE_BOT, this.onCollideBot, this);
         this.node.on(ConstantBase.NODE_COLLIDE_INTERACTE, this.onCollideInteraction, this);
-        this.node.on(ConstantBase.NODE_COLLIDE_BODY, this.onCollideBody, this);
+        this.node.on(ConstantBase.NODE_COLLIDE_ENERMY, this.onCollideEnermy, this);
 
         this.node.on(ConstantBase.NODE_CONTROL_FACE_X_RIGHT, this.onFaceRight, this);
         this.node.on(ConstantBase.NODE_CONTROL_FACE_X_LEFT, this.onFaceLeft, this);
@@ -204,10 +205,12 @@ export class BodyControlX extends Component {
         this.node.on(ConstantBase.NODE_CONTROL_NODE, this.onControlByNode, this);
         this.node.on(ConstantBase.NODE_CONTROL_SLEEP, this.onSleep, this);
         this.node.on(ConstantBase.NODE_CONTROL_AWAKE, this.onAwake, this);
-        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
 
         this.node.on(ConstantBase.NODE_VALUE_LOCK_X, this.onValueLockX, this);
         this.node.on(ConstantBase.NODE_VALUE_LOCK_Y, this.onValueLockY, this);
+        this.node.on(ConstantBase.NODE_VALUE_LOCK_ROTATE, this.onValueLockRotate, this);
         this.node.on(ConstantBase.NODE_VALUE_MOVE_GROUND, this.onValueMoveGround, this);
         this.node.on(ConstantBase.NODE_VALUE_MOVE_JUMP, this.onValueMoveJump, this);
     }
@@ -234,9 +237,9 @@ export class BodyControlX extends Component {
     //EVENT
 
     protected onControlByDirector(state: boolean) {
-        if (this.m_controlByDirector)
+        if (this.m_controlByDirector == state)
             return;
-        this.m_controlByDirector = true;
+        this.m_controlByDirector = state;
         if (state) {
             director.on(ConstantBase.CONTROL_UP, this.onMoveUp, this);
             director.on(ConstantBase.CONTROL_DOWN, this.onMoveDown, this);
@@ -274,9 +277,9 @@ export class BodyControlX extends Component {
     }
 
     protected onControlByNode(state: boolean) {
-        if (!this.m_controlByDirector)
+        if (this.m_controlByNode == state)
             return;
-        this.m_controlByDirector = false;
+        this.m_controlByNode = state;
         if (state) {
             this.node.on(ConstantBase.CONTROL_UP, this.onMoveUp, this);
             this.node.on(ConstantBase.CONTROL_DOWN, this.onMoveDown, this);
@@ -467,7 +470,7 @@ export class BodyControlX extends Component {
                 this.m_rigidbody.angularVelocity = 0;
         }
         else {
-            if (this.m_bodyCheck.m_isBot) {
+            if (this.m_bodyCheck.m_isBotFinal) {
                 let moveGroundX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? this.MoveAttackGroundX : this.MoveGroundX;
                 let moveDirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? (this.MoveAttackByFace ? this.m_faceDirX : this.m_moveDirX) : this.m_moveDirX;
                 velocity.x += moveDirX * moveGroundX;
@@ -581,7 +584,7 @@ export class BodyControlX extends Component {
             return;
         }
 
-        if (this.JumpAuto && this.m_bodyCheck.m_isBot)
+        if (this.JumpAuto && this.m_bodyCheck.m_isBotFinal)
             this.onJump(dt);
 
         if (!this.FallAttackStop && this.FallAttackForce != 0 && this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {
@@ -638,8 +641,8 @@ export class BodyControlX extends Component {
         }
     }
 
-    protected onCollideBot(stage: boolean) {
-        switch (stage) {
+    protected onCollideBot(state: boolean, target: Collider2D) {
+        switch (state) {
             case true:
                 this.m_jumpCountCurrent = 0;
                 this.m_jumpContinue = false;
@@ -667,7 +670,7 @@ export class BodyControlX extends Component {
             this.m_rigidbody.gravityScale = this.m_baseGravity;
             //
             //Fix bug Dash while Jump cancel current Jump progress, don't remove code below
-            if (this.m_bodyCheck.m_isBot) {
+            if (this.m_bodyCheck.m_isBotFinal) {
                 this.m_jumpCountCurrent = 0;
                 this.m_jumpContinue = false;
             }
@@ -684,10 +687,14 @@ export class BodyControlX extends Component {
             return;
         let state = index == this.SwitchIndex;
         this.m_control = state;
-        if (controlByDirector)
+        if (controlByDirector) {
             this.onControlByDirector(state);
-        else
+            this.onControlByNode(!state);
+        }
+        else {
+            this.onControlByDirector(!state);
             this.onControlByNode(state);
+        }
         this.onJumRelease();
         this.onMoveRelease();
         if (state)
@@ -727,10 +734,8 @@ export class BodyControlX extends Component {
                         this.m_rigidbody.linearVelocity = v2(this.m_rigidbody.linearVelocity.clone().x, -0.02); //Fix bug not fall after attack
                     }
                 }
-                if (this.AttackHold) {
+                if (this.AttackHold)
                     this.onAttackProgess();
-                    this.onAimReset();
-                }
                 break;
         }
     }
@@ -763,7 +768,11 @@ export class BodyControlX extends Component {
             return;
         if (this.MoveStopByBodyAttack || this.MoveStopByPressAttack)
             this.m_bodySpine.onIdle(true);
-        this.scheduleOnce(() => this.m_bodyAttack?.onAttackProgess());
+        this.scheduleOnce(() => {
+            this.scheduleOnce(() => {
+                this.onAimReset();
+            }, this.m_bodyAttack?.onAttackProgess());
+        });
     }
 
     //INTERACTION
@@ -779,11 +788,11 @@ export class BodyControlX extends Component {
             return;
         let delayPick = 0;
         if (this.m_pickUp == null) {
-            if (this.m_bodyCheck.m_interacteNode.length == 0)
+            if (this.m_bodyCheck.m_currentInteracte.length == 0)
                 return;
             this.m_pickUpProgess = true;
             //Add Pick-up Object to current saved
-            this.m_pickUp = this.m_bodyCheck.m_interacteNode[0];
+            this.m_pickUp = this.m_bodyCheck.m_currentInteracte[0].node;
             this.m_pickUpParent = this.m_pickUp.parent;
             this.m_pickUpSiblingIndex = this.m_pickUp.getSiblingIndex();
             //Save Pick-up Object's Rigidbody imformation before destroy it
@@ -842,10 +851,10 @@ export class BodyControlX extends Component {
             this.scheduleOnce(() => this.m_pickUpProgess = false, delayPick + 0.02);
     }
 
-    protected onCollideInteraction(target: Node, stage: boolean) {
+    protected onCollideInteraction(state: boolean, target: Node) {
         if (this.m_pickUp != null)
             return;
-        if (this.m_bodyCheck.m_interacteNode.length == 0) {
+        if (this.m_bodyCheck.m_currentInteracte.length == 0) {
             if (this.UiPickBtnActive)
                 director.emit(ConstantBase.UI_INTERACTION_SHOW, false);
             return;
@@ -857,11 +866,26 @@ export class BodyControlX extends Component {
 
     //COLLIDE
 
-    protected onCollideBody(target: Node) {
-        if (this.m_body.m_bodyX4) {
-            let bodyTarget = target.getComponent(BodyBase);
-            if (bodyTarget != null)
-                bodyTarget.onDead(this.node);
+    protected onCollideEnermy(state: boolean, target: Collider2D) {
+        let bodyTarget = target.getComponent(BodyBase);
+        if (bodyTarget != null && bodyTarget.isValid) {
+            if (state) {
+                if (this.m_body.m_bodyX4)
+                    bodyTarget.onDead(this.node);
+
+                let currentBotY = this.node.worldPosition.clone().y + this.m_bodyCheck.m_sizeBody.y * 0.5;
+                let targetSizeY = target.worldAABB.size.clone().y;
+                let targetTopY = target.node.worldPosition.clone().y + targetSizeY * 0.5;
+                if (currentBotY > targetTopY) {
+                    this.onJumpForce(this.JumpUpY * 0.5);
+                    bodyTarget.node.emit(ConstantBase.NODE_BODY_HIT, 1, this.node);
+                }
+                else
+                    this.node.emit(ConstantBase.NODE_BODY_HIT, 1, bodyTarget.node);
+            }
+            else {
+                //...
+            }
         }
     }
 
@@ -881,13 +905,13 @@ export class BodyControlX extends Component {
         }
     }
 
-    //STAGE
+    //STATE
 
     protected onStateUpdate(dt: number) {
         if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
             return;
         let state = PlayerStateX.IDLE;
-        //FIND STAGE:
+        //FIND STATE:
         if (this.getDead())
             state = PlayerStateX.DEAD;
         else if (this.getHit())
@@ -900,7 +924,7 @@ export class BodyControlX extends Component {
         }
         else if (this.m_dash)
             state = PlayerStateX.DASH;
-        else if (!this.m_bodyCheck.m_isBot) {
+        else if (!this.m_bodyCheck.m_isBotFinal) {
             if (this.m_rigidbody.linearVelocity.y > 0)
                 state = PlayerStateX.JUMP;
             else if (this.m_rigidbody.linearVelocity.y < 0)
@@ -914,7 +938,7 @@ export class BodyControlX extends Component {
             else
                 state = PlayerStateX.PUSH;
         }
-        //UPDATE STAGE:
+        //UPDATE STATE:
         if (this.m_state == state)
             return;
         this.m_state = state;
@@ -934,14 +958,10 @@ export class BodyControlX extends Component {
             case PlayerStateX.AIR:
                 this.m_bodySpine.onAirOff();
                 break;
-            // case PlayerStateX.HIT:
-            //     break;
             case PlayerStateX.DASH:
                 this.m_bodySpine.onDash();
                 break;
             case PlayerStateX.ATTACK:
-                if (this.AttackHold)
-                    this.m_bodyAttack?.onAnimAttackUnReady();
                 break;
             case PlayerStateX.ATTACK_HOLD:
                 if (this.AttackHold) {
@@ -987,7 +1007,7 @@ export class BodyControlX extends Component {
     protected onCompleteGroundUpdate(dt: number) {
         if (!this.EndOnGround)
             return;
-        if (!this.m_end || !this.m_endReady || !this.m_bodyCheck.m_isBot)
+        if (!this.m_end || !this.m_endReady || !this.m_bodyCheck.m_isBotFinal)
             return;
         this.m_endReady = false;
         this.onCompleteProgess();
@@ -1055,13 +1075,14 @@ export class BodyControlX extends Component {
     protected onFollowUpdate(dt: number) {
         if (this.m_dash || this.m_end || this.m_endReady || this.getKnock() || this.getDead())
             return;
-        if (this.m_bodyCheck.m_isBot) {
-            if (this.m_followBody == null) {
-                this.m_followBody = this.m_bodyCheck.m_botNode;
-                if (this.m_followBody != null)
+        if (this.m_bodyCheck.m_isBotFinal) {
+            if (this.m_followBody == null || !this.m_followBody.isValid) {
+                let currentBot = this.m_bodyCheck.m_currentBot;
+                this.m_followBody = currentBot != null ? currentBot.node : null;
+                if (this.m_followBody != null && this.m_followBody.isValid)
                     this.m_followLastPos = this.m_followBody.position.clone();
             }
-            if (this.m_followBody != null) {
+            if (this.m_followBody != null && this.m_followBody.isValid) {
                 let offsetPos = this.m_followBody.position.clone().subtract(this.m_followLastPos);
                 if (offsetPos.length() > 0) {
                     this.m_followLastPos = this.m_followBody.position.clone();
@@ -1108,6 +1129,10 @@ export class BodyControlX extends Component {
 
     onValueLockX(value: boolean) { this.LockX = value; }
     onValueLockY(value: boolean) { this.LockY = value; }
+    onValueLockRotate(value: boolean) {
+        if (this.Type == BodyType.BALL)
+            this.m_rigidbody.fixedRotation = value;
+    }
     onValueMoveGround(value: number) { this.MoveGroundX = value; }
     onValueMoveJump(value: number) { this.JumpUpY = value; }
 }

@@ -43,12 +43,14 @@ export class ConstantBase {
     static readonly NODE_EVENT: string = 'node-event'; // Used in most of quick-events in Nodes
 
     static readonly NODE_BODY_HIT: string = 'node-body-hit';
+    static readonly NODE_BODY_DEAD: string = 'node-body-dead';
     static readonly NODE_BODY_X2: string = 'node-body-x2';
     static readonly NODE_BODY_X4: string = 'node-body-x4';
+    static readonly NODE_BODY_SINKING: string = 'node-body-sinking';
 
-    static readonly NODE_COLLIDE_BODY: string = 'node-collide-collide';
-    static readonly NODE_COLLIDE_BOT: string = 'node-collide-bot';
-    static readonly NODE_COLLIDE_INTERACTE: string = 'node-collide-interacte';
+    static readonly NODE_COLLIDE_ENERMY: string = 'node-collide-enermy'; //<Collider - State>
+    static readonly NODE_COLLIDE_BOT: string = 'node-collide-bot'; //<Collider - State>
+    static readonly NODE_COLLIDE_INTERACTE: string = 'node-collide-interacte'; //<Collider - State>
 
     static readonly NODE_CONTROL_FACE_X_RIGHT: string = 'node-control-face-x-right';
     static readonly NODE_CONTROL_FACE_X_LEFT: string = 'node-control-face-x-left';
@@ -61,7 +63,6 @@ export class ConstantBase {
     static readonly NODE_CONTROL_NODE: string = 'node-control-node';
     static readonly NODE_CONTROL_SLEEP: string = 'node-control-sleep';
     static readonly NODE_CONTROL_AWAKE: string = 'node-control-awake';
-    static readonly NODE_CONTROL_DEAD: string = 'node-control-dead';
 
     static readonly NODE_PICK: string = 'node-pick';
     static readonly NODE_THROW: string = 'node-throw';
@@ -71,10 +72,12 @@ export class ConstantBase {
     static readonly NODE_ATTACK_ULTIMATE: string = 'node-body-attack-ultimate';
 
     static readonly NODE_VALUE: string = 'node-value'; // Used to help value-event excute it's child event
+    static readonly NODE_VALUE_PROTECT: string = 'node-value-protect';
     static readonly NODE_VALUE_HIT_POINT: string = 'node-value-hit-point';
     static readonly NODE_VALUE_HIT_POINT_CURRENT: string = 'node-value-hit-point-current';
     static readonly NODE_VALUE_LOCK_X: string = 'node-value-lock-x';
     static readonly NODE_VALUE_LOCK_Y: string = 'node-value-lock-y';
+    static readonly NODE_VALUE_LOCK_ROTATE: string = 'node-value-lock-rotate';
     static readonly NODE_VALUE_MOVE_GROUND: string = 'node-value-move-ground';
     static readonly NODE_VALUE_MOVE_JUMP: string = 'node-value-move-jump';
     static readonly NODE_VALUE_MELEE_HIT: string = 'node-value-melee-hit';

@@ -48,7 +48,7 @@ export class BodyKnockX extends Component {
         this.m_rigidbody = this.getComponent(RigidBody2D);
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
     }
 
     protected start(): void {
@@ -92,7 +92,9 @@ export class BodyKnockX extends Component {
         this.onKnock(from, this.DeadDeg, this.DeadForce);
 
         if (this.DeadRotate) {
-            let rotateDir = this.node.worldPosition.clone().x < from.worldPosition.clone().x ? 1 : -1;
+            let rotateDir = 1;
+            if (from != null && from.isValid)
+                rotateDir = this.node.worldPosition.clone().x < from.worldPosition.clone().x ? 1 : -1;
             let rotateFixed = this.DeadRotateRight ? 1 : -1;
             let rotateValue = v3();
             rotateValue.z = 359 * rotateDir * rotateFixed;
@@ -105,8 +107,12 @@ export class BodyKnockX extends Component {
     }
 
     onKnock(from: Node, deg: number, force: number) {
-        let reflect = this.node.worldPosition.clone().x < from.worldPosition.clone().x;
-        this.m_force = this.getVelocity(deg, force, reflect);
+        if (from != null && from.isValid) {
+            let reflect = this.node.worldPosition.clone().x < from.worldPosition.clone().x;
+            this.m_force = this.getVelocity(deg, force, reflect);
+        }
+        else
+            this.m_force = this.getVelocity(90, force, false);
         this.m_rigidbody.linearVelocity = this.m_force;
     }
 

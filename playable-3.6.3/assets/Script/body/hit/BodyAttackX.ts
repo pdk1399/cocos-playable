@@ -149,7 +149,7 @@ export class BodyAttackX extends Component {
             this.m_spine.onAimInit(this.AimAnim, this.AimBone, this.AimFrom);
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.on(ConstantBase.NODE_CONTROL_DEAD, this.onDead, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
 
         if (this.MeleeAuto)
             this.node.on(ConstantBase.NODE_ATTACK_MELEE_FOUND, this.onMeleeFoundTarget, this);
@@ -296,7 +296,7 @@ export class BodyAttackX extends Component {
     protected onMeleeTarget() {
         this.m_targetMelee.forEach(target => {
             if (this.m_meleeUltimate)
-                target.emit(ConstantBase.NODE_CONTROL_DEAD, this.node);
+                target.emit(ConstantBase.NODE_BODY_DEAD, this.node);
             else
                 target.emit(ConstantBase.NODE_BODY_HIT, this.m_meleeHit, this.node);
         });
@@ -562,6 +562,8 @@ export class BodyAttackX extends Component {
 
     onAnimAttackUnReady() {
         this.unschedule(this.m_readySchedule);
+        if (this.m_continue)
+            return;
         this.m_readyIndex = 0;
     }
 
