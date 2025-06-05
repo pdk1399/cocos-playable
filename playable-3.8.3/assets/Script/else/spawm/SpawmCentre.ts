@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Component, director, instantiate, Node, randomRangeInt, v2, v3, Vec2 } from 'cc';
-import { BodySpawm } from '../body/option/BodySpawm';
+import { BodySpawm } from '../../body/option/BodySpawm';
 const { ccclass, property } = _decorator;
 
 @ccclass('SpawmCentre')
