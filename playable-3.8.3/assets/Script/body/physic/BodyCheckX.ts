@@ -1,7 +1,7 @@
 import { _decorator, CCBoolean, CCInteger, CircleCollider2D, Collider2D, Component, Contact2DType, director, Enum, ERaycast2DType, IPhysics2DContact, macro, math, Node, PhysicsSystem2D, RigidBody2D, v2, v3, Vec2 } from 'cc';
 import { BodyPlatformX } from './BodyPlatformX';
 import { ConstantBase } from '../../ConstantBase';
-const { ccclass, property, requireComponent } = _decorator;
+const { ccclass, property, executionOrder, requireComponent } = _decorator;
 
 export enum BodyType {
     STICK,
@@ -10,6 +10,7 @@ export enum BodyType {
 Enum(BodyType)
 
 @ccclass('BodyCheckX')
+@executionOrder(-99999) //Collider info must be get before any other script that in-active this node
 @requireComponent(RigidBody2D)
 export class BodyCheckX extends Component {
 
