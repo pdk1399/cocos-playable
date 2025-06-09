@@ -84,7 +84,7 @@ export class ObjectBoat extends Component {
                         this.m_player = otherCollider.body.node;
                         this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_ROTATE, true);
                         this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_X, true);
-                        this.m_player.emit(ConstantBase.NODE_CONTROL_SLEEP);
+                        // this.m_player.emit(ConstantBase.NODE_CONTROL_SLEEP);
                         this.m_player.emit(ConstantBase.NODE_CONTROL_DIRECTOR, false);
                         this.m_player.emit(ConstantBase.NODE_CONTROL_NODE, true);
                         this.onEventActive(true);
@@ -147,7 +147,7 @@ export class ObjectBoat extends Component {
         this.m_player.emit(ConstantBase.CONTROL_JUMP);
         this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_ROTATE, false);
         this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_X, false);
-        this.m_player.emit(ConstantBase.NODE_CONTROL_AWAKE);
+        // this.m_player.emit(ConstantBase.NODE_CONTROL_AWAKE);
         this.m_player.emit(ConstantBase.NODE_CONTROL_DIRECTOR, true);
         this.m_player.emit(ConstantBase.NODE_CONTROL_NODE, false);
         this.m_player = null;
