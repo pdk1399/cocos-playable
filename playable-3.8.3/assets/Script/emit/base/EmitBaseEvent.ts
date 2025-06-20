@@ -9,11 +9,11 @@ const { ccclass, property } = _decorator;
 export class EmitBaseEvent extends EmitBase {
 
     //ON-EVENT
-    @property({ group: { name: 'Event', displayOrder: 2 }, type: CCString, visible(this: EmitBaseEvent) { return !this.Start; } })
-    OnEvent: string = '';
+    @property({ group: { name: 'Event', displayOrder: 2 }, type: [CCString], visible(this: EmitBaseEvent) { return !this.Start; } })
+    OnEvent: string[] = [];
     //EMIT-EVENT
-    @property({ group: { name: 'Event', displayOrder: 14 }, type: CCString })
-    EmitEvent: string = '';
+    @property({ group: { name: 'Event', displayOrder: 14 }, type: [CCString] })
+    EmitEvent: string[] = [];
 
     //NOTE: 'displayOrder' count every items (field name, field value, etc) to draw order
 
@@ -24,8 +24,9 @@ export class EmitBaseEvent extends EmitBase {
     protected onLoad(): void {
         //ON-EVENT
         this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
-        if (this.OnEvent != '')
-            director.on(this.OnEvent, this.onEvent, this);
+        this.OnEvent.forEach(event => {
+            director.on(event, this.onEvent, this);
+        });
 
         if (this.Start)
             return;
@@ -73,8 +74,10 @@ export class EmitBaseEvent extends EmitBase {
             this.onEventActive();
 
             //#1: Emit Director
-            if (this.EmitEvent != '')
-                director.emit(this.EmitEvent);
+            this.EmitEvent.forEach(event => {
+                if (event != '')
+                    director.emit(event);
+            });
 
             //NEXT
             if (this.EmitNodeNext != null)
@@ -94,8 +97,9 @@ export class EmitBaseEvent extends EmitBase {
         if (this.Once >= OnceType.Once) {
             //ON-EVENT
             this.node.off(ConstantBase.NODE_EVENT, this.onEvent, this);
-            if (this.OnEvent != '')
-                director.off(this.OnEvent, this.onEvent, this);
+            this.OnEvent.forEach(event => {
+                director.off(event, this.onEvent, this);
+            });
 
             //ON-COLLISION-EVENT
             if (this.m_eventPhysic) {
