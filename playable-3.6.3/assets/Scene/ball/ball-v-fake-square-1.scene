@@ -11,7 +11,7 @@
   },
   {
     "__type__": "cc.Scene",
-    "_name": "ball-v-fake-square",
+    "_name": "ball-v-fake-square-1",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -26,7 +26,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 303
+      "__id__": 302
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -57,7 +57,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 304
+      "__id__": 303
     },
     "_id": "79d64a9f-75fc-4178-93a4-339b957c233d"
   },
@@ -196,7 +196,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 760.1173020527859,
+    "_orthoHeight": 731.1706629055008,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -1483,8 +1483,8 @@
     "Once": 1,
     "Delay": 0,
     "EmitNodeNext": null,
-    "OnEvent": "",
-    "EmitEvent": "",
+    "OnEvent": [],
+    "EmitEvent": [],
     "EmitNode": null,
     "Progress": 1,
     "Limit": 0,
@@ -1571,8 +1571,8 @@
     "Once": 1,
     "Delay": 0,
     "EmitNodeNext": null,
-    "OnEvent": "ball-attack",
-    "EmitEvent": "",
+    "OnEvent": [],
+    "EmitEvent": [],
     "EmitNode": [
       {
         "__id__": 30
@@ -5291,11 +5291,14 @@
         "__id__": 276
       },
       {
-        "__id__": 290
+        "__id__": 289
       }
     ],
     "_active": true,
     "_components": [
+      {
+        "__id__": 297
+      },
       {
         "__id__": 298
       },
@@ -5307,9 +5310,6 @@
       },
       {
         "__id__": 301
-      },
-      {
-        "__id__": 302
       }
     ],
     "_prefab": null,
@@ -9768,9 +9768,6 @@
       },
       {
         "__id__": 288
-      },
-      {
-        "__id__": 289
       }
     ],
     "_prefab": null,
@@ -9916,7 +9913,7 @@
     "_id": "93z2OPYEROzrIThYfg2BpZ"
   },
   {
-    "__type__": "af49dmFzc9L/7rL34KGdoZI",
+    "__type__": "8e9eeYTWTxBm6AtGGUvHx5j",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -9925,20 +9922,27 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Target": null,
     "Start": true,
-    "OnEvent": "",
-    "Once": false,
+    "OnTagBody": 0,
+    "OnTagTarget": [
+      100
+    ],
+    "OnNodeTarget": [],
+    "Once": 1,
     "Delay": 0,
-    "EmitEvent": "",
-    "RotateTo": 359.9,
+    "EmitNodeNext": null,
+    "OnEvent": [],
+    "EmitEvent": [],
+    "EmitNode": null,
+    "Progress": 2,
+    "Limit": 0,
+    "To": 0,
     "Duration": 1,
     "Ease": 0,
-    "DelayEach": 0,
-    "Fixed": true,
-    "Limit": false,
-    "LimitCount": 1,
-    "_id": "0aBrdZh7dM/qsWehvEydgp"
+    "Fixed": false,
+    "CompleteDestroy": false,
+    "Value": 359.99,
+    "_id": "65a5tI4XJKl5FM8TIZ7uQj"
   },
   {
     "__type__": "cc.Node",
@@ -10215,46 +10219,6 @@
     "_id": "bcYrzvt7JDjKCC4+UhFlFP"
   },
   {
-    "__type__": "0346bQAUwBCy7JJlqUFAiQe",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 276
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "Start": false,
-    "OnTagBody": 0,
-    "OnTagTarget": [
-      100
-    ],
-    "OnNodeTarget": [],
-    "Once": 2,
-    "Delay": 0,
-    "EmitNodeNext": null,
-    "OnEvent": "",
-    "EmitEvent": "",
-    "EmitNode": [],
-    "EmitTagTarget": true,
-    "Control": 0,
-    "ControlBody": 1,
-    "ControlRelease": 0,
-    "ControlLeft": false,
-    "ControlRight": false,
-    "ControlUp": false,
-    "ControlDown": false,
-    "ControlJump": false,
-    "ControlFaceX": 0,
-    "ControlFaceY": 0,
-    "BodyX2": false,
-    "BodyX4": false,
-    "ControlAttack": false,
-    "ControlInteraction": false,
-    "ControlFixed": false,
-    "_id": "84k17oPINFaJk2nUlvyFYT"
-  },
-  {
     "__type__": "cc.Node",
     "_name": "bubble-think",
     "_objFlags": 0,
@@ -10264,16 +10228,16 @@
     },
     "_children": [
       {
-        "__id__": 291
+        "__id__": 290
       },
       {
-        "__id__": 294
+        "__id__": 293
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 297
+        "__id__": 296
       }
     ],
     "_prefab": null,
@@ -10312,16 +10276,16 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 290
+      "__id__": 289
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 292
+        "__id__": 291
       },
       {
-        "__id__": 293
+        "__id__": 292
       }
     ],
     "_prefab": null,
@@ -10360,7 +10324,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 291
+      "__id__": 290
     },
     "_enabled": true,
     "__prefab": null,
@@ -10382,7 +10346,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 291
+      "__id__": 290
     },
     "_enabled": true,
     "__prefab": null,
@@ -10421,16 +10385,16 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 290
+      "__id__": 289
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 295
+        "__id__": 294
       },
       {
-        "__id__": 296
+        "__id__": 295
       }
     ],
     "_prefab": null,
@@ -10469,7 +10433,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 294
+      "__id__": 293
     },
     "_enabled": true,
     "__prefab": null,
@@ -10491,7 +10455,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 294
+      "__id__": 293
     },
     "_enabled": true,
     "__prefab": null,
@@ -10530,7 +10494,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 290
+      "__id__": 289
     },
     "_enabled": true,
     "__prefab": null,
@@ -10543,8 +10507,8 @@
     "Once": 1,
     "Delay": 0,
     "EmitNodeNext": null,
-    "OnEvent": "",
-    "EmitEvent": "",
+    "OnEvent": [],
+    "EmitEvent": [],
     "EmitNode": null,
     "Progress": 1,
     "Limit": 0,
@@ -10668,28 +10632,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 305
+      "__id__": 304
     },
     "shadows": {
-      "__id__": 306
+      "__id__": 305
     },
     "_skybox": {
-      "__id__": 307
+      "__id__": 306
     },
     "fog": {
-      "__id__": 308
+      "__id__": 307
     },
     "octree": {
-      "__id__": 309
+      "__id__": 308
     },
     "skin": {
-      "__id__": 310
+      "__id__": 309
     },
     "lightProbeInfo": {
-      "__id__": 311
+      "__id__": 310
     },
     "postSettings": {
-      "__id__": 312
+      "__id__": 311
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

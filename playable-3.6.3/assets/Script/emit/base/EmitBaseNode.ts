@@ -44,8 +44,11 @@ export class EmitBaseNode extends EmitBaseEvent {
             this.onEventActive();
 
             //#1: Emit Director
-            if (this.EmitEvent != '')
-                director.emit(this.EmitEvent);
+            this.EmitEvent.forEach(event => {
+                if (event != '') {
+                    director.emit(event);
+                }
+            });
 
             //#2: Emit Node
             this.EmitNode.forEach(t => {
