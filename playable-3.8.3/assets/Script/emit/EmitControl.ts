@@ -78,7 +78,7 @@ export class EmitControl extends EmitBaseNode {
 
     onEventActiveNode(target: Node): void {
         this.onEventActiveOption(target);
-        this.onEventActiiveMain(target);
+        this.onEventActiveMain(target);
     }
 
     private onEventActiveOption(target: Node): void {
@@ -115,7 +115,7 @@ export class EmitControl extends EmitBaseNode {
             target.emit(ConstantBase.CONTROL_FIXED);
     }
 
-    private onEventActiiveMain(target: Node): void {
+    private onEventActiveMain(target: Node): void {
         switch (this.Control) {
             case ControlType.None:
                 return;

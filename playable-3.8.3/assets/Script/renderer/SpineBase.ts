@@ -12,15 +12,15 @@ export class SpineBase extends Component {
     FaceRight: boolean = true;
     @property({ group: { name: 'Main' }, type: sp.Skeleton })
     Spine: sp.Skeleton = null;
+    @property({ group: { name: 'Main' }, type: sp.SkeletonData })
+    Skeleton: sp.SkeletonData = null;
     @property({ group: { name: 'Main' }, type: [CCString] })
     Skin: string[] = [];
 
     @property({ group: { name: 'Option' }, type: CCBoolean })
     SpineEvent: boolean = false;
-    @property({ group: { name: 'Option' }, type: sp.SkeletonData })
-    Skeleton: sp.SkeletonData = null;
     @property({ group: { name: 'Option' }, type: [CCString] })
-    Anim: string[] = [];
+    AnimStart: string[] = [];
 
     m_spineScaleXR: number;
     m_dir: number = 1;
@@ -53,8 +53,8 @@ export class SpineBase extends Component {
         this.onSekeleton(this.Skeleton);
         if (this.Skin.length > 0)
             this.onSkin(...this.Skin);
-        for (let i = 0; i < this.Anim.length; i++)
-            this.onAnimationIndex(i, this.Anim[i], true);
+        for (let i = 0; i < this.AnimStart.length; i++)
+            this.onAnimationIndex(i, this.AnimStart[i], true);
     }
 
     //
@@ -64,6 +64,10 @@ export class SpineBase extends Component {
             return;
         this.Skeleton = data;
         this.Spine.skeletonData = data;
+        //RESET
+        this.Spine.setAnimation(0, this.m_anim, this.m_loop).animationEnd;
+        this.m_anim = '';
+        this.m_loop = false;
     }
 
     onSkin(...skin: string[]) {

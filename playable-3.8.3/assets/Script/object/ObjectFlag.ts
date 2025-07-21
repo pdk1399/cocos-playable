@@ -38,6 +38,8 @@ export class ObjectFlag extends Component {
                 other.node.emit(ConstantBase.NODE_CONTROL_DIRECTOR, false);
                 other.node.emit(ConstantBase.NODE_CONTROL_NODE, true);
                 other.node.emit(ConstantBase.CONTROL_RELEASE_X);
+                // other.node.emit(ConstantBase.NODE_CONTROL_SLEEP);
+                // this.scheduleOnce(() => other.node.emit(ConstantBase.NODE_CONTROL_AWAKE), 0.5);
                 break;
             case this.TagStop:
                 other.node.emit(ConstantBase.CONTROL_JUMP_FORCE, 30);
