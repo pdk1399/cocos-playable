@@ -101,7 +101,7 @@ export class BodyBase extends Component {
         }
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this); console.log('onLoad', this.node.name);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
         this.node.on(ConstantBase.NODE_BODY_X2, this.onBodyX2, this);
         this.node.on(ConstantBase.NODE_BODY_X4, this.onBodyX4, this);
         this.node.on(ConstantBase.NODE_BODY_SINKING, this.onSinking, this);
