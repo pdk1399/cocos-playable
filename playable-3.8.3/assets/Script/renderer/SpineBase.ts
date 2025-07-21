@@ -74,7 +74,9 @@ export class SpineBase extends Component {
         let baseData = this.Spine._skeleton.data;
         if (VERSION >= '3.8.3') {
             //NOTE: For some fucking reason, new spine.Skin(); got error with any value attach to it!
-            let spineCache = sp.spine.wasmUtil.createSpineSkeletonDataWithJson(this.Spine.skeletonData.skeletonJsonStr, this.Spine.skeletonData.atlasText); //Tạo mới dữ liệu spine từ spine gốc
+            let spineCache = sp.spine.wasmUtil.createSpineSkeletonDataWithJson(
+                this.Spine.skeletonData.skeletonJsonStr,
+                this.Spine.skeletonData.atlasText); //Create new data form original spine!
             let baseSkin = spineCache.defaultSkin;
             for (let i = 0; i < skin.length; i++) {
                 let skinName = skin[i];
