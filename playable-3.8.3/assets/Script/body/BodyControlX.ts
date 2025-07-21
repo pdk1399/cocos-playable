@@ -250,6 +250,7 @@ export class BodyControlX extends Component {
             director.on(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             director.on(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
             director.on(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            director.on(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             director.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             director.on(ConstantBase.CONTROL_DASH, this.onDash, this);
             director.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
@@ -267,6 +268,7 @@ export class BodyControlX extends Component {
             director.off(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             director.off(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
             director.off(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            director.off(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             director.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             director.off(ConstantBase.CONTROL_DASH, this.onDash, this);
             director.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
@@ -290,6 +292,7 @@ export class BodyControlX extends Component {
             this.node.on(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             this.node.on(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
             this.node.on(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            this.node.on(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             this.node.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             this.node.on(ConstantBase.CONTROL_DASH, this.onDash, this);
             this.node.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
@@ -307,6 +310,7 @@ export class BodyControlX extends Component {
             this.node.off(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             this.node.off(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
             this.node.off(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            this.node.off(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             this.node.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             this.node.off(ConstantBase.CONTROL_DASH, this.onDash, this);
             this.node.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
