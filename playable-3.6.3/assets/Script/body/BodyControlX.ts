@@ -57,6 +57,8 @@ export class BodyControlX extends Component {
     MoveForceStop: boolean = true;
     @property({ group: { name: 'MoveX' }, type: CCBoolean, visible(this: BodyControlX) { return !this.LockX; } })
     MoveForceFlip: boolean = true;
+    @property({ group: { name: 'MoveX' }, type: CCBoolean, visible(this: BodyControlX) { return !this.LockX; } })
+    MoveAuto: boolean = false;
 
     @property({ group: { name: 'MoveY' }, type: CCBoolean })
     LockY: boolean = false;
@@ -250,6 +252,7 @@ export class BodyControlX extends Component {
             director.on(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             director.on(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
             director.on(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            director.on(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             director.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             director.on(ConstantBase.CONTROL_DASH, this.onDash, this);
             director.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
@@ -267,6 +270,7 @@ export class BodyControlX extends Component {
             director.off(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             director.off(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
             director.off(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            director.off(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             director.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             director.off(ConstantBase.CONTROL_DASH, this.onDash, this);
             director.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
@@ -290,6 +294,7 @@ export class BodyControlX extends Component {
             this.node.on(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             this.node.on(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
             this.node.on(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            this.node.on(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             this.node.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             this.node.on(ConstantBase.CONTROL_DASH, this.onDash, this);
             this.node.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
@@ -307,6 +312,7 @@ export class BodyControlX extends Component {
             this.node.off(ConstantBase.CONTROL_RELEASE_X, this.onMoveReleaseX, this);
             this.node.off(ConstantBase.CONTROL_RELEASE_Y, this.onMoveReleaseY, this);
             this.node.off(ConstantBase.CONTROL_JUMP, this.onJump, this);
+            this.node.off(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             this.node.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             this.node.off(ConstantBase.CONTROL_DASH, this.onDash, this);
             this.node.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
@@ -399,6 +405,13 @@ export class BodyControlX extends Component {
                     }
                     break;
             }
+        }
+
+        if (this.MoveAuto && this.m_controlByDirector) {
+            if (this.FaceRight)
+                this.onMoveRight();
+            else
+                this.onMoveLeft();
         }
 
         if (this.m_dash) {
@@ -498,19 +511,19 @@ export class BodyControlX extends Component {
     }
 
     onMoveUp() {
-        if (!this.m_control || this.getDead())
+        if (this.m_end || !this.m_control || this.getDead())
             return;
         this.m_faceDirY = 1;
     }
 
     onMoveDown() {
-        if (!this.m_control || this.getDead())
+        if (this.m_end || !this.m_control || this.getDead())
             return;
         this.m_faceDirY = -1;
     }
 
     onMoveLeft() {
-        if (!this.m_control || this.getDead()) {
+        if (this.m_end || !this.m_control || this.getDead()) {
             this.m_moveDirX = 0;
             return;
         }
@@ -526,7 +539,7 @@ export class BodyControlX extends Component {
     }
 
     onMoveRight() {
-        if (!this.m_control || this.getDead()) {
+        if (this.m_end || !this.m_control || this.getDead()) {
             this.m_moveDirX = 0;
             return;
         }
@@ -585,7 +598,7 @@ export class BodyControlX extends Component {
             return;
         }
 
-        if (this.JumpAuto && this.m_bodyCheck.m_isBotFinal)
+        if (this.JumpAuto && this.m_controlByDirector && this.m_bodyCheck.m_isBotFinal)
             this.onJump(dt);
 
         if (!this.FallAttackStop && this.FallAttackForce != 0 && this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {

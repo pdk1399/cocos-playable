@@ -31,6 +31,7 @@ export class ConstantBase {
     static readonly CONTROL_RELEASE_X: string = 'control-release-x';
     static readonly CONTROL_RELEASE_Y: string = 'control-release-y';
     static readonly CONTROL_JUMP: string = 'control-jump';
+    static readonly CONTROL_JUMP_FORCE: string = 'control-jump-force';
     static readonly CONTROL_JUMP_RELEASE: string = 'control-jump-release';
     static readonly CONTROL_DASH: string = 'control-dash';
     static readonly CONTROL_INTERACTION: string = 'control-interaction';

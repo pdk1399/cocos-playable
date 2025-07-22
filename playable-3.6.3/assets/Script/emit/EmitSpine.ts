@@ -88,8 +88,11 @@ export class EmitSpine extends EmitBaseNode {
         this.onEventActive();
 
         //#1: Emit Director
-        if (this.EmitEvent != '')
-            director.emit(this.EmitEvent);
+        this.EmitEvent.forEach(event => {
+            if (event != '') {
+                director.emit(event);
+            }
+        });
 
         //NEXT
         if (this.EmitNodeNext != null)

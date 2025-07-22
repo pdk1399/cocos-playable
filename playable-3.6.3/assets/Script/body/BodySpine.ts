@@ -109,7 +109,7 @@ export class BodySpine extends Component {
             return 0;
         if (this.m_lockAttack)
             return 0;
-        if (this.m_body.Protect && this.m_body.ProtectHit)
+        if (this.m_body.Protect && this.m_body.Protect)
             return;
         if (this.AudioHit != null)
             this.AudioHit.play();
@@ -124,7 +124,7 @@ export class BodySpine extends Component {
     }
 
     onDead(): number {
-        if (this.m_body.Protect && this.m_body.ProtectHit)
+        if (this.m_body.Protect && this.m_body.Protect)
             return;
         if (this.AudioDead != null)
             this.AudioDead.play();
