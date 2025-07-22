@@ -1,5 +1,6 @@
 import { _decorator, CCBoolean, CCInteger, Collider2D, Component, Contact2DType, director, Node, tween } from 'cc';
 import { ConstantBase } from '../ConstantBase';
+import { BodyBase } from '../body/BodyBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('ObjectFlag')
@@ -34,6 +35,9 @@ export class ObjectFlag extends Component {
             return;
         switch (self.tag) {
             case this.TagActive:
+                let bodyBase = other.node.getComponent(BodyBase);
+                if (bodyBase.m_bodyX2 || bodyBase.m_bodyX4)
+                    return;
                 director.emit(ConstantBase.CONTROL_LOCK);
                 other.node.emit(ConstantBase.NODE_CONTROL_DIRECTOR, false);
                 other.node.emit(ConstantBase.NODE_CONTROL_NODE, true);
