@@ -92,6 +92,8 @@ export class ConstantBase {
     static readonly NODE_UI_DRAG_ENTER: string = 'node-ui-drag-enter';
     static readonly NODE_UI_DRAG_BACK: string = 'node-ui-drag-back';
     static readonly NODE_UI_DRAG_EXIT: string = 'node-ui-drag-exit';
+    static readonly NODE_UI_DRAG_START: string = 'node-ui-drag-start';
+    static readonly NODE_UI_DRAG_END: string = 'node-ui-drag-end';
 
     //
 
