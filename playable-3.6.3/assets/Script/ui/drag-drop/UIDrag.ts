@@ -1,5 +1,6 @@
 import { _decorator, Camera, CCBoolean, CCInteger, Collider2D, Component, Contact2DType, EventTouch, IPhysics2DContact, Node, RigidBody2D, UIOpacity, UITransform, v2, v3, Vec2, Vec3 } from 'cc';
 import { UIDrop } from './UIDrop';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('UIDrag')
@@ -111,6 +112,8 @@ export class UIDrag extends Component {
         this.m_posDot = this.m_posTouchedFixed.clone().add(this.m_posLocked);
 
         this.Drag.position = this.m_posDot;
+
+        this.node.emit(ConstantBase.NODE_UI_DRAG_START, this.node);
     }
 
     onTouchMove(event: EventTouch) {
@@ -167,6 +170,8 @@ export class UIDrag extends Component {
         this.m_posDot = this.m_posPrimary;
 
         this.Drag.position = this.m_posDot;
+
+        this.node.emit(ConstantBase.NODE_UI_DRAG_END, this.node);
     }
 
     //DROP
