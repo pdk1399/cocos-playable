@@ -29,9 +29,7 @@ export class StickBattleMerge extends Component {
         }
         if (unitA.type != unitB.type || unitA.level != unitB.level) {
             console.log('Cannot merge, not same type and level');
-            let dragA = this.m_uiDrop.m_uiDrag[0].getComponent(UIDrag);
-            let dragB = this.m_uiDrop.m_uiDrag[1].getComponent(UIDrag);
-            dragA.onDropEnter(dragB.m_uiDropLast);
+            this.onSwap();
         }
         else {
             if (!unitA.onLevelAdd()) {
@@ -40,7 +38,7 @@ export class StickBattleMerge extends Component {
                 return;
             }
             console.log('Merge unit complete');
-            this.m_uiDrop.m_uiDrag[1].getComponent(UIDrag).onDropExit();
+            unitB.getComponent(UIDrag).onDropExit();
             this.scheduleOnce(() => unitB.node.destroy(), 0.02);
         }
     }
