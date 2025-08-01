@@ -39,6 +39,7 @@ export class UIDrop extends Component {
     onDropExit(target: UIDrag) {
         target.m_drop = null;
         target.m_uiDrop = null;
+        target.m_uiDropLast = this;
         let index = this.m_uiDrag.indexOf(target);
         if (index < 0)
             return;

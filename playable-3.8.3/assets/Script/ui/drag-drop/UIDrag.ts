@@ -33,6 +33,7 @@ export class UIDrag extends Component {
 
     m_uiDrop: UIDrop = null;
     m_uiDropCurrent: UIDrop = null;
+    m_uiDropLast: UIDrop = null;
 
     m_dotRadius: number;
     m_posPrimary: Vec3 = v3();
@@ -78,6 +79,7 @@ export class UIDrag extends Component {
                 console.log('UIDrop parent of ' + this.node.name + ' is not found, so ' + this.node.parent + ' will be the parent');
                 this.m_drop = this.node.parent;
                 this.m_uiDrop = this.node.parent.getComponent(UIDrop);
+                this.m_uiDropLast = this.m_uiDrop;
             }
         });
     }
@@ -180,6 +182,29 @@ export class UIDrag extends Component {
     }
 
     //DROP
+
+    onDropEnter(drop: UIDrop) {
+        if (drop == null)
+            return;
+        this.m_uiDrop.onDropExit(this);
+        drop.onDropEnter(this);
+        this.node.setParent(this.m_drop, true);
+        this.node.position = this.m_posDrop;
+
+        this.m_direction = Vec2.ZERO.clone();
+
+        this.m_posTouched = this.m_posPrimary;
+        this.m_posLocked = this.m_posPrimary;
+        this.m_posDot = this.m_posPrimary;
+
+        this.Drag.position = this.m_posDot;
+
+        this.node.emit(ConstantBase.NODE_UI_DRAG_END);
+    }
+
+    onDropExit() {
+        this.m_uiDrop.onDropExit(this);
+    }
 
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         if (this.Lock)
