@@ -11,35 +11,34 @@ export class EmitBaseEvent extends EmitBase {
     //ON-EVENT
     @property({ group: { name: 'Event', displayOrder: 2 }, type: [CCString], visible(this: EmitBaseEvent) { return !this.Start; } })
     OnEvent: string[] = [];
+    @property({ group: { name: 'Event', displayOrder: 2 }, type: [CCString], visible(this: EmitBaseEvent) { return !this.Start; } })
+    OnNode: string[] = [];
     //EMIT-EVENT
     @property({ group: { name: 'Event', displayOrder: 14 }, type: [CCString] })
     EmitEvent: string[] = [];
 
     //NOTE: 'displayOrder' count every items (field name, field value, etc) to draw order
 
-    protected m_eventActived: boolean = false;
-    protected m_eventPhysic: boolean = false;
     protected m_targetCollide: Node[] = [];
 
     protected onLoad(): void {
+        if (this.Start)
+            return;
         //ON-EVENT
         this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
         this.OnEvent.forEach(event => {
             director.on(event, this.onEvent, this);
         });
-
-        if (this.Start)
-            return;
-
+        this.OnNode.forEach(event => {
+            this.node.on(event, this.onEvent, this);
+        });
         //ON-COLLISION-EVENT
         let rigidBody = this.getComponent(RigidBody2D);
         if (rigidBody != null) {
-            this.m_eventPhysic = true;
             rigidBody.enabledContactListener = true;
             rigidBody.type = ERigidBody2DType.Kinematic;
             rigidBody.gravityScale = 0;
             rigidBody.fixedRotation = true;
-            //
             let colliders = this.getComponents(Collider2D);
             colliders.forEach(collider => {
                 switch (collider.tag) {
@@ -64,10 +63,6 @@ export class EmitBaseEvent extends EmitBase {
     }
 
     onEvent(): void {
-        if (this.m_eventActived)
-            return;
-        this.m_eventActived = true;
-
         //DELAY
         this.scheduleOnce(() => {
             //#0: Emit Active
@@ -82,9 +77,6 @@ export class EmitBaseEvent extends EmitBase {
             //NEXT
             if (this.EmitNodeNext != null)
                 this.EmitNodeNext.emit(ConstantBase.NODE_EVENT);
-
-            //END
-            this.m_eventActived = false;
         }, Math.max(this.Delay, 0));
 
         //ONCE
@@ -100,18 +92,18 @@ export class EmitBaseEvent extends EmitBase {
             this.OnEvent.forEach(event => {
                 director.off(event, this.onEvent, this);
             });
-
+            this.OnNode.forEach(event => {
+                this.node.off(event, this.onEvent, this);
+            });
             //ON-COLLISION-EVENT
-            if (this.m_eventPhysic) {
-                let colliders = this.getComponents(Collider2D);
-                colliders.forEach(collider => {
-                    switch (collider.tag) {
-                        case this.OnTagBody:
-                            collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-                            break;
-                    }
-                });
-            }
+            let colliders = this.getComponents(Collider2D);
+            colliders.forEach(collider => {
+                switch (collider.tag) {
+                    case this.OnTagBody:
+                        collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+                        break;
+                }
+            });
         }
         if (this.Once >= OnceType.DeActive)
             this.scheduleOnce(() => this.node.active = false, 0.02);

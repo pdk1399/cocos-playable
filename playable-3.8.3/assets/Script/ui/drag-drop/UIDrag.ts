@@ -51,7 +51,7 @@ export class UIDrag extends Component {
         this.Drag.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.Drag.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
         this.Drag.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
-        this.Drag.on(Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+        this.Drag.on(Node.EventType.TOUCH_CANCEL, this.onTouchCancel, this);
 
         if (this.Drag.getComponent(RigidBody2D) != null) {
             let colliders = this.Drag.getComponents(Collider2D);
@@ -113,7 +113,7 @@ export class UIDrag extends Component {
 
         this.Drag.position = this.m_posDot;
 
-        this.node.emit(ConstantBase.NODE_UI_DRAG_START, this.node);
+        this.node.emit(ConstantBase.NODE_UI_DRAG_START);
     }
 
     onTouchMove(event: EventTouch) {
@@ -144,14 +144,19 @@ export class UIDrag extends Component {
         this.Drag.position = this.m_posDot;
     }
 
+    onTouchCancel(event: EventTouch) {
+        this.onTouchEnd(event);
+    }
+
     onTouchEnd(event: EventTouch) {
         if (this.Lock)
             return;
+
         if (!this.m_drag)
             //Avoid glitch when dragging before starting dragging progress after un-locking
             return;
-
         this.m_drag = false;
+
         if (this.m_dropCurrent != null) {
             if (this.m_dropCurrent != this.m_drop)
                 //NOTE: To avoid glitch when dragging on the same drop node, only excute exit when difference drop node.
@@ -171,7 +176,7 @@ export class UIDrag extends Component {
 
         this.Drag.position = this.m_posDot;
 
-        this.node.emit(ConstantBase.NODE_UI_DRAG_END, this.node);
+        this.node.emit(ConstantBase.NODE_UI_DRAG_END);
     }
 
     //DROP
@@ -182,6 +187,7 @@ export class UIDrag extends Component {
 
         if (selfCollider.tag != this.TagDrag || otherCollider.tag != this.TagDrop)
             return;
+
         //NOTE: When begin dragging, the current drop node will be the first drop node contact.
         this.m_dropCurrent = otherCollider.node;
         this.m_uiDropCurrent = otherCollider.node.getComponent(UIDrop);
@@ -195,6 +201,7 @@ export class UIDrag extends Component {
             return;
         if (otherCollider.node != this.m_dropCurrent)
             return;
+
         this.m_dropCurrent = null;
         this.m_uiDropCurrent = null;
     }

@@ -19,10 +19,6 @@ export class EmitSpine extends EmitBaseNode {
     AnimEndLoop: boolean = false;
 
     onEvent(): void {
-        if (this.m_eventActived)
-            return;
-        this.m_eventActived = true;
-
         //DELAY
         this.scheduleOnce(() => {
             //#2: Emit Node
@@ -33,11 +29,10 @@ export class EmitSpine extends EmitBaseNode {
             });
 
             //#3: Emit Node Target
-            if (this.m_eventPhysic && this.EmitTagTarget) {
+            if (this.EmitTagTarget) {
                 this.m_targetCollide.forEach(t => {
-                    if (t != null) {
+                    if (t != null)
                         this.onEventActiveNode(t);
-                    }
                 });
                 this.m_targetCollide.splice(0, this.m_targetCollide.length); //Reset all targets collide
             }
@@ -72,15 +67,16 @@ export class EmitSpine extends EmitBaseNode {
                 }, Math.max(target.onAnimation(this.AnimLoop, true), this.AnimDelay, 0));
             }, target.onAnimation(this.AnimStart, false));
         }
-        if (this.AnimLoop != '') {
-            target.scheduleOnce(() => {
-                target.scheduleOnce(() => {
-                    this.onEventSingleFinal();
-                }, Math.max(target.onAnimation(this.AnimLoop, this.AnimEndLoop), this.AnimDelay, 0));
-            }, target.onAnimation(this.AnimStart, false));
-        }
         else
-            target.scheduleOnce(() => this.onEventSingleFinal(), target.onAnimation(this.AnimStart, this.AnimEndLoop));
+            if (this.AnimLoop != '') {
+                target.scheduleOnce(() => {
+                    target.scheduleOnce(() => {
+                        this.onEventSingleFinal();
+                    }, Math.max(target.onAnimation(this.AnimLoop, this.AnimEndLoop), this.AnimDelay, 0));
+                }, target.onAnimation(this.AnimStart, false));
+            }
+            else
+                target.scheduleOnce(() => this.onEventSingleFinal(), target.onAnimation(this.AnimStart, this.AnimEndLoop));
     }
 
     onEventSingleFinal() {
@@ -97,8 +93,5 @@ export class EmitSpine extends EmitBaseNode {
         //NEXT
         if (this.EmitNodeNext != null)
             this.EmitNodeNext.emit(ConstantBase.NODE_EVENT);
-
-        //END
-        this.m_eventActived = false;
     }
 }
