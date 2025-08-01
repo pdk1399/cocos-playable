@@ -10,6 +10,10 @@ export class StickBattleArea extends Component {
 
     @property(Node)
     mask: Node = null;
+    @property(Node)
+    tutorialDrag: Node = null;
+    @property(Node)
+    tutorialMerge: Node = null;
 
     m_uiDrop: UIDrop = null;
 
@@ -26,6 +30,8 @@ export class StickBattleArea extends Component {
 
     onMaskShow() {
         this.mask.active = true;
+        this.tutorialDrag.active = false;
+        this.tutorialMerge.active = false;
     }
 
     onMaskHide() {
