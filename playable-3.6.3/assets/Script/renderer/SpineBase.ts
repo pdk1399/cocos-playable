@@ -39,8 +39,12 @@ export class SpineBase extends Component {
         if (this.Spine == null)
             this.Spine = this.getComponent(sp.Skeleton) ?? this.getComponentInChildren(sp.Skeleton);
 
-        this.m_dir = this.FaceRight ? 1 : -1;
         this.m_spineScaleXR = this.Spine._skeleton.scaleX;
+        this.m_dir = this.FaceRight ? 1 : -1;
+        this.m_anim = this.Spine.getCurrent(0)?.animation?.name ?? '';
+        this.m_loop = this.Spine.getCurrent(0)?.loop ?? false;
+        this.m_duration = this.Spine.getCurrent(0)?.animationEnd ?? 0;
+        this.m_durationScale = 1.0 * this.m_duration / this.Spine.timeScale;
         this.m_timeScale = this.Spine.timeScale;
 
         if (this.SpineEvent) {

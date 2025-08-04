@@ -89,11 +89,13 @@ export class ConstantBase {
     static readonly NODE_STATE: string = 'node-state';
     static readonly NODE_STATE_LOCK: string = 'node-state-lock';
 
-    static readonly NODE_UI_DRAG_ENTER: string = 'node-ui-drag-enter';
-    static readonly NODE_UI_DRAG_BACK: string = 'node-ui-drag-back';
-    static readonly NODE_UI_DRAG_EXIT: string = 'node-ui-drag-exit';
+    static readonly NODE_UI_DROP_ENTER: string = 'node-ui-drop-enter';
+    static readonly NODE_UI_DROP_BACK: string = 'node-ui-drop-back';
+    static readonly NODE_UI_DROP_EXIT: string = 'node-ui-drop-exit';
     static readonly NODE_UI_DRAG_START: string = 'node-ui-drag-start';
     static readonly NODE_UI_DRAG_END: string = 'node-ui-drag-end';
+    static readonly NODE_UI_DRAG_ENTER: string = 'node-ui-drag-enter';
+    static readonly NODE_UI_DRAG_EXIT: string = 'node-ui-drag-exit';
 
     //
 

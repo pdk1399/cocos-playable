@@ -36,8 +36,7 @@ export class EmitTweenMove extends EmitTween {
                 .call(() => target.worldPosition = this.m_valueA.clone())
                 .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                 .call(() => {
-                    if (this.EmitEvent != '')
-                        director.emit(this.EmitEvent);
+                    this.EmitEvent.forEach(event => director.emit(event));
                 })
                 .call(() => {
                     if (this.CompleteDestroy)
@@ -51,8 +50,7 @@ export class EmitTweenMove extends EmitTween {
                 .call(() => target.position = this.m_valueA.clone())
                 .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                 .call(() => {
-                    if (this.EmitEvent != '')
-                        director.emit(this.EmitEvent);
+                    this.EmitEvent.forEach(event => director.emit(event));
                 })
                 .call(() => {
                     if (this.CompleteDestroy)

@@ -33,6 +33,7 @@ export class UIDrag extends Component {
 
     m_uiDrop: UIDrop = null;
     m_uiDropCurrent: UIDrop = null;
+    m_uiDropLast: UIDrop = null;
 
     m_dotRadius: number;
     m_posPrimary: Vec3 = v3();
@@ -51,7 +52,7 @@ export class UIDrag extends Component {
         this.Drag.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.Drag.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
         this.Drag.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
-        this.Drag.on(Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+        this.Drag.on(Node.EventType.TOUCH_CANCEL, this.onTouchCancel, this);
 
         if (this.Drag.getComponent(RigidBody2D) != null) {
             let colliders = this.Drag.getComponents(Collider2D);
@@ -78,6 +79,7 @@ export class UIDrag extends Component {
                 console.log('UIDrop parent of ' + this.node.name + ' is not found, so ' + this.node.parent + ' will be the parent');
                 this.m_drop = this.node.parent;
                 this.m_uiDrop = this.node.parent.getComponent(UIDrop);
+                this.m_uiDropLast = this.m_uiDrop;
             }
         });
     }
@@ -113,7 +115,7 @@ export class UIDrag extends Component {
 
         this.Drag.position = this.m_posDot;
 
-        this.node.emit(ConstantBase.NODE_UI_DRAG_START, this.node);
+        this.node.emit(ConstantBase.NODE_UI_DRAG_START);
     }
 
     onTouchMove(event: EventTouch) {
@@ -144,22 +146,27 @@ export class UIDrag extends Component {
         this.Drag.position = this.m_posDot;
     }
 
+    onTouchCancel(event: EventTouch) {
+        this.onTouchEnd(event);
+    }
+
     onTouchEnd(event: EventTouch) {
         if (this.Lock)
             return;
+
         if (!this.m_drag)
             //Avoid glitch when dragging before starting dragging progress after un-locking
             return;
-
         this.m_drag = false;
+
         if (this.m_dropCurrent != null) {
             if (this.m_dropCurrent != this.m_drop)
                 //NOTE: To avoid glitch when dragging on the same drop node, only excute exit when difference drop node.
-                this.m_uiDrop.onDragExit(this);
-            this.m_uiDropCurrent.onDragEnter(this);
+                this.m_uiDrop.onDropExit(this);
+            this.m_uiDropCurrent.onDropEnter(this);
         }
         else
-            this.m_uiDrop.onDragBack(this);
+            this.m_uiDrop.onDropBack(this);
         this.node.setParent(this.m_drop, true);
         this.node.position = this.m_posDrop;
 
@@ -171,31 +178,59 @@ export class UIDrag extends Component {
 
         this.Drag.position = this.m_posDot;
 
-        this.node.emit(ConstantBase.NODE_UI_DRAG_END, this.node);
+        this.node.emit(ConstantBase.NODE_UI_DRAG_END);
     }
 
     //DROP
 
+    onDropEnter(drop: UIDrop) {
+        if (drop == null)
+            return;
+        this.m_uiDrop.onDropExit(this);
+        drop.onDropEnter(this);
+        this.node.setParent(this.m_drop, true);
+        this.node.position = this.m_posDrop;
+
+        this.m_direction = Vec2.ZERO.clone();
+
+        this.m_posTouched = this.m_posPrimary;
+        this.m_posLocked = this.m_posPrimary;
+        this.m_posDot = this.m_posPrimary;
+
+        this.Drag.position = this.m_posDot;
+
+        this.node.emit(ConstantBase.NODE_UI_DRAG_END);
+    }
+
+    onDropExit() {
+        this.m_uiDrop.onDropExit(this);
+    }
+
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         if (this.Lock)
             return;
-
+        if (!this.m_drag)
+            return;
         if (selfCollider.tag != this.TagDrag || otherCollider.tag != this.TagDrop)
             return;
         //NOTE: When begin dragging, the current drop node will be the first drop node contact.
         this.m_dropCurrent = otherCollider.node;
+        this.m_uiDropCurrent?.onDragExit(this);
         this.m_uiDropCurrent = otherCollider.node.getComponent(UIDrop);
+        this.m_uiDropCurrent.onDragEnter(this);
     }
 
     protected onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         if (this.Lock)
             return;
-
+        if (!this.m_drag)
+            return;
         if (selfCollider.tag != this.TagDrag || otherCollider.tag != this.TagDrop)
             return;
         if (otherCollider.node != this.m_dropCurrent)
             return;
         this.m_dropCurrent = null;
+        this.m_uiDropCurrent.onDragExit(this);
         this.m_uiDropCurrent = null;
     }
 

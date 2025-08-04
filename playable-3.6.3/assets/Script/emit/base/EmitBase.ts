@@ -33,17 +33,12 @@ export class EmitBase extends Component {
     @property({ group: { name: 'Event', displayOrder: 99999 }, type: Node })
     EmitNodeNext: Node = null;
 
-    protected m_eventActived: boolean = false;
-    protected m_eventPhysic: boolean = false;
-
     protected onLoad(): void {
         if (this.Start)
             return;
-
         //ON-COLLISION-EVENT
         let rigidBody = this.getComponent(RigidBody2D);
         if (rigidBody != null) {
-            this.m_eventPhysic = true;
             rigidBody.enabledContactListener = true;
             rigidBody.type = ERigidBody2DType.Kinematic;
             rigidBody.gravityScale = 0;
@@ -78,18 +73,11 @@ export class EmitBase extends Component {
     }
 
     onEvent(): void {
-        if (this.m_eventActived)
-            return;
-        this.m_eventActived = true;
-
         //DELAY
         this.scheduleOnce(() => {
             //NEXT
             if (this.EmitNodeNext != null)
                 this.EmitNodeNext.emit(ConstantBase.NODE_EVENT);
-
-            //END
-            this.m_eventActived = false;
         }, Math.max(this.Delay, 0));
 
         //ONCE

@@ -34,10 +34,6 @@ export class EmitBaseNode extends EmitBaseEvent {
     }
 
     onEvent(): void {
-        if (this.m_eventActived)
-            return;
-        this.m_eventActived = true;
-
         //DELAY
         this.scheduleOnce(() => {
             //#0: Emit Active
@@ -58,11 +54,10 @@ export class EmitBaseNode extends EmitBaseEvent {
             });
 
             //#3: Emit Node Target
-            if (this.m_eventPhysic && this.EmitTagTarget) {
+            if (this.EmitTagTarget) {
                 this.m_targetCollide.forEach(t => {
-                    if (t != null) {
+                    if (t != null)
                         this.onEventActiveNode(t);
-                    }
                 });
                 this.m_targetCollide.splice(0, this.m_targetCollide.length); //Reset all targets collide
             }
@@ -70,9 +65,6 @@ export class EmitBaseNode extends EmitBaseEvent {
             //NEXT
             if (this.EmitNodeNext != null)
                 this.EmitNodeNext.emit(ConstantBase.NODE_EVENT);
-
-            //END
-            this.m_eventActived = false;
         }, Math.max(this.Delay, 0));
 
         //ONCE

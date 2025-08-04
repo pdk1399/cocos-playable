@@ -32,8 +32,7 @@ export class EmitTweenRotate extends EmitTween {
             .call(() => target.eulerAngles = this.m_valueA.clone())
             .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
             .call(() => {
-                if (this.EmitEvent != '')
-                    director.emit(this.EmitEvent);
+                this.EmitEvent.forEach(event => director.emit(event));
             })
             .call(() => {
                 if (this.CompleteDestroy)

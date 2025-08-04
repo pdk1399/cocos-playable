@@ -16,8 +16,8 @@ export class StickTowerRoom extends Component {
     m_unit: StickTowerUnit[] = [];
 
     protected onLoad(): void {
-        this.node.on(ConstantBase.NODE_UI_DRAG_ENTER, this.onPlayerEnter, this);
-        this.node.on(ConstantBase.NODE_UI_DRAG_EXIT, this.onPlayerExit, this);
+        this.node.on(ConstantBase.NODE_UI_DROP_ENTER, this.onPlayerEnter, this);
+        this.node.on(ConstantBase.NODE_UI_DROP_EXIT, this.onPlayerExit, this);
     }
 
     protected start(): void {
