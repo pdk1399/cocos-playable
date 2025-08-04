@@ -12,10 +12,11 @@
 - Mintegral: <= 2.5MB - Should use version 3.8.3 to minimize build size
 - Unity: <= 5MB - Use build version 3.6.3 (Updated: Now can export >= 5MB)
 - Amazon: Use build Mintegral with version 3.8.3
+- Google: Use build Mintegral with version 3.8.3
 
 # Build Compress
 - Image (include image of spine): With size >=150KB can be called heavyly and should compress.
-- Spine: Don't export skin, animation & images attach to slot (check in *.png with *.json file after export) that not used in scene.
+- Spine: Don't export skin, animation & images attach to slot (check in *.png with *.json file after export) that not used in scene (and not export as binary)
 - Tile: Any tile sprite import into tile file *.tmx will make it heavier, remove any tile assets that don't used in scene.
 
 # Spine
