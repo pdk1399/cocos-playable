@@ -16,6 +16,7 @@
 - Google: Use build Mintegral with version 3.8.3
 
 # Build Compress
+- Not choice all scene to build, it will increase size build. For some reason, cocos build will pack all assets in project, even not used in scene build, so check out spine, image and script for remove them if not necessary.
 - Image (include image of spine): With size >=150KB can be called heavyly and should compress.
 - Spine: Don't export skin, animation & images attach to slot (check in *.png with *.json file after export) that not used in scene, and not export as binary.
 - Tile: Any tile sprite import into tile file *.tmx will make it heavier, remove any tile assets that don't used in scene.
