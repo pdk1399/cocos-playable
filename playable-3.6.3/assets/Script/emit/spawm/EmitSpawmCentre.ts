@@ -7,6 +7,8 @@ const { ccclass, property } = _decorator;
 export class EmitSpawmCentre extends EmitSpawm {
 
     @property({ group: { name: 'Main' }, type: Node })
+    Spawm: Node = null;
+    @property({ group: { name: 'Main' }, type: Node })
     Centre: Node = null;
     @property({ group: { name: 'Main' }, type: CCBoolean })
     Limit: boolean = false;
@@ -21,6 +23,12 @@ export class EmitSpawmCentre extends EmitSpawm {
 
     m_each: number = 0;
     m_delay: boolean = false;
+
+    protected onLoad(): void {
+        super.onLoad();
+        if (this.Spawm == null)
+            this.Spawm = this.node;
+    }
 
     protected lateUpdate(dt: number): void {
         this.onSpawm();
@@ -39,11 +47,11 @@ export class EmitSpawmCentre extends EmitSpawm {
         else
             this.m_progess = true;
 
-        if (this.OnDestroy != '')
-            director.on(this.OnDestroy, this.onTargetDestroy, this);
+        if (this.OnRemove != '')
+            director.on(this.OnRemove, this.onRemove, this);
     }
 
-    onTargetDestroy(target: Node) {
+    onRemove(target: Node) {
         if (!this.m_progess)
             return;
         if (target != null) {
@@ -59,16 +67,6 @@ export class EmitSpawmCentre extends EmitSpawm {
                 this.m_spawm.splice(i, 1);
             }
         }
-    }
-
-    onEventEnd() {
-        if (!this.m_progess)
-            return;
-        this.m_progess = false;
-        if (this.OnDestroy != '')
-            director.off(this.OnDestroy, this.onTargetDestroy, this);
-        if (this.EmitEnd != '')
-            director.emit(this.EmitEnd);
     }
 
     //
