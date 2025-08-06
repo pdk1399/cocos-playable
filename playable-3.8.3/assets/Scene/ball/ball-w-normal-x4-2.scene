@@ -196,7 +196,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 762.5439783491205,
+    "_orthoHeight": 803.8801711840229,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -4660,6 +4660,7 @@
     "Delay": 0,
     "EmitNodeNext": null,
     "OnEvent": [],
+    "OnNode": [],
     "EmitEvent": [],
     "EmitNode": {
       "__id__": 119
@@ -6013,7 +6014,7 @@
       "y": 0,
       "z": 0
     },
-    "_id": "0ebN/D7opOIKHenlD/rw2I"
+    "_id": "a3AKhjEOJAbbuPpa7oRrOw"
   },
   {
     "__type__": "cc.Node",
@@ -6061,7 +6062,7 @@
       "y": 0,
       "z": 0
     },
-    "_id": "621QEzcb9Nz7++crAK4voQ"
+    "_id": "47FtLsnbVDD4/bHpKCxui8"
   },
   {
     "__type__": "cc.UITransform",
@@ -6083,7 +6084,7 @@
       "x": 0.5,
       "y": 0.5
     },
-    "_id": "5a4bnkTfVMpKkS5G032Uky"
+    "_id": "40Oh0F3D9AsrU629I3CfSm"
   },
   {
     "__type__": "sp.Skeleton",
@@ -6122,7 +6123,7 @@
     "_debugSlots": false,
     "_enableBatch": false,
     "loop": true,
-    "_id": "6fmHlpgYJOsLeAhqKz2pgP"
+    "_id": "d0lipzkY1C9Yhqh1W6WNfd"
   },
   {
     "__type__": "cc.Node",
@@ -6163,7 +6164,7 @@
       "y": 0,
       "z": 0
     },
-    "_id": "0889swCVBIqZzy+0QhFrXS"
+    "_id": "f2EflFvc1LX7JTEm52q6zj"
   },
   {
     "__type__": "98966WqD/JJ5owHpH6qnXbX",
@@ -6183,7 +6184,7 @@
     "Skin": [],
     "SpineEvent": false,
     "AnimStart": [],
-    "_id": "fajlLxjQZGfK+gLDCpLUu4"
+    "_id": "daCYy9qHhBbLtIXiNHSf6h"
   },
   {
     "__type__": "cc.RigidBody2D",
@@ -6211,7 +6212,7 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": false,
-    "_id": "9cgXMO9pNGr4mKHQYXFleW"
+    "_id": "39h70oqZRIvoBeGpEHggus"
   },
   {
     "__type__": "cc.BoxCollider2D",
@@ -6239,7 +6240,7 @@
       "width": 1200,
       "height": 2000
     },
-    "_id": "d1M9eVDhxGKr5AA2fJhWYw"
+    "_id": "99cm2OytxD6qFXTs6b9fhU"
   },
   {
     "__type__": "cc.BoxCollider2D",
@@ -6267,10 +6268,10 @@
       "width": 300,
       "height": 500
     },
-    "_id": "2chP7Af9tFRqgzGZ87y12J"
+    "_id": "22zX0AAKlMg6mBxrGubSD0"
   },
   {
-    "__type__": "7d30f1XZQFEKIhiVyx0iDN5",
+    "__type__": "a2a7dKY7y9OY5yV6xxH60Sm",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -6279,47 +6280,56 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Target": [
+    "Start": false,
+    "OnTagBody": 1,
+    "OnTagTarget": [
+      100
+    ],
+    "OnNodeTarget": [],
+    "Once": 1,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [],
+    "OnNode": [],
+    "EmitEvent": [
+      "player-complete"
+    ],
+    "_id": "ade+kXayBN7Y8jtZZ0jvpb"
+  },
+  {
+    "__type__": "6cd76sRD45PTaTetXxChWQd",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 163
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "Start": false,
+    "OnTagBody": 0,
+    "OnTagTarget": [
+      100
+    ],
+    "OnNodeTarget": [],
+    "Once": 0,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [],
+    "OnNode": [],
+    "EmitEvent": [],
+    "EmitNode": [
       {
-        "__id__": 168
+        "__id__": 163
       }
     ],
-    "TargetContact": false,
-    "OnNode": false,
-    "Once": true,
-    "Delay": 0,
-    "EmitEvent": "",
-    "EmitEventFinal": "",
+    "EmitTagTarget": false,
     "AnimStart": "open",
     "AnimLoop": "open-loop",
-    "AnimLoopDuration": 0,
-    "AnimEnd": "open-loop",
+    "AnimDelay": 0,
+    "AnimEnd": "",
     "AnimEndLoop": true,
-    "TagBody": 0,
-    "TagTarget": [
-      100
-    ],
-    "_id": "6a2/wSidpNP6CDvpKoyjKW"
-  },
-  {
-    "__type__": "0477ddExZRJ567T3j8zS7Rp",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 163
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "Type": 3,
-    "Once": true,
-    "Delay": 0,
-    "EmitEvent": "player-complete",
-    "TagBody": 1,
-    "TagTarget": [
-      100
-    ],
-    "_id": "f3exezsrhHlJmojoS7Qvgj"
+    "_id": "b57gM1O8ZOO7hFlXovJ4V5"
   },
   {
     "__type__": "cc.Node",
@@ -11993,6 +12003,7 @@
     "Delay": 0,
     "EmitNodeNext": null,
     "OnEvent": [],
+    "OnNode": [],
     "EmitEvent": [],
     "EmitNode": [],
     "EmitTagTarget": true,
