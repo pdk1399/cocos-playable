@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, director, Node, tween, Tween, TweenEasing, v2, v3, Vec2, Vec3 } from 'cc';
-import { EmitTween, ValueType } from './EmitTween';
+import { EmitTween, TweenType, ValueType } from './EmitTween';
 import { EaseType } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
@@ -10,6 +10,8 @@ export class EmitTweenMove extends EmitTween {
     Value: Vec2 = v2();
     @property({ group: { name: 'Main', displayOrder: 10 }, type: CCBoolean })
     ValueWorld: boolean = false;
+    @property({ group: { name: 'Main', displayOrder: 10 }, type: CCBoolean, visible: function (this: EmitTween) { return this.Progress == TweenType.Once; } })
+    ValueReset: boolean = false;
 
     m_valueA: Vec3 = v3();
     m_valueB: Vec3 = v3();
@@ -33,11 +35,14 @@ export class EmitTweenMove extends EmitTween {
         if (this.ValueWorld) {
             //World
             tween(target)
-                .call(() => target.worldPosition = this.m_valueA.clone())
-                .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                 .call(() => {
-                    this.EmitEvent.forEach(event => director.emit(event));
+                    if (this.ValueReset)
+                        target.worldPosition = this.m_valueA.clone();
+                    else
+                        this.m_valueA = this.ValueWorld ? target.worldPosition.clone() : target.position.clone();
                 })
+                .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+                .call(() => this.onTweenComplete())
                 .call(() => {
                     if (this.CompleteDestroy)
                         this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);
@@ -47,11 +52,14 @@ export class EmitTweenMove extends EmitTween {
         else {
             //Local
             tween(target)
-                .call(() => target.position = this.m_valueA.clone())
-                .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                 .call(() => {
-                    this.EmitEvent.forEach(event => director.emit(event));
+                    if (this.ValueReset)
+                        target.position = this.m_valueA.clone();
+                    else
+                        this.m_valueA = this.ValueWorld ? target.worldPosition.clone() : target.position.clone();
                 })
+                .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+                .call(() => this.onTweenComplete())
                 .call(() => {
                     if (this.CompleteDestroy)
                         this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);
@@ -70,6 +78,7 @@ export class EmitTweenMove extends EmitTween {
                         .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                         .to(this.Duration, { worldPosition: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
                     )
+                    .call(() => this.onTweenComplete())
                     .call(() => {
                         if (this.CompleteDestroy)
                             this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);
@@ -93,6 +102,7 @@ export class EmitTweenMove extends EmitTween {
                         .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                         .to(this.Duration, { position: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
                     )
+                    .call(() => this.onTweenComplete())
                     .call(() => {
                         if (this.CompleteDestroy)
                             this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);
@@ -120,6 +130,7 @@ export class EmitTweenMove extends EmitTween {
                         .call(() => target.worldPosition = this.m_valueA.clone())
                         .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     )
+                    .call(() => this.onTweenComplete())
                     .call(() => {
                         if (this.CompleteDestroy)
                             this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);
@@ -143,6 +154,7 @@ export class EmitTweenMove extends EmitTween {
                         .call(() => target.position = this.m_valueA.clone())
                         .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     )
+                    .call(() => this.onTweenComplete())
                     .call(() => {
                         if (this.CompleteDestroy)
                             this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);

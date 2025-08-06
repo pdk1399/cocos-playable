@@ -193,7 +193,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 762.5439783491205,
+    "_orthoHeight": 803.8801711840229,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -3933,6 +3933,7 @@
     "Delay": 0,
     "EmitNodeNext": null,
     "OnEvent": [],
+    "OnNode": [],
     "EmitEvent": [],
     "EmitNode": {
       "__id__": 99
@@ -4127,6 +4128,7 @@
     "Delay": 0,
     "EmitNodeNext": null,
     "OnEvent": [],
+    "OnNode": [],
     "EmitEvent": [],
     "EmitNode": {
       "__id__": 109
@@ -4167,6 +4169,7 @@
     "OnEvent": [
       "control-jump"
     ],
+    "OnNode": [],
     "EmitEvent": [],
     "EmitNode": [
       {
@@ -5874,7 +5877,7 @@
     "_id": "33JistWWtGGKdEu3hL3wwJ"
   },
   {
-    "__type__": "7d30f1XZQFEKIhiVyx0iDN5",
+    "__type__": "a2a7dKY7y9OY5yV6xxH60Sm",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -5883,30 +5886,24 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Target": [
-      {
-        "__id__": 158
-      }
-    ],
-    "TargetContact": false,
-    "OnNode": false,
-    "Once": true,
-    "Delay": 0,
-    "EmitEvent": "",
-    "EmitEventFinal": "",
-    "AnimStart": "open",
-    "AnimLoop": "open-loop",
-    "AnimLoopDuration": 0,
-    "AnimEnd": "open-loop",
-    "AnimEndLoop": true,
-    "TagBody": 0,
-    "TagTarget": [
+    "Start": false,
+    "OnTagBody": 1,
+    "OnTagTarget": [
       100
     ],
-    "_id": "712G764y5J2oz8hN5Dp1MI"
+    "OnNodeTarget": [],
+    "Once": 1,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [],
+    "OnNode": [],
+    "EmitEvent": [
+      "player-complete"
+    ],
+    "_id": "feOOgDsR5DU7S7zMNsMLbm"
   },
   {
-    "__type__": "0477ddExZRJ567T3j8zS7Rp",
+    "__type__": "6cd76sRD45PTaTetXxChWQd",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -5915,15 +5912,30 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Type": 3,
-    "Once": true,
-    "Delay": 0,
-    "EmitEvent": "player-complete",
-    "TagBody": 1,
-    "TagTarget": [
+    "Start": false,
+    "OnTagBody": 0,
+    "OnTagTarget": [
       100
     ],
-    "_id": "c1DUmpUBZOc4C1jO0s8znp"
+    "OnNodeTarget": [],
+    "Once": 0,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [],
+    "OnNode": [],
+    "EmitEvent": [],
+    "EmitNode": [
+      {
+        "__id__": 153
+      }
+    ],
+    "EmitTagTarget": false,
+    "AnimStart": "open",
+    "AnimLoop": "open-loop",
+    "AnimDelay": 0,
+    "AnimEnd": "",
+    "AnimEndLoop": true,
+    "_id": "d547e/8JZKjrbsfVoqMdHP"
   },
   {
     "__type__": "cc.Node",
@@ -9883,6 +9895,7 @@
     "Delay": 0,
     "EmitNodeNext": null,
     "OnEvent": [],
+    "OnNode": [],
     "EmitEvent": [],
     "EmitNode": [
       {
@@ -12220,6 +12233,7 @@
     "Delay": 0,
     "EmitNodeNext": null,
     "OnEvent": [],
+    "OnNode": [],
     "EmitEvent": [],
     "EmitNode": [],
     "EmitTagTarget": true,

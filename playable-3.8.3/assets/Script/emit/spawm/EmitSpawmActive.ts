@@ -25,11 +25,11 @@ export class EmitSpawmActive extends EmitSpawm {
             this.m_spawm.push(target);
         }
 
-        if (this.OnDestroy != '')
-            director.on(this.OnDestroy, this.onTargetDestroy, this);
+        if (this.OnRemove != '')
+            director.on(this.OnRemove, this.onRemove, this);
     }
 
-    onTargetDestroy(target: Node) {
+    onRemove(target: Node) {
         if (!this.m_progess)
             return;
         if (target != null) {
@@ -47,15 +47,5 @@ export class EmitSpawmActive extends EmitSpawm {
         }
         if (this.m_spawm.length == 0)
             this.onEventEnd();
-    }
-
-    onEventEnd() {
-        if (!this.m_progess)
-            return;
-        this.m_progess = false;
-        if (this.OnDestroy != '')
-            director.off(this.OnDestroy, this.onTargetDestroy, this);
-        if (this.EmitEnd != '')
-            director.emit(this.EmitEnd);
     }
 }

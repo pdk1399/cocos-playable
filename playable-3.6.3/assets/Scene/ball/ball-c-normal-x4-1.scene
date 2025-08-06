@@ -196,7 +196,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 762.5439783491205,
+    "_orthoHeight": 803.8801711840229,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -4660,6 +4660,7 @@
     "Delay": 0,
     "EmitNodeNext": null,
     "OnEvent": [],
+    "OnNode": [],
     "EmitEvent": [],
     "EmitNode": {
       "__id__": 119
@@ -6279,7 +6280,7 @@
     "_id": "2chP7Af9tFRqgzGZ87y12J"
   },
   {
-    "__type__": "7d30f1XZQFEKIhiVyx0iDN5",
+    "__type__": "a2a7dKY7y9OY5yV6xxH60Sm",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -6288,30 +6289,24 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Target": [
-      {
-        "__id__": 168
-      }
-    ],
-    "TargetContact": false,
-    "OnNode": false,
-    "Once": true,
-    "Delay": 0,
-    "EmitEvent": "",
-    "EmitEventFinal": "",
-    "AnimStart": "open",
-    "AnimLoop": "open-loop",
-    "AnimLoopDuration": 0,
-    "AnimEnd": "open-loop",
-    "AnimEndLoop": true,
-    "TagBody": 0,
-    "TagTarget": [
+    "Start": false,
+    "OnTagBody": 1,
+    "OnTagTarget": [
       100
     ],
-    "_id": "6a2/wSidpNP6CDvpKoyjKW"
+    "OnNodeTarget": [],
+    "Once": 1,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [],
+    "OnNode": [],
+    "EmitEvent": [
+      "player-complete"
+    ],
+    "_id": "04pryAw7pKE4uDq8Tr4HZj"
   },
   {
-    "__type__": "0477ddExZRJ567T3j8zS7Rp",
+    "__type__": "6cd76sRD45PTaTetXxChWQd",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -6320,15 +6315,30 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Type": 3,
-    "Once": true,
-    "Delay": 0,
-    "EmitEvent": "player-complete",
-    "TagBody": 1,
-    "TagTarget": [
+    "Start": false,
+    "OnTagBody": 0,
+    "OnTagTarget": [
       100
     ],
-    "_id": "f3exezsrhHlJmojoS7Qvgj"
+    "OnNodeTarget": [],
+    "Once": 0,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [],
+    "OnNode": [],
+    "EmitEvent": [],
+    "EmitNode": [
+      {
+        "__id__": 163
+      }
+    ],
+    "EmitTagTarget": false,
+    "AnimStart": "open",
+    "AnimLoop": "open-loop",
+    "AnimDelay": 0,
+    "AnimEnd": "",
+    "AnimEndLoop": true,
+    "_id": "b8lD6KTCZN3JOdnNXtvZaw"
   },
   {
     "__type__": "cc.Node",
@@ -11715,6 +11725,7 @@
     "Delay": 0,
     "EmitNodeNext": null,
     "OnEvent": [],
+    "OnNode": [],
     "EmitEvent": [],
     "EmitNode": [],
     "EmitTagTarget": true,

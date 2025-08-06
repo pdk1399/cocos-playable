@@ -1,6 +1,6 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, Component, Enum, Node } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, Component, director, Enum, Node } from 'cc';
 import { EmitBaseEvent } from '../base/EmitBaseEvent';
-import { EaseType } from '../../ConstantBase';
+import { ConstantBase, EaseType } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 export enum TweenType {
@@ -48,6 +48,17 @@ export class EmitTween extends EmitBaseEvent {
             this.EmitNode = this.node;
     }
 
+    onEvent(): void {
+        //DELAY
+        this.scheduleOnce(() => {
+            //#0: Emit Active
+            this.onEventActive();
+        }, Math.max(this.Delay, 0));
+
+        //ONCE
+        this.onEventOnceCheck();
+    } // Re-code onEvent() to fix scheduleOnce & delay events
+
     onEventActive(): void {
         switch (this.Progress) {
             case TweenType.Once:
@@ -65,4 +76,16 @@ export class EmitTween extends EmitBaseEvent {
     onTweenOnce(target: Node): void { }
     onTweenPingPong(target: Node): void { }
     onTweenRestart(target: Node): void { }
+
+    onTweenComplete() {
+        //#1: Emit Director
+        this.EmitEvent.forEach(event => {
+            if (event != '')
+                director.emit(event);
+        });
+
+        //NEXT
+        if (this.EmitNodeNext != null)
+            this.EmitNodeNext.emit(ConstantBase.NODE_EVENT);
+    }
 }

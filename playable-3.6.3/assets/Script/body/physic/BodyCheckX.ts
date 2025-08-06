@@ -1,5 +1,4 @@
 import { _decorator, CCBoolean, CCInteger, CircleCollider2D, Collider2D, Component, Contact2DType, director, Enum, ERaycast2DType, IPhysics2DContact, macro, math, Node, PhysicsSystem2D, RigidBody2D, v2, v3, Vec2 } from 'cc';
-import { BodyPlatformX } from './BodyPlatformX';
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property, executionOrder, requireComponent } = _decorator;
 
@@ -154,7 +153,7 @@ export class BodyCheckX extends Component {
                     //Check Ground
                     case this.TagGround:
                     case this.TagPlatform:
-                        if (otherCollider.getComponent(BodyPlatformX) != null || otherCollider.sensor)
+                        if (otherCollider.sensor)
                             break;
                         this.m_countBody++;
                         this.m_isBody = this.m_countBody > 0;
@@ -221,7 +220,7 @@ export class BodyCheckX extends Component {
             case this.TagHead:
                 switch (otherCollider.tag) {
                     case this.TagGround:
-                        if (otherCollider.sensor || otherCollider.getComponent(BodyPlatformX) != null)
+                        if (otherCollider.sensor)
                             break;
                         this.m_countHead++;
                         this.m_isHead = this.m_countHead > 0;
@@ -261,7 +260,7 @@ export class BodyCheckX extends Component {
                     //Check Ground
                     case this.TagGround:
                     case this.TagPlatform:
-                        if (otherCollider.getComponent(BodyPlatformX) != null || otherCollider.sensor)
+                        if (otherCollider.sensor)
                             break;
                         this.m_countBody = math.clamp(this.m_countBody - 1, 0, this.m_countBody);
                         this.m_isBody = this.m_countBody > 0;
@@ -328,7 +327,7 @@ export class BodyCheckX extends Component {
                 switch (otherCollider.tag) {
                     //Check Ground
                     case this.TagGround:
-                        if (otherCollider.sensor || otherCollider.getComponent(BodyPlatformX) != null)
+                        if (otherCollider.sensor)
                             break;
                         this.m_countHead = math.clamp(this.m_countHead - 1, 0, this.m_countHead);
                         this.m_isHead = this.m_countHead > 0;

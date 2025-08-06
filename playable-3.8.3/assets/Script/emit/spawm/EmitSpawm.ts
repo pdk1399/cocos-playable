@@ -1,5 +1,6 @@
 import { _decorator, CCString, director, Node } from 'cc';
 import { EmitBaseEvent } from '../base/EmitBaseEvent';
+import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('EmitSpawm')
@@ -7,13 +8,8 @@ export class EmitSpawm extends EmitBaseEvent {
 
     @property({ group: { name: 'Main' }, type: Node })
     List: Node = null;
-    @property({ group: { name: 'Main' }, type: Node })
-    Spawm: Node = null;
-
-    @property({ group: { name: 'Main', displayOrder: 99998 }, type: CCString })
-    OnDestroy: string = '';
     @property({ group: { name: 'Main', displayOrder: 99999 }, type: CCString })
-    EmitEnd: string = '';
+    OnRemove: string = '';
 
     m_progess: boolean = false;
     m_spawm: Node[] = [];
@@ -25,19 +21,28 @@ export class EmitSpawm extends EmitBaseEvent {
         if (!this.Start)
             for (let i = 0; i < this.List.children.length; i++)
                 this.List.children[i].active = false;
-        if (this.Spawm == null)
-            this.Spawm = this.node;
     }
+
+    onEvent(): void {
+        //DELAY
+        this.scheduleOnce(() => {
+            //#0: Emit Active
+            this.onEventActive();
+        }, Math.max(this.Delay, 0));
+
+        //ONCE
+        this.onEventOnceCheck();
+    } // Re-code onEvent() to fix scheduleOnce & delay events
 
     onEventActive(): void {
         if (this.m_progess)
             return;
         this.m_progess = true;
-        if (this.OnDestroy != '')
-            director.on(this.OnDestroy, this.onTargetDestroy, this);
+        if (this.OnRemove != '')
+            director.on(this.OnRemove, this.onRemove, this);
     }
 
-    onTargetDestroy(target: Node) {
+    onRemove(target: Node) {
         if (!this.m_progess)
             return;
         if (target != null) {
@@ -59,9 +64,21 @@ export class EmitSpawm extends EmitBaseEvent {
         if (!this.m_progess)
             return;
         this.m_progess = false;
-        if (this.OnDestroy != '')
-            director.off(this.OnDestroy, this.onTargetDestroy, this);
-        if (this.EmitEnd != '')
-            director.emit(this.EmitEnd);
+        if (this.OnRemove != '')
+            director.off(this.OnRemove, this.onRemove, this);
+
+        this.onEventComplete();
+    }
+
+    protected onEventComplete() {
+        //#1: Emit Director
+        this.EmitEvent.forEach(event => {
+            if (event != '')
+                director.emit(event);
+        });
+
+        //NEXT
+        if (this.EmitNodeNext != null)
+            this.EmitNodeNext.emit(ConstantBase.NODE_EVENT);
     }
 }

@@ -196,7 +196,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 803.8801711840229,
+    "_orthoHeight": 764.6132971506106,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -7473,6 +7473,7 @@
       "x": 0.1,
       "y": 0.1
     },
+    "ValueReset": false,
     "_id": "a0UTS433dL2rUGDolM92JD"
   },
   {
@@ -9290,6 +9291,7 @@
       "y": -1000
     },
     "ValueWorld": false,
+    "ValueReset": false,
     "_id": "e5YTXOkupA84312MJOroXm"
   },
   {
@@ -9330,6 +9332,7 @@
       "y": 1000
     },
     "ValueWorld": false,
+    "ValueReset": false,
     "_id": "81Rbj7UohLL4sIeYzs0Jej"
   },
   {
@@ -9618,6 +9621,7 @@
       "y": -1000
     },
     "ValueWorld": false,
+    "ValueReset": false,
     "_id": "59ecVrrLRJ5YpD5fVYEJNQ"
   },
   {
@@ -9658,6 +9662,7 @@
       "y": 1000
     },
     "ValueWorld": false,
+    "ValueReset": false,
     "_id": "13j1VnR9ZOZbLHpi7k2tqn"
   },
   {
@@ -13417,7 +13422,7 @@
     "_id": "6avjZFElhKDpbxH+glBETM"
   },
   {
-    "__type__": "51241iwHwdEDLtGTFcc6fSw",
+    "__type__": "de58dKFtTpFY6p8gV+R7ray",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -13426,9 +13431,25 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Target": null,
+    "Start": true,
+    "OnTagBody": 0,
+    "OnTagTarget": [
+      100
+    ],
+    "OnNodeTarget": [],
+    "Once": 1,
     "Delay": 3,
-    "_id": "bdlsyyu5RF1KEk8lsaRzMe"
+    "EmitNodeNext": null,
+    "OnEvent": [],
+    "OnNode": [],
+    "EmitEvent": [],
+    "EmitNode": [
+      {
+        "__id__": 368
+      }
+    ],
+    "EmitTagTarget": false,
+    "_id": "4a6kSRqnxJj5iPQVH2+J5f"
   },
   {
     "__type__": "cc.Node",
@@ -13589,7 +13610,7 @@
     "_id": "0d0cTHuqVDWrLr0wGTElyp"
   },
   {
-    "__type__": "51241iwHwdEDLtGTFcc6fSw",
+    "__type__": "de58dKFtTpFY6p8gV+R7ray",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -13598,9 +13619,25 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Target": null,
+    "Start": true,
+    "OnTagBody": 0,
+    "OnTagTarget": [
+      100
+    ],
+    "OnNodeTarget": [],
+    "Once": 1,
     "Delay": 3,
-    "_id": "90shyVT2pMb5Lc2zmnxpgx"
+    "EmitNodeNext": null,
+    "OnEvent": [],
+    "OnNode": [],
+    "EmitEvent": [],
+    "EmitNode": [
+      {
+        "__id__": 373
+      }
+    ],
+    "EmitTagTarget": false,
+    "_id": "b3dg9a5N1HFbUDmET9shVx"
   },
   {
     "__type__": "c38cafDhBBNR7/RA8QKcsCB",
@@ -16880,7 +16917,7 @@
     "_id": "aeBuzTEWlB1oZ2x3/gnyek"
   },
   {
-    "__type__": "fac64VpHzBDr7z/fudSZLPp",
+    "__type__": "d8484p2B8hLLYNMySPeB7Eg",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -16890,14 +16927,24 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "Once": false,
-    "OnStart": "monster-group-spawm-1",
-    "DelayStart": false,
-    "OnDestroy": "monster-dead",
-    "EmitEnd": "monster-group-spawm-2",
-    "Delay": 1,
+    "OnTagBody": 0,
+    "OnTagTarget": [
+      100
+    ],
+    "OnNodeTarget": [],
+    "Once": 1,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [
+      "monster-group-spawm-1"
+    ],
+    "OnNode": [],
+    "EmitEvent": [
+      "monster-group-spawm-2"
+    ],
     "List": null,
-    "_id": "ffnV2IdYZDbKokzi79HZmY"
+    "OnRemove": "monster-dead",
+    "_id": "76kh24rJlDXJFjbcLYnl8P"
   },
   {
     "__type__": "cc.Node",
@@ -19160,7 +19207,7 @@
     "_id": "7euVDLb99HBZaFkdqFlBFU"
   },
   {
-    "__type__": "fac64VpHzBDr7z/fudSZLPp",
+    "__type__": "be3b2esZUBHbLK9pwoKklqR",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -19170,14 +19217,24 @@
     "_enabled": true,
     "__prefab": null,
     "Start": false,
-    "Once": false,
-    "OnStart": "monster-group-spawm-2",
-    "DelayStart": false,
-    "OnDestroy": "monster-dead",
-    "EmitEnd": "wall-up",
-    "Delay": 1,
+    "OnTagBody": 0,
+    "OnTagTarget": [
+      100
+    ],
+    "OnNodeTarget": [],
+    "Once": 1,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [
+      "monster-group-spawm-2"
+    ],
+    "OnNode": [],
+    "EmitEvent": [
+      "wall-up"
+    ],
     "List": null,
-    "_id": "e5iBuIm89INpjYYeWmksSf"
+    "OnRemove": "monster-dead",
+    "_id": "b18F3dPapDI6vdA6USKOig"
   },
   {
     "__type__": "cc.Node",
