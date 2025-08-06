@@ -1,5 +1,5 @@
-import { _decorator, CCFloat, director, Node, Tween, tween, TweenEasing, v3, Vec3 } from 'cc';
-import { EmitTween, ValueType } from './EmitTween';
+import { _decorator, CCBoolean, CCFloat, director, Node, Tween, tween, TweenEasing, v3, Vec3 } from 'cc';
+import { EmitTween, TweenType, ValueType } from './EmitTween';
 import { EaseType } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
@@ -8,6 +8,8 @@ export class EmitTweenRotate extends EmitTween {
 
     @property({ group: { name: 'Main', displayOrder: 8 }, type: CCFloat })
     Value: number = 0;
+    @property({ group: { name: 'Main', displayOrder: 10 }, type: CCBoolean, visible: function (this: EmitTween) { return this.Progress == TweenType.Once; } })
+    ValueReset: boolean = false;
 
     m_valueA: Vec3;
     m_valueB: Vec3;
@@ -29,11 +31,14 @@ export class EmitTweenRotate extends EmitTween {
     onTweenOnce(target: Node): void {
         Tween.stopAllByTarget(target);
         tween(target)
-            .call(() => target.eulerAngles = this.m_valueA.clone())
-            .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
             .call(() => {
-                this.EmitEvent.forEach(event => director.emit(event));
+                if (this.ValueReset)
+                    target.eulerAngles = this.m_valueA.clone();
+                else
+                    this.m_valueA = v3(0, 0, target.eulerAngles.clone().z);
             })
+            .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+            .call(() => this.onTweenComplete())
             .call(() => {
                 if (this.CompleteDestroy)
                     this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);
@@ -49,6 +54,7 @@ export class EmitTweenRotate extends EmitTween {
                     .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .to(this.Duration, { eulerAngles: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
                 )
+                .call(() => this.onTweenComplete())
                 .call(() => {
                     if (this.CompleteDestroy)
                         this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);
@@ -73,6 +79,7 @@ export class EmitTweenRotate extends EmitTween {
                     .call(() => target.eulerAngles = this.m_valueA.clone())
                     .to(this.Duration, { eulerAngles: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                 )
+                .call(() => this.onTweenComplete())
                 .call(() => {
                     if (this.CompleteDestroy)
                         this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);
