@@ -11946,72 +11946,6 @@
     "_id": "4crHRZPO1MiLwkL6wYwXNI"
   },
   {
-    "__type__": "9d647pUkwJD76M2xU5YNDUD",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 329
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "Target": null,
-    "Start": false,
-    "OnEvent": "wall-down",
-    "Once": false,
-    "Delay": 0,
-    "EmitEvent": "monster-group-spawm-1",
-    "MoveToWorld": false,
-    "MoveTo": {
-      "__type__": "cc.Vec2",
-      "x": -1370,
-      "y": 1085
-    },
-    "MoveOffset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "Duration": 1,
-    "Ease": 0,
-    "Fixed": true,
-    "CompleteDestroy": false,
-    "_id": "c4z6Wj7ltAe7VpZca6qMLf"
-  },
-  {
-    "__type__": "9d647pUkwJD76M2xU5YNDUD",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 329
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "Target": null,
-    "Start": false,
-    "OnEvent": "wall-up",
-    "Once": false,
-    "Delay": 0,
-    "EmitEvent": "",
-    "MoveToWorld": false,
-    "MoveTo": {
-      "__type__": "cc.Vec2",
-      "x": -1370,
-      "y": 2085
-    },
-    "MoveOffset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "Duration": 1,
-    "Ease": 0,
-    "Fixed": true,
-    "CompleteDestroy": false,
-    "_id": "f2aLD064RIzJaHEChlnUz5"
-  },
-  {
     "__type__": "cc.RigidBody2D",
     "_name": "",
     "_objFlags": 0,
@@ -12066,6 +12000,88 @@
       "height": 1200
     },
     "_id": "83BTpkuBBOT7YZRI5y17pU"
+  },
+  {
+    "__type__": "b4b5f+gmAVCH5QWftpxsAc3",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 329
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "Start": false,
+    "OnTagBody": 0,
+    "OnTagTarget": [
+      100
+    ],
+    "OnNodeTarget": [],
+    "Once": 1,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [
+      "wall-down"
+    ],
+    "OnNode": [],
+    "EmitEvent": [
+      "monster-group-spawm-1"
+    ],
+    "EmitNode": null,
+    "Progress": 0,
+    "Limit": 1,
+    "To": 1,
+    "Duration": 0.5,
+    "Ease": 0,
+    "Fixed": true,
+    "CompleteDestroy": false,
+    "Value": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": -1000
+    },
+    "ValueWorld": false,
+    "_id": "f3uOauIDlASp6l48mjOhUv"
+  },
+  {
+    "__type__": "b4b5f+gmAVCH5QWftpxsAc3",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 329
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "Start": false,
+    "OnTagBody": 0,
+    "OnTagTarget": [
+      100
+    ],
+    "OnNodeTarget": [],
+    "Once": 1,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [
+      "wall-up"
+    ],
+    "OnNode": [],
+    "EmitEvent": [],
+    "EmitNode": null,
+    "Progress": 0,
+    "Limit": 1,
+    "To": 1,
+    "Duration": 1,
+    "Ease": 0,
+    "Fixed": true,
+    "CompleteDestroy": false,
+    "Value": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 1000
+    },
+    "ValueWorld": false,
+    "_id": "cf/H2UT79KiZ8auX5bnpgQ"
   },
   {
     "__type__": "cc.Node",
@@ -12715,72 +12731,6 @@
     "_id": "1bMJgeNxxDbKMqFMEo53hf"
   },
   {
-    "__type__": "9d647pUkwJD76M2xU5YNDUD",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 352
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "Target": null,
-    "Start": false,
-    "OnEvent": "wall-down",
-    "Once": false,
-    "Delay": 0,
-    "EmitEvent": "",
-    "MoveToWorld": false,
-    "MoveTo": {
-      "__type__": "cc.Vec2",
-      "x": 1370,
-      "y": 1227
-    },
-    "MoveOffset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "Duration": 1,
-    "Ease": 0,
-    "Fixed": true,
-    "CompleteDestroy": false,
-    "_id": "bcNlyphRRFnYlg+c7rDjGA"
-  },
-  {
-    "__type__": "9d647pUkwJD76M2xU5YNDUD",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 352
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "Target": null,
-    "Start": false,
-    "OnEvent": "wall-up",
-    "Once": false,
-    "Delay": 0,
-    "EmitEvent": "",
-    "MoveToWorld": false,
-    "MoveTo": {
-      "__type__": "cc.Vec2",
-      "x": 1370,
-      "y": 2227
-    },
-    "MoveOffset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "Duration": 1,
-    "Ease": 0,
-    "Fixed": true,
-    "CompleteDestroy": false,
-    "_id": "67tWkbLMtOfZikcPSOhi+X"
-  },
-  {
     "__type__": "cc.RigidBody2D",
     "_name": "",
     "_objFlags": 0,
@@ -12835,6 +12785,86 @@
       "height": 1200
     },
     "_id": "d3FfFEJAVEzafUmwTrRIj8"
+  },
+  {
+    "__type__": "b4b5f+gmAVCH5QWftpxsAc3",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 352
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "Start": false,
+    "OnTagBody": 0,
+    "OnTagTarget": [
+      100
+    ],
+    "OnNodeTarget": [],
+    "Once": 1,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [
+      "wall-down"
+    ],
+    "OnNode": [],
+    "EmitEvent": [],
+    "EmitNode": null,
+    "Progress": 0,
+    "Limit": 1,
+    "To": 1,
+    "Duration": 0.5,
+    "Ease": 0,
+    "Fixed": true,
+    "CompleteDestroy": false,
+    "Value": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": -1000
+    },
+    "ValueWorld": false,
+    "_id": "46bRU/MqRNN7xPmLVJovyW"
+  },
+  {
+    "__type__": "b4b5f+gmAVCH5QWftpxsAc3",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 352
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "Start": false,
+    "OnTagBody": 0,
+    "OnTagTarget": [
+      100
+    ],
+    "OnNodeTarget": [],
+    "Once": 1,
+    "Delay": 0,
+    "EmitNodeNext": null,
+    "OnEvent": [
+      "wall-up"
+    ],
+    "OnNode": [],
+    "EmitEvent": [],
+    "EmitNode": null,
+    "Progress": 0,
+    "Limit": 1,
+    "To": 1,
+    "Duration": 1,
+    "Ease": 0,
+    "Fixed": true,
+    "CompleteDestroy": false,
+    "Value": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 1000
+    },
+    "ValueWorld": false,
+    "_id": "edbNBXPgtOmbVGsCPDRLVr"
   },
   {
     "__type__": "cc.Node",

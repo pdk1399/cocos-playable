@@ -1,5 +1,5 @@
-import { _decorator, director, Node, tween, Tween, TweenEasing, v2, v3, Vec2, Vec3 } from 'cc';
-import { EmitTween, ValueType } from './EmitTween';
+import { _decorator, CCBoolean, director, Node, tween, Tween, TweenEasing, v2, v3, Vec2, Vec3 } from 'cc';
+import { EmitTween, TweenType, ValueType } from './EmitTween';
 import { EaseType } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
@@ -7,7 +7,9 @@ const { ccclass, property } = _decorator;
 export class EmitTweenScale extends EmitTween {
 
     @property({ group: { name: 'Main' }, type: Vec2 })
-    Value: Vec2 = v2()
+    Value: Vec2 = v2();
+    @property({ group: { name: 'Main', displayOrder: 10 }, type: CCBoolean, visible: function (this: EmitTween) { return this.Progress == TweenType.Once; } })
+    ValueReset: boolean = false;
 
     m_valueA: Vec3;
     m_valueB: Vec3;
@@ -29,11 +31,14 @@ export class EmitTweenScale extends EmitTween {
     onTweenOnce(target: Node): void {
         Tween.stopAllByTarget(target);
         tween(target)
-            .call(() => target.scale = this.m_valueA.clone())
-            .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
             .call(() => {
-                this.EmitEvent.forEach(event => director.emit(event));
+                if (this.ValueReset)
+                    target.scale = this.m_valueA.clone();
+                else
+                    this.m_valueA = target.scale.clone();
             })
+            .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
+            .call(() => this.onTweenComplete())
             .call(() => {
                 if (this.CompleteDestroy)
                     this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);
@@ -49,6 +54,7 @@ export class EmitTweenScale extends EmitTween {
                     .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .to(this.Duration, { scale: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
                 )
+                .call(() => this.onTweenComplete())
                 .call(() => {
                     if (this.CompleteDestroy)
                         this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);
@@ -73,6 +79,7 @@ export class EmitTweenScale extends EmitTween {
                     .call(() => target.scale = this.m_valueA.clone())
                     .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                 )
+                .call(() => this.onTweenComplete())
                 .call(() => {
                     if (this.CompleteDestroy)
                         this.scheduleOnce(() => target.destroy(), this.Fixed ? 0.02 : 0);
