@@ -1,4 +1,4 @@
-import { _decorator, Component, director, Node } from 'cc';
+import { _decorator, director, Node } from 'cc';
 import { EmitSpawm } from './EmitSpawm';
 import { BodySpawm } from '../../body/option/BodySpawm';
 const { ccclass, property } = _decorator;

@@ -1,6 +1,7 @@
 import { _decorator, CCString, director, Node } from 'cc';
 import { EmitBaseEvent } from '../base/EmitBaseEvent';
 import { ConstantBase } from '../../ConstantBase';
+import { BodySpawm } from '../../body/option/BodySpawm';
 const { ccclass, property } = _decorator;
 
 @ccclass('EmitSpawm')
@@ -38,6 +39,21 @@ export class EmitSpawm extends EmitBaseEvent {
         if (this.m_progess)
             return;
         this.m_progess = true;
+
+        for (let i = 0; i < this.List.children.length; i++) {
+            let target = this.List.children[i];
+
+            //Target's Body Spawm component init
+            let bodySpawm = target.getComponent(BodySpawm);
+            if (bodySpawm != null)
+                bodySpawm.onInit();
+
+            //Target's Node active
+            this.scheduleOnce(() => target.active = true, 0.02);
+
+            this.m_spawm.push(target);
+        }
+
         if (this.OnRemove != '')
             director.on(this.OnRemove, this.onRemove, this);
     }
@@ -58,6 +74,8 @@ export class EmitSpawm extends EmitBaseEvent {
                 this.m_spawm.splice(i, 1);
             }
         }
+        if (this.m_spawm.length == 0)
+            this.onEventEnd();
     }
 
     onEventEnd() {
