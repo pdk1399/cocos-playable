@@ -76,7 +76,7 @@ export class SpineBase extends Component {
 
     onSkin(...skin: string[]) {
         let baseData = this.Spine._skeleton.data;
-        if (VERSION >= '3.8.3') {
+        if (VERSION >= '3.8.6') {
 
         }
         else if (VERSION >= '3.8.3') {
