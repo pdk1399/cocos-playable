@@ -1,5 +1,6 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Component, director, game, Input, Label, Node, PhysicsSystem2D, sys, System } from 'cc';
 import { ConstantBase } from '../ConstantBase';
+import super_html_playable from './super_html_playable';
 const { ccclass, property } = _decorator;
 
 @ccclass('ManagerEvent')
@@ -11,8 +12,6 @@ export class ManagerEvent extends Component {
     OnDirectStore: string = ConstantBase.DIRECT_STORE;
     @property({ group: { name: 'Store' }, type: CCFloat })
     DelayDirectStore: number = 0;
-    @property({ group: { name: 'Store' }, type: CCBoolean })
-    AndroidDefault: boolean = true;
     @property({ group: { name: 'Store' }, type: CCString })
     Android: string = '';
     @property({ group: { name: 'Store' }, type: CCString })
@@ -52,6 +51,9 @@ export class ManagerEvent extends Component {
     m_limitCountdown: number;
 
     protected onLoad(): void {
+        super_html_playable.set_google_play_url(this.Android);
+        super_html_playable.set_app_store_url(this.IOS);
+
         game.frameRate = 59;
         PhysicsSystem2D.instance.enable = true;
 
@@ -113,38 +115,31 @@ export class ManagerEvent extends Component {
 
     //STORE:
 
+    get_debug_link() {
+        let link = '';
+        let androidLink = this.Android;
+        let iosLink = this.IOS;
+        switch (sys.os) {
+            case sys.OS.ANDROID:
+                link = androidLink;
+                break;
+            case sys.OS.IOS:
+                link = iosLink;
+                break;
+            default:
+                //Get default link when on pc web app platform & when ads network's bot check playable
+                link = androidLink != '' ? androidLink : iosLink;
+                break;
+        }
+
+        return link;
+    }
+
     onStore() {
         this.scheduleOnce(() => {
-            let link = '';
-            switch (sys.os) {
-                case sys.OS.ANDROID:
-                    link = this.Android;
-                    break;
-                case sys.OS.IOS:
-                    link = this.IOS;
-                    break;
-                default:
-                    //Get default link when on pc web app platform & when ads network's bot check playable
-                    if (this.AndroidDefault)
-                        link = this.Android;
-                    else
-                        link = this.IOS;
-                    break;
-            }
-            try {
-                //Open link on target platform
-                openGameStoreUrl(link);
-            }
-            catch {
-                //Open link on pc web app platform
-                if (this.LinkOpen)
-                    open(link, "mozillaWindow", "popup");
-                else
-                    console.log('open store ' + link);
-            }
-            //mintegral
-            window.gameEnd && window.gameEnd();
-            window.install && window.install();
+            console.log("open link: " + this.get_debug_link());
+            super_html_playable.download();
+            super_html_playable.game_end();
         }, this.DelayDirectStore);
     }
 
@@ -203,4 +198,4 @@ export class ManagerEvent extends Component {
         //Delay caculated time every second(s)
         this.scheduleOnce(() => this.onLimitCountdown(), 1);
     }
-}
+} //

@@ -77,6 +77,9 @@ export class SpineBase extends Component {
     onSkin(...skin: string[]) {
         let baseData = this.Spine._skeleton.data;
         if (VERSION >= '3.8.3') {
+
+        }
+        else if (VERSION >= '3.8.3') {
             //NOTE: For some fucking reason, new spine.Skin(); got error with any value attach to it!
             let spineCache = sp.spine.wasmUtil.createSpineSkeletonDataWithJson(
                 this.Spine.skeletonData.skeletonJsonStr,
@@ -95,6 +98,7 @@ export class SpineBase extends Component {
             this.Spine.getState().apply(this.Spine._skeleton);
         }
         else {
+            //3.6.3
             this.Skin = skin;
             let baseSkin = new sp.spine.Skin('base-char');
             skin.forEach(skinCheck => {
