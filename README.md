@@ -3,7 +3,7 @@
 
 # Update version
 - Support are limit on every version, so update Cocos Creator or Project Editor with caution.
-- From version 3.8.6, spine can used version 4.2, which can be switch in editor setting (need close and start editor again to complete change, notice that all spine with version 3.8 will can't be used anymore)
+- From version 3.8.6, spine can used version 4.2, which can be switch in Project Settings/Feature Cropping/Spine Animation (need close and start editor again to complete change, notice that all spine with version 3.8 will can't be used anymore)
 
 # Tool build:
 - Playable-build-tool in version 3.6.3 can use performance.
