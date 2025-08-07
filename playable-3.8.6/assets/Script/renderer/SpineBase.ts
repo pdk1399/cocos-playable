@@ -77,7 +77,16 @@ export class SpineBase extends Component {
     onSkin(...skin: string[]) {
         let baseData = this.Spine._skeleton.data;
         if (VERSION >= '3.8.6') {
-
+            //NOTE: For some fucking reason, sp.spine.wasmUtil.createSpineSkeletonDataWithJson() are need more argument
+            let baseSkin = new sp.spine.Skin("base-char");
+            for (let i = 0; i < skin.length; i++) {
+                let skinName = skin[i];
+                let skinCheck = baseData.findSkin(skinName);
+                baseSkin.addSkin(skinCheck);
+            }
+            this.Spine._skeleton.setSkin(baseSkin);
+            this.Spine._skeleton.setSlotsToSetupPose();
+            this.Spine.getState().apply(this.Spine._skeleton);
         }
         else if (VERSION >= '3.8.3') {
             //NOTE: For some fucking reason, new spine.Skin(); got error with any value attach to it!
