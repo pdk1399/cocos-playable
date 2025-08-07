@@ -15,6 +15,8 @@
 - Amazon: Use build Mintegral with version 3.8.3
 - Google: Use build Mintegral with version 3.8.3
 
+* IMPORTANCE UPDATE: Now can build all playable ads networks with version 3.8.6, so just ignore some notice of build version
+
 # Build Compress
 - Not choice all scene to build, it will increase size build. For some reason, cocos build will pack all assets in project, even not used in scene build, so check out spine, image and script for remove them if not necessary.
 - Image (include image of spine): With size >=150KB can be called heavyly and should compress.
