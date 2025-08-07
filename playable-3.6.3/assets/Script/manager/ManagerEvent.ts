@@ -11,16 +11,12 @@ export class ManagerEvent extends Component {
     OnDirectStore: string = ConstantBase.DIRECT_STORE;
     @property({ group: { name: 'Store' }, type: CCFloat })
     DelayDirectStore: number = 0;
-    @property({ group: { name: 'Store' }, type: CCBoolean })
-    AndroidDefault: boolean = true;
     @property({ group: { name: 'Store' }, type: CCString })
     Android: string = '';
     @property({ group: { name: 'Store' }, type: CCString })
     IOS: string = '';
     @property({ group: { name: 'Store' }, type: CCInteger })
     AdsType: number = 0;
-    @property({ group: { name: 'Store' }, type: CCBoolean })
-    LinkOpen: boolean = false;
 
     @property({ group: { name: 'End' }, type: CCBoolean })
     LoopComplete: boolean = false;
@@ -113,38 +109,26 @@ export class ManagerEvent extends Component {
 
     //STORE:
 
+    get_debug_link() {
+        switch (sys.os) {
+            case sys.OS.ANDROID:
+                return this.Android;
+            case sys.OS.IOS:
+                return this.IOS;
+        }
+        return this.Android != '' ? this.Android : this.IOS;
+    }
+
     onStore() {
+        let link = this.get_debug_link();
         this.scheduleOnce(() => {
-            let link = '';
-            switch (sys.os) {
-                case sys.OS.ANDROID:
-                    link = this.Android;
-                    break;
-                case sys.OS.IOS:
-                    link = this.IOS;
-                    break;
-                default:
-                    //Get default link when on pc web app platform & when ads network's bot check playable
-                    if (this.AndroidDefault)
-                        link = this.Android;
-                    else
-                        link = this.IOS;
-                    break;
-            }
-            try {
-                //Open link on target platform
-                openGameStoreUrl(link);
-            }
-            catch {
-                //Open link on pc web app platform
-                if (this.LinkOpen)
-                    open(link, "mozillaWindow", "popup");
-                else
-                    console.log('open store ' + link);
-            }
-            //mintegral
             window.gameEnd && window.gameEnd();
             window.install && window.install();
+            try {
+                open(link, "popup");
+            }
+            catch (e) { }
+            console.log('open store ' + link);
         }, this.DelayDirectStore);
     }
 

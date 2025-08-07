@@ -52,4 +52,4 @@ export class super_html_playable {
         window.super_html && (super_html.appstore_url = url);
     }
 }
-export default new super_html_playable();
+export default new super_html_playable(); //Bùi Đoàn Bửu Khánh - MGIF Dev

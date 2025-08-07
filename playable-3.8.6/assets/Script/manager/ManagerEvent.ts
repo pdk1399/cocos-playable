@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Component, director, game, Input, Label, Node, PhysicsSystem2D, sys, System } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Component, director, game, Input, Label, Node, PhysicsSystem2D, sys, System, VERSION } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import super_html_playable from './super_html_playable';
 const { ccclass, property } = _decorator;
@@ -18,8 +18,6 @@ export class ManagerEvent extends Component {
     IOS: string = '';
     @property({ group: { name: 'Store' }, type: CCInteger })
     AdsType: number = 0;
-    @property({ group: { name: 'Store' }, type: CCBoolean })
-    LinkOpen: boolean = false;
 
     @property({ group: { name: 'End' }, type: CCBoolean })
     LoopComplete: boolean = false;
@@ -116,30 +114,21 @@ export class ManagerEvent extends Component {
     //STORE:
 
     get_debug_link() {
-        let link = '';
-        let androidLink = this.Android;
-        let iosLink = this.IOS;
         switch (sys.os) {
             case sys.OS.ANDROID:
-                link = androidLink;
-                break;
+                return this.Android;
             case sys.OS.IOS:
-                link = iosLink;
-                break;
-            default:
-                //Get default link when on pc web app platform & when ads network's bot check playable
-                link = androidLink != '' ? androidLink : iosLink;
-                break;
+                return this.IOS;
         }
-
-        return link;
+        return this.Android != '' ? this.Android : this.IOS;
     }
 
     onStore() {
+        let link = this.get_debug_link();
         this.scheduleOnce(() => {
-            console.log("open link: " + this.get_debug_link());
             super_html_playable.download();
             super_html_playable.game_end();
+            console.log('open store ' + link);
         }, this.DelayDirectStore);
     }
 
