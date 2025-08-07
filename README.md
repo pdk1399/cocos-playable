@@ -3,19 +3,19 @@
 
 # Update version
 - Support are limit on every version, so update Cocos Creator or Project Editor with caution.
+- From version 3.8.6, spine can used version 4.2, which can be switch in editor setting (need close and start editor again to complete change, notice that all spine with version 3.8 will can't be used anymore)
 
 # Tool build:
 - Playable-build-tool in version 3.6.3 can use performance.
 - Super-html package in version 3.8.3 - 3.8.6 need Node.js package installed to use.
 
 # Build
+- IMPORTANCE UPDATE: Now can build all playable ads networks with version 3.8.6, so just ignore some notice of build version
 - Ironsource: <= 5MB - Use build Unity with version 3.6.3
 - Mintegral: <= 2.5MB - Should use version 3.8.3 to minimize build size
 - Unity: <= 5MB - Use build version 3.6.3 (Updated: Now can export >= 5MB)
 - Amazon: Use build Mintegral with version 3.8.3
 - Google: Use build Mintegral with version 3.8.3
-
-* IMPORTANCE UPDATE: Now can build all playable ads networks with version 3.8.6, so just ignore some notice of build version
 
 # Build Compress
 - Not choice all scene to build, it will increase size build. For some reason, cocos build will pack all assets in project, even not used in scene build, so check out spine, image and script for remove them if not necessary.
