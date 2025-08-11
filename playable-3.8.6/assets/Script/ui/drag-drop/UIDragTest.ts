@@ -17,6 +17,7 @@ export class UIDragTest extends Component {
 
     m_pos: Vec3 = new Vec3();
     m_drag: boolean = false;
+    m_drop: Node = null;
 
     protected onLoad(): void {
         this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
