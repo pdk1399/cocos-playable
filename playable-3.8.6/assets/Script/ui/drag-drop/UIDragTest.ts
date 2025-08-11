@@ -57,7 +57,7 @@ export class UIDragTest extends Component {
             return;
         this.m_drag = false;
 
-        const nodeContact = this.getContact(this.node);
+        const nodeContact = this.getContact();
         if (nodeContact != null) {
             if (this.DropPosFixed)
                 this.node.setWorldPosition(nodeContact.getWorldPosition().clone());
@@ -73,23 +73,44 @@ export class UIDragTest extends Component {
         this.node.emit(ConstantBase.NODE_UI_DRAG_END, this.node);
     }
 
-    getContact(targetDrag: Node): Node | null {
-        const targetDragUI = targetDrag.getComponent(UITransform);
-        if (!targetDragUI)
+    getContact(): Node | null {
+        const fromDragUI = this.node.getComponent(UITransform);
+        if (!fromDragUI)
             return null;
-        const targetDragBound = targetDragUI.getBoundingBoxToWorld();
+        const fromDragBound = fromDragUI.getBoundingBoxToWorld();
         for (const groupDrop of this.GroupDrop) {
-            for (const targetDrop of groupDrop.children) {
-                if (targetDrop === targetDrag || !targetDrop.active)
+            for (const fromDrop of groupDrop.children) {
+                if (fromDrop === this.node || !fromDrop.active)
                     continue;
-                const targetDropUI = targetDrop.getComponent(UITransform);
-                if (!targetDropUI)
+                const fromDropUI = fromDrop.getComponent(UITransform);
+                if (!fromDropUI)
                     continue;
-                const targetDropBound = targetDropUI.getBoundingBoxToWorld();
-                if (targetDropBound.intersects(targetDragBound))
-                    return targetDrop;
+                const fromDropBound = fromDropUI.getBoundingBoxToWorld();
+                if (fromDropBound.intersects(fromDragBound))
+                    return fromDrop;
             }
         }
         return null;
+    }
+
+    getContactAll(): Node[] {
+        const fromDragUI = this.node.getComponent(UITransform);
+        if (!fromDragUI)
+            return [];
+        const fromDragBound = fromDragUI.getBoundingBoxToWorld();
+        const result: Node[] = [];
+        for (const groupDrop of this.GroupDrop) {
+            for (const fromDrop of groupDrop.children) {
+                if (fromDrop === this.node || !fromDrop.active)
+                    continue;
+                const fromDropUI = fromDrop.getComponent(UITransform);
+                if (!fromDropUI)
+                    continue;
+                const fromDropBound = fromDropUI.getBoundingBoxToWorld();
+                if (fromDropBound.intersects(fromDragBound))
+                    result.push(fromDrop);
+            }
+        }
+        return result;
     }
 }
