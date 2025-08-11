@@ -59,7 +59,7 @@ export class UIScroll extends Component {
         //---------Group
         this.m_child = [];
         for (let i = 0; i < this.Content.children.length; i++) {
-            let child = new ScrollChildData();
+            const child = new ScrollChildData();
             child.Node = this.Content.children[i];
             child.Opacity = this.Content.children[i].getComponent(UIOpacity);
             this.m_child.push(child);
@@ -78,7 +78,7 @@ export class UIScroll extends Component {
             //---------ChildL
             if (indexCheckL >= 0) {
                 //Pos
-                let pos = Vec3.RIGHT.clone().multiplyScalar(-this.OffsetEach.x * fromCentre);
+                const pos = Vec3.RIGHT.clone().multiplyScalar(-this.OffsetEach.x * fromCentre);
                 pos.y = this.OffsetEach.y * indexCheckL;
                 if (fromCentre < this.OffsetFixed.length - 1) {
                     pos.x -= this.OffsetFixed[indexCheckL].clone().x;

@@ -68,9 +68,9 @@ export class UiJoystick extends Component {
     }
 
     protected start(): void {
-        let dotSize = this.Dot.getComponent(UITransform).contentSize;
+        const dotSize = this.Dot.getComponent(UITransform).contentSize;
         this.m_dotRadius = Math.max(dotSize.x, dotSize.y) / 2;
-        let maskSize = this.Mask.getComponent(UITransform).contentSize;
+        const maskSize = this.Mask.getComponent(UITransform).contentSize;
         this.m_maskRadius = Math.max(maskSize.x, maskSize.y) / 2 - this.m_dotRadius;
         this.m_posPrimary = this.Dot.getPosition();
         this.m_opacity = this.m_uiOpacity.opacity;
@@ -80,12 +80,12 @@ export class UiJoystick extends Component {
     }
 
     onTouchStart(event: EventTouch) {
-        let tempV2 = event.getLocation().clone();
-        let tempV3 = new Vec3();
+        const tempV2 = event.getLocation().clone();
+        const tempV3 = new Vec3();
         tempV3.x = tempV2.x;
         tempV3.y = tempV2.y;
 
-        let tempW3 = v3();
+        const tempW3 = v3();
         this.UiCamera.screenToWorld(tempV3, tempW3);
 
         this.m_posTouched = this.m_uiTransform?.convertToNodeSpaceAR(tempW3);
@@ -100,10 +100,10 @@ export class UiJoystick extends Component {
                 break;
         }
 
-        let direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
+        const direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
         this.m_direction = v2(direction.clone().x, direction.clone().y);
 
-        let distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
+        const distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
         this.m_posTouchedFixed = direction.multiplyScalar(distance > this.m_maskRadius ? this.m_maskRadius : distance);
         this.m_posDot = this.m_posTouchedFixed.clone().add(this.m_posLocked);
 
@@ -135,21 +135,21 @@ export class UiJoystick extends Component {
     }
 
     onTouchMove(event: EventTouch) {
-        let tempV2 = event.getLocation().clone();
-        let tempV3 = new Vec3();
+        const tempV2 = event.getLocation().clone();
+        const tempV3 = new Vec3();
         tempV3.x = tempV2.x;
         tempV3.y = tempV2.y;
 
-        let tempW3 = v3();
+        const tempW3 = v3();
         this.UiCamera.screenToWorld(tempV3, tempW3);
 
         this.m_posTouched = this.m_uiTransform?.convertToNodeSpaceAR(tempW3);
         this.m_posTouched.z = 0;
 
-        let direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
+        const direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
         this.m_direction = v2(direction.clone().x, direction.clone().y);
 
-        let distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
+        const distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
         this.m_posTouchedFixed = direction.multiplyScalar(distance > this.m_maskRadius ? this.m_maskRadius : distance);
         this.m_posDot = this.m_posTouchedFixed.clone().add(this.m_posLocked);
 

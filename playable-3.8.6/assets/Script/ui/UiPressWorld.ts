@@ -47,8 +47,8 @@ export class UiPressWorld extends Component {
         if (!this.Camera.enabledInHierarchy || this.m_press)
             return;
 
-        let tempV2 = event.getLocation().clone();
-        let tempV3 = new Vec3();
+        const tempV2 = event.getLocation().clone();
+        const tempV3 = new Vec3();
         tempV3.x = tempV2.x;
         tempV3.y = tempV2.y;
 
@@ -88,8 +88,8 @@ export class UiPressWorld extends Component {
             return;
         this.m_press = false;
 
-        let tempV2 = event.getLocation().clone();
-        let tempV3 = new Vec3();
+        const tempV2 = event.getLocation().clone();
+        const tempV3 = new Vec3();
         tempV3.x = tempV2.x;
         tempV3.y = tempV2.y;
 
