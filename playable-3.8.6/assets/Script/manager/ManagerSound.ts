@@ -46,7 +46,7 @@ export class ManagerSound extends Component {
     }
 
     onVolumeChanged(mute: boolean) {
-        let audioSources = this.getComponentsInChildren(AudioSource);
+        const audioSources = this.getComponentsInChildren(AudioSource);
         audioSources.forEach(e => {
             e.volume = mute ? 0 : 1;
         });

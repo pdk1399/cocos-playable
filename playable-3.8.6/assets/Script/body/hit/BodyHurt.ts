@@ -18,7 +18,7 @@ export class BodyHurt extends Component {
     TagTarget: number[] = [100, 200];
 
     protected onLoad(): void {
-        let collider = this.getComponents(Collider2D);
+        const collider = this.getComponents(Collider2D);
         collider.forEach(colliderCheck => {
             if (colliderCheck.tag == this.TagBody) {
                 colliderCheck.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
@@ -29,7 +29,7 @@ export class BodyHurt extends Component {
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         if (selfCollider.tag != this.TagBody)
             return;
-        let targetIndex = this.TagTarget.findIndex((t) => t == otherCollider.tag);
+        const targetIndex = this.TagTarget.findIndex((t) => t == otherCollider.tag);
         if (targetIndex > -1) {
             otherCollider.node.emit(ConstantBase.NODE_BODY_HIT, this.Hit, this.node);
             if (this.HitSelf > 0)

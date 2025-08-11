@@ -12,10 +12,10 @@ export class EmitSpawmActive extends EmitSpawm {
         this.m_progess = true;
 
         for (let i = 0; i < this.List.children.length; i++) {
-            let target = this.List.children[i];
+            const target = this.List.children[i];
 
             //Target's Body Spawm component init
-            let bodySpawm = target.getComponent(BodySpawm);
+            const bodySpawm = target.getComponent(BodySpawm);
             if (bodySpawm != null)
                 bodySpawm.onInit();
 
@@ -33,7 +33,7 @@ export class EmitSpawmActive extends EmitSpawm {
         if (!this.m_progess)
             return;
         if (target != null) {
-            let index = this.m_spawm.findIndex(t => t == target);
+            const index = this.m_spawm.findIndex(t => t == target);
             if (index < 0)
                 return;
             this.m_spawm.splice(index, 1);

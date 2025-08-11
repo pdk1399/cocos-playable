@@ -114,7 +114,7 @@ export class BodySpine extends Component {
         if (this.AudioHit != null)
             this.AudioHit.play();
         this.m_hit = true;
-        let animHitDuration = this.m_spine.onAnimationForceUnSave(this.AnimHit, false);
+        const animHitDuration = this.m_spine.onAnimationForceUnSave(this.AnimHit, false);
         this.scheduleOnce(() => {
             this.m_hit = false;
             if (!this.m_dead)

@@ -254,9 +254,9 @@ export class BodyControlXY extends Component {
         }
 
         let velocity = this.m_rigidbody.linearVelocity.clone();
-        let current = velocity.clone();
+        const current = velocity.clone();
         velocity = this.m_moveDir.clone().multiplyScalar(this.MoveGround);
-        let damp = current.lerp(velocity, this.MoveDamp * dt);
+        const damp = current.lerp(velocity, this.MoveDamp * dt);
         this.m_rigidbody.linearVelocity = damp;
     }
 
@@ -320,7 +320,7 @@ export class BodyControlXY extends Component {
     onSwitch(index: number, controlByDirector: boolean = true) {
         if (this.m_lockInput || this.getDead())
             return;
-        let state = index == this.SwitchIndex;
+        const state = index == this.SwitchIndex;
         this.m_control = state;
         if (controlByDirector) {
             this.onControlByDirector(state);
@@ -361,7 +361,7 @@ export class BodyControlXY extends Component {
         if (!this.m_bodyAttack?.Aim)
             return;
         this.m_bodyAttack?.onDirUpdate(this.m_faceDirX);
-        let target = this.m_bodyAttack?.onRangeTargetNearest();
+        const target = this.m_bodyAttack?.onRangeTargetNearest();
         if (target == null ? true : !target.isValid)
             this.onAimReset();
         else
@@ -393,7 +393,7 @@ export class BodyControlXY extends Component {
     //COLLIDE
 
     protected onCollideObject(state: boolean, target: Collider2D) {
-        let bodyTarget = target.getComponent(BodyBase);
+        const bodyTarget = target.getComponent(BodyBase);
         if (bodyTarget != null && bodyTarget.isValid) {
             if (this.m_body.m_bodyX4 && state)
                 bodyTarget.onDead(this.node);
@@ -401,7 +401,7 @@ export class BodyControlXY extends Component {
     }
 
     protected onCollideEnermy(state: boolean, target: Collider2D) {
-        let bodyTarget = target.getComponent(BodyBase);
+        const bodyTarget = target.getComponent(BodyBase);
         if (bodyTarget != null && bodyTarget.isValid) {
             if (this.m_body.m_bodyX4 && state)
                 bodyTarget.onDead(this.node);

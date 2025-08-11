@@ -422,8 +422,8 @@ export default class CameraBase extends Component {
             if (this.m_tweenShake != null)
                 this.m_tweenShake.start();
             else {
-                let rotate1 = tween(this.node).to(0.025, { eulerAngles: v3(0, 0, 0.5) });
-                let rotate2 = tween(this.node).to(0.025, { eulerAngles: v3(0, 0, -0.5) });
+                const rotate1 = tween(this.node).to(0.025, { eulerAngles: v3(0, 0, 0.5) });
+                const rotate2 = tween(this.node).to(0.025, { eulerAngles: v3(0, 0, -0.5) });
                 this.m_tweenShake = tween(this.node).sequence(rotate1, rotate2).repeatForever().start();
             }
         }
@@ -437,8 +437,8 @@ export default class CameraBase extends Component {
         if (this.m_tweenShakeOnce != null)
             this.m_tweenShakeOnce.start();
         else {
-            let rotate1 = tween(this.node).to(0.025, { eulerAngles: v3(0, 0, 0.5) });
-            let rotate2 = tween(this.node).to(0.025, { eulerAngles: v3(0, 0, -0.5) });
+            const rotate1 = tween(this.node).to(0.025, { eulerAngles: v3(0, 0, 0.5) });
+            const rotate2 = tween(this.node).to(0.025, { eulerAngles: v3(0, 0, -0.5) });
             this.m_tweenShakeOnce = tween(this.node).sequence(rotate1, rotate2).start();
         }
     }

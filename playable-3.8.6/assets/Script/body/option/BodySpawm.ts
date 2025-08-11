@@ -32,9 +32,9 @@ export class BodySpawm extends Component {
     onInit() {
         if (this.m_rigidbody != null)
             this.scheduleOnce(() => this.m_rigidbody.enabled = false, 0.02);
-        let scalePrimary = this.node.scale.clone();
-        let posPrimary = this.node.position.clone();
-        let posStart = posPrimary.clone().add(v3(this.Offset.x, this.Offset.y, 0)).clone();
+        const scalePrimary = this.node.scale.clone();
+        const posPrimary = this.node.position.clone();
+        const posStart = posPrimary.clone().add(v3(this.Offset.x, this.Offset.y, 0)).clone();
         this.node.setScale(Vec3.ZERO);
         this.node.position = posStart;
         tween(this.node)
@@ -46,7 +46,7 @@ export class BodySpawm extends Component {
             })
             .start();
         //
-        let effect = instantiate(this.Effect);
+        const effect = instantiate(this.Effect);
         effect.setParent(this.Spawm);
         effect.position = posStart;
         effect.active = true;

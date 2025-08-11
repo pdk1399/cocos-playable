@@ -124,7 +124,7 @@ export class ManagerEvent extends Component {
     }
 
     onStore() {
-        let link = this.get_debug_link();
+        const link = this.get_debug_link();
         this.scheduleOnce(() => {
             super_html_playable.download();
             super_html_playable.game_end();

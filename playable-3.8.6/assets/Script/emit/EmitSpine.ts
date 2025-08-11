@@ -45,7 +45,7 @@ export class EmitSpine extends EmitBaseNode {
     onEventActiveNode(target: Node): void {
         if (target == null ? true : !target.isValid)
             return;
-        let targetSpine = target.getComponent(SpineBase);
+        const targetSpine = target.getComponent(SpineBase);
         if (targetSpine == null)
             return;
         this.onEventSingle(targetSpine);
