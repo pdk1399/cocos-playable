@@ -106,14 +106,11 @@ export class ManagerEvent extends Component {
             else
                 this.scheduleOnce(() => director.emit(this.EmitLimit), this.LimitDuration);
         }
-
-        //mintegral
-        window.gameReady && window.gameReady();
     }
 
     //STORE:
 
-    get_debug_link() {
+    getStoreLink() {
         switch (sys.os) {
             case sys.OS.ANDROID:
                 return this.Android;
@@ -124,7 +121,7 @@ export class ManagerEvent extends Component {
     }
 
     onStore() {
-        const link = this.get_debug_link();
+        const link = this.getStoreLink();
         this.scheduleOnce(() => {
             super_html_playable.download();
             super_html_playable.game_end();

@@ -109,7 +109,7 @@ export class ManagerEvent extends Component {
 
     //STORE:
 
-    get_debug_link() {
+    getStoreLink() {
         switch (sys.os) {
             case sys.OS.ANDROID:
                 return this.Android;
@@ -120,7 +120,7 @@ export class ManagerEvent extends Component {
     }
 
     onStore() {
-        let link = this.get_debug_link();
+        let link = this.getStoreLink();
         this.scheduleOnce(() => {
             try {
                 //@ts-ignore
