@@ -10,7 +10,7 @@
 - Super-html package in version 3.8.3 - 3.8.6 need Node.js package installed to use.
 
 # Build
-- IMPORTANCE UPDATE: Now can build all playable ads networks with version 3.8.6, so just ignore some notice of build version
+- IMPORTANCE UPDATE: Now can build all playable ads networks with version 3.8.6, so just ignore some notice of build version (UPDATED: Something went wrong with Unity build on all version?!).
 - Ironsource: <= 5MB - Use build Unity with version 3.6.3
 - Mintegral: <= 2.5MB - Should use version 3.8.3 to minimize build size
 - Unity: <= 5MB - Use build version 3.6.3 (Updated: Now can export >= 5MB)
