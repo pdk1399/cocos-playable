@@ -6,7 +6,7 @@ const { ccclass, property } = _decorator;
 export class UIDragSingle extends Component {
 
     //NOTE:
-    //- This will check bound of both their child's UI-Transform component, not only this own
+    //- This will check combine bound of child's UI-Transform component both, not only own UI-Transform
     //- This might work best for Anchor Point Centre (0.5; 0.5), mean Sprite than Spine (Skeleton)
 
     @property({ type: [Node], group: { name: 'Main' } })
