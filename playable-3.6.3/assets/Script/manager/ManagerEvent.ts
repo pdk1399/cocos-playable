@@ -122,13 +122,16 @@ export class ManagerEvent extends Component {
     onStore() {
         let link = this.get_debug_link();
         this.scheduleOnce(() => {
-            window.gameEnd && window.gameEnd();
-            window.install && window.install();
             try {
+                openGameStoreUrl(link);
+            }
+            catch (e) {
                 open(link, "popup");
             }
-            catch (e) { }
             console.log('open store ' + link);
+            //mintegral
+            window.gameEnd && window.gameEnd();
+            window.install && window.install();
         }, this.DelayDirectStore);
     }
 
