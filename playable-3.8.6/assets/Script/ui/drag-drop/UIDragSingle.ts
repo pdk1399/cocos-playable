@@ -2,8 +2,12 @@ import { _decorator, CCBoolean, Component, EventTouch, Node, UITransform, Vec3 }
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('UIDragTest')
-export class UIDragTest extends Component {
+@ccclass('UIDragSingle')
+export class UIDragSingle extends Component {
+
+    //NOTE:
+    //- This will check bound of both their child's UI-Transform component, not only this own
+    //- This might work best for Anchor Point Centre (0.5; 0.5), mean Sprite than Spine (Skeleton)
 
     @property({ type: [Node], group: { name: 'Main' } })
     GroupDrop: Node[] = [];
@@ -64,7 +68,6 @@ export class UIDragTest extends Component {
                 this.node.setWorldPosition(nodeContact.getWorldPosition().clone());
             if (this.DropPosUpdate)
                 this.m_pos = this.node.getPosition().clone();
-            console.log('Contact ' + this.node.name + ' with ' + nodeContact.name);
         }
         else {
             if (this.DropPosReset)
@@ -105,29 +108,10 @@ export class UIDragTest extends Component {
                     continue;
                 const fromDropBound = fromDropUI.getBoundingBoxToWorld();
                 if (fromDropBound.intersects(fromDragBound))
+                    //NOTE: This will check bound of both their child's UI-Transform component, not only this own
                     result.push(fromDrop);
             }
         }
         return result;
-    }
-
-    getContactTop(): Node | null {
-        const fromDragUI = this.node.getComponent(UITransform);
-        if (!fromDragUI)
-            return null;
-        const fromDragBound = fromDragUI.getBoundingBoxToWorld();
-        for (const groupDrop of this.GroupDrop) {
-            for (const fromDrop of groupDrop.children) {
-                if (fromDrop === this.node || !fromDrop.active)
-                    continue;
-                const fromDropUI = fromDrop.getComponent(UITransform);
-                if (!fromDropUI)
-                    continue;
-                const fromDropBound = fromDropUI.getBoundingBoxToWorld();
-                if (fromDropBound.intersects(fromDragBound))
-                    return fromDrop;
-            }
-        }
-        return null;
     }
 }
