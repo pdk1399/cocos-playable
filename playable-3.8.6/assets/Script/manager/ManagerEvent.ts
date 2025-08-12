@@ -1,6 +1,7 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Component, director, game, Input, Label, Node, PhysicsSystem2D, sys, System, VERSION } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import super_html_playable from './super_html_playable';
+import unity_html_playable from './unity_html-playable';
 const { ccclass, property } = _decorator;
 
 @ccclass('ManagerEvent')
@@ -123,9 +124,20 @@ export class ManagerEvent extends Component {
     onStore() {
         const link = this.getStoreLink();
         this.scheduleOnce(() => {
+            console.log('open store ' + link);
+            //Build
             super_html_playable.download();
             super_html_playable.game_end();
-            console.log('open store ' + link);
+            //Unity
+            switch (sys.os) {
+                case sys.OS.ANDROID:
+                    unity_html_playable.openAndroid(link);
+                    break;
+                case sys.OS.IOS:
+                    unity_html_playable.openIOS(link);
+                    break;
+            }
+
         }, this.DelayDirectStore);
     }
 
