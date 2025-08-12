@@ -123,6 +123,7 @@ export class ManagerEvent extends Component {
         let link = this.get_debug_link();
         this.scheduleOnce(() => {
             try {
+                //@ts-ignore
                 openGameStoreUrl(link);
             }
             catch (e) {
