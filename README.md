@@ -10,7 +10,7 @@
 - NOTICE: All spine with version 3.8 will can't be used anymore.
 
 # Tool build
-- Playable-build-tool in version 3.6.3 can use performance.
+- Playable-build-tool package in version 3.6.3 can use performance.
 - Super-html package in version 3.8.3 - 3.8.6 need Node.js package installed to use.
 
 # Build
