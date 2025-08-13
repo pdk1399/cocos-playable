@@ -3,22 +3,29 @@
 
 # Update version
 - Support are limit on every version, so update Cocos Creator or Project Editor with caution.
-- From version 3.8.6, spine can used version 4.2, which can be switch in Project Settings/Feature Cropping/Spine Animation (need close and start editor again to complete change, notice that all spine with version 3.8 will can't be used anymore)
 
-# Tool build:
+# Update version 3.8.6
+- From version 3.8.6, spine can used version 4.2, which can be switch in Project Settings/Feature Cropping/Spine Animation.
+- Need close and start editor again to completed change.
+- NOTICE: All spine with version 3.8 will can't be used anymore.
+
+# Tool build
 - Playable-build-tool in version 3.6.3 can use performance.
 - Super-html package in version 3.8.3 - 3.8.6 need Node.js package installed to use.
 
 # Build
-- IMPORTANCE UPDATE: Now can build all playable ads networks with version 3.8.6, so just ignore some notice of build version (UPDATED: Something went wrong with Unity build on all version?!).
-- Ironsource: <= 5MB - Use build Unity with version 3.6.3
-- Mintegral: <= 2.5MB - Should use version 3.8.3 to minimize build size
-- Unity: <= 5MB - Use build version 3.6.3 (Updated: Now can export >= 5MB)
-- Amazon: Use build Mintegral with version 3.8.3
-- Google: Use build Mintegral with version 3.8.3
+- Use version 3.8.6 playable for build playable all ads networks.
+- Ironsource: <= 5MB
+- Mintegral: <= 2.5MB
+- Unity: <= 5MB
+    + Unity playable's website checked upload file base on link game store, because used Super-html for build so it encoded and made failed to upload.
+    + SOLUTION: Open playable game file *.html and add <!-[Link store game]--> at the end.
+- Amazon: Use build Mintegral
+- Google: Use build Mintegral
 
 # Build Compress
-- Not choice all scene to build, it will increase size build. For some reason, cocos build will pack all assets in project, even not used in scene build, so check out spine, image and script for remove them if not necessary.
+- Not choice all scene to build, it will increase size build.
+- For some reason, cocos build will pack all assets in project, even not used in scene build, so check out spine, image and script for remove them if not necessary.
 - Image (include image of spine): With size >=150KB can be called heavyly and should compress.
 - Spine: Don't export skin, animation & images attach to slot (check in *.png with *.json file after export) that not used in scene, and not export as binary.
 - Tile: Any tile sprite import into tile file *.tmx will make it heavier, remove any tile assets that don't used in scene.
@@ -33,6 +40,3 @@
 - To open and edit Tile file in Cocos, use Tiled tool.
 - Website: https://www.mapeditor.org/
 - Itch.io: https://thorbjorn.itch.io/tiled
-
-# Change link store
-- Can change link store of HTML file build without re-build in project by search text "https://play.google.com/".
