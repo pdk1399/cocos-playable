@@ -6,13 +6,6 @@ const { ccclass, property } = _decorator;
 @ccclass('UIDrop')
 export class UIDrop extends Component {
 
-    //NOTE: 
-    //- Drag node (of UIDrag) & Drop node (of UIDrop) should have Rigidbody2D and Collider2D for full progress.
-    //- Drag node (of UIDrag) must be the child of UIDrag node to avoid glitch when dragging.
-    //- Drop node (of UIDrop) should got multiple collider to avoid glitch when fast dragging.
-    //- UIDrag node must be the child of UIDrop node for working progress.
-    //- Top node should have highest index view in scene (and shouldn't be null to avoid un-right view).
-
     m_uiDrag: UIDrag[] = [];
 
     protected start(): void {
