@@ -19,7 +19,7 @@ export class EmitTweenMove extends EmitTween {
     protected onLoad(): void {
         super.onLoad();
         this.m_valueA = this.ValueWorld ? this.EmitNode.worldPosition.clone() : this.EmitNode.position.clone();
-        let valueB = v3(this.Value.x, this.Value.y, this.m_valueA.z);
+        const valueB = v3(this.Value.x, this.Value.y, this.m_valueA.z);
         switch (this.To) {
             case ValueType.Directly:
                 this.m_valueB = v3(valueB.x, valueB.y, this.m_valueA.z);

@@ -28,7 +28,7 @@ export class ObjectBounce extends Component {
     TagTop: number = 0;
 
     protected onLoad(): void {
-        let colliders = this.getComponents(BoxCollider2D);
+        const colliders = this.getComponents(BoxCollider2D);
         colliders.forEach(collider => {
             switch (collider.tag) {
                 case this.TagTop:

@@ -17,7 +17,7 @@ export class UIDrop extends Component {
 
     protected start(): void {
         this.node.children.forEach(child => {
-            let uiDrag = child.getComponent(UIDrag);
+            const uiDrag = child.getComponent(UIDrag);
             if (uiDrag != null)
                 this.onDropEnter(uiDrag);
         });
@@ -40,7 +40,7 @@ export class UIDrop extends Component {
         target.m_drop = null;
         target.m_uiDrop = null;
         target.m_uiDropLast = this;
-        let index = this.m_uiDrag.indexOf(target);
+        const index = this.m_uiDrag.indexOf(target);
         if (index < 0)
             return;
         this.m_uiDrag.splice(index, 1);

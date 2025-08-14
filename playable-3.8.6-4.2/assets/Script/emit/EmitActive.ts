@@ -50,7 +50,7 @@ export class EmitActive extends EmitBaseNode {
                 break;
             case TargetType.Spine:
             case TargetType.SpineColor:
-                let targetSpine = target.getComponent(sp.Skeleton);
+                const targetSpine = target.getComponent(sp.Skeleton);
                 if (targetSpine == null) {
                     this.onEventSingle(target, state, TargetType.Node);
                     break;
@@ -64,7 +64,7 @@ export class EmitActive extends EmitBaseNode {
                 }
                 break;
             case TargetType.Audio:
-                let targetAudio = target.getComponent(AudioSource);
+                const targetAudio = target.getComponent(AudioSource);
                 if (targetAudio == null) {
                     this.onEventSingle(target, state, TargetType.Node);
                     break;
@@ -85,7 +85,7 @@ export class EmitActive extends EmitBaseNode {
                 break;
             case TargetType.Spine:
             case TargetType.SpineColor:
-                let targetSpine = target.getComponent(sp.Skeleton);
+                const targetSpine = target.getComponent(sp.Skeleton);
                 if (targetSpine == null) {
                     this.onEventSingleRevert(target, TargetType.Node);
                     break;
@@ -99,7 +99,7 @@ export class EmitActive extends EmitBaseNode {
                 }
                 break;
             case TargetType.Audio:
-                let targetAudio = target.getComponent(AudioSource);
+                const targetAudio = target.getComponent(AudioSource);
                 if (targetAudio == null) {
                     this.onEventSingleRevert(target, TargetType.Node);
                     break;

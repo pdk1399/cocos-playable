@@ -52,8 +52,8 @@ export class StickBattleArea extends Component {
             console.log('Cannot merge, need exactly 2 units (current: ' + this.m_uiDrop.m_uiDrag.length + ')');
             return;
         }
-        let unitA = this.m_uiDrop.m_uiDrag[0].getComponent(StickBattleUnit);
-        let unitB = this.m_uiDrop.m_uiDrag[1].getComponent(StickBattleUnit);
+        const unitA = this.m_uiDrop.m_uiDrag[0].getComponent(StickBattleUnit);
+        const unitB = this.m_uiDrop.m_uiDrag[1].getComponent(StickBattleUnit);
         if (unitA == null || unitB == null)
             return;
         if (unitA.type != unitB.type || unitA.level != unitB.level)
@@ -71,8 +71,8 @@ export class StickBattleArea extends Component {
 
     onUnitSwap() {
         console.log('Swap units');
-        let dragA = this.m_uiDrop.m_uiDrag[0].getComponent(UIDrag);
-        let dragB = this.m_uiDrop.m_uiDrag[1].getComponent(UIDrag);
+        const dragA = this.m_uiDrop.m_uiDrag[0].getComponent(UIDrag);
+        const dragB = this.m_uiDrop.m_uiDrag[1].getComponent(UIDrag);
         dragA.onDropEnter(dragB.m_uiDropLast);
     }
 }

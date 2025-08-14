@@ -61,12 +61,12 @@ export class UiScrollDrag extends Component {
     }
 
     onTouchStart(event: EventTouch) {
-        let tempV2 = event.getLocation().clone();
-        let tempV3 = new Vec3();
+        const tempV2 = event.getLocation().clone();
+        const tempV3 = new Vec3();
         tempV3.x = tempV2.x;
         tempV3.y = tempV2.y;
 
-        let tempW3 = v3();
+        const tempW3 = v3();
         this.UiCamera.screenToWorld(tempV3, tempW3);
 
         this.m_posTouched = this.m_uiTransform?.convertToNodeSpaceAR(tempW3);
@@ -83,12 +83,12 @@ export class UiScrollDrag extends Component {
         if (this.m_lock)
             return;
 
-        let tempV2 = event.getLocation().clone();
-        let tempV3 = new Vec3();
+        const tempV2 = event.getLocation().clone();
+        const tempV3 = new Vec3();
         tempV3.x = tempV2.x;
         tempV3.y = tempV2.y;
 
-        let tempW3 = v3();
+        const tempW3 = v3();
         this.UiCamera.screenToWorld(tempV3, tempW3);
 
         this.m_posTouched = this.m_uiTransform?.convertToNodeSpaceAR(tempW3);
@@ -96,10 +96,10 @@ export class UiScrollDrag extends Component {
 
         this.m_drag = true;
         this.m_lock = this.SlideOnce ? true : false;
-        let direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
+        const direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
         this.m_direction = v2(direction.clone().x, direction.clone().y);
 
-        let distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
+        const distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
         if (distance >= this.SlideDistance) {
             this.m_posLocked = this.m_posTouched;
             if (this.m_direction.x > 0)

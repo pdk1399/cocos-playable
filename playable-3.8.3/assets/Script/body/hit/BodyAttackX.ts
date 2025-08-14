@@ -130,9 +130,9 @@ export class BodyAttackX extends Component {
         this.m_spine = this.getComponent(SpineBase);
         this.m_bodySpine = this.getComponent(BodySpine);
 
-        let colliders = this.getComponents(Collider2D);
+        const colliders = this.getComponents(Collider2D);
         for (let i = 0; i < colliders.length; i++) {
-            let collider = colliders[i];
+            const collider = colliders[i];
             switch (collider.tag) {
                 case this.TagMelee:
                     this.m_colliderMelee = collider;
@@ -190,7 +190,7 @@ export class BodyAttackX extends Component {
             case this.TagMelee:
                 switch (otherCollider.tag) {
                     case this.TagTarget:
-                        let index = this.m_targetMelee.findIndex(t => t == otherCollider.node);
+                        const index = this.m_targetMelee.findIndex(t => t == otherCollider.node);
                         if (index >= 0)
                             break;
                         this.m_targetMelee.push(otherCollider.node);
@@ -201,7 +201,7 @@ export class BodyAttackX extends Component {
             case this.TagRange:
                 switch (otherCollider.tag) {
                     case this.TagTarget:
-                        let index = this.m_targetRange.findIndex(t => t == otherCollider.node);
+                        const index = this.m_targetRange.findIndex(t => t == otherCollider.node);
                         if (index >= 0)
                             break;
                         this.m_targetRange.push(otherCollider.node);
@@ -217,7 +217,7 @@ export class BodyAttackX extends Component {
             case this.TagMelee:
                 switch (otherCollider.tag) {
                     case this.TagTarget:
-                        let index = this.m_targetMelee.findIndex(t => t == otherCollider.node);
+                        const index = this.m_targetMelee.findIndex(t => t == otherCollider.node);
                         if (index < 0)
                             break;
                         this.m_targetMelee.splice(index, 1);
@@ -228,7 +228,7 @@ export class BodyAttackX extends Component {
             case this.TagRange:
                 switch (otherCollider.tag) {
                     case this.TagTarget:
-                        let index = this.m_targetRange.findIndex(t => t == otherCollider.node);
+                        const index = this.m_targetRange.findIndex(t => t == otherCollider.node);
                         if (index < 0)
                             break;
                         this.m_targetRange.splice(index, 1);
@@ -372,21 +372,21 @@ export class BodyAttackX extends Component {
         let target: Node = null;
         let distance = 0;
         for (let i = 0; i < this.m_targetRange.length; i++) {
-            let targetCheck = this.m_targetRange[i];
+            const targetCheck = this.m_targetRange[i];
             if (this.m_dir == 1 && this.node.worldPosition.clone().x > targetCheck.worldPosition.clone().x)
                 continue;
             if (this.m_dir == -1 && this.node.worldPosition.clone().x < targetCheck.worldPosition.clone().x)
                 continue;
             if (target == null ? true : !target.isValid) {
                 target = targetCheck;
-                let posA = this.node.worldPosition.clone();
-                let posB = targetCheck.worldPosition.clone();
+                const posA = this.node.worldPosition.clone();
+                const posB = targetCheck.worldPosition.clone();
                 distance = Vec2.distance(v2(posA.x, posA.y), v2(posB.x, posB.y));
             }
             else {
-                let posA = this.node.worldPosition.clone();
-                let posB = targetCheck.worldPosition.clone();
-                let distanceCheck = Vec2.distance(v2(posA.x, posA.y), v2(posB.x, posB.y));
+                const posA = this.node.worldPosition.clone();
+                const posB = targetCheck.worldPosition.clone();
+                const distanceCheck = Vec2.distance(v2(posA.x, posA.y), v2(posB.x, posB.y));
                 if (distanceCheck < distance) {
                     target = targetCheck;
                     distance = distanceCheck;
@@ -420,7 +420,7 @@ export class BodyAttackX extends Component {
         else
             this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
 
-        let animAttackDuration = this.m_bodySpine.onAnimAttack(
+        const animAttackDuration = this.m_bodySpine.onAnimAttack(
             this.AnimAttack[this.m_attackIndex],
             this.AnimMix,
             /*loop*/ false,
@@ -456,10 +456,10 @@ export class BodyAttackX extends Component {
         }, animAttackDuration);
 
         this.m_meleeHit = this.MeleeHitAnim[this.m_attackIndex] * this.getMeleeHitMulti();
-        let attackDelayDuration = this.DelayAttackAnim[this.m_attackIndex];
+        const attackDelayDuration = this.DelayAttackAnim[this.m_attackIndex];
         this.scheduleOnce(() => this.onAttackProgessInvoke(), attackDelayDuration);
 
-        let animNextDuration = this.DelayNextAnim[this.m_attackIndex] / this.AnimTimeScale;
+        const animNextDuration = this.DelayNextAnim[this.m_attackIndex] / this.AnimTimeScale;
         this.m_attackNext = false;
         this.m_nextSchedule = this.scheduleOnce(() => {
             this.m_attackNext = true;
@@ -520,7 +520,7 @@ export class BodyAttackX extends Component {
         else
             return;
 
-        let dirLast = this.m_dir;
+        const dirLast = this.m_dir;
         this.m_dir = dir;
 
         if (dirLast == dir)
@@ -534,13 +534,13 @@ export class BodyAttackX extends Component {
 
         this.scheduleOnce(() => {
             if (this.MeleeDirUpdate && this.m_colliderMelee != null ? this.m_colliderMelee.isValid : false) {
-                let meleeColliderOffset = this.m_colliderMelee.offset;
+                const meleeColliderOffset = this.m_colliderMelee.offset;
                 meleeColliderOffset.x = this.m_offsetMeleeX * dir;
                 this.m_colliderMelee.offset = meleeColliderOffset;
                 this.m_colliderMelee.apply(); //Called this onStart() make bug (?)
             }
             if (this.RangeDirUpdate && this.m_colliderRange != null ? this.m_colliderRange.isValid : false) {
-                let rangeColliderOffset = this.m_colliderRange.offset;
+                const rangeColliderOffset = this.m_colliderRange.offset;
                 rangeColliderOffset.x = this.m_offsetRangeX * dir;
                 this.m_colliderRange.offset = rangeColliderOffset;
                 this.m_colliderRange.apply(); //Called this onStart() make bug (?)

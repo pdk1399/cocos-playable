@@ -174,7 +174,7 @@ export class ManagerInput extends Component {
         }
 
         if (this.JoyMove != null) {
-            let joyDirection = this.JoyMove.m_direction.clone();
+            const joyDirection = this.JoyMove.m_direction.clone();
             if (!this.m_keyboard || joyDirection.x != 0 || joyDirection.y != 0) {
                 switch (this.JoyMoveType) {
                     case JoyStickDirectionType.X:
@@ -188,8 +188,8 @@ export class ManagerInput extends Component {
                                 director.emit(ConstantBase.CONTROL_RELEASE_Y);
                             break;
                         }
-                        let deg = Math.atan2(joyDirection.y, joyDirection.x) * 57.295779513;
-                        let deg360 = deg < 0 ? deg + 360 : deg;
+                        const deg = Math.atan2(joyDirection.y, joyDirection.x) * 57.295779513;
+                        const deg360 = deg < 0 ? deg + 360 : deg;
                         //X
                         if (joyDirection.x == 0 && this.JoyMoveType == JoyStickDirectionType.Y)
                             director.emit(ConstantBase.CONTROL_RELEASE_X);
@@ -486,7 +486,7 @@ export class ManagerInput extends Component {
         if (this.m_lock || this.DirectStore || ManagerEvent.Finish)
             return;
         this.m_keyboard = true;
-        let keyCode = event.keyCode;
+        const keyCode = event.keyCode;
         switch (keyCode) {
             //Main
             case this.KeyUp:
@@ -528,7 +528,7 @@ export class ManagerInput extends Component {
     onKeyReleased(event) {
         if (this.m_lock || this.DirectStore || ManagerEvent.Finish)
             return;
-        let keyCode = event.keyCode;
+        const keyCode = event.keyCode;
         switch (keyCode) {
             //Main
             case this.KeyUp:

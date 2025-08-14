@@ -55,7 +55,7 @@ export class UIDrag extends Component {
         this.Drag.on(Node.EventType.TOUCH_CANCEL, this.onTouchCancel, this);
 
         if (this.Drag.getComponent(RigidBody2D) != null) {
-            let colliders = this.Drag.getComponents(Collider2D);
+            const colliders = this.Drag.getComponents(Collider2D);
             colliders.forEach(collider => {
                 switch (collider.tag) {
                     case this.TagDrag:
@@ -68,7 +68,7 @@ export class UIDrag extends Component {
     }
 
     protected start(): void {
-        let dotSize = this.Drag.getComponent(UITransform).contentSize;
+        const dotSize = this.Drag.getComponent(UITransform).contentSize;
         this.m_dotRadius = Math.max(dotSize.x, dotSize.y) / 2;
         this.m_posPrimary = this.Drag.getPosition();
         this.m_posDrop = this.node.position.clone();
@@ -93,12 +93,12 @@ export class UIDrag extends Component {
         this.m_drag = true;
         this.node.setParent(this.Top, true); //While dragging, the node will be on top of all other nodes
 
-        let tempV2 = event.getLocation().clone();
-        let tempV3 = new Vec3();
+        const tempV2 = event.getLocation().clone();
+        const tempV3 = new Vec3();
         tempV3.x = tempV2.x;
         tempV3.y = tempV2.y;
 
-        let tempW3 = v3();
+        const tempW3 = v3();
         this.UiCamera.screenToWorld(tempV3, tempW3);
 
         this.m_posTouched = this.m_uiTransform?.convertToNodeSpaceAR(tempW3);
@@ -106,10 +106,10 @@ export class UIDrag extends Component {
 
         this.m_posLocked = this.m_posPrimary;
 
-        let direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
+        const direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
         this.m_direction = v2(direction.clone().x, direction.clone().y);
 
-        let distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
+        const distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
         this.m_posTouchedFixed = direction.multiplyScalar(distance);
         this.m_posDot = this.m_posTouchedFixed.clone().add(this.m_posLocked);
 
@@ -125,21 +125,21 @@ export class UIDrag extends Component {
             //Avoid glitch when dragging before starting dragging progress after un-locking
             return;
 
-        let tempV2 = event.getLocation().clone();
-        let tempV3 = new Vec3();
+        const tempV2 = event.getLocation().clone();
+        const tempV3 = new Vec3();
         tempV3.x = tempV2.x;
         tempV3.y = tempV2.y;
 
-        let tempW3 = v3();
+        const tempW3 = v3();
         this.UiCamera.screenToWorld(tempV3, tempW3);
 
         this.m_posTouched = this.m_uiTransform?.convertToNodeSpaceAR(tempW3);
         this.m_posTouched.z = 0;
 
-        let direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
+        const direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
         this.m_direction = v2(direction.clone().x, direction.clone().y);
 
-        let distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
+        const distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
         this.m_posTouchedFixed = direction.multiplyScalar(distance);
         this.m_posDot = this.m_posTouchedFixed.clone().add(this.m_posLocked);
 

@@ -1,7 +1,7 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Component, director, game, Input, Label, Node, PhysicsSystem2D, sys, System, VERSION } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import super_html_playable from './super_html_playable';
-import unity_html_playable from './unity_html-playable';
+import unity_html_playable from './unity_html_playable';
 const { ccclass, property } = _decorator;
 
 @ccclass('ManagerEvent')

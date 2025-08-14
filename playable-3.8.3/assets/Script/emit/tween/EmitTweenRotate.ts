@@ -17,7 +17,7 @@ export class EmitTweenRotate extends EmitTween {
     protected onLoad(): void {
         super.onLoad();
         this.m_valueA = v3(0, 0, this.EmitNode.eulerAngles.clone().z);
-        let valueB = v3(0, 0, this.Value);
+        const valueB = v3(0, 0, this.Value);
         switch (this.To) {
             case ValueType.Directly:
                 this.m_valueB = v3(0, 0, valueB.z);
