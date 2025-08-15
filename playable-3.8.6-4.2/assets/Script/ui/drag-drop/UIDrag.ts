@@ -1,33 +1,46 @@
-import { _decorator, Camera, CCBoolean, CCInteger, Collider2D, Component, Contact2DType, EventTouch, IPhysics2DContact, Node, RigidBody2D, UIOpacity, UITransform, v2, v3, Vec2, Vec3 } from 'cc';
+import { _decorator, Camera, CCBoolean, CCInteger, Collider2D, Component, Contact2DType, Enum, EventTouch, IPhysics2DContact, Node, RigidBody2D, UIOpacity, UITransform, v2, v3, Vec2, Vec3 } from 'cc';
 import { UIDrop } from './UIDrop';
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
+enum DragType {
+    FIXED = 0,
+    SINGLE = 1, //Worked only on scale ONE, bester performance
+}
+Enum(DragType);
+
 @ccclass('UIDrag')
 export class UIDrag extends Component {
 
+    /////////////////////////////
     //NOTE: 
     //- Drag node (of UIDrag) & Drop node (of UIDrop) should have Rigidbody2D and Collider2D for full progress.
     //- Drag node (of UIDrag) must be the child of UIDrag node to avoid glitch when dragging.
     //- Drop node (of UIDrop) should got multiple collider to avoid glitch when fast dragging.
     //- UIDrag node must be the child of UIDrop node for working progress.
     //- Top node should have highest index view in scene (and shouldn't be null to avoid un-right view).
+    /////////////////////////////
 
-    @property({ group: { name: 'Node' }, type: CCBoolean })
+    @property({ group: { name: 'Main' }, type: DragType })
+    Type: DragType = DragType.FIXED;
+    @property({ group: { name: 'Main' }, type: CCBoolean })
     Lock: boolean = false;
-    @property({ group: { name: 'Node' }, type: Node })
-    Drag: Node = null;
-    @property({ group: { name: 'Node' }, type: Node })
+    @property({ group: { name: 'Main' }, type: Node })
     Top: Node = null;
-    @property({ group: { name: 'Node' }, type: Camera })
+    /////////////////////////////
+    @property({ group: { name: 'Main' }, type: Node, visible(this: UIDrag) { return this.Type == DragType.FIXED; } })
+    Drag: Node = null;
+    @property({ group: { name: 'Main' }, type: Camera, visible(this: UIDrag) { return this.Type == DragType.FIXED; } })
     UiCamera: Camera = null;
+    /////////////////////////////
 
-    @property({ group: { name: 'Tag' }, type: CCInteger })
-    TagDrag: number = -10;
-    @property({ group: { name: 'Tag' }, type: CCInteger })
+    @property({ group: { name: 'Tag' }, type: CCInteger, visible(this: UIDrag) { return this.getComponent(RigidBody2D) != null; } })
+    TagBody: number = -10;
+    @property({ group: { name: 'Tag' }, type: CCInteger, visible(this: UIDrag) { return this.getComponent(RigidBody2D) != null; } })
     TagDrop: number = -20;
 
     m_drag: boolean = false;
+
     m_drop: Node = null;
     m_dropCurrent: Node = null;
 
@@ -35,6 +48,7 @@ export class UIDrag extends Component {
     m_uiDropCurrent: UIDrop = null;
     m_uiDropLast: UIDrop = null;
 
+    /////////////////////////////
     m_dotRadius: number;
     m_posPrimary: Vec3 = v3();
     m_posTouched: Vec3 = v3();
@@ -42,36 +56,62 @@ export class UIDrag extends Component {
     m_posLocked: Vec3 = v3();
     m_posDot: Vec3 = v3();
     m_direction: Vec2 = v2();
-    m_posDrop: Vec3 = v3();
+    /////////////////////////////
+    m_posLocal: Vec3 = v3();
 
     m_uiTransform: UITransform = null;
 
     protected onLoad(): void {
         this.m_uiTransform = this.node.getComponent(UITransform);
 
-        this.Drag.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
-        this.Drag.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
-        this.Drag.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
-        this.Drag.on(Node.EventType.TOUCH_CANCEL, this.onTouchCancel, this);
+        this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
+        this.node.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
+        this.node.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
+        this.node.on(Node.EventType.TOUCH_CANCEL, this.onTouchCancel, this);
 
-        if (this.Drag.getComponent(RigidBody2D) != null) {
-            const colliders = this.Drag.getComponents(Collider2D);
-            colliders.forEach(collider => {
-                switch (collider.tag) {
-                    case this.TagDrag:
-                        collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-                        collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
-                        break;
-                }
-            });
+        /////////////////////////////
+        if (this.Type == DragType.FIXED) {
+            if (this.Drag.getComponent(RigidBody2D) != null) {
+                let colliders = this.Drag.getComponents(Collider2D);
+                colliders.forEach(collider => {
+                    switch (collider.tag) {
+                        case this.TagBody:
+                            collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+                            collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
+                            break;
+                    }
+                });
+            }
+        }
+        /////////////////////////////
+        else {
+            if (this.node.getComponent(RigidBody2D) != null) {
+                const colliders = this.node.getComponents(Collider2D);
+                colliders.forEach(collider => {
+                    switch (collider.tag) {
+                        case this.TagBody:
+                            collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+                            collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
+                            break;
+                    }
+                });
+            }
         }
     }
 
     protected start(): void {
-        const dotSize = this.Drag.getComponent(UITransform).contentSize;
-        this.m_dotRadius = Math.max(dotSize.x, dotSize.y) / 2;
-        this.m_posPrimary = this.Drag.getPosition();
-        this.m_posDrop = this.node.position.clone();
+        /////////////////////////////
+        if (this.Type == DragType.FIXED) {
+            let dotSize = this.Drag.getComponent(UITransform).contentSize;
+            this.m_dotRadius = Math.max(dotSize.x, dotSize.y) / 2;
+            this.m_posPrimary = this.Drag.getPosition();
+        }
+        /////////////////////////////
+        else {
+            if (this.Top == null)
+                this.Top = this.node.parent;
+        }
+        this.m_posLocal = this.node.position.clone();
 
         //NOTE: If UIDrop is not found (with UIDrop's init progress), the parent of UIDrag will be parent.
         this.scheduleOnce(() => {
@@ -89,31 +129,35 @@ export class UIDrag extends Component {
     onTouchStart(event: EventTouch) {
         if (this.Lock)
             return;
-
         this.m_drag = true;
         this.node.setParent(this.Top, true); //While dragging, the node will be on top of all other nodes
+        this.node.setSiblingIndex(999); //Set the highest index to avoid glitch when dragging
 
-        const tempV2 = event.getLocation().clone();
-        const tempV3 = new Vec3();
-        tempV3.x = tempV2.x;
-        tempV3.y = tempV2.y;
+        /////////////////////////////
+        if (this.Type == DragType.FIXED) {
+            let tempV2 = event.getLocation().clone();
+            let tempV3 = new Vec3();
+            tempV3.x = tempV2.x;
+            tempV3.y = tempV2.y;
 
-        const tempW3 = v3();
-        this.UiCamera.screenToWorld(tempV3, tempW3);
+            let tempW3 = v3();
+            this.UiCamera.screenToWorld(tempV3, tempW3);
 
-        this.m_posTouched = this.m_uiTransform?.convertToNodeSpaceAR(tempW3);
-        this.m_posTouched.z = 0;
+            this.m_posTouched = this.m_uiTransform?.convertToNodeSpaceAR(tempW3);
+            this.m_posTouched.z = 0;
 
-        this.m_posLocked = this.m_posPrimary;
+            this.m_posLocked = this.m_posPrimary;
 
-        const direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
-        this.m_direction = v2(direction.clone().x, direction.clone().y);
+            let direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
+            this.m_direction = v2(direction.clone().x, direction.clone().y);
 
-        const distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
-        this.m_posTouchedFixed = direction.multiplyScalar(distance);
-        this.m_posDot = this.m_posTouchedFixed.clone().add(this.m_posLocked);
+            let distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
+            this.m_posTouchedFixed = direction.multiplyScalar(distance);
+            this.m_posDot = this.m_posTouchedFixed.clone().add(this.m_posLocked);
 
-        this.Drag.position = this.m_posDot;
+            this.Drag.position = this.m_posDot;
+        }
+        /////////////////////////////
 
         this.node.emit(ConstantBase.NODE_UI_DRAG_START);
     }
@@ -125,25 +169,34 @@ export class UIDrag extends Component {
             //Avoid glitch when dragging before starting dragging progress after un-locking
             return;
 
-        const tempV2 = event.getLocation().clone();
-        const tempV3 = new Vec3();
-        tempV3.x = tempV2.x;
-        tempV3.y = tempV2.y;
+        /////////////////////////////
+        if (this.Type == DragType.FIXED) {
+            let tempV2 = event.getLocation().clone();
+            let tempV3 = new Vec3();
+            tempV3.x = tempV2.x;
+            tempV3.y = tempV2.y;
 
-        const tempW3 = v3();
-        this.UiCamera.screenToWorld(tempV3, tempW3);
+            let tempW3 = v3();
+            this.UiCamera.screenToWorld(tempV3, tempW3);
 
-        this.m_posTouched = this.m_uiTransform?.convertToNodeSpaceAR(tempW3);
-        this.m_posTouched.z = 0;
+            this.m_posTouched = this.m_uiTransform?.convertToNodeSpaceAR(tempW3);
+            this.m_posTouched.z = 0;
 
-        const direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
-        this.m_direction = v2(direction.clone().x, direction.clone().y);
+            let direction = this.m_posTouched.clone().subtract(this.m_posLocked).normalize();
+            this.m_direction = v2(direction.clone().x, direction.clone().y);
 
-        const distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
-        this.m_posTouchedFixed = direction.multiplyScalar(distance);
-        this.m_posDot = this.m_posTouchedFixed.clone().add(this.m_posLocked);
+            let distance = this.m_posTouched.clone().subtract(this.m_posLocked).length();
+            this.m_posTouchedFixed = direction.multiplyScalar(distance);
+            this.m_posDot = this.m_posTouchedFixed.clone().add(this.m_posLocked);
 
-        this.Drag.position = this.m_posDot;
+            this.Drag.position = this.m_posDot;
+        }
+        /////////////////////////////
+        else {
+            const delta = event.getUIDelta();
+            const pos = this.node.getPosition();
+            this.node.setPosition(pos.x + delta.x, pos.y + delta.y, pos.z);
+        }
     }
 
     onTouchCancel(event: EventTouch) {
@@ -168,15 +221,19 @@ export class UIDrag extends Component {
         else
             this.m_uiDrop.onDropBack(this);
         this.node.setParent(this.m_drop, true);
-        this.node.position = this.m_posDrop;
+        this.node.position = this.m_posLocal;
 
-        this.m_direction = Vec2.ZERO.clone();
+        /////////////////////////////
+        if (this.Type == DragType.FIXED) {
+            this.m_direction = Vec2.ZERO.clone();
 
-        this.m_posTouched = this.m_posPrimary;
-        this.m_posLocked = this.m_posPrimary;
-        this.m_posDot = this.m_posPrimary;
+            this.m_posTouched = this.m_posPrimary;
+            this.m_posLocked = this.m_posPrimary;
+            this.m_posDot = this.m_posPrimary;
 
-        this.Drag.position = this.m_posDot;
+            this.Drag.position = this.m_posDot;
+        }
+        /////////////////////////////
 
         this.node.emit(ConstantBase.NODE_UI_DRAG_END);
     }
@@ -186,18 +243,23 @@ export class UIDrag extends Component {
     onDropEnter(drop: UIDrop) {
         if (drop == null)
             return;
+
         this.m_uiDrop.onDropExit(this);
         drop.onDropEnter(this);
         this.node.setParent(this.m_drop, true);
-        this.node.position = this.m_posDrop;
+        this.node.position = this.m_posLocal;
 
-        this.m_direction = Vec2.ZERO.clone();
+        /////////////////////////////
+        if (this.Type == DragType.FIXED) {
+            this.m_direction = Vec2.ZERO.clone();
 
-        this.m_posTouched = this.m_posPrimary;
-        this.m_posLocked = this.m_posPrimary;
-        this.m_posDot = this.m_posPrimary;
+            this.m_posTouched = this.m_posPrimary;
+            this.m_posLocked = this.m_posPrimary;
+            this.m_posDot = this.m_posPrimary;
 
-        this.Drag.position = this.m_posDot;
+            this.Drag.position = this.m_posDot;
+        }
+        /////////////////////////////
 
         this.node.emit(ConstantBase.NODE_UI_DRAG_END);
     }
@@ -211,7 +273,7 @@ export class UIDrag extends Component {
             return;
         if (!this.m_drag)
             return;
-        if (selfCollider.tag != this.TagDrag || otherCollider.tag != this.TagDrop)
+        if (selfCollider.tag != this.TagBody || otherCollider.tag != this.TagDrop)
             return;
         //NOTE: When begin dragging, the current drop node will be the first drop node contact.
         this.m_dropCurrent = otherCollider.node;
@@ -225,7 +287,7 @@ export class UIDrag extends Component {
             return;
         if (!this.m_drag)
             return;
-        if (selfCollider.tag != this.TagDrag || otherCollider.tag != this.TagDrop)
+        if (selfCollider.tag != this.TagBody || otherCollider.tag != this.TagDrop)
             return;
         if (otherCollider.node != this.m_dropCurrent)
             return;
@@ -236,9 +298,9 @@ export class UIDrag extends Component {
 
     //
 
-    onPosDrop(pos: Vec3, update: boolean = false) {
-        this.m_posDrop = pos;
-        if (update)
-            this.node.position = this.m_posDrop;
+    onPosLocal(posLocal: Vec3, posUpdate: boolean = false) {
+        this.m_posLocal = posLocal;
+        if (posUpdate)
+            this.node.position = this.m_posLocal;
     }
 }
