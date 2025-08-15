@@ -2,8 +2,8 @@ import { _decorator, CCBoolean, Component, EventTouch, Node, UITransform, Vec3 }
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('UIDragSingle')
-export class UIDragSingle extends Component {
+@ccclass('UIDragBound')
+export class UIDragBound extends Component {
 
     //NOTE:
     //- This will check combine bound of child's UI-Transform component both, not only own UI-Transform
