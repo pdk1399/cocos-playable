@@ -1,15 +1,15 @@
 {
-  "name": "Testing",
+  "name": "playable_exporter",
   "server": "",
   "platform": "web-mobile",
   "buildPath": "project://build",
   "debug": false,
   "md5Cache": false,
-  "skipCompressTexture": false,
+  "skipCompressTexture": true,
   "sourceMaps": false,
   "overwriteProjectSettings": {
     "includeModules": {
-      "gfx-webgl2": "on",
+      "gfx-webgl2": "inherit-project-setting",
       "physics": "inherit-project-setting",
       "physics-2d": "inherit-project-setting"
     },
@@ -31,17 +31,23 @@
   "useSplashScreen": true,
   "bundleCommonChunk": false,
   "packAutoAtlas": true,
-  "startScene": "19a35fb4-cd2b-4c67-b9ff-56f1ac73e773",
-  "outputName": "Testing",
-  "taskName": "Testing",
+  "startScene": "2d2f792f-a40c-49bb-a189-ed176a246e49",
+  "outputName": "playable_exporter",
+  "taskName": "playable_exporter",
   "scenes": [
     {
-      "url": "db://assets/Scene/sword/sword-of-knight-fake-random-char.scene",
-      "uuid": "19a35fb4-cd2b-4c67-b9ff-56f1ac73e773"
+      "url": "db://assets/Scene/game-normal.scene",
+      "uuid": "2d2f792f-a40c-49bb-a189-ed176a246e49"
     }
   ],
   "wasmCompressionMode": false,
   "packages": {
+    "web-mobile": {
+      "useWebGPU": false,
+      "orientation": "auto",
+      "embedWebDebugger": false,
+      "__version__": "1.0.1"
+    },
     "adsense-h5g-plugin": {
       "enableAdsense": false,
       "enableTestAd": false,
@@ -51,18 +57,21 @@
       "otherAFPDomain": "",
       "__version__": "1.0.1"
     },
-    "web-mobile": {
-      "orientation": "auto",
-      "embedWebDebugger": false,
-      "__version__": "1.0.1"
-    },
     "cocos-service": {
       "configID": "84d08c",
       "services": [],
-      "__version__": "3.0.7"
+      "__version__": "3.0.9"
     }
   },
-  "__version__": "1.3.8",
+  "__version__": "1.3.9",
   "buildMode": "normal",
-  "logDest": "project://temp/builder/log/web-mobile1-16-2025 17-52.log"
+  "engineModulesConfigKey": "migrationsConfig",
+  "mangleProperties": false,
+  "inlineEnum": false,
+  "md5CacheOptions": {
+    "excludes": [],
+    "includes": [],
+    "replaceOnly": [],
+    "handleTemplateMd5Link": true
+  }
 }
