@@ -19,7 +19,7 @@
 - Mintegral: <= 2.5MB
 - Unity: <= 5MB
     + Unity playable's website checked upload file base on link game store, because used Super-html for build so it encoded and made failed to upload.
-    + SOLUTION: Open playable game file *.html and add <script><!--[Link store game]--></script> at the end.
+    + SOLUTION: Open playable game file *.html and add <comment><!--[Link store game]--></comment> at the end.
 - Amazon: Use build Mintegral
 - Google: Use build Mintegral
 
