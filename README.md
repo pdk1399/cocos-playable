@@ -18,8 +18,8 @@
 - Ironsource: <= 5MB
 - Mintegral: <= 2.5MB
 - Unity: <= 5MB
-    + Unity playable's website checked upload file base on link game store, because used Super-html for build so it encoded and made failed to upload.
-    + SOLUTION: Open playable game file *.html and add <b>comment</b> of link store game at the end.
+    + Unity playable's website checked upload file base on <b>link store game</b>, because used Super-html for build so it encoded and made failed to upload.
+    + SOLUTION: Open playable game exported file *.html and add <b>comment</b> of <b>link store game</b> at the end of file's line.
 - Amazon: Use build Mintegral
 - Google: Use build Mintegral
 
