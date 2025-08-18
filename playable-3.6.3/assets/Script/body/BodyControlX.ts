@@ -475,8 +475,8 @@ export class BodyControlX extends Component {
             }
         }
 
-        let velocity = this.m_rigidbody.linearVelocity.clone();
-        let current = velocity.clone();
+        const velocity = this.m_rigidbody.linearVelocity.clone();
+        const current = velocity.clone();
 
         if (this.m_body.m_dead || !this.m_control || this.m_bodyCheck.m_isHead) {
             velocity.x = 0;
@@ -485,8 +485,8 @@ export class BodyControlX extends Component {
         }
         else {
             if (this.m_bodyCheck.m_isBotFinal) {
-                let moveGroundX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? this.MoveAttackGroundX : this.MoveGroundX;
-                let moveDirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? (this.MoveAttackByFace ? this.m_faceDirX : this.m_moveDirX) : this.m_moveDirX;
+                const moveGroundX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? this.MoveAttackGroundX : this.MoveGroundX;
+                const moveDirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? (this.MoveAttackByFace ? this.m_faceDirX : this.m_moveDirX) : this.m_moveDirX;
                 velocity.x += moveDirX * moveGroundX;
                 if (velocity.x > moveGroundX)
                     velocity.x = moveGroundX;
@@ -496,8 +496,8 @@ export class BodyControlX extends Component {
                     this.m_rigidbody.applyTorque(-moveDirX * this.TorqueX * (this.m_rigidbody.getMass() / this.m_baseMass) * this.m_body.m_baseSize, true);
             }
             else {
-                let moveAirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? this.MoveAttackAirX : this.MoveAirX;
-                let moveDirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? (this.MoveAttackByFace ? this.m_faceDirX : this.m_moveDirX) : this.m_moveDirX;
+                const moveAirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? this.MoveAttackAirX : this.MoveAirX;
+                const moveDirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? (this.MoveAttackByFace ? this.m_faceDirX : this.m_moveDirX) : this.m_moveDirX;
                 velocity.x += moveDirX * moveAirX;
                 if (velocity.x > moveAirX)
                     velocity.x = moveAirX;
@@ -506,7 +506,7 @@ export class BodyControlX extends Component {
             }
         }
         velocity.x *= this.m_moveRatioX;
-        let damp = current.lerp(velocity, this.MoveDampX * dt);
+        const damp = current.lerp(velocity, this.MoveDampX * dt);
         this.m_rigidbody.linearVelocity = damp;
     }
 
@@ -562,7 +562,7 @@ export class BodyControlX extends Component {
     onMoveReleaseX() {
         this.m_moveDirX = 0;
         if (this.MoveForceStop) {
-            let veloc = this.m_rigidbody.linearVelocity.clone();
+            const veloc = this.m_rigidbody.linearVelocity.clone();
             veloc.x = 0;
             this.m_rigidbody.linearVelocity = veloc;
             if (this.Type == BodyType.BALL)
@@ -620,7 +620,7 @@ export class BodyControlX extends Component {
 
         this.m_rigidbody.gravityScale = this.m_baseGravity;
 
-        let veloc = this.m_rigidbody.linearVelocity;
+        const veloc = this.m_rigidbody.linearVelocity;
         veloc.y = this.JumpUpY;
         this.m_rigidbody.linearVelocity = veloc;
 
@@ -645,7 +645,7 @@ export class BodyControlX extends Component {
 
         this.m_rigidbody.gravityScale = this.m_baseGravity;
 
-        let veloc = this.m_rigidbody.linearVelocity;
+        const veloc = this.m_rigidbody.linearVelocity;
         veloc.y = jumpUp != null ? jumpUp : this.JumpUpY;
         this.m_rigidbody.linearVelocity = veloc;
 
@@ -699,7 +699,7 @@ export class BodyControlX extends Component {
     onSwitch(index: number, controlByDirector: boolean = true) {
         if (this.m_lockInput || this.getDead())
             return;
-        let state = index == this.SwitchIndex;
+        const state = index == this.SwitchIndex;
         this.m_control = state;
         if (controlByDirector) {
             this.onControlByDirector(state);
@@ -720,7 +720,7 @@ export class BodyControlX extends Component {
     onAttack(state: boolean, update: boolean = true) {
         if (!this.m_control || this.m_lockInput || this.getDead())
             return;
-        let attackLast = this.m_attack;
+        const attackLast = this.m_attack;
         this.m_attack = state;
         switch (state) {
             case true:
@@ -760,7 +760,7 @@ export class BodyControlX extends Component {
         if (!this.m_bodyAttack?.Aim)
             return;
         this.m_bodyAttack?.onDirUpdate(this.m_faceDirX);
-        let target = this.m_bodyAttack?.onRangeTargetNearest();
+        const target = this.m_bodyAttack?.onRangeTargetNearest();
         if (target == null ? true : !target.isValid)
             this.onAimReset();
         else
@@ -810,7 +810,7 @@ export class BodyControlX extends Component {
             this.m_pickUpParent = this.m_pickUp.parent;
             this.m_pickUpSiblingIndex = this.m_pickUp.getSiblingIndex();
             //Save Pick-up Object's Rigidbody imformation before destroy it
-            let pickUpRigidbody = this.m_pickUp.getComponent(RigidBody2D);
+            const pickUpRigidbody = this.m_pickUp.getComponent(RigidBody2D);
             this.m_pickUpRigidbody = new DataRigidbody(pickUpRigidbody);
             this.scheduleOnce(() => {
                 if (this.m_pickUp == null ? true : !this.m_pickUp.isValid)
@@ -835,10 +835,10 @@ export class BodyControlX extends Component {
             //Node Event
             this.m_pickUp.emit(ConstantBase.NODE_THROW);
             //Add Rigidbody to Pick-up Object and set back imformation to it
-            let pickUpRigidbody = this.m_pickUp.addComponent(RigidBody2D);
+            const pickUpRigidbody = this.m_pickUp.addComponent(RigidBody2D);
             this.m_pickUpRigidbody.onUpdate(pickUpRigidbody);
             //Fixed collider collision after add Rigidbody component to Pick-up Object
-            let pickUpColliders = this.m_pickUp.getComponents(Collider2D);
+            const pickUpColliders = this.m_pickUp.getComponents(Collider2D);
             pickUpColliders.forEach(collider => {
                 collider.apply();
             });
@@ -881,7 +881,7 @@ export class BodyControlX extends Component {
     //COLLIDE
 
     protected onCollideObject(state: boolean, target: Collider2D) {
-        let bodyTarget = target.getComponent(BodyBase);
+        const bodyTarget = target.getComponent(BodyBase);
         if (bodyTarget != null && bodyTarget.isValid) {
             if (this.m_body.m_bodyX4 && state)
                 bodyTarget.onDead(this.node);
@@ -889,15 +889,15 @@ export class BodyControlX extends Component {
     }
 
     protected onCollideEnermy(state: boolean, target: Collider2D) {
-        let bodyTarget = target.getComponent(BodyBase);
+        const bodyTarget = target.getComponent(BodyBase);
         if (bodyTarget != null && bodyTarget.isValid) {
             if (state) {
                 if (this.m_body.m_bodyX4)
                     bodyTarget.onDead(this.node);
                 else {
-                    let currentBotY = this.node.worldPosition.clone().y + this.m_bodyCheck.m_sizeBody.y * 0.5;
-                    let targetSizeY = target.worldAABB.size.clone().y;
-                    let targetTopY = target.node.worldPosition.clone().y + targetSizeY * 0.5;
+                    const currentBotY = this.node.worldPosition.clone().y + this.m_bodyCheck.m_sizeBody.y * 0.5;
+                    const targetSizeY = target.worldAABB.size.clone().y;
+                    const targetTopY = target.node.worldPosition.clone().y + targetSizeY * 0.5;
                     if (currentBotY > targetTopY) {
                         this.onJumpForce(this.JumpUpY * 0.5);
                         bodyTarget.node.emit(ConstantBase.NODE_BODY_HIT, 1, this.node);

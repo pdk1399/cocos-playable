@@ -19,7 +19,7 @@ export class BodyIndex extends Component {
     SortSimple: boolean = false;
 
     protected onLoad(): void {
-        let colliders = this.getComponents(Collider2D);
+        const colliders = this.getComponents(Collider2D);
         colliders.forEach(colliderCheck => {
             if (colliderCheck.tag == this.TagBody)
                 colliderCheck.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);

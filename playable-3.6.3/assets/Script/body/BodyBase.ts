@@ -1,6 +1,6 @@
 import { _decorator, Node, AudioSource, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, instantiate, RigidBody2D, Sprite, Vec2, v2, v3, UITransform, tween, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
-import { ValueBar } from '../else/value/ValueBar';
+import { UIValueBar } from '../ui/UIValueBar';
 const { ccclass, property } = _decorator;
 
 @ccclass('BodyBase')
@@ -70,8 +70,8 @@ export class BodyBase extends Component {
 
     @property({ group: { name: 'Option' }, type: CCString })
     Name: string = '';
-    @property({ group: { name: 'Option' }, type: ValueBar })
-    ValueBar: ValueBar = null;
+    @property({ group: { name: 'Option' }, type: UIValueBar })
+    ValueBar: UIValueBar = null;
     @property({ group: { name: 'Option' }, type: Node })
     BarMask: Node = null;
 
@@ -110,9 +110,9 @@ export class BodyBase extends Component {
         this.node.on(ConstantBase.NODE_VALUE_HIT_POINT, this.onHitPoint, this);
         this.node.on(ConstantBase.NODE_VALUE_HIT_POINT_CURRENT, this.onHitPointCurrent, this);
 
-        let collider = this.getComponents(Collider2D);
+        const collider = this.getComponents(Collider2D);
         collider.forEach(colliderCheck => {
-            let tagIndex = this.TagDestroyCollider.findIndex(t => t == colliderCheck.tag);
+            const tagIndex = this.TagDestroyCollider.findIndex(t => t == colliderCheck.tag);
             if (tagIndex >= 0)
                 this.m_destroyCollider.push(colliderCheck as Collider2D)
         })
@@ -250,7 +250,7 @@ export class BodyBase extends Component {
             if (this.m_maskSprite != null ? this.m_maskSprite.type == Sprite.Type.FILLED : false)
                 this.m_maskSprite.fillRange = 1.0 * this.m_hitPointCurrent / this.HitPoint;
             else {
-                let size = this.m_maskTransform.contentSize.clone();
+                const size = this.m_maskTransform.contentSize.clone();
                 size.x = this.m_maskTransformX * (1.0 * this.m_hitPointCurrent / this.HitPoint);
                 this.m_maskTransform.contentSize = size;
             }
@@ -276,9 +276,9 @@ export class BodyBase extends Component {
         if (this.m_bodyX4)
             return;
         //
-        let baseScale: Vec3 = this.m_baseScale.clone();
-        let ratio = state ? 2 : 1;
-        let colliders = this.getComponents(Collider2D);
+        const baseScale: Vec3 = this.m_baseScale.clone();
+        const ratio = state ? 2 : 1;
+        const colliders = this.getComponents(Collider2D);
         setTimeout(() => {
             tween(this.node).to(0.25, { scale: baseScale.clone().multiplyScalar(ratio) }).call(() => {
                 colliders.forEach(c => {
@@ -297,9 +297,9 @@ export class BodyBase extends Component {
             return;
         }
         //
-        let baseScale: Vec3 = this.m_baseScale.clone();
-        let ratio = state ? 4 : 1;
-        let colliders = this.getComponents(Collider2D);
+        const baseScale: Vec3 = this.m_baseScale.clone();
+        const ratio = state ? 4 : 1;
+        const colliders = this.getComponents(Collider2D);
         setTimeout(() => {
             tween(this.node).to(0.25, { scale: baseScale.clone().multiplyScalar(ratio) }).call(() => {
                 colliders.forEach(c => {
@@ -351,11 +351,11 @@ export class BodyBase extends Component {
         if (this.AudioHit != null)
             this.AudioHit.play();
         if (this.EffectHit != null) {
-            let effectClone = instantiate(this.EffectHit);
+            const effectClone = instantiate(this.EffectHit);
             effectClone.setParent(this.EffectSpawm);
             effectClone.active = true;
             if (this.EffectFixed) {
-                let offset = v3(this.EffectOffset.x, this.EffectOffset.y, 0);
+                const offset = v3(this.EffectOffset.x, this.EffectOffset.y, 0);
                 effectClone.worldPosition = this.EffectCentre.worldPosition.clone().add(offset);
             }
             else
@@ -367,11 +367,11 @@ export class BodyBase extends Component {
         if (this.AudioDead != null)
             this.AudioDead.play();
         if (this.EffectDead != null) {
-            let effectClone = instantiate(this.EffectDead);
+            const effectClone = instantiate(this.EffectDead);
             effectClone.setParent(this.EffectSpawm);
             effectClone.active = true;
             if (this.EffectFixed) {
-                let offset = v3(this.EffectOffset.x, this.EffectOffset.y, 0);
+                const offset = v3(this.EffectOffset.x, this.EffectOffset.y, 0);
                 effectClone.worldPosition = this.EffectCentre.worldPosition.clone().add(offset);
             }
             else
@@ -381,11 +381,11 @@ export class BodyBase extends Component {
 
     private onDestroyEffect() {
         if (this.EffectDestroy != null) {
-            let effectClone = instantiate(this.EffectDestroy);
+            const effectClone = instantiate(this.EffectDestroy);
             effectClone.setParent(this.EffectSpawm);
             effectClone.active = true;
             if (this.EffectFixed) {
-                let offset = v3(this.EffectOffset.x, this.EffectOffset.y, 0);
+                const offset = v3(this.EffectOffset.x, this.EffectOffset.y, 0);
                 effectClone.worldPosition = this.EffectCentre.worldPosition.clone().add(offset);
             }
             else
