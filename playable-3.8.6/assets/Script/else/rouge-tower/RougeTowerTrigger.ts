@@ -36,6 +36,7 @@ export class RougeTowerTrigger extends Component {
     m_point: BodyPoint = null;
     m_player: Node = null;
     m_playerPoint: BodyPoint = null;
+    m_playerSpine: SpineBase = null;
     m_playerCheck: BodyCheckX = null;
 
     protected onLoad(): void {
@@ -69,6 +70,7 @@ export class RougeTowerTrigger extends Component {
         //PLAYER
         this.m_player = player;
         this.m_playerPoint = player.getComponent(BodyPoint);
+        this.m_playerSpine = player.getComponent(SpineBase);
         this.m_playerCheck = player.getComponent(BodyCheckX);
         player.emit(ConstantBase.NODE_VALUE_LOCK_X, true);
         player.emit(ConstantBase.NODE_VALUE_LOCK_Y, true);
@@ -77,10 +79,14 @@ export class RougeTowerTrigger extends Component {
         player.emit(ConstantBase.NODE_CONTROL_DIRECTOR, false);
         player.emit(ConstantBase.NODE_CONTROL_NODE, true);
         //DIR
-        if (this.node.worldPositionX < player.worldPositionX)
+        if (this.node.worldPositionX < player.worldPositionX) {
             this.m_spine.onFaceDir(-1);
-        else
+            this.m_player.emit(ConstantBase.NODE_CONTROL_FACE_X_LEFT);
+        }
+        else {
             this.m_spine.onFaceDir(1);
+            this.m_player.emit(ConstantBase.NODE_CONTROL_FACE_X_RIGHT);
+        }
         //POINT
         if (this.m_point.Value >= this.m_playerPoint.Value)
             this.onEnermyWin();
@@ -112,10 +118,9 @@ export class RougeTowerTrigger extends Component {
 
     onPlayerWin() {
         //PLAYER
-        const playerSpine = this.m_player.getComponent(SpineBase);
         this.scheduleOnce(() => {
-            playerSpine.onAnimationForce(this.PAnimIdle, true);
-        }, playerSpine.onAnimationForce(this.PAnimAttack, false, true, this.PAnimAttackTimeScale));
+            this.m_playerSpine.onAnimationForce(this.PAnimIdle, true);
+        }, this.m_playerSpine.onAnimationForce(this.PAnimAttack, false, true, this.PAnimAttackTimeScale));
         //MONSTER
         this.scheduleOnce(() => {
             //DEAD
