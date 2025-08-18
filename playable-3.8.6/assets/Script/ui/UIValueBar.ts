@@ -1,16 +1,11 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Label, Node, Sprite, UITransform } from 'cc';
 const { ccclass, property } = _decorator;
 
-@ccclass('ValueBar')
-export class ValueBar extends Component {
+@ccclass('UIValueBar')
+export class UIValueBar extends Component {
 
     @property({ group: { name: 'Event' }, type: CCString })
     OnUpdate: string = '';
-
-    @property({ group: { name: 'Hide' }, type: CCBoolean })
-    Hide: boolean = false;
-    @property({ group: { name: 'Hide' }, type: CCFloat })
-    HideDelay: number = 3;
 
     @property({ group: { name: 'Ui' }, type: CCBoolean })
     UiValueFull: boolean = true;
@@ -22,7 +17,12 @@ export class ValueBar extends Component {
     UiMask: Node = null;
     @property({ group: { name: 'Ui' }, type: Label })
     UiName: Label = null;
-    @property({ group: { name: 'Ui' }, type: [Node] })
+
+    @property({ group: { name: 'Hide' }, type: CCBoolean })
+    Hide: boolean = false;
+    @property({ group: { name: 'Hide' }, type: CCFloat })
+    HideDelay: number = 3;
+    @property({ group: { name: 'Hide' }, type: [Node] })
     UiHide: Node[] = [];
 
     m_maskSprite: Sprite = null;
