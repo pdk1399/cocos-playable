@@ -3,19 +3,29 @@ import { SpineBase } from '../../renderer/SpineBase';
 import { BodyPoint } from '../../body/option/BodyPoint';
 import { BodyBase } from '../../body/BodyBase';
 import { ConstantBase } from '../../ConstantBase';
+import { BodyCheckX } from '../../body/physic/BodyCheckX';
 const { ccclass, property } = _decorator;
 
 @ccclass('RougeTowerTrigger')
 export class RougeTowerTrigger extends Component {
 
-    @property({ group: { name: 'Anim' }, type: CCString })
-    AnimIdle: string = "idle";
-    @property({ group: { name: 'Anim' }, type: CCString })
-    AnimAttack: string = "attack";
-    @property({ group: { name: 'Anim' }, type: CCFloat })
-    AnimAttackTimeScale: number = 1;
-    @property({ group: { name: 'Anim' }, type: CCFloat })
-    DelayAttack: number = 0.5;
+    @property({ group: { name: 'Enermy' }, type: CCString })
+    EAnimIdle: string = "idle";
+    @property({ group: { name: 'Enermy' }, type: CCString })
+    EAnimAttack: string = "attack";
+    @property({ group: { name: 'Enermy' }, type: CCFloat })
+    EAnimAttackTimeScale: number = 1;
+    @property({ group: { name: 'Enermy' }, type: CCFloat })
+    EDelayAttack: number = 0.5;
+
+    @property({ group: { name: 'Player' }, type: CCString })
+    PAnimIdle: string = "idle";
+    @property({ group: { name: 'Player' }, type: CCString })
+    PAnimAttack: string = "attack";
+    @property({ group: { name: 'Player' }, type: CCFloat })
+    PAnimAttackTimeScale: number = 1;
+    @property({ group: { name: 'Player' }, type: CCFloat })
+    PDelayAttack: number = 0.5;
 
     @property({ group: { name: 'Tag' }, type: CCInteger })
     TagTrigger: number = 201;
@@ -24,6 +34,9 @@ export class RougeTowerTrigger extends Component {
 
     m_spine: SpineBase = null;
     m_point: BodyPoint = null;
+    m_player: Node = null;
+    m_playerPoint: BodyPoint = null;
+    m_playerCheck: BodyCheckX = null;
 
     protected onLoad(): void {
         this.m_spine = this.getComponent(SpineBase);
@@ -53,24 +66,70 @@ export class RougeTowerTrigger extends Component {
     }
 
     onBattleProgress(player: Node) {
-        const playerPoint = player.getComponent(BodyPoint);
-        if (this.m_point.Value > playerPoint.Value) {
-            //MONSTER
-            this.scheduleOnce(() => {
-                this.m_spine.onAnimation(this.AnimIdle, true);
-            }, this.m_spine.onAnimation(this.AnimAttack, false, true, this.AnimAttackTimeScale));
+        //PLAYER
+        this.m_player = player;
+        this.m_playerPoint = player.getComponent(BodyPoint);
+        this.m_playerCheck = player.getComponent(BodyCheckX);
+        player.emit(ConstantBase.NODE_VALUE_LOCK_X, true);
+        player.emit(ConstantBase.NODE_VALUE_LOCK_Y, true);
+        player.emit(ConstantBase.NODE_CONTROL_SLEEP);
+        this.scheduleOnce(() => player.emit(ConstantBase.NODE_CONTROL_AWAKE), 0.02);
+        player.emit(ConstantBase.NODE_CONTROL_DIRECTOR, false);
+        player.emit(ConstantBase.NODE_CONTROL_NODE, true);
+        //DIR
+        if (this.node.worldPositionX < player.worldPositionX)
+            this.m_spine.onFaceDir(-1);
+        else
+            this.m_spine.onFaceDir(1);
+        //POINT
+        if (this.m_point.Value >= this.m_playerPoint.Value)
+            this.onEnermyWin();
+        else
+            this.onPlayerFall();
+    }
+
+    onEnermyWin() {
+        //MONSTER
+        this.scheduleOnce(() => {
+            this.m_spine.onAnimation(this.EAnimIdle, true);
+        }, this.m_spine.onAnimation(this.EAnimAttack, false, true, this.EAnimAttackTimeScale));
+        //PLAYER
+        this.scheduleOnce(() => {
+            //DEAD
+            this.m_player.emit(ConstantBase.NODE_BODY_DEAD);
+            //POINT
+            this.m_point.onValueAdd(this.m_playerPoint.Value);
+            this.m_playerPoint.onValueAdd(-9999);
+        }, this.EDelayAttack);
+    }
+
+    onPlayerFall() {
+        if (this.m_playerCheck.m_isBotFinal)
+            this.scheduleOnce(() => this.onPlayerWin(), 0.2);
+        else
+            this.scheduleOnce(() => this.onPlayerFall(), 0.02);
+    }
+
+    onPlayerWin() {
+        //PLAYER
+        const playerSpine = this.m_player.getComponent(SpineBase);
+        this.scheduleOnce(() => {
+            playerSpine.onAnimationForce(this.PAnimIdle, true);
+        }, playerSpine.onAnimationForce(this.PAnimAttack, false, true, this.PAnimAttackTimeScale));
+        //MONSTER
+        this.scheduleOnce(() => {
+            //DEAD
+            this.node.emit(ConstantBase.NODE_BODY_DEAD);
+            //POINT
+            this.m_playerPoint.onValueAdd(this.m_point.Value);
+            this.m_point.onValueAdd(-9999);
             //PLAYER
-            player.emit(ConstantBase.NODE_VALUE_LOCK_X, true);
             this.scheduleOnce(() => {
-                //DEAD
-                player.emit(ConstantBase.NODE_BODY_DEAD);
-                //POINT
-                this.m_point.onValueAdd(playerPoint.Value);
-                playerPoint.onValueAdd(-9999);
-            }, this.DelayAttack);
-        }
-        else {
-            //...
-        }
+                this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_X, false);
+                this.m_player.emit(ConstantBase.NODE_VALUE_LOCK_Y, false);
+                this.m_player.emit(ConstantBase.NODE_CONTROL_DIRECTOR, true);
+                this.m_player.emit(ConstantBase.NODE_CONTROL_NODE, false);
+            }, 0.25);
+        }, this.PDelayAttack);
     }
 }
