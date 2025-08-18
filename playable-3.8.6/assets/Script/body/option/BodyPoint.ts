@@ -16,6 +16,16 @@ export class BodyPoint extends Component {
             this.Label.string = this.Value.toString();
     }
 
+    onFocusInEditor(): void {
+        if (this.Label != null)
+            this.Label.string = this.Value.toString();
+    }
+
+    onLostFocusInEditor(): void {
+        if (this.Label != null)
+            this.Label.string = this.Value.toString();
+    }
+
     onValueUpdate(value: number): void {
         this.Value = value;
         if (this.Value < 0)
