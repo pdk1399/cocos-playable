@@ -44,18 +44,18 @@ export class StickTowerRoom extends Component {
         if (this.m_unit.length > 0) {
             this.m_uiDragPlayer.onPosLocal(this.m_unit[this.m_unit.length - 1].node.position.clone().add3f(-100, 0, 0));
             this.m_uiDragPlayer.Lock = true;
-            let playerPoint = this.m_player.Point;
-            let enermyPoint = this.m_unit[this.m_unit.length - 1].Point;
-            if (this.m_player.Point > this.m_unit[this.m_unit.length - 1].Point) {
+            let playerPoint = this.m_player.m_point.Value;
+            let enermyPoint = this.m_unit[this.m_unit.length - 1].m_point.Value;
+            if (playerPoint > enermyPoint) {
                 //Player Attack
                 this.scheduleOnce(() => {
                     this.m_uiDragPlayer.Lock = false;
                     this.m_player.onUnitIdle();
                 }, this.m_player.onUnitAttack());
                 //Enermy Dead
-                this.m_unit[this.m_unit.length - 1].onPointAdd(-9999);
+                this.m_unit[this.m_unit.length - 1].m_point.onValueAdd(-9999);
                 this.scheduleOnce(() => {
-                    this.m_player.onPointAdd(enermyPoint);
+                    this.m_player.m_point.onValueAdd(enermyPoint);
                     this.m_unit[this.m_unit.length - 1].node.destroy();
                     this.m_unit.splice(this.m_unit.length - 1, 1);
                     if (this.m_field.onRoomCheckWin()) {
@@ -68,9 +68,9 @@ export class StickTowerRoom extends Component {
             }
             else {
                 //Player Dead
-                this.m_player.onPointAdd(-9999);
+                this.m_player.m_point.onValueAdd(-9999);
                 this.scheduleOnce(() => {
-                    this.m_unit[this.m_unit.length - 1].onPointAdd(playerPoint);
+                    this.m_unit[this.m_unit.length - 1].m_point.onValueAdd(playerPoint);
                     director.emit(ConstantBase.GAME_LOSE);
                 }, this.m_player.onUnitDead());
                 //Enermy Attack
