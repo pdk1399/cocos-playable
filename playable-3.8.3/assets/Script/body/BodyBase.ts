@@ -1,6 +1,6 @@
 import { _decorator, Node, AudioSource, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, instantiate, RigidBody2D, Sprite, Vec2, v2, v3, UITransform, tween, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
-import { ValueBar } from '../else/value/ValueBar';
+import { UIValueBar } from '../ui/UIValueBar';
 const { ccclass, property } = _decorator;
 
 @ccclass('BodyBase')
@@ -70,8 +70,8 @@ export class BodyBase extends Component {
 
     @property({ group: { name: 'Option' }, type: CCString })
     Name: string = '';
-    @property({ group: { name: 'Option' }, type: ValueBar })
-    ValueBar: ValueBar = null;
+    @property({ group: { name: 'Option' }, type: UIValueBar })
+    ValueBar: UIValueBar = null;
     @property({ group: { name: 'Option' }, type: Node })
     BarMask: Node = null;
 
