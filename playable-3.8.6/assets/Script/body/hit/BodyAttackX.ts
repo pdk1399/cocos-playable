@@ -414,13 +414,13 @@ export class BodyAttackX extends Component {
         this.unschedule(this.m_continueSchedule);
         this.unschedule(this.m_nextSchedule);
 
-        this.m_bodySpine.m_lockAttack = true;
+        this.m_bodySpine.m_hitLock = true;
         if (!this.AnimMix)
             this.m_spine.onAnimationForceLast();
         else
             this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
 
-        const animAttackDuration = this.m_bodySpine.onAnimAttack(
+        const animAttackDuration = this.onAnimAttack(
             this.AnimAttack[this.m_attackIndex],
             this.AnimMix,
             /*loop*/ false,
@@ -430,7 +430,7 @@ export class BodyAttackX extends Component {
             this.unschedule(this.m_nextSchedule);
             this.m_attack = false;
             this.m_attackNext = false;
-            this.m_bodySpine.m_lockAttack = false;
+            this.m_bodySpine.m_hitLock = false;
             if (!this.AnimMix)
                 this.m_spine.onAnimationForceLast();
             else
@@ -550,11 +550,18 @@ export class BodyAttackX extends Component {
 
     //ANIM
 
+    onAnimAttack(anim: string, animMix: boolean, loop: boolean, durationScale: boolean = false, timeScale: number = 1): number {
+        if (!animMix)
+            return this.m_spine.onAnimationForceUnSave(anim, loop, durationScale, timeScale);
+        else
+            return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, anim, loop, durationScale, timeScale);
+    }
+
     onAnimAttackReady() {
         if (this.m_readyIndex > this.AnimReady.length - 1)
             return;
         let animAttackReadyContinue = this.m_readyIndex < this.AnimReady.length - 1;
-        let animAttackReadyDuration = this.m_bodySpine.onAnimAttack(this.AnimReady[this.m_readyIndex], this.AnimMix, !animAttackReadyContinue);
+        let animAttackReadyDuration = this.onAnimAttack(this.AnimReady[this.m_readyIndex], this.AnimMix, !animAttackReadyContinue);
         if (animAttackReadyContinue)
             this.m_readySchedule = this.scheduleOnce(() => this.onAnimAttackReady(), animAttackReadyDuration);
         this.m_readyIndex++;
