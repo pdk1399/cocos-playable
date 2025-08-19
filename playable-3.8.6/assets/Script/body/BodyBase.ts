@@ -43,21 +43,6 @@ export class BodyBase extends Component {
     @property({ group: { name: 'Destroy' }, type: [CCInteger], visible(this: BodyBase) { return this.DestroyBody; } })
     TagDestroyCollider: number[] = [200];
 
-    @property({ group: { name: 'Effect' }, type: CCBoolean })
-    EffectFixed: boolean = false;
-    @property({ group: { name: 'Effect' }, type: Vec2, visible(this: BodyBase) { return this.EffectFixed; } })
-    EffectOffset: Vec2 = v2();
-    @property({ group: { name: 'Effect' }, type: Node })
-    EffectCentre: Node = null;
-    @property({ group: { name: 'Effect' }, type: Node })
-    EffectSpawm: Node = null;
-    @property({ group: { name: 'Effect' }, type: Node })
-    EffectHit: Node = null;
-    @property({ group: { name: 'Effect' }, type: Node })
-    EffectDead: Node = null;
-    @property({ group: { name: 'Effect' }, type: Node })
-    EffectDestroy: Node = null;
-
     @property({ group: { name: 'Audio' }, type: AudioSource })
     AudioHit: AudioSource = null;
     @property({ group: { name: 'Audio' }, type: AudioSource })
@@ -124,11 +109,6 @@ export class BodyBase extends Component {
         this.m_baseScale = this.node.scale.clone();
         this.m_baseSize = 1;
 
-        if (this.EffectCentre == null)
-            this.EffectCentre = this.node;
-        if (this.EffectSpawm == null)
-            this.EffectSpawm = this.node.parent;
-
         if (this.ValueBar != null ? !this.ValueBar.Hide : false) {
             this.ValueBar.onName(this.Name);
             this.ValueBar.onUpdate(this.m_hitPointCurrent, this.HitPoint);
@@ -172,8 +152,6 @@ export class BodyBase extends Component {
         if (this.m_hitPointCurrent <= 0)
             this.onDead(from);
         else {
-            this.onHitEffect();
-
             if (this.ShakeHit)
                 director.emit(ConstantBase.CAMERA_EFFECT_SHAKE_ONCE);
 
@@ -192,8 +170,6 @@ export class BodyBase extends Component {
             return;
         this.unscheduleAllCallbacks();
         this.m_dead = true;
-
-        this.onDeadEffect();
 
         if (this.ShakeDead)
             director.emit(ConstantBase.CAMERA_EFFECT_SHAKE_ONCE);
@@ -325,7 +301,7 @@ export class BodyBase extends Component {
     private onDeadDestroy() {
         if (this.DestroyNode) {
             this.scheduleOnce(() => {
-                this.onDestroyEffect();
+                this.node.emit(ConstantBase.NODE_BODY_DESTROY);
                 this.node.destroy();
             }, Math.max(this.DestroyNodeDelay, 0.02));
             if (this.DestroyBody && this.DestroyNodeDelay < this.DestroyBodyDelay)
@@ -342,54 +318,6 @@ export class BodyBase extends Component {
                     this.m_rigidbody.destroy();
                 this.m_destroyCollider.forEach(colliderCheck => { colliderCheck.destroy(); });
             }, Math.max(this.DestroyBodyDelay, 0.02));
-        }
-    }
-
-    //EFFECT
-
-    private onHitEffect() {
-        if (this.AudioHit != null)
-            this.AudioHit.play();
-        if (this.EffectHit != null) {
-            const effectClone = instantiate(this.EffectHit);
-            effectClone.setParent(this.EffectSpawm);
-            effectClone.active = true;
-            if (this.EffectFixed) {
-                const offset = v3(this.EffectOffset.x, this.EffectOffset.y, 0);
-                effectClone.worldPosition = this.EffectCentre.worldPosition.clone().add(offset);
-            }
-            else
-                effectClone.worldPosition = this.EffectHit.worldPosition;
-        }
-    }
-
-    private onDeadEffect() {
-        if (this.AudioDead != null)
-            this.AudioDead.play();
-        if (this.EffectDead != null) {
-            const effectClone = instantiate(this.EffectDead);
-            effectClone.setParent(this.EffectSpawm);
-            effectClone.active = true;
-            if (this.EffectFixed) {
-                const offset = v3(this.EffectOffset.x, this.EffectOffset.y, 0);
-                effectClone.worldPosition = this.EffectCentre.worldPosition.clone().add(offset);
-            }
-            else
-                effectClone.worldPosition = this.EffectDead.worldPosition;
-        }
-    }
-
-    private onDestroyEffect() {
-        if (this.EffectDestroy != null) {
-            const effectClone = instantiate(this.EffectDestroy);
-            effectClone.setParent(this.EffectSpawm);
-            effectClone.active = true;
-            if (this.EffectFixed) {
-                const offset = v3(this.EffectOffset.x, this.EffectOffset.y, 0);
-                effectClone.worldPosition = this.EffectCentre.worldPosition.clone().add(offset);
-            }
-            else
-                effectClone.worldPosition = this.EffectDestroy.worldPosition;
         }
     }
 }
