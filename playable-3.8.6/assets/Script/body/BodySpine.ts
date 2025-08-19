@@ -35,13 +35,6 @@ export class BodySpine extends Component {
     @property({ group: { name: 'Hit' }, type: CCBoolean, visible(this: BodySpine) { return this.AnimDeadActive; } })
     AnimDeadLoop: boolean = true;
 
-    @property({ group: { name: 'Pick&Throw' }, type: CCString })
-    AnimPick: string = 'pick';
-    @property({ group: { name: 'Pick&Throw' }, type: CCString })
-    AnimPickLoop: string = 'pick_loop';
-    @property({ group: { name: 'Pick&Throw' }, type: CCString })
-    AnimThrow: string = 'throw';
-
     @property({ group: { name: 'Finish' }, type: CCString })
     AnimFinish: string = 'win';
     @property({ group: { name: 'Finish' }, type: CCBoolean })
@@ -181,29 +174,5 @@ export class BodySpine extends Component {
             return this.m_spine.onAnimationForceUnSave(anim, loop, durationScale, timeScale);
         else
             return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, anim, loop, durationScale, timeScale);
-    }
-
-    //PICK:
-
-    onPick(): number {
-        if (this.m_hit || this.m_dead)
-            return 0;
-        return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimPick, false);
-    }
-
-    onPickLoop(): number {
-        if (this.m_hit || this.m_dead)
-            return 0;
-        return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimPickLoop, true);
-    }
-
-    onThrow(): number {
-        if (this.m_hit || this.m_dead)
-            return 0;
-        return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimThrow, false);
-    }
-
-    onPickEmty() {
-        this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_PICK);
     }
 }

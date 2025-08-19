@@ -43,11 +43,6 @@ export class BodyBase extends Component {
     @property({ group: { name: 'Destroy' }, type: [CCInteger], visible(this: BodyBase) { return this.DestroyBody; } })
     TagDestroyCollider: number[] = [200];
 
-    @property({ group: { name: 'Audio' }, type: AudioSource })
-    AudioHit: AudioSource = null;
-    @property({ group: { name: 'Audio' }, type: AudioSource })
-    AudioDead: AudioSource = null;
-
     @property({ group: { name: 'Camera' }, type: CCBoolean })
     ShakeHit: boolean = false;
     @property({ group: { name: 'Camera' }, type: CCBoolean })
@@ -57,8 +52,6 @@ export class BodyBase extends Component {
     Name: string = '';
     @property({ group: { name: 'Option' }, type: UIValueBar })
     ValueBar: UIValueBar = null;
-    @property({ group: { name: 'Option' }, type: Node })
-    BarMask: Node = null;
 
     m_baseSize: number = 1;
     m_baseScale: Vec3 = Vec3.ONE;
@@ -79,11 +72,6 @@ export class BodyBase extends Component {
 
     protected onLoad(): void {
         this.m_rigidbody = this.getComponent(RigidBody2D);
-
-        if (this.BarMask != null) {
-            this.m_maskSprite = this.BarMask.getComponent(Sprite);
-            this.m_maskTransform = this.BarMask.getComponent(UITransform);
-        }
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
         this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
@@ -111,10 +99,8 @@ export class BodyBase extends Component {
 
         if (this.ValueBar != null ? !this.ValueBar.Hide : false) {
             this.ValueBar.onName(this.Name);
-            this.ValueBar.onUpdate(this.m_hitPointCurrent, this.HitPoint);
+            this.ValueBar.onValue(this.m_hitPointCurrent, this.HitPoint);
         }
-        if (this.BarMask != null)
-            this.m_maskTransformX = this.m_maskTransform.contentSize.clone().x;
     }
 
     protected onDestroy(): void {
@@ -222,18 +208,9 @@ export class BodyBase extends Component {
     }
 
     onBarUpdate() {
-        if (this.BarMask != null) {
-            if (this.m_maskSprite != null ? this.m_maskSprite.type == Sprite.Type.FILLED : false)
-                this.m_maskSprite.fillRange = 1.0 * this.m_hitPointCurrent / this.HitPoint;
-            else {
-                const size = this.m_maskTransform.contentSize.clone();
-                size.x = this.m_maskTransformX * (1.0 * this.m_hitPointCurrent / this.HitPoint);
-                this.m_maskTransform.contentSize = size;
-            }
-        }
         if (this.ValueBar != null) {
             this.ValueBar.onName(this.Name);
-            this.ValueBar.onUpdate(this.m_hitPointCurrent, this.HitPoint);
+            this.ValueBar.onValue(this.m_hitPointCurrent, this.HitPoint);
         }
     }
 
