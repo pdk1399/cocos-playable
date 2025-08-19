@@ -7,6 +7,10 @@ const { ccclass, property } = _decorator;
 @ccclass('BodySpine')
 export class BodySpine extends Component {
 
+    //Đẩy HIT và DEAD vào BodyBase
+    //Đẩy các phần còn lại vào PlayerControl, MoveFollow và MovePath
+    //Xóa BodyBase
+
     @property({ group: { name: 'Main' }, type: CCBoolean })
     AnimIdleActive: boolean = true;
     @property({ group: { name: 'Main' }, type: CCString, visible(this: BodySpine) { return this.AnimIdleActive; } })
