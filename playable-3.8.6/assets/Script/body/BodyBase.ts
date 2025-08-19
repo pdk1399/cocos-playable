@@ -19,16 +19,12 @@ export class BodyBase extends Component {
     @property({ group: { name: 'Body' }, type: CCBoolean })
     SwimWater: boolean = false;
 
-    @property({ group: { name: 'Event' }, type: CCBoolean })
-    EmitHitDead: boolean = false;
     @property({ group: { name: 'Event' }, type: CCString })
     EmitHit: string = '';
     @property({ group: { name: 'Event' }, type: CCString })
     EmitDead: string = '';
     @property({ group: { name: 'Event' }, type: CCString })
     EmitDestroy: string = '';
-    @property({ group: { name: 'Event' }, type: CCBoolean })
-    EmitFull: boolean = true;
 
     @property({ group: { name: 'Destroy' }, type: CCBoolean })
     DestroyNode: boolean = false;
@@ -138,16 +134,12 @@ export class BodyBase extends Component {
         if (this.m_hitPointCurrent <= 0)
             this.onDead(from);
         else {
+            this.node.emit(ConstantBase.NODE_BODY_HIT, hit, from);
+            if (this.EmitHit != '')
+                director.emit(this.EmitHit);
+
             if (this.ShakeHit)
                 director.emit(ConstantBase.CAMERA_EFFECT_SHAKE_ONCE);
-
-            this.node.emit(ConstantBase.NODE_BODY_HIT, hit, from);
-            if (this.EmitHit != '') {
-                if (this.EmitFull)
-                    director.emit(this.EmitHit, this.m_hitPointCurrent, this.HitPoint);
-                else
-                    director.emit(this.EmitHit);
-            }
         }
     }
 
@@ -157,27 +149,14 @@ export class BodyBase extends Component {
         this.unscheduleAllCallbacks();
         this.m_dead = true;
 
+        this.node.emit(ConstantBase.NODE_BODY_DEAD, from);
+        if (this.EmitDead != '')
+            director.emit(this.EmitDead);
+
         if (this.ShakeDead)
             director.emit(ConstantBase.CAMERA_EFFECT_SHAKE_ONCE);
 
         this.onDeadDestroy();
-
-        if (this.EmitHitDead) {
-            if (this.EmitHit != '') {
-                if (this.EmitFull)
-                    director.emit(this.EmitHit, this.m_hitPointCurrent, this.HitPoint);
-                else
-                    director.emit(this.EmitHit);
-            }
-        }
-
-        this.node.emit(ConstantBase.NODE_BODY_DEAD, from);
-        if (this.EmitDead != '') {
-            if (this.EmitFull)
-                director.emit(this.EmitDead, this.node);
-            else
-                director.emit(this.EmitDead);
-        }
 
         this.node.off(ConstantBase.NODE_BODY_HIT, this.onHit, this);
         this.node.off(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
