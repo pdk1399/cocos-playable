@@ -35,21 +35,17 @@ export class BodySpine extends Component {
     @property({ group: { name: 'Hit' }, type: CCBoolean, visible(this: BodySpine) { return this.AnimDeadActive; } })
     AnimDeadLoop: boolean = true;
 
+    // @property({ group: { name: 'Pick&Throw' }, type: CCString })
+    // AnimPick: string = 'pick';
+    // @property({ group: { name: 'Pick&Throw' }, type: CCString })
+    // AnimPickLoop: string = 'pick_loop';
+    // @property({ group: { name: 'Pick&Throw' }, type: CCString })
+    // AnimThrow: string = 'throw';
+
     @property({ group: { name: 'Finish' }, type: CCString })
     AnimFinish: string = 'win';
     @property({ group: { name: 'Finish' }, type: CCBoolean })
     AnimFinishLoop: boolean = true;
-
-    @property({ group: { name: 'Audio' }, type: AudioSource })
-    AudioJump: AudioSource = null;
-    @property({ group: { name: 'Audio' }, type: AudioSource })
-    AudioHit: AudioSource = null;
-    @property({ group: { name: 'Audio' }, type: AudioSource })
-    AudioFinish: AudioSource = null;
-    @property({ group: { name: 'Audio' }, type: AudioSource })
-    AudioDead: AudioSource = null;
-    @property({ group: { name: 'Audio' }, type: AudioSource })
-    AudioDash: AudioSource = null;
 
     m_hit: boolean = false;
     m_dead: boolean = false;
@@ -104,8 +100,6 @@ export class BodySpine extends Component {
             return 0;
         if (this.m_body.Protect && this.m_body.Protect)
             return;
-        if (this.AudioHit != null)
-            this.AudioHit.play();
         this.m_hit = true;
         const animHitDuration = this.m_spine.onAnimationForceUnSave(this.AnimHit, false);
         this.scheduleOnce(() => {
@@ -119,8 +113,6 @@ export class BodySpine extends Component {
     onDead(): number {
         if (this.m_body.Protect && this.m_body.Protect)
             return;
-        if (this.AudioDead != null)
-            this.AudioDead.play();
         this.m_dead = true;
         if (!this.AnimDeadActive)
             return 0;
@@ -139,11 +131,9 @@ export class BodySpine extends Component {
         return this.m_spine.onAnimation(this.AnimPush, true);
     }
 
-    onAirOn(audioForce: boolean = true): number {
+    onAirOn(): number {
         if (this.m_hit || this.m_dead)
             return 0;
-        if (this.AudioJump != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimAirOn : true))
-            this.AudioJump.play();
         return this.m_spine.onAnimation(this.AnimAirOn, true);
     }
 
@@ -153,11 +143,9 @@ export class BodySpine extends Component {
         return this.m_spine.onAnimation(this.AnimAirOff, true);
     }
 
-    onComplete(audioForce: boolean = true): number {
+    onComplete(): number {
         if (this.m_hit || this.m_dead)
             return 0;
-        if (this.AudioFinish != null && (!audioForce ? this.m_spine.getAnimation() != this.AnimFinish : true))
-            this.AudioFinish.play();
         return this.m_spine.onAnimation(this.AnimFinish, this.AnimFinishLoop);
     }
 
@@ -175,4 +163,28 @@ export class BodySpine extends Component {
         else
             return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_ATTACK, anim, loop, durationScale, timeScale);
     }
+
+    //PICK:
+
+    // onPick(): number {
+    //     if (this.m_hit || this.m_dead)
+    //         return 0;
+    //     return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimPick, false);
+    // }
+
+    // onPickLoop(): number {
+    //     if (this.m_hit || this.m_dead)
+    //         return 0;
+    //     return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimPickLoop, true);
+    // }
+
+    // onThrow(): number {
+    //     if (this.m_hit || this.m_dead)
+    //         return 0;
+    //     return this.m_spine.onAnimationIndex(ConstantBase.ANIM_INDEX_PICK, this.AnimThrow, false);
+    // }
+
+    // onPickEmty() {
+    //     this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_PICK);
+    // }
 }

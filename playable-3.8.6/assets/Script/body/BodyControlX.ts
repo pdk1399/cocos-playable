@@ -194,7 +194,7 @@ export class BodyControlX extends Component {
         director.on(ConstantBase.GAME_TIME_OUT, this.onStop, this);
 
         this.node.on(ConstantBase.NODE_COLLIDE_BOT, this.onCollideBot, this);
-        this.node.on(ConstantBase.NODE_COLLIDE_INTERACTE, this.onCollideInteraction, this);
+        // this.node.on(ConstantBase.NODE_COLLIDE_INTERACTE, this.onCollideInteraction, this);
         this.node.on(ConstantBase.NODE_COLLIDE_OBJECT, this.onCollideObject, this);
         this.node.on(ConstantBase.NODE_COLLIDE_ENERMY, this.onCollideEnermy, this);
 
@@ -255,7 +255,7 @@ export class BodyControlX extends Component {
             director.on(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             director.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             director.on(ConstantBase.CONTROL_DASH, this.onDash, this);
-            director.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
+            // director.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             director.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
             director.on(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
             if (this.m_bodyAttack != null)
@@ -273,7 +273,7 @@ export class BodyControlX extends Component {
             director.off(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             director.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             director.off(ConstantBase.CONTROL_DASH, this.onDash, this);
-            director.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
+            // director.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             director.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
             director.off(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
             if (this.m_bodyAttack != null)
@@ -297,7 +297,7 @@ export class BodyControlX extends Component {
             this.node.on(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             this.node.on(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             this.node.on(ConstantBase.CONTROL_DASH, this.onDash, this);
-            this.node.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
+            // this.node.on(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             this.node.on(ConstantBase.CONTROL_FIXED, this.onFixed, this);
             this.node.on(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
             if (this.m_bodyAttack != null)
@@ -315,7 +315,7 @@ export class BodyControlX extends Component {
             this.node.off(ConstantBase.CONTROL_JUMP_FORCE, this.onJumpForce, this);
             this.node.off(ConstantBase.CONTROL_JUMP_RELEASE, this.onJumRelease, this);
             this.node.off(ConstantBase.CONTROL_DASH, this.onDash, this);
-            this.node.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
+            // this.node.off(ConstantBase.CONTROL_INTERACTION, this.onInteraction, this);
             this.node.off(ConstantBase.CONTROL_FIXED, this.onFixed, this);
             this.node.off(ConstantBase.CONTROL_SWITCH, this.onSwitch, this);
             if (this.m_bodyAttack != null)
@@ -791,92 +791,92 @@ export class BodyControlX extends Component {
 
     //INTERACTION
 
-    onInteraction() {
-        if (!this.m_control || !this.Pick)
-            return;
-        this.onInteractionPickAndThrow();
-    }
+    // onInteraction() {
+    //     if (!this.m_control || !this.Pick)
+    //         return;
+    //     this.onInteractionPickAndThrow();
+    // }
 
-    onInteractionPickAndThrow() {
-        if (this.m_pickUpProgess)
-            return;
-        let delayPick = 0;
-        if (this.m_pickUp == null) {
-            if (this.m_bodyCheck.m_currentInteracte.length == 0)
-                return;
-            this.m_pickUpProgess = true;
-            //Add Pick-up Object to current saved
-            this.m_pickUp = this.m_bodyCheck.m_currentInteracte[0].node;
-            this.m_pickUpParent = this.m_pickUp.parent;
-            this.m_pickUpSiblingIndex = this.m_pickUp.getSiblingIndex();
-            //Save Pick-up Object's Rigidbody imformation before destroy it
-            const pickUpRigidbody = this.m_pickUp.getComponent(RigidBody2D);
-            this.m_pickUpRigidbody = new DataRigidbody(pickUpRigidbody);
-            this.scheduleOnce(() => {
-                if (this.m_pickUp == null ? true : !this.m_pickUp.isValid)
-                    return;
-                pickUpRigidbody.destroy();
-                //Set parent of Pick-up Object to Pick-up Point and Tween Move it
-                this.m_pickUp.setParent(this.PickUpPoint, true);
-                tween(this.m_pickUp)
-                    .to(0.2, { position: Vec3.ZERO }, { easing: 'linear' })
-                    .start();
-            }, 0.02);
-            //Node Event
-            this.m_pickUp.emit(ConstantBase.NODE_PICK);
-            //Animation
-            delayPick = this.m_bodySpine.onPick();
-            this.scheduleOnce(() => this.m_bodySpine.onPickLoop(), this.m_bodySpine.onPick());
-            //Ui
-            director.emit(ConstantBase.UI_INTERACTION_ICON, this.UiThrowIconIndex);
-        }
-        else {
-            this.m_pickUpProgess = true;
-            //Node Event
-            this.m_pickUp.emit(ConstantBase.NODE_THROW);
-            //Add Rigidbody to Pick-up Object and set back imformation to it
-            const pickUpRigidbody = this.m_pickUp.addComponent(RigidBody2D);
-            this.m_pickUpRigidbody.onUpdate(pickUpRigidbody);
-            //Fixed collider collision after add Rigidbody component to Pick-up Object
-            const pickUpColliders = this.m_pickUp.getComponents(Collider2D);
-            pickUpColliders.forEach(collider => {
-                collider.apply();
-            });
-            //Add velocity throw to Pick-up Object by current face dir and direction control
-            this.scheduleOnce(() => {
-                if (this.m_faceDirY > 0)
-                    pickUpRigidbody.linearVelocity = v2(0, this.ThrowForce.y);
-                else
-                    pickUpRigidbody.linearVelocity = v2(this.ThrowForce.x * this.m_faceDirX, this.ThrowForce.y);
-            }, 0.02);
-            //Remove Pick-up Object from current saved
-            this.m_pickUp.setParent(this.m_pickUpParent, true);
-            this.m_pickUp.setSiblingIndex(this.m_pickUpSiblingIndex);
-            this.m_pickUp = null;
-            //Animation
-            delayPick = this.m_bodySpine.onThrow();
-            this.scheduleOnce(() => this.m_bodySpine.onPickEmty(), this.m_bodySpine.onThrow());
-            //Ui
-            if (this.UiPickBtnActive)
-                director.emit(ConstantBase.UI_INTERACTION_SHOW, false);
-            director.emit(ConstantBase.UI_INTERACTION_ICON, this.UiPickIconIndex);
-        }
-        if (this.m_pickUpProgess)
-            this.scheduleOnce(() => this.m_pickUpProgess = false, delayPick + 0.02);
-    }
+    // onInteractionPickAndThrow() {
+    //     if (this.m_pickUpProgess)
+    //         return;
+    //     let delayPick = 0;
+    //     if (this.m_pickUp == null) {
+    //         if (this.m_bodyCheck.m_currentInteracte.length == 0)
+    //             return;
+    //         this.m_pickUpProgess = true;
+    //         //Add Pick-up Object to current saved
+    //         this.m_pickUp = this.m_bodyCheck.m_currentInteracte[0].node;
+    //         this.m_pickUpParent = this.m_pickUp.parent;
+    //         this.m_pickUpSiblingIndex = this.m_pickUp.getSiblingIndex();
+    //         //Save Pick-up Object's Rigidbody imformation before destroy it
+    //         const pickUpRigidbody = this.m_pickUp.getComponent(RigidBody2D);
+    //         this.m_pickUpRigidbody = new DataRigidbody(pickUpRigidbody);
+    //         this.scheduleOnce(() => {
+    //             if (this.m_pickUp == null ? true : !this.m_pickUp.isValid)
+    //                 return;
+    //             pickUpRigidbody.destroy();
+    //             //Set parent of Pick-up Object to Pick-up Point and Tween Move it
+    //             this.m_pickUp.setParent(this.PickUpPoint, true);
+    //             tween(this.m_pickUp)
+    //                 .to(0.2, { position: Vec3.ZERO }, { easing: 'linear' })
+    //                 .start();
+    //         }, 0.02);
+    //         //Node Event
+    //         this.m_pickUp.emit(ConstantBase.NODE_PICK);
+    //         //Animation
+    //         delayPick = this.m_bodySpine.onPick();
+    //         this.scheduleOnce(() => this.m_bodySpine.onPickLoop(), this.m_bodySpine.onPick());
+    //         //Ui
+    //         director.emit(ConstantBase.UI_INTERACTION_ICON, this.UiThrowIconIndex);
+    //     }
+    //     else {
+    //         this.m_pickUpProgess = true;
+    //         //Node Event
+    //         this.m_pickUp.emit(ConstantBase.NODE_THROW);
+    //         //Add Rigidbody to Pick-up Object and set back imformation to it
+    //         const pickUpRigidbody = this.m_pickUp.addComponent(RigidBody2D);
+    //         this.m_pickUpRigidbody.onUpdate(pickUpRigidbody);
+    //         //Fixed collider collision after add Rigidbody component to Pick-up Object
+    //         const pickUpColliders = this.m_pickUp.getComponents(Collider2D);
+    //         pickUpColliders.forEach(collider => {
+    //             collider.apply();
+    //         });
+    //         //Add velocity throw to Pick-up Object by current face dir and direction control
+    //         this.scheduleOnce(() => {
+    //             if (this.m_faceDirY > 0)
+    //                 pickUpRigidbody.linearVelocity = v2(0, this.ThrowForce.y);
+    //             else
+    //                 pickUpRigidbody.linearVelocity = v2(this.ThrowForce.x * this.m_faceDirX, this.ThrowForce.y);
+    //         }, 0.02);
+    //         //Remove Pick-up Object from current saved
+    //         this.m_pickUp.setParent(this.m_pickUpParent, true);
+    //         this.m_pickUp.setSiblingIndex(this.m_pickUpSiblingIndex);
+    //         this.m_pickUp = null;
+    //         //Animation
+    //         delayPick = this.m_bodySpine.onThrow();
+    //         this.scheduleOnce(() => this.m_bodySpine.onPickEmty(), this.m_bodySpine.onThrow());
+    //         //Ui
+    //         if (this.UiPickBtnActive)
+    //             director.emit(ConstantBase.UI_INTERACTION_SHOW, false);
+    //         director.emit(ConstantBase.UI_INTERACTION_ICON, this.UiPickIconIndex);
+    //     }
+    //     if (this.m_pickUpProgess)
+    //         this.scheduleOnce(() => this.m_pickUpProgess = false, delayPick + 0.02);
+    // }
 
-    protected onCollideInteraction(state: boolean, target: Node) {
-        if (this.m_pickUp != null)
-            return;
-        if (this.m_bodyCheck.m_currentInteracte.length == 0) {
-            if (this.UiPickBtnActive)
-                director.emit(ConstantBase.UI_INTERACTION_SHOW, false);
-            return;
-        }
-        if (this.UiPickBtnActive)
-            director.emit(ConstantBase.UI_INTERACTION_SHOW, true);
-        director.emit(ConstantBase.UI_INTERACTION_ICON, this.UiPickIconIndex);
-    }
+    // protected onCollideInteraction(state: boolean, target: Node) {
+    //     if (this.m_pickUp != null)
+    //         return;
+    //     if (this.m_bodyCheck.m_currentInteracte.length == 0) {
+    //         if (this.UiPickBtnActive)
+    //             director.emit(ConstantBase.UI_INTERACTION_SHOW, false);
+    //         return;
+    //     }
+    //     if (this.UiPickBtnActive)
+    //         director.emit(ConstantBase.UI_INTERACTION_SHOW, true);
+    //     director.emit(ConstantBase.UI_INTERACTION_ICON, this.UiPickIconIndex);
+    // }
 
     //COLLIDE
 
@@ -976,7 +976,7 @@ export class BodyControlX extends Component {
                 this.m_bodySpine.onPush();
                 break;
             case PlayerStateX.JUMP:
-                this.m_bodySpine.onAirOn(false);
+                this.m_bodySpine.onAirOn();
                 break;
             case PlayerStateX.AIR:
                 this.m_bodySpine.onAirOff();
@@ -1063,7 +1063,7 @@ export class BodyControlX extends Component {
         if (this.Pick && this.EndPickDestroy) {
             if (this.m_pickUp != null ? this.m_pickUp.isValid : false)
                 this.m_pickUp.destroy();
-            this.m_bodySpine.onPickEmty();
+            // this.m_bodySpine.onPickEmty();
         }
         if (this.EndRevertX) {
             this.m_faceDirX *= -1;
@@ -1136,7 +1136,7 @@ export class BodyControlX extends Component {
         if (this.Pick && this.EndPickDestroy) {
             if (this.m_pickUp != null ? this.m_pickUp.isValid : false)
                 this.m_pickUp.destroy();
-            this.m_bodySpine.onPickEmty();
+            // this.m_bodySpine.onPickEmty();
         }
         this.scheduleOnce(() => {
             this.m_rigidbody.sleep();
