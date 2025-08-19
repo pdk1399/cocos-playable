@@ -6,18 +6,23 @@ const { ccclass, property } = _decorator;
 @ccclass('BodyBase')
 export class BodyBase extends Component {
 
-    @property({ group: { name: 'Body' }, type: CCBoolean })
+    @property({ group: { name: 'Main' }, type: CCBoolean })
     Protect: boolean = false;
-    @property({ group: { name: 'Body' }, type: CCBoolean, visible(this: BodyBase) { return !this.Protect; } })
+    @property({ group: { name: 'Main' }, type: CCBoolean, visible(this: BodyBase) { return !this.Protect; } })
     ProtectBigSize: boolean = false;
-    @property({ group: { name: 'Body' }, type: CCInteger, visible(this: BodyBase) { return !this.Protect; } })
+    @property({ group: { name: 'Main' }, type: CCInteger, visible(this: BodyBase) { return !this.Protect; } })
     HitPoint: number = 1;
-    @property({ group: { name: 'Body' }, type: CCFloat })
+    @property({ group: { name: 'Main' }, type: CCFloat })
     HitDelay: number = 0.2;
-    @property({ group: { name: 'Body' }, type: CCBoolean })
+    @property({ group: { name: 'Main' }, type: CCBoolean })
     HitFixed: boolean = false;
-    @property({ group: { name: 'Body' }, type: CCBoolean })
+    @property({ group: { name: 'Main' }, type: CCBoolean })
     SwimWater: boolean = false;
+
+    @property({ group: { name: 'Main' }, type: CCString })
+    Name: string = '';
+    @property({ group: { name: 'Main' }, type: UIValueBar })
+    ValueBar: UIValueBar = null;
 
     @property({ group: { name: 'Event' }, type: CCString })
     EmitHit: string = '';
@@ -25,6 +30,11 @@ export class BodyBase extends Component {
     EmitDead: string = '';
     @property({ group: { name: 'Event' }, type: CCString })
     EmitDestroy: string = '';
+
+    @property({ group: { name: 'Event' }, type: CCBoolean })
+    ShakeHit: boolean = false;
+    @property({ group: { name: 'Event' }, type: CCBoolean })
+    ShakeDead: boolean = false;
 
     @property({ group: { name: 'Destroy' }, type: CCBoolean })
     DestroyNode: boolean = false;
@@ -38,16 +48,6 @@ export class BodyBase extends Component {
     DestroyRigidbody: boolean = true;
     @property({ group: { name: 'Destroy' }, type: [CCInteger], visible(this: BodyBase) { return this.DestroyBody; } })
     TagDestroyCollider: number[] = [200];
-
-    @property({ group: { name: 'Camera' }, type: CCBoolean })
-    ShakeHit: boolean = false;
-    @property({ group: { name: 'Camera' }, type: CCBoolean })
-    ShakeDead: boolean = false;
-
-    @property({ group: { name: 'Option' }, type: CCString })
-    Name: string = '';
-    @property({ group: { name: 'Option' }, type: UIValueBar })
-    ValueBar: UIValueBar = null;
 
     m_baseSize: number = 1;
     m_baseScale: Vec3 = Vec3.ONE;
