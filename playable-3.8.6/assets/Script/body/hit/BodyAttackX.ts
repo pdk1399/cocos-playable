@@ -4,7 +4,6 @@ import { BodyCheckX } from '../physic/BodyCheckX';
 import { ConstantBase } from '../../ConstantBase';
 import { ShootBase } from '../../shoot/ShootBase';
 import { SpineBase } from '../../renderer/SpineBase';
-import { BodySpine } from '../BodySpine';
 const { ccclass, property } = _decorator;
 
 @ccclass('BodyAttackX')
@@ -121,14 +120,12 @@ export class BodyAttackX extends Component {
     m_bodyCheck: BodyCheckX = null;
     m_shoot: ShootBase = null;
     m_spine: SpineBase = null;
-    m_bodySpine: BodySpine = null;
 
     protected onLoad(): void {
         this.m_body = this.getComponent(BodyBase);
         this.m_bodyCheck = this.getComponent(BodyCheckX);
         this.m_shoot = this.getComponent(ShootBase);
         this.m_spine = this.getComponent(SpineBase);
-        this.m_bodySpine = this.getComponent(BodySpine);
 
         const colliders = this.getComponents(Collider2D);
         for (let i = 0; i < colliders.length; i++) {
@@ -414,7 +411,7 @@ export class BodyAttackX extends Component {
         this.unschedule(this.m_continueSchedule);
         this.unschedule(this.m_nextSchedule);
 
-        this.m_bodySpine.m_hitLock = true;
+        this.m_body.m_hitLockAnimation = true;
         if (!this.AnimMix)
             this.m_spine.onAnimationForceLast();
         else
@@ -430,7 +427,7 @@ export class BodyAttackX extends Component {
             this.unschedule(this.m_nextSchedule);
             this.m_attack = false;
             this.m_attackNext = false;
-            this.m_bodySpine.m_hitLock = false;
+            this.m_body.m_hitLockAnimation = false;
             if (!this.AnimMix)
                 this.m_spine.onAnimationForceLast();
             else

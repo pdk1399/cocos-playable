@@ -2,7 +2,6 @@ import { _decorator, CCBoolean, CCFloat, Component, Enum, RigidBody2D, Vec3, Nod
 import { ConstantBase } from '../../ConstantBase';
 import { SpineBase } from '../../renderer/SpineBase';
 import { BodyBase } from '../BodyBase';
-import { BodySpine } from '../BodySpine';
 import { BodyAttackX } from '../hit/BodyAttackX';
 import { BodyCheckX } from './BodyCheckX';
 import { BodyKnockX } from './BodyKnockX';
@@ -19,7 +18,6 @@ Enum(BodyState)
 
 @ccclass('BodyMovePathX')
 @requireComponent(BodyBase)
-@requireComponent(BodySpine)
 @requireComponent(BodyCheckX)
 @requireComponent(SpineBase)
 @requireComponent(RigidBody2D)
@@ -44,15 +42,15 @@ export class BodyMovePathX extends Component {
     @property({ group: { name: 'Path' }, type: CCFloat })
     PathOffsetXR: number = 500;
 
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimMove: string = 'move';
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimPush: string = 'push';
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimAirOn: string = 'air_on';
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimAirOff: string = 'air_off';
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimDash: string = 'dash';
 
     m_state: BodyState = BodyState.IDLE;
@@ -72,17 +70,17 @@ export class BodyMovePathX extends Component {
 
     m_body: BodyBase = null;
     m_bodyCheck: BodyCheckX = null;
-    m_bodySpine: BodySpine = null;
     m_bodyKnock: BodyKnockX = null;
     m_bodyAttack: BodyAttackX = null;
+    m_spine: SpineBase = null;
     m_rigidbody: RigidBody2D = null;
 
     protected onLoad(): void {
         this.m_body = this.getComponent(BodyBase);
         this.m_bodyCheck = this.getComponent(BodyCheckX);
-        this.m_bodySpine = this.getComponent(BodySpine);
         this.m_bodyKnock = this.getComponent(BodyKnockX);
         this.m_bodyAttack = this.getComponent(BodyAttackX);
+        this.m_spine = this.getComponent(SpineBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
 
         this.node.on(ConstantBase.NODE_PICK, this.onPick, this);
@@ -106,15 +104,6 @@ export class BodyMovePathX extends Component {
         this.onFollowUpdate(dt);
         this.onHeadChange(dt);
         this.onStateUpdate(dt);
-    }
-
-    onLostFocusInEditor(): void {
-        const bodySpine = this.node.getComponent(BodySpine);
-        this.AnimMove = bodySpine.AnimMove;
-        this.AnimPush = bodySpine.AnimPush;
-        this.AnimAirOn = bodySpine.AnimAirOn;
-        this.AnimAirOff = bodySpine.AnimAirOff;
-        this.AnimDash = bodySpine.AnimDash;
     }
 
     //MOVE
@@ -186,7 +175,7 @@ export class BodyMovePathX extends Component {
 
     onDirUpdate() {
         this.m_bodyCheck.onDirUpdate(this.m_dir);
-        this.m_bodySpine.onViewDirection(this.m_dir);
+        this.m_spine.onFaceDir(this.m_dir);
         if (this.m_bodyAttack != null)
             this.m_bodyAttack.onDirUpdate(this.m_dir);
     }
@@ -233,14 +222,10 @@ export class BodyMovePathX extends Component {
     }
 
     getHit(): boolean {
-        if (this.m_bodySpine != null ? this.m_bodySpine.AnimHitActive : false)
-            return this.m_bodySpine.m_hit;
         return this.m_body.m_hit;
     }
 
     getDead(): boolean {
-        if (this.m_bodySpine != null)
-            return this.m_bodySpine.m_dead;
         return this.m_body.m_dead;
     }
 

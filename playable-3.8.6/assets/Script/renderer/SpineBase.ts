@@ -5,20 +5,15 @@ const { ccclass, property } = _decorator;
 @ccclass('SpineBase')
 export class SpineBase extends Component {
 
-    static SPINE_PLAY: string = 'SPINE_PLAY';
-    static SPINE_STOP: string = 'SPINE_STOP';
-
-    @property({ group: { name: 'Main' }, type: CCBoolean })
-    FaceRight: boolean = true;
     @property({ group: { name: 'Main' }, type: sp.Skeleton })
     Spine: sp.Skeleton = null;
-    @property({ group: { name: 'Main' }, type: sp.SkeletonData })
-    Skeleton: sp.SkeletonData = null;
+    @property({ group: { name: 'Main' }, type: CCBoolean })
+    FaceRight: boolean = true;
     @property({ group: { name: 'Main' }, type: [CCString] })
     Skin: string[] = [];
 
     @property({ group: { name: 'Option' }, type: CCBoolean })
-    SpineEvent: boolean = false;
+    OnScene: boolean = true;
     @property({ group: { name: 'Option' }, type: [CCString] })
     AnimStart: string[] = [];
 
@@ -47,18 +42,22 @@ export class SpineBase extends Component {
         this.m_durationScale = 1.0 * this.m_duration / this.Spine.timeScale;
         this.m_timeScale = this.Spine.timeScale;
 
-        if (this.SpineEvent) {
-            director.on(SpineBase.SPINE_PLAY, this.onPlay, this);
-            director.on(SpineBase.SPINE_STOP, this.onStop, this);
+        if (this.OnScene) {
+            director.on(ConstantBase.SPINE_PLAY, this.onPlay, this);
+            director.on(ConstantBase.SPINE_STOP, this.onStop, this);
         }
     }
 
     protected start(): void {
-        this.onSekeleton(this.Skeleton);
         if (this.Skin.length > 0)
             this.onSkin(...this.Skin);
         for (let i = 0; i < this.AnimStart.length; i++)
             this.onAnimationIndex(i, this.AnimStart[i], true);
+    }
+
+    onLostFocusInEditor(): void {
+        if (this.Spine == null)
+            this.Spine = this.getComponentInChildren(sp.Skeleton);
     }
 
     //
@@ -66,7 +65,6 @@ export class SpineBase extends Component {
     onSekeleton(data: sp.SkeletonData): void {
         if (data == null)
             return;
-        this.Skeleton = data;
         this.Spine.skeletonData = data;
         //RESET
         this.Spine.setAnimation(0, this.m_anim, this.m_loop).animationEnd;
@@ -132,6 +130,14 @@ export class SpineBase extends Component {
 
     onStop(): void {
         this.Spine.timeScale = 0;
+    }
+
+    //
+
+    onFaceDir(dir: number) {
+        this.m_dir = dir;
+        this.Spine._skeleton.scaleX = this.m_spineScaleXR * dir;
+        this.Spine._skeleton.updateWorldTransform();
     }
 
     //
@@ -218,24 +224,6 @@ export class SpineBase extends Component {
         this.Spine.getState().clearTrack(index);
         this.Spine.getState().apply(this.Spine._skeleton);
         this.Spine.getState().update(0.02);
-    }
-
-    //
-
-    onFaceDir(dir: number) {
-        this.m_dir = dir;
-        this.Spine._skeleton.scaleX = this.m_spineScaleXR * dir;
-        this.Spine._skeleton.updateWorldTransform();
-    }
-
-    onViewDirection(direction: number): boolean {
-        let change = false;
-        if (direction == -1 && this.Spine._skeleton.scaleX > 0)
-            change = true;
-        else if (direction == 1 && this.Spine._skeleton.scaleX < 0)
-            change = true;
-        this.onFaceDir(direction);
-        return change;
     }
 
     //Aim

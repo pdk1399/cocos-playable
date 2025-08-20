@@ -1,9 +1,9 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, Enum, Node, RigidBody2D, v2, Vec2 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { BodyBase } from './BodyBase';
-import { BodySpine } from './BodySpine';
 import { BodyAttackX } from './hit/BodyAttackX';
 import { BodyKnockXY } from './physic/BodyKnockXY';
+import { SpineBase } from '../renderer/SpineBase';
 const { ccclass, property } = _decorator;
 
 export enum PlayerStateXY {
@@ -60,19 +60,19 @@ export class BodyControlXY extends Component {
     @property({ group: { name: 'Switch' }, type: CCInteger })
     SwitchIndex: number = 0;
 
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimMove: string = 'move';
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimPush: string = 'push';
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimAirOn: string = 'air_on';
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimAirOff: string = 'air_off';
-    @property({ group: { name: 'Main' }, type: CCString })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimDash: string = 'dash';
-    @property({ group: { name: 'Finish' }, type: CCString })
+    @property({ group: { name: 'Anim' }, type: CCString })
     AnimFinish: string = 'win';
-    @property({ group: { name: 'Finish' }, type: CCBoolean })
+    @property({ group: { name: 'Anim' }, type: CCBoolean })
     AnimFinishLoop: boolean = true;
 
     m_state = PlayerStateXY.IDLE;
@@ -96,16 +96,16 @@ export class BodyControlXY extends Component {
     m_lockVelocity: boolean = false;
 
     m_body: BodyBase = null;
-    m_bodySpine: BodySpine = null;
     m_bodyKnock: BodyKnockXY = null;
     m_bodyAttack: BodyAttackX = null;
+    m_spine: SpineBase = null;
     m_rigidbody: RigidBody2D = null;
 
     protected onLoad(): void {
         this.m_body = this.getComponent(BodyBase);
-        this.m_bodySpine = this.getComponent(BodySpine);
         this.m_bodyKnock = this.getComponent(BodyKnockXY);
         this.m_bodyAttack = this.getComponent(BodyAttackX);
+        this.m_spine = this.getComponent(SpineBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
 
         this.onControlByDirector(true);
@@ -141,17 +141,6 @@ export class BodyControlXY extends Component {
     protected lateUpdate(dt: number): void {
         this.onPhysicUpdate(dt);
         this.onStateUpdate(dt);
-    }
-
-    onLostFocusInEditor(): void {
-        const bodySpine = this.node.getComponent(BodySpine);
-        this.AnimMove = bodySpine.AnimMove;
-        this.AnimPush = bodySpine.AnimPush;
-        this.AnimAirOn = bodySpine.AnimAirOn;
-        this.AnimAirOff = bodySpine.AnimAirOff;
-        this.AnimDash = bodySpine.AnimDash;
-        this.AnimFinish = bodySpine.AnimFinish;
-        this.AnimFinishLoop = bodySpine.AnimFinishLoop;
     }
 
     //EVENT:
@@ -317,7 +306,7 @@ export class BodyControlXY extends Component {
     }
 
     onDirUpdate() {
-        this.m_bodySpine.onViewDirection(this.m_faceDirX);
+        this.m_spine.onFaceDir(this.m_faceDirX);
         if (this.m_bodyAttack != null)
             this.m_bodyAttack?.onDirUpdate(this.m_faceDirX);
     }
@@ -494,14 +483,10 @@ export class BodyControlXY extends Component {
     //GET:
 
     getHit(): boolean {
-        if (this.m_bodySpine != null ? this.m_bodySpine.AnimHitActive : false)
-            return this.m_bodySpine.m_hit;
         return this.m_body.m_hit;
     }
 
     getDead(): boolean {
-        if (this.m_bodySpine != null)
-            return this.m_bodySpine.m_dead;
         return this.m_body.m_dead;
     }
 

@@ -111,6 +111,9 @@ export class ConstantBase {
 
     //ANIMATION
 
+    static readonly SPINE_PLAY: string = 'SPINE_PLAY';
+    static readonly SPINE_STOP: string = 'SPINE_STOP';
+
     static readonly ANIM_INDEX_ATTACK: number = 1;
     static readonly ANIM_INDEX_AIM: number = 2;
     // static readonly ANIM_INDEX_PICK: number = 1;

@@ -26,7 +26,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 238
+      "__id__": 237
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -57,7 +57,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 239
+      "__id__": 238
     },
     "_id": "7af1d316-8cc2-4873-8e4c-6dd91a7d3263"
   },
@@ -196,7 +196,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 658.8235294117648,
+    "_orthoHeight": 731.4285714285714,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -2579,19 +2579,14 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "OnUpdate": "event-player-health",
+    "Full": true,
+    "Muti": 5,
+    "Value": null,
+    "Mask": null,
+    "Name": null,
     "Hide": false,
     "HideDelay": 3,
-    "UiValueFull": true,
-    "UiValueMutiMuti": 10,
-    "UiValue": {
-      "__id__": 64
-    },
-    "UiMask": {
-      "__id__": 59
-    },
-    "UiName": null,
-    "UiHide": [],
+    "HideNode": [],
     "_id": "520UOz5k5Dypg2eIGr4mOg"
   },
   {
@@ -3382,37 +3377,14 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "OnUpdate": "event-monster-health",
+    "Full": true,
+    "Muti": 5,
+    "Value": null,
+    "Mask": null,
+    "Name": null,
     "Hide": true,
     "HideDelay": 3,
-    "UiValueFull": true,
-    "UiValueMutiMuti": 5,
-    "UiValue": {
-      "__id__": 82
-    },
-    "UiMask": {
-      "__id__": 73
-    },
-    "UiName": {
-      "__id__": 86
-    },
-    "UiHide": [
-      {
-        "__id__": 70
-      },
-      {
-        "__id__": 73
-      },
-      {
-        "__id__": 76
-      },
-      {
-        "__id__": 80
-      },
-      {
-        "__id__": 84
-      }
-    ],
+    "HideNode": [],
     "_id": "75IkBWj2JGaI7MEd6O7i6I"
   },
   {
@@ -6454,11 +6426,9 @@
     "DirectStore": false,
     "OnDirectStore": "direct-store",
     "DelayDirectStore": 0,
-    "AndroidDefault": true,
     "Android": "https://play.google.com/store/apps/details?id=com.action.black.slayer.fighter.shadow",
     "IOS": "",
     "AdsType": 0,
-    "LinkOpen": false,
     "LoopComplete": false,
     "LoopLose": false,
     "DirectPress": false,
@@ -6510,9 +6480,6 @@
     "BtnAttack": {
       "__id__": 37
     },
-    "KeyInteracte": 65,
-    "BtnInteraction": null,
-    "IconInteraction": [],
     "SwitchActive": false,
     "Switch": [],
     "SwitchChoicedState": false,
@@ -6622,11 +6589,14 @@
         "__id__": 203
       },
       {
-        "__id__": 230
+        "__id__": 229
       }
     ],
     "_active": true,
     "_components": [
+      {
+        "__id__": 232
+      },
       {
         "__id__": 233
       },
@@ -6638,9 +6608,6 @@
       },
       {
         "__id__": 236
-      },
-      {
-        "__id__": 237
       }
     ],
     "_prefab": null,
@@ -7650,9 +7617,6 @@
       },
       {
         "__id__": 228
-      },
-      {
-        "__id__": 229
       }
     ],
     "_prefab": null,
@@ -8041,11 +8005,13 @@
     "HitDelay": 1,
     "HitFixed": false,
     "SwimWater": false,
-    "EmitHitDead": true,
+    "Name": "",
+    "ValueBar": null,
     "EmitHit": "event-player-health",
     "EmitDead": "player-dead",
     "EmitDestroy": "",
-    "EmitFull": true,
+    "ShakeHit": true,
+    "ShakeDead": true,
     "DestroyNode": false,
     "DestroyNodeDelay": 0,
     "DestroyBody": false,
@@ -8054,26 +8020,11 @@
     "TagDestroyCollider": [
       200
     ],
-    "EffectFixed": true,
-    "EffectOffset": {
-      "__type__": "cc.Vec2",
-      "x": -15,
-      "y": 100
-    },
-    "EffectCentre": {
-      "__id__": 210
-    },
-    "EffectSpawm": null,
-    "EffectHit": null,
-    "EffectDead": null,
-    "EffectDestroy": null,
-    "AudioHit": null,
-    "AudioDead": null,
-    "ShakeHit": true,
-    "ShakeDead": true,
-    "Name": "",
-    "ValueBar": null,
-    "BarMask": null,
+    "AnimIdle": "idle",
+    "AnimIdleLoop": true,
+    "AnimHit": "hit",
+    "AnimDead": "die",
+    "AnimDeadLoop": false,
     "_id": "46wL/ZuBdOWIx6YUfMy4dp"
   },
   {
@@ -8176,22 +8127,16 @@
     "DashAttackReset": true,
     "FallAttackStop": false,
     "FallAttackForce": 2,
-    "Pick": false,
-    "PickHold": false,
-    "PickJumpOnce": true,
-    "ThrowForce": {
-      "__type__": "cc.Vec2",
-      "x": 20,
-      "y": 20
-    },
-    "PickUpPoint": null,
-    "UiPickBtnActive": true,
-    "UiPickIconIndex": 0,
-    "UiThrowIconIndex": 1,
     "SwitchIndex": 0,
-    "EndPickDestroy": true,
     "EndOnGround": true,
     "EndRevertX": false,
+    "AnimMove": "run",
+    "AnimPush": "run",
+    "AnimAirOn": "jump_3",
+    "AnimAirOff": "jump_3",
+    "AnimDash": "dash",
+    "AnimFinish": "idle",
+    "AnimFinishLoop": true,
     "_id": "47uJFDS5ROw7Aly8EFlmfU"
   },
   {
@@ -8245,41 +8190,6 @@
     "DeadRotateDuration": 0.5,
     "DeadRotateNode": null,
     "_id": "1cyDwc93lHzpFKQDiQbnh/"
-  },
-  {
-    "__type__": "2dad0Q1r5xPyJ/3hV3MA8Eu",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 208
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "AnimIdleActive": true,
-    "AnimIdle": "idle",
-    "AnimIdleLoop": true,
-    "AnimMove": "run",
-    "AnimPush": "run",
-    "AnimAirOn": "jump_3",
-    "AnimAirOff": "jump_3",
-    "AnimDash": "dash",
-    "AnimHitActive": true,
-    "AnimHit": "hit",
-    "AnimDeadActive": true,
-    "AnimDead": "die",
-    "AnimDeadLoop": false,
-    "AnimPick": "pick",
-    "AnimPickLoop": "pick_loop",
-    "AnimThrow": "throw",
-    "AnimFinish": "idle",
-    "AnimFinishLoop": true,
-    "AudioJump": null,
-    "AudioHit": null,
-    "AudioFinish": null,
-    "AudioDead": null,
-    "AudioDash": null,
-    "_id": "56h7JDkHtLjq6avuGAHRVQ"
   },
   {
     "__type__": "98966WqD/JJ5owHpH6qnXbX",
@@ -8419,10 +8329,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 231
+        "__id__": 230
       },
       {
-        "__id__": 232
+        "__id__": 231
       }
     ],
     "_prefab": null,
@@ -8461,7 +8371,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 230
+      "__id__": 229
     },
     "_enabled": true,
     "__prefab": null,
@@ -8483,7 +8393,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 230
+      "__id__": 229
     },
     "_enabled": true,
     "__prefab": null,
@@ -8621,28 +8531,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 240
+      "__id__": 239
     },
     "shadows": {
-      "__id__": 241
+      "__id__": 240
     },
     "_skybox": {
-      "__id__": 242
+      "__id__": 241
     },
     "fog": {
-      "__id__": 243
+      "__id__": 242
     },
     "octree": {
-      "__id__": 244
+      "__id__": 243
     },
     "skin": {
-      "__id__": 245
+      "__id__": 244
     },
     "lightProbeInfo": {
-      "__id__": 246
+      "__id__": 245
     },
     "postSettings": {
-      "__id__": 247
+      "__id__": 246
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

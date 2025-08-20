@@ -2,7 +2,6 @@ import { _decorator, Node, AudioSource, CCBoolean, CCFloat, CCInteger, CCString,
 import { ConstantBase } from '../ConstantBase';
 import { UIValueBar } from '../ui/UIValueBar';
 import { SpineBase } from '../renderer/SpineBase';
-import { BodySpine } from './BodySpine';
 const { ccclass, property } = _decorator;
 
 @ccclass('BodyBase')
@@ -119,15 +118,6 @@ export class BodyBase extends Component {
     protected onDestroy(): void {
         if (this.EmitDestroy != '')
             director.emit(this.EmitDestroy, this.node);
-    }
-
-    onLostFocusInEditor(): void {
-        const bodySpine = this.node.getComponent(BodySpine);
-        this.AnimIdle = bodySpine.AnimIdle;
-        this.AnimIdleLoop = bodySpine.AnimIdleLoop;
-        this.AnimHit = bodySpine.AnimHit;
-        this.AnimDead = bodySpine.AnimDead;
-        this.AnimDeadLoop = bodySpine.AnimDeadLoop;
     }
 
     //BODY
