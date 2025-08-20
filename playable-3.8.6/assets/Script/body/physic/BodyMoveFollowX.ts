@@ -90,7 +90,8 @@ export class BodyMoveFollowX extends Component {
         this.onDirUpdate();
     }
 
-    protected lateUpdate(dt: number): void {
+    protected update(dt: number): void {
+        //IMPORTANCE: Must be UPDATE instead of LATE UPDATE
         this.onPhysicUpdateX(dt);
         this.onFollowUpdate(dt);
         this.onHeadChange(dt);

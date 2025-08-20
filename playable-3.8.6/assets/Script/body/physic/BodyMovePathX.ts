@@ -99,7 +99,8 @@ export class BodyMovePathX extends Component {
         this.m_pathXR = this.m_pathXStart + this.PathOffsetXR;
     }
 
-    protected lateUpdate(dt: number): void {
+    protected update(dt: number): void {
+        //IMPORTANCE: Must be UPDATE instead of LATE UPDATE
         this.onPhysicUpdateX(dt);
         this.onFollowUpdate(dt);
         this.onHeadChange(dt);
