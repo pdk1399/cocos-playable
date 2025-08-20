@@ -85,9 +85,6 @@ export class BodyMovePathX extends Component {
 
         this.node.on(ConstantBase.NODE_PICK, this.onPick, this);
         this.node.on(ConstantBase.NODE_THROW, this.onThrow, this);
-
-        if (this.m_bodyAttack != null)
-            this.node.on(ConstantBase.NODE_ATTACK_MELEE_FOUND, this.onMeleeFoundTarget, this);
     }
 
     protected start(): void {
@@ -136,7 +133,7 @@ export class BodyMovePathX extends Component {
             this.m_move = false;
             velocity.x = 0;
         }
-        else if (this.getAttack()) {
+        else if (this.getAttack() || this.getAttackAvaible()) {
             this.m_move = false;
             velocity.x = 0;
         }
@@ -179,12 +176,6 @@ export class BodyMovePathX extends Component {
         this.m_spine.onFaceDir(this.m_dir);
         if (this.m_bodyAttack != null)
             this.m_bodyAttack.onDirUpdate(this.m_dir);
-    }
-
-    //ATTACK
-
-    protected onMeleeFoundTarget(dt: number) {
-        this.m_body.onAnimationIdle(true);
     }
 
     //GET
@@ -231,9 +222,11 @@ export class BodyMovePathX extends Component {
     }
 
     getAttack(): boolean {
-        if (this.m_bodyAttack != null)
-            return this.m_bodyAttack.m_attack || this.m_bodyAttack.m_continue;
-        return false;
+        return this.m_bodyAttack != null ? this.m_bodyAttack.m_attack : false;
+    }
+
+    getAttackAvaible(): boolean {
+        return this.m_bodyAttack.getAttackAvaible();
     }
 
     getKnock(): boolean {

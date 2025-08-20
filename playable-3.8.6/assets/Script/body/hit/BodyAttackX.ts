@@ -398,6 +398,10 @@ export class BodyAttackX extends Component {
 
     //ATTACK
 
+    getAttackAvaible(): boolean {
+        return this.m_targetMelee.length > 0 || this.m_targetRange.length > 0;
+    }
+
     onAttackProgess(): number {
         if (this.m_dead)
             return 0;
