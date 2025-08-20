@@ -21,6 +21,9 @@ Enum(PlayerStateXY);
 @ccclass('BodyControlXY')
 export class BodyControlXY extends Component {
 
+    @property({ type: CCInteger })
+    SwitchIndex: number = 0;
+
     @property({ group: { name: 'MoveXY' }, type: CCBoolean })
     LockX: boolean = false;
     @property({ group: { name: 'MoveXY' }, type: CCBoolean })
@@ -56,9 +59,6 @@ export class BodyControlXY extends Component {
     MoveAttackReset: boolean = true;
     @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlXY) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
     DashAttackReset: boolean = true;
-
-    @property({ group: { name: 'Switch' }, type: CCInteger })
-    SwitchIndex: number = 0;
 
     @property({ group: { name: 'Anim' }, type: CCString })
     AnimMove: string = 'move';

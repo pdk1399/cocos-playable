@@ -35,6 +35,8 @@ export class BodyControlX extends Component {
 
     @property({ type: BodyType })
     Type: BodyType = BodyType.STICK;
+    @property({ type: CCInteger })
+    SwitchIndex: number = 0;
 
     @property({ group: { name: 'MoveX' }, type: CCBoolean })
     LockX: boolean = false;
@@ -123,9 +125,6 @@ export class BodyControlX extends Component {
     // UiPickIconIndex: number = 0;
     // @property({ group: { name: 'Pick' }, type: CCInteger, visible(this: BodyControlX) { return this.Pick; } })
     // UiThrowIconIndex: number = 1;
-
-    @property({ group: { name: 'Switch' }, type: CCInteger })
-    SwitchIndex: number = 0;
 
     // @property({ group: { name: 'End' }, type: CCBoolean, visible(this: BodyControlX) { return this.Pick; } })
     // EndPickDestroy: boolean = true;
