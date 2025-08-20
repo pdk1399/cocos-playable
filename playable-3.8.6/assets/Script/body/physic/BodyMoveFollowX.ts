@@ -1,8 +1,7 @@
-import { _decorator, CCBoolean, CCFloat, Component, Enum, Node, RigidBody2D, v3, Vec3 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCString, Component, Enum, Node, RigidBody2D, v3, Vec3 } from 'cc';
 import { ConstantBase } from '../../ConstantBase';
 import { SpineBase } from '../../renderer/SpineBase';
 import { BodyBase } from '../BodyBase';
-import { BodySpine } from '../BodySpine';
 import { BodyAttackX } from '../hit/BodyAttackX';
 import { BodyCheckX } from './BodyCheckX';
 import { BodyKnockX } from './BodyKnockX';
@@ -19,7 +18,6 @@ Enum(BodyState)
 
 @ccclass('BodyMoveFollowX')
 @requireComponent(BodyBase)
-@requireComponent(BodySpine)
 @requireComponent(BodyCheckX)
 @requireComponent(SpineBase)
 @requireComponent(RigidBody2D)
@@ -37,10 +35,21 @@ export class BodyMoveFollowX extends Component {
     @property({ group: { name: 'Move' }, type: CCBoolean })
     CheckBotHead: boolean = true;
 
-    @property({ group: { name: 'Follow' }, type: Node })
+    @property({ group: { name: 'Move' }, type: Node })
     Follow: Node = null;
-    @property({ group: { name: 'Follow' }, type: CCBoolean })
+    @property({ group: { name: 'Move' }, type: CCBoolean })
     FollowDirAttack: boolean = false;
+
+    @property({ group: { name: 'Anim' }, type: CCString })
+    AnimMove: string = 'move';
+    @property({ group: { name: 'Anim' }, type: CCString })
+    AnimPush: string = 'push';
+    @property({ group: { name: 'Anim' }, type: CCString })
+    AnimAirOn: string = 'air_on';
+    @property({ group: { name: 'Anim' }, type: CCString })
+    AnimAirOff: string = 'air_off';
+    @property({ group: { name: 'Anim' }, type: CCString })
+    AnimDash: string = 'dash';
 
     m_state: BodyState = BodyState.IDLE;
     m_move: boolean = false;
@@ -48,32 +57,24 @@ export class BodyMoveFollowX extends Component {
     m_animHitDuration: number = 0;
 
     m_lockVelocity: boolean = false;
-    m_pick: boolean = false;
-    m_picked: boolean = false;
 
     m_followBody: Node = null;
     m_followLastPos: Vec3;
 
     m_body: BodyBase = null;
     m_bodyCheck: BodyCheckX = null;
-    m_bodySpine: BodySpine = null;
     m_bodyKnock: BodyKnockX = null;
     m_bodyAttack: BodyAttackX = null;
+    m_spine: SpineBase = null;
     m_rigidbody: RigidBody2D = null;
 
     protected onLoad(): void {
         this.m_body = this.getComponent(BodyBase);
         this.m_bodyCheck = this.getComponent(BodyCheckX);
-        this.m_bodySpine = this.getComponent(BodySpine);
         this.m_bodyKnock = this.getComponent(BodyKnockX);
         this.m_bodyAttack = this.getComponent(BodyAttackX);
+        this.m_spine = this.getComponent(SpineBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
-
-        this.node.on(ConstantBase.NODE_PICK, this.onPick, this);
-        this.node.on(ConstantBase.NODE_THROW, this.onThrow, this);
-
-        if (this.m_bodyAttack != null)
-            this.node.on(ConstantBase.NODE_ATTACK_MELEE_FOUND, this.onMeleeFoundTarget, this);
     }
 
     protected start(): void {
@@ -82,6 +83,7 @@ export class BodyMoveFollowX extends Component {
     }
 
     protected update(dt: number): void {
+        //IMPORTANCE: Must be UPDATE instead of LATE UPDATE
         this.onPhysicUpdateX(dt);
         this.onFollowUpdate(dt);
         this.onHeadChange(dt);
@@ -104,10 +106,8 @@ export class BodyMoveFollowX extends Component {
             //Rigidbody unable move when in knock state
             return;
 
-        if (this.m_picked && !this.m_pick && this.m_bodyCheck.m_isBotFinal) {
-            this.m_picked = false;
+        if (this.m_bodyCheck.m_isBotFinal)
             this.m_lockVelocity = false;
-        }
 
         if (this.m_lockVelocity)
             return;
@@ -117,7 +117,7 @@ export class BodyMoveFollowX extends Component {
             this.m_move = false;
             velocity.x = 0;
         }
-        else if (this.getAttack()) {
+        else if (this.getAttack() || this.getAttackAvaible()) {
             this.m_move = false;
             velocity.x = 0;
         }
@@ -164,15 +164,9 @@ export class BodyMoveFollowX extends Component {
 
     onDirUpdate() {
         this.m_bodyCheck.onDirUpdate(this.m_dir);
-        this.m_bodySpine.onViewDirection(this.m_dir);
+        this.m_spine.onFaceDir(this.m_dir);
         if (this.m_bodyAttack != null)
             this.m_bodyAttack.onDirUpdate(this.m_dir);
-    }
-
-    //ATTACK
-
-    protected onMeleeFoundTarget(dt: number) {
-        this.m_bodySpine.onIdle(true);
     }
 
     //GET
@@ -193,15 +187,14 @@ export class BodyMoveFollowX extends Component {
         if (state == this.m_state)
             return;
         this.m_state = state;
-
         switch (this.m_state) {
             case BodyState.NONE:
                 break;
             case BodyState.IDLE:
-                this.m_bodySpine.onIdle(true);
+                this.m_body.onAnimationIdle(true);
                 break;
             case BodyState.MOVE:
-                this.m_bodySpine.onMove();
+                this.m_body.onAnimation(this.AnimMove, true);
                 break;
             case BodyState.HIT:
                 break;
@@ -211,21 +204,19 @@ export class BodyMoveFollowX extends Component {
     }
 
     getHit(): boolean {
-        if (this.m_bodySpine != null ? this.m_bodySpine.AnimHitActive : false)
-            return this.m_bodySpine.m_hit;
         return this.m_body.m_hit;
     }
 
     getDead(): boolean {
-        if (this.m_bodySpine != null)
-            return this.m_bodySpine.m_dead;
         return this.m_body.m_dead;
     }
 
     getAttack(): boolean {
-        if (this.m_bodyAttack != null)
-            return this.m_bodyAttack.m_attack || this.m_bodyAttack.m_continue;
-        return false;
+        return this.m_bodyAttack != null ? this.m_bodyAttack.m_attack : false;
+    }
+
+    getAttackAvaible(): boolean {
+        return this.m_bodyAttack.getAttackAvaible();
     }
 
     getKnock(): boolean {
@@ -236,16 +227,6 @@ export class BodyMoveFollowX extends Component {
 
     getTarget(): boolean {
         return this.Follow != null ? this.Follow.isValid : false;
-    }
-
-    onPick() {
-        this.m_pick = true;
-        this.m_picked = true;
-        this.m_lockVelocity = true;
-    }
-
-    onThrow() {
-        this.m_pick = false;
     }
 
     //FOLLOW

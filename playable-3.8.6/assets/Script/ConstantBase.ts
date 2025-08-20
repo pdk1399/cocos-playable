@@ -2,10 +2,12 @@ import { _decorator, Enum, v2, Vec2 } from 'cc';
 
 export class ConstantBase {
 
+    //SOLUTION
+
     static readonly SOLUTION_LANDSCAPE: Vec2 = v2(1920, 1080);
     static readonly SOLUTION_PORTRAIT: Vec2 = v2(1080, 1920);
 
-    //
+    //MAIN
 
     static readonly PLAYER_COMPLETE: string = 'player-complete';
     static readonly PLAYER_DEAD: string = 'player-dead';
@@ -17,7 +19,16 @@ export class ConstantBase {
     static readonly DIRECT_STORE: string = 'direct-store';
     static readonly DIRECT_PRESS: string = 'direct-press';
 
-    //
+    //CAMERA
+
+    static readonly CAMERA_SMOOTH_TIME: string = 'camera-smooth-time';
+    static readonly CAMERA_SCALE: string = 'camera-scale';
+    static readonly CAMERA_OFFSET: string = 'camera-offset';
+    static readonly CAMERA_SWITCH: string = 'camera-switch';
+    static readonly CAMERA_EFFECT_SHAKE: string = 'camera-effect-shake';
+    static readonly CAMERA_EFFECT_SHAKE_ONCE: string = 'camera-effect-shake-once';
+
+    //CONTROL
 
     static readonly CONTROL_LOCK: string = 'control-lock';
     static readonly CONTROL_RESUME: string = 'control-resume';
@@ -39,7 +50,7 @@ export class ConstantBase {
     static readonly CONTROL_SWITCH: string = 'control-switch';
     static readonly CONTROL_ATTACK: string = 'control-attack';
 
-    //
+    //NODE
 
     static readonly NODE_EVENT: string = 'node-event'; // Used in most of quick-events in Nodes
 
@@ -98,38 +109,20 @@ export class ConstantBase {
     static readonly NODE_UI_DRAG_ENTER: string = 'node-ui-drag-enter';
     static readonly NODE_UI_DRAG_EXIT: string = 'node-ui-drag-exit';
 
-    //
+    //ANIMATION
+
+    static readonly SPINE_PLAY: string = 'SPINE_PLAY';
+    static readonly SPINE_STOP: string = 'SPINE_STOP';
 
     static readonly ANIM_INDEX_ATTACK: number = 1;
-    static readonly ANIM_INDEX_PICK: number = 1;
     static readonly ANIM_INDEX_AIM: number = 2;
+    // static readonly ANIM_INDEX_PICK: number = 1;
 
-    //
+    //UI
 
     static readonly UI_ATTACK_SHOW: string = 'ui-attack-show';
-    static readonly UI_INTERACTION_SHOW: string = 'ui-interaction-show';
-    static readonly UI_INTERACTION_ICON: string = 'ui-interaction-icon';
-
-    //
-
-    static readonly CAMERA_SMOOTH_TIME: string = 'camera-smooth-time';
-    static readonly CAMERA_SCALE: string = 'camera-scale';
-    static readonly CAMERA_OFFSET: string = 'camera-offset';
-    static readonly CAMERA_SWITCH: string = 'camera-switch';
-    static readonly CAMERA_EFFECT_SHAKE: string = 'camera-effect-shake';
-    static readonly CAMERA_EFFECT_SHAKE_ONCE: string = 'camera-effect-shake-once';
-
-    //STICK-BATTLE
-
-    static readonly BATTLE_START: string = 'battle-start';
-    static readonly BATTLE_END: string = 'battle-end';
-    static readonly BATTLE_START_COUNTDOWN: string = 'battle-start-countdown';
-    static readonly STICK_BLUE_DEAD: string = 'stick-blue-dead';
-    static readonly STICK_RED_DEAD: string = 'stick-red-dead';
-
-    static readonly TAG_FIELD_RENDERER: number = 10;
-    static readonly TAG_FIELD_BODY: number = 100;
-    static readonly TAG_FIELD_RANGE: number = 101;
+    // static readonly UI_INTERACTION_SHOW: string = 'ui-interaction-show';
+    // static readonly UI_INTERACTION_ICON: string = 'ui-interaction-icon';
 }
 
 export enum EaseType {

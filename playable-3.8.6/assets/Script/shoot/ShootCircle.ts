@@ -27,7 +27,7 @@ export class ShootCircle extends Component {
     @property({ group: { name: 'Shoot' }, type: CCFloat })
     Count: number = 8;
     @property({ group: { name: 'Shoot' }, type: CCFloat })
-    DegOffset: number = 45;
+    Offset: number = 45;
 
     @property({ group: { name: 'Loop' }, type: CCBoolean })
     Loop: boolean = false;
@@ -56,12 +56,14 @@ export class ShootCircle extends Component {
     //
 
     onShoot() {
-        for (let i = 0; i < this.Count; i++)
-            this.m_shoot.onShootVelocityDeg(
-                this.Deg + this.DegOffset * i,
-                this.Bullet,
-                this.BulletSpeed,
-                this.BulletRotateActive ? this.BulletRotate : null);
+        this.m_shoot.onShootVelocityCircle(
+            this.Deg,
+            this.Bullet,
+            this.BulletSpeed,
+            this.BulletRotate,
+            this.Count,
+            this.Offset
+        );
         if (this.Loop)
             this.scheduleOnce(() => this.onShoot(), this.DelayLoop);
         if (this.EmitEvent != '')

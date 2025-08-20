@@ -1,12 +1,12 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, math, Node, v3, Vec3 } from 'cc';
 import { SpineBase } from '../../renderer/SpineBase';
+import { BodyAttackX } from '../hit/BodyAttackX';
 const { ccclass, property, requireComponent } = _decorator;
 
 @ccclass('FollowOffset')
 @requireComponent(SpineBase)
 export class BodyMoveFollowXYOffset extends Component {
 
-    //@property({ group: { name: 'Follow' }, type: Node })
     @property(Node)
     Follow: Node = null;
 
@@ -16,12 +16,6 @@ export class BodyMoveFollowXYOffset extends Component {
     OnFollow: string = '';
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
-    @property({ group: { name: 'Event' }, type: CCString })
-    EmitFollow: string = ''
-    @property({ group: { name: 'Event' }, type: CCBoolean })
-    NodeEvent: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString })
-    EmitNodeMove: string = '';
 
     @property({ group: { name: 'Move' }, type: CCBoolean })
     FaceX: boolean = true;
@@ -51,9 +45,11 @@ export class BodyMoveFollowXYOffset extends Component {
     m_dir: number = 1;
     m_move: boolean = false;
 
+    m_bodyAttack: BodyAttackX = null;
     m_spine: SpineBase = null;
 
     protected onLoad(): void {
+        this.m_bodyAttack = this.getComponent(BodyAttackX);
         this.m_spine = this.getComponent(SpineBase);
 
         if (this.OnFollow != '')
@@ -67,10 +63,11 @@ export class BodyMoveFollowXYOffset extends Component {
     }
 
     protected lateUpdate(dt: number): void {
+        if (this.getAttack() || this.getAttackAvaible())
+            return;
+
         if (!this.getFollow()) {
             this.onStateUpdate(false);
-            if (this.NodeEvent)
-                this.node.emit(this.EmitNodeMove, false);
             return;
         }
 
@@ -82,9 +79,7 @@ export class BodyMoveFollowXYOffset extends Component {
         Vec3.lerp(result, start, end, math.clamp(this.m_far ? this.RatioRun : this.RatioMove, 0, 1));
         this.node.worldPosition = result;
 
-        this.onStateUpdate(true, this.getFar());
-        if (this.NodeEvent)
-            this.node.emit(this.EmitNodeMove, true);
+        this.onStateUpdate(true);
     }
 
     //
@@ -96,8 +91,6 @@ export class BodyMoveFollowXYOffset extends Component {
         this.scheduleOnce(() => {
             this.Follow = Target;
             this.node.setParent(Target.parent, true);
-            if (this.EmitFollow != '')
-                director.emit(this.EmitFollow);
         }, this.Delay)
         if (this.Once)
             director.off(this.OnFollow, this.onFollowEvent, this);
@@ -139,16 +132,28 @@ export class BodyMoveFollowXYOffset extends Component {
         return this.m_far;
     }
 
-    private onStateUpdate(move: boolean, far: boolean = false) {
+    //STATE
+
+    private onStateUpdate(move: boolean) {
         if (move == this.m_move)
             return;
         this.m_move = move;
         this.m_spine.onFaceDir(this.getDir());
         if (!move)
             this.m_spine.onAnimation(this.AnimIdle, true);
-        else if (far)
+        else if (this.getFar())
             this.m_spine.onAnimation(this.AnimRun, true);
         else
             this.m_spine.onAnimation(this.AnimMove, true);
+    }
+
+    //GET
+
+    getAttack(): boolean {
+        return this.m_bodyAttack != null ? this.m_bodyAttack.m_attack : false;
+    }
+
+    getAttackAvaible(): boolean {
+        return this.m_bodyAttack.getAttackAvaible();
     }
 }

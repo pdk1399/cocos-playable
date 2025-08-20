@@ -26,7 +26,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 260
+      "__id__": 259
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -57,7 +57,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 261
+      "__id__": 260
     },
     "_id": "d35200c5-b991-4b91-a12d-c87731cf6c35"
   },
@@ -187,7 +187,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 654.014598540146,
+    "_orthoHeight": 731.4285714285714,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -8049,6 +8049,9 @@
     "_active": true,
     "_components": [
       {
+        "__id__": 254
+      },
+      {
         "__id__": 255
       },
       {
@@ -8059,9 +8062,6 @@
       },
       {
         "__id__": 258
-      },
-      {
-        "__id__": 259
       }
     ],
     "_prefab": null,
@@ -8264,13 +8264,13 @@
     "_active": true,
     "_components": [
       {
+        "__id__": 251
+      },
+      {
         "__id__": 252
       },
       {
         "__id__": 253
-      },
-      {
-        "__id__": 254
       }
     ],
     "_prefab": null,
@@ -8322,13 +8322,13 @@
     "_active": true,
     "_components": [
       {
+        "__id__": 248
+      },
+      {
         "__id__": 249
       },
       {
         "__id__": 250
-      },
-      {
-        "__id__": 251
       }
     ],
     "_prefab": null,
@@ -8550,9 +8550,6 @@
       },
       {
         "__id__": 247
-      },
-      {
-        "__id__": 248
       }
     ],
     "_prefab": null,
@@ -8864,11 +8861,13 @@
     "HitDelay": 1,
     "HitFixed": false,
     "SwimWater": false,
-    "EmitHitDead": true,
+    "Name": "",
+    "ValueBar": null,
     "EmitHit": "event-player-health",
     "EmitDead": "player-dead",
     "EmitDestroy": "",
-    "EmitFull": true,
+    "ShakeHit": true,
+    "ShakeDead": true,
     "DestroyNode": false,
     "DestroyNodeDelay": 0,
     "DestroyBody": false,
@@ -8877,26 +8876,11 @@
     "TagDestroyCollider": [
       200
     ],
-    "EffectFixed": true,
-    "EffectOffset": {
-      "__type__": "cc.Vec2",
-      "x": -15,
-      "y": 100
-    },
-    "EffectCentre": {
-      "__id__": 238
-    },
-    "EffectSpawm": null,
-    "EffectHit": null,
-    "EffectDead": null,
-    "EffectDestroy": null,
-    "AudioHit": null,
-    "AudioDead": null,
-    "ShakeHit": true,
-    "ShakeDead": true,
-    "Name": "",
-    "ValueBar": null,
-    "BarMask": null,
+    "AnimIdle": "bow-idle",
+    "AnimIdleLoop": true,
+    "AnimHit": "hit",
+    "AnimDead": "dead2",
+    "AnimDeadLoop": false,
     "_id": "ebsJQjfANKV4v7GzyTIaHT"
   },
   {
@@ -8948,41 +8932,6 @@
     "TagRange": 102,
     "TagTarget": 200,
     "_id": "e11uzwo6tJ9raYpT5H+5Ta"
-  },
-  {
-    "__type__": "2dad0Q1r5xPyJ/3hV3MA8Eu",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 233
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "AnimIdleActive": true,
-    "AnimIdle": "bow-idle",
-    "AnimIdleLoop": true,
-    "AnimMove": "bow-run",
-    "AnimPush": "bow-run",
-    "AnimAirOn": "bow-run",
-    "AnimAirOff": "bow-run",
-    "AnimDash": "bow-run",
-    "AnimHitActive": false,
-    "AnimHit": "hit",
-    "AnimDeadActive": false,
-    "AnimDead": "dead2",
-    "AnimDeadLoop": false,
-    "AnimPick": "pick",
-    "AnimPickLoop": "pick_loop",
-    "AnimThrow": "throw",
-    "AnimFinish": "win",
-    "AnimFinishLoop": true,
-    "AudioJump": null,
-    "AudioHit": null,
-    "AudioFinish": null,
-    "AudioDead": null,
-    "AudioDash": null,
-    "_id": "7bVDJJuTtFVKDtAe4oiq/C"
   },
   {
     "__type__": "98966WqD/JJ5owHpH6qnXbX",
@@ -9370,28 +9319,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 262
+      "__id__": 261
     },
     "shadows": {
-      "__id__": 263
+      "__id__": 262
     },
     "_skybox": {
-      "__id__": 264
+      "__id__": 263
     },
     "fog": {
-      "__id__": 265
+      "__id__": 264
     },
     "octree": {
-      "__id__": 266
+      "__id__": 265
     },
     "skin": {
-      "__id__": 267
+      "__id__": 266
     },
     "lightProbeInfo": {
-      "__id__": 268
+      "__id__": 267
     },
     "postSettings": {
-      "__id__": 269
+      "__id__": 268
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false
