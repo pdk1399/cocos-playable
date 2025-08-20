@@ -35,9 +35,9 @@ export class BodyMoveFollowX extends Component {
     @property({ group: { name: 'Move' }, type: CCBoolean })
     CheckBotHead: boolean = true;
 
-    @property({ group: { name: 'Follow' }, type: Node })
+    @property({ group: { name: 'Move' }, type: Node })
     Follow: Node = null;
-    @property({ group: { name: 'Follow' }, type: CCBoolean })
+    @property({ group: { name: 'Move' }, type: CCBoolean })
     FollowDirAttack: boolean = false;
 
     @property({ group: { name: 'Anim' }, type: CCString })
@@ -57,8 +57,6 @@ export class BodyMoveFollowX extends Component {
     m_animHitDuration: number = 0;
 
     m_lockVelocity: boolean = false;
-    m_pick: boolean = false;
-    m_picked: boolean = false;
 
     m_followBody: Node = null;
     m_followLastPos: Vec3;
@@ -77,9 +75,6 @@ export class BodyMoveFollowX extends Component {
         this.m_bodyAttack = this.getComponent(BodyAttackX);
         this.m_spine = this.getComponent(SpineBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
-
-        this.node.on(ConstantBase.NODE_PICK, this.onPick, this);
-        this.node.on(ConstantBase.NODE_THROW, this.onThrow, this);
     }
 
     protected start(): void {
@@ -111,10 +106,8 @@ export class BodyMoveFollowX extends Component {
             //Rigidbody unable move when in knock state
             return;
 
-        if (this.m_picked && !this.m_pick && this.m_bodyCheck.m_isBotFinal) {
-            this.m_picked = false;
+        if (this.m_bodyCheck.m_isBotFinal)
             this.m_lockVelocity = false;
-        }
 
         if (this.m_lockVelocity)
             return;
@@ -234,16 +227,6 @@ export class BodyMoveFollowX extends Component {
 
     getTarget(): boolean {
         return this.Follow != null ? this.Follow.isValid : false;
-    }
-
-    onPick() {
-        this.m_pick = true;
-        this.m_picked = true;
-        this.m_lockVelocity = true;
-    }
-
-    onThrow() {
-        this.m_pick = false;
     }
 
     //FOLLOW

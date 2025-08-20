@@ -1,16 +1,12 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D, v2, v3, Vec2 } from 'cc';
 import { SpineBase } from '../../renderer/SpineBase';
+import { BodyAttackX } from '../hit/BodyAttackX';
 const { ccclass, property, requireComponent } = _decorator;
 
 @ccclass('FollowCollider')
 @requireComponent(SpineBase)
 export class BodyMoveFollowXYCollider extends Component {
 
-    //@property({ group: { name: 'Follow' }, type: CCBoolean })
-    @property(CCBoolean)
-    Auto: boolean = false;
-
-    //@property({ group: { name: 'Follow' }, type: Node })
     @property(Node)
     Follow: Node = null;
 
@@ -20,12 +16,6 @@ export class BodyMoveFollowXYCollider extends Component {
     OnFollow: string = '';
     @property({ group: { name: 'Event' }, type: CCFloat })
     Delay: number = 0;
-    @property({ group: { name: 'Event' }, type: CCString })
-    EmitFollow: string = ''
-    @property({ group: { name: 'Event' }, type: CCBoolean })
-    NodeEvent: boolean = false;
-    @property({ group: { name: 'Event' }, type: CCString })
-    EmitNodeMove: string = '';
 
     @property({ group: { name: 'Move' }, type: CCBoolean })
     FaceX: boolean = true;
@@ -58,10 +48,12 @@ export class BodyMoveFollowXYCollider extends Component {
     m_move: boolean = false;
     m_view: boolean = false;
 
+    m_bodyAttack: BodyAttackX = null;
     m_spine: SpineBase = null;
     m_rigidbody: RigidBody2D = null;
 
     protected onLoad(): void {
+        this.m_bodyAttack = this.getComponent(BodyAttackX);
         this.m_spine = this.getComponent(SpineBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
 
@@ -86,11 +78,14 @@ export class BodyMoveFollowXYCollider extends Component {
     }
 
     protected lateUpdate(dt: number): void {
+        if (this.getAttack() || this.getAttackAvaible()) {
+            this.m_rigidbody.linearVelocity = Vec2.ZERO.clone();
+            return;
+        }
+
         if (!this.getFollow()) {
             this.m_rigidbody.linearVelocity = Vec2.ZERO.clone();
-            this.onStateUpdate(false, false);
-            if (this.NodeEvent)
-                this.node.emit(this.EmitNodeMove, false);
+            this.onStateUpdate(false);
             return;
         }
 
@@ -98,9 +93,7 @@ export class BodyMoveFollowXYCollider extends Component {
         let velocity = velocityDir.multiplyScalar(this.m_far ? this.SpeedRun : this.SpeedMove).clone();
         this.m_rigidbody.linearVelocity = v2(velocity.x, velocity.y);
 
-        this.onStateUpdate(true, this.getFar());
-        if (this.NodeEvent)
-            this.node.emit(this.EmitNodeMove, true);
+        this.onStateUpdate(true);
     }
 
     //
@@ -114,8 +107,6 @@ export class BodyMoveFollowXYCollider extends Component {
                 this.m_folow = false;
             if (selfCollider.tag == this.TagRange2)
                 this.m_far = false;
-            if (this.Auto && this.Follow == null)
-                this.Follow = otherCollider.node;
         }
     }
 
@@ -138,8 +129,6 @@ export class BodyMoveFollowXYCollider extends Component {
         this.scheduleOnce(() => {
             this.Follow = target;
             this.node.setParent(target.parent, true);
-            if (this.EmitFollow != '')
-                director.emit(this.EmitFollow);
         }, this.Delay)
         if (this.Once)
             director.off(this.OnFollow, this.onFollowEvent, this);
@@ -177,7 +166,9 @@ export class BodyMoveFollowXYCollider extends Component {
         return this.m_far;
     }
 
-    private onStateUpdate(move: boolean, far: boolean) {
+    //STATE
+
+    private onStateUpdate(move: boolean) {
         if (move == this.m_move)
             return;
         this.m_move = move;
@@ -187,13 +178,22 @@ export class BodyMoveFollowXYCollider extends Component {
                 this.m_view = true;
                 this.m_spine.onAnimation(this.AnimIdle, true);
             }
-        }
-        else {
+        } else {
             this.m_view = false;
-            if (far)
+            if (this.getFar())
                 this.m_spine.onAnimation(this.AnimRun, true);
             else
                 this.m_spine.onAnimation(this.AnimMove, true);
         }
+    }
+
+    //GET
+
+    getAttack(): boolean {
+        return this.m_bodyAttack != null ? this.m_bodyAttack.m_attack : false;
+    }
+
+    getAttackAvaible(): boolean {
+        return this.m_bodyAttack.getAttackAvaible();
     }
 }

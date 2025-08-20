@@ -35,11 +35,11 @@ export class BodyMovePathX extends Component {
     @property({ group: { name: 'Move' }, type: CCBoolean })
     CheckBotHead: boolean = true;
 
-    @property({ group: { name: 'Path' }, type: CCBoolean })
+    @property({ group: { name: 'Move' }, type: CCBoolean })
     PathActive: boolean = false;
-    @property({ group: { name: 'Path' }, type: CCFloat })
+    @property({ group: { name: 'Move' }, type: CCFloat, visible(this: BodyMovePathX) { return this.PathActive; } })
     PathOffsetXL: number = 500;
-    @property({ group: { name: 'Path' }, type: CCFloat })
+    @property({ group: { name: 'Move' }, type: CCFloat, visible(this: BodyMovePathX) { return this.PathActive; } })
     PathOffsetXR: number = 500;
 
     @property({ group: { name: 'Anim' }, type: CCString })
@@ -62,8 +62,6 @@ export class BodyMovePathX extends Component {
     m_pathXR: number;
 
     m_lockVelocity: boolean = false;
-    m_pick: boolean = false;
-    m_picked: boolean = false;
 
     m_followBody: Node = null;
     m_followLastPos: Vec3;
@@ -82,9 +80,6 @@ export class BodyMovePathX extends Component {
         this.m_bodyAttack = this.getComponent(BodyAttackX);
         this.m_spine = this.getComponent(SpineBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
-
-        this.node.on(ConstantBase.NODE_PICK, this.onPick, this);
-        this.node.on(ConstantBase.NODE_THROW, this.onThrow, this);
     }
 
     protected start(): void {
@@ -112,18 +107,12 @@ export class BodyMovePathX extends Component {
         if (this.m_rigidbody == null || !this.m_rigidbody.isValid)
             return;
 
-        //if (!this.m_rigidbody.isAwake())
-        //Rigidbody wake up again if it's not awake
-        //    this.m_rigidbody.wakeUp();
-
         if (this.getKnock())
             //Rigidbody unable move when in knock state
             return;
 
-        if (this.m_picked && !this.m_pick && this.m_bodyCheck.m_isBotFinal) {
-            this.m_picked = false;
+        if (this.m_bodyCheck.m_isBotFinal)
             this.m_lockVelocity = false;
-        }
 
         if (this.m_lockVelocity)
             return;
@@ -178,7 +167,7 @@ export class BodyMovePathX extends Component {
             this.m_bodyAttack.onDirUpdate(this.m_dir);
     }
 
-    //GET
+    //STATE
 
     protected onStateUpdate(dt: number) {
         let state = BodyState.IDLE;
@@ -213,6 +202,8 @@ export class BodyMovePathX extends Component {
         }
     }
 
+    //GET
+
     getHit(): boolean {
         return this.m_body.m_hit;
     }
@@ -233,16 +224,6 @@ export class BodyMovePathX extends Component {
         if (this.m_bodyKnock != null)
             return this.m_bodyKnock.m_knock;
         return false;
-    }
-
-    onPick() {
-        this.m_pick = true;
-        this.m_picked = true;
-        this.m_lockVelocity = true;
-    }
-
-    onThrow() {
-        this.m_pick = false;
     }
 
     //FOLLOW
