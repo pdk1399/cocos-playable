@@ -4,81 +4,76 @@ const { ccclass, property } = _decorator;
 @ccclass('ShootBase')
 export class ShootBase extends Component {
 
-    @property({ group: { name: 'Main' }, type: Node })
-    Bullet: Node = null;
-    @property({ group: { name: 'Main' }, type: CCFloat })
-    BulletSpeed: number = 5;
-
-    @property({ group: { name: 'Node' }, type: Node })
-    ShootFrom: Node = null;
-    @property({ group: { name: 'Node' }, type: Node })
-    ShootSpawm: Node = null;
-
-    @property({ group: { name: 'Hold' }, type: CCBoolean })
-    ShootHold: boolean = false;
-    @property({ group: { name: 'Hold' }, type: CCFloat })
-    ShootDelay: number = 0.5;
-
-    m_delay: boolean = false;
+    @property({ type: Node })
+    Centre: Node = null;
+    @property({ type: Node })
+    Spawm: Node = null;
 
     protected start(): void {
-        if (this.ShootFrom == null)
-            this.ShootFrom = this.Bullet;
-        if (this.ShootSpawm == null)
-            this.ShootSpawm = this.node.parent;
+        if (this.Centre == null)
+            this.Centre = this.node;
+        if (this.Spawm == null)
+            this.Spawm = this.node.parent;
     }
 
-    onShootVelocityTarget(target: Node, bullet?: Node, speed?: number, rotate?: number): void {
-        if (!this.m_delay) {
-            this.onShootVelocity(this.getVelocityTarget(target, speed ?? this.BulletSpeed), bullet, rotate);
-            if (this.ShootHold) {
-                this.m_delay = true;
-                this.scheduleOnce(() => this.m_delay = false, this.ShootDelay);
-            }
-        }
+    onLostFocusInEditor(): void {
+        if (this.Centre == null)
+            this.Centre = this.node.getChildByName('renderer').getChildByName('centre');
     }
 
-    onShootVelocityWorldPos(worldPos: Vec2, bullet?: Node, speed?: number, rotate?: number): void {
-        if (!this.m_delay) {
-            this.onShootVelocity(this.getVelocityWorldPos(worldPos, speed ?? this.BulletSpeed), bullet, rotate);
-            if (this.ShootHold) {
-                this.m_delay = true;
-                this.scheduleOnce(() => this.m_delay = false, this.ShootDelay);
-            }
-        }
+    //SHOOT: PRIMARY
+
+    onShootVelocityTarget(target: Node, bullet: Node, speed: number, rotate: number): void {
+        this.onShootVelocity(
+            this.getVelocityTarget(target, speed),
+            bullet,
+            rotate);
     }
 
-    onShootVelocityDirection(direction: Vec2, bullet?: Node, speed?: number, rotate?: number): void {
-        if (!this.m_delay) {
-            this.onShootVelocity(this.getVelocityDirection(direction, speed ?? this.BulletSpeed), bullet, rotate);
-            if (this.ShootHold) {
-                this.m_delay = true;
-                this.scheduleOnce(() => this.m_delay = false, this.ShootDelay);
-            }
-        }
+    onShootVelocityWorldPos(worldPos: Vec2, bullet: Node, speed: number, rotate: number): void {
+        this.onShootVelocity(
+            this.getVelocityWorldPos(worldPos, speed),
+            bullet,
+            rotate);
     }
 
-    onShootVelocityDeg(deg: number, bullet?: Node, speed?: number, rotate?: number) {
-        if (!this.m_delay) {
-            this.onShootVelocity(this.getVelocityDeg(deg, speed ?? this.BulletSpeed), bullet, rotate);
-            if (this.ShootHold) {
-                this.m_delay = true;
-                this.scheduleOnce(() => this.m_delay = false, this.ShootDelay);
-            }
-        }
+    onShootVelocityDirection(direction: Vec2, bullet: Node, speed: number, rotate: number): void {
+        this.onShootVelocity(
+            this.getVelocityDirection(direction, speed),
+            bullet,
+            rotate);
     }
+
+    onShootVelocityDeg(deg: number, bullet: Node, speed: number, rotate: number) {
+        this.onShootVelocity(
+            this.getVelocityDeg(deg, speed),
+            bullet,
+            rotate);
+    }
+
+    //SHOOT: OPTION
+
+    onShootVelocityCircle(deg: number, bullet: Node, speed: number, rotate: number, count: number = 8, offset: number = 45) {
+        for (let i = 0; i < count; i++)
+            this.onShootVelocity(
+                this.getVelocityDeg(deg + offset * i, speed),
+                bullet,
+                rotate);
+    }
+
+    //GET
 
     getVelocityTarget(target: Node, length: number): Vec2 {
         var direction = v2(
-            target.worldPosition.clone().x - this.ShootFrom.worldPosition.clone().x,
-            target.worldPosition.clone().y - this.ShootFrom.worldPosition.clone().y + 100).normalize();
+            target.worldPosition.clone().x - this.Centre.worldPosition.clone().x,
+            target.worldPosition.clone().y - this.Centre.worldPosition.clone().y + 100).normalize();
         return direction.clone().multiplyScalar(length);
     }
 
     getVelocityWorldPos(worldPos: Vec2, length: number): Vec2 {
         var direction = v2(
-            worldPos.x - this.ShootFrom.worldPosition.clone().x,
-            worldPos.y - this.ShootFrom.worldPosition.clone().y + 100).normalize();
+            worldPos.x - this.Centre.worldPosition.clone().x,
+            worldPos.y - this.Centre.worldPosition.clone().y + 100).normalize();
         return direction.clone().multiplyScalar(length);
     }
 
@@ -91,10 +86,12 @@ export class ShootBase extends Component {
         return direction.clone().multiplyScalar(length);
     }
 
-    onShootVelocity(velocity: Vec2, bullet?: Node, rotate?: number) {
-        var bulletClone = instantiate(bullet ?? this.Bullet);
-        bulletClone.setParent(this.ShootSpawm);
-        bulletClone.worldPosition = this.ShootFrom.worldPosition.clone();
+    //SHOOT: VELOCITY
+
+    onShootVelocity(velocity: Vec2, bullet: Node, rotate?: number) {
+        var bulletClone = instantiate(bullet);
+        bulletClone.setParent(this.Spawm);
+        bulletClone.worldPosition = this.Centre.worldPosition.clone();
         if (rotate != null) {
             //Rotate default value is 180 recommend
             var bulletRotate = Math.atan2(velocity.y, velocity.x) * 57.29578 + rotate;
@@ -106,11 +103,11 @@ export class ShootBase extends Component {
         }, 0.02);
     }
 
-    //
+    //SHOOT: INSTANT
 
-    onShootInstant(posWorld: Vec2, bullet?: Node, rotate?: number) {
-        var bulletClone = instantiate(bullet ?? this.Bullet);
-        bulletClone.setParent(this.ShootSpawm);
+    onShootInstant(posWorld: Vec2, bullet: Node, rotate?: number) {
+        var bulletClone = instantiate(bullet);
+        bulletClone.setParent(this.Spawm);
         bulletClone.worldPosition = v3(posWorld.x, posWorld.y, bulletClone.worldPosition.clone().z);
         if (rotate != null) {
             //Rotate default value is 180 recommend
