@@ -498,8 +498,8 @@ export class BodyControlX extends Component {
         }
         else {
             if (this.m_bodyCheck.m_isBotFinal) {
-                const moveGroundX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? this.MoveAttackGroundX : this.MoveGroundX;
-                const moveDirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? (this.MoveAttackByFace ? this.m_faceDirX : this.m_moveDirX) : this.m_moveDirX;
+                const moveGroundX = this.getAttack() ? this.MoveAttackGroundX : this.MoveGroundX;
+                const moveDirX = this.getAttack() ? (this.MoveAttackByFace ? this.m_faceDirX : this.m_moveDirX) : this.m_moveDirX;
                 velocity.x += moveDirX * moveGroundX;
                 if (velocity.x > moveGroundX)
                     velocity.x = moveGroundX;
@@ -509,8 +509,8 @@ export class BodyControlX extends Component {
                     this.m_rigidbody.applyTorque(-moveDirX * this.TorqueX * (this.m_rigidbody.getMass() / this.m_baseMass) * this.m_body.m_baseSize, true);
             }
             else {
-                const moveAirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? this.MoveAttackAirX : this.MoveAirX;
-                const moveDirX = this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) ? (this.MoveAttackByFace ? this.m_faceDirX : this.m_moveDirX) : this.m_moveDirX;
+                const moveAirX = this.getAttack() ? this.MoveAttackAirX : this.MoveAirX;
+                const moveDirX = this.getAttack() ? (this.MoveAttackByFace ? this.m_faceDirX : this.m_moveDirX) : this.m_moveDirX;
                 velocity.x += moveDirX * moveAirX;
                 if (velocity.x > moveAirX)
                     velocity.x = moveAirX;
@@ -542,12 +542,12 @@ export class BodyControlX extends Component {
         }
         this.m_moveDirX = !this.LockX ? -1 : 0;
         if (this.m_faceDirX != -1) {
-            if (!this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {
+            if (!this.getAttack()) {
                 this.m_faceDirX = -1;
                 this.onDirUpdate();
             }
         }
-        if (this.m_moveDirX != 0 && this.MoveAttackReset && !this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack))
+        if (this.m_moveDirX != 0 && this.MoveAttackReset && !this.getAttack())
             this.m_bodyAttack?.onAttackReset();
     }
 
@@ -558,12 +558,12 @@ export class BodyControlX extends Component {
         }
         this.m_moveDirX = !this.LockX ? 1 : 0;
         if (this.m_faceDirX != 1) {
-            if (!this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {
+            if (!this.getAttack()) {
                 this.m_faceDirX = 1;
                 this.onDirUpdate();
             }
         }
-        if (this.m_moveDirX != 0 && this.MoveAttackReset && !this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack))
+        if (this.m_moveDirX != 0 && this.MoveAttackReset && !this.getAttack())
             this.m_bodyAttack?.onAttackReset();
     }
 
@@ -614,14 +614,14 @@ export class BodyControlX extends Component {
         if (this.JumpAuto && this.m_controlByDirector && this.m_bodyCheck.m_isBotFinal)
             this.onJump(dt);
 
-        if (!this.FallAttackStop && this.FallAttackForce != 0 && this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {
+        if (!this.FallAttackStop && this.FallAttackForce != 0 && this.getAttack()) {
             this.m_rigidbody.linearVelocity = v2(this.m_rigidbody.linearVelocity.clone().x, this.FallAttackForce); //Fix bug not fall after attack
             return;
         }
     }
 
     onJump(dt: number) {
-        if (!this.m_control || this.LockY || this.m_lockInput || this.m_jumpContinue || this.m_jumpCountCurrent >= this.JumpCount || this.getDead() || this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) || this.m_dash)
+        if (!this.m_control || this.LockY || this.m_lockInput || this.m_jumpContinue || this.m_jumpCountCurrent >= this.JumpCount || this.getDead() || this.getAttack() || this.m_dash)
             return;
 
         // if (this.PickJumpOnce && this.m_pickUp != null)
@@ -642,7 +642,7 @@ export class BodyControlX extends Component {
             this.m_lockJump = false;
         }, this.JumpDelay);
 
-        if (!this.getDead() && !this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) && !this.m_dash) {
+        if (!this.getDead() && !this.getAttack() && !this.m_dash) {
             this.m_state = PlayerStateX.JUMP;
             this.m_body.onAnimation(this.AnimAirOn, true);
         }
@@ -663,7 +663,7 @@ export class BodyControlX extends Component {
         veloc.y = jumpUp != null ? jumpUp : this.JumpUpY;
         this.m_rigidbody.linearVelocity = veloc;
 
-        if (!this.getDead() && !this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack) && !this.m_dash) {
+        if (!this.getDead() && !this.getAttack() && !this.m_dash) {
             this.m_state = PlayerStateX.JUMP;
             this.m_body.onAnimation(this.AnimAirOn, true);
         }
@@ -685,7 +685,7 @@ export class BodyControlX extends Component {
     //DASH
 
     onDash() {
-        if (!this.m_control || this.m_dash || this.m_dashDelay || this.getAttack(this.DashStopByBodyAttack, this.DashStopByPressAttack) || this.getDead())
+        if (!this.m_control || this.m_dash || this.m_dashDelay || this.getAttack() || this.getDead())
             return;
         this.m_dash = true;
         this.m_dashDelay = true;
@@ -793,6 +793,8 @@ export class BodyControlX extends Component {
 
     protected onAttackProgess() {
         if (this.m_bodyAttack == null)
+            return;
+        if (this.getAttack(false))
             return;
         if (this.MoveStopByBodyAttack || this.MoveStopByPressAttack)
             this.m_body.onAnimationIdle(true);
@@ -953,7 +955,7 @@ export class BodyControlX extends Component {
             state = PlayerStateX.DEAD;
         else if (this.getHit())
             state = PlayerStateX.HIT;
-        else if (this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {
+        else if (this.getAttack()) {
             if (this.AttackHold)
                 state = PlayerStateX.ATTACK_HOLD;
             else
@@ -1021,17 +1023,14 @@ export class BodyControlX extends Component {
     }
 
     getKnock(): boolean {
-        if (this.m_bodyKnock != null)
-            return this.m_bodyKnock.m_knock;
-        return false;
+        return this.m_bodyKnock != null ? this.m_bodyKnock.m_knock : false;
     }
 
-    getAttack(stopByBodyAttack: boolean, stopByPressAttack: boolean): boolean {
-        if (stopByBodyAttack && this.m_bodyAttack != null ? this.m_bodyAttack?.m_attack : false)
-            return true;
-        if (stopByPressAttack && this.m_attack)
-            return true;
-        return false;
+    getAttack(full: boolean = true): boolean {
+        if (full)
+            return (this.m_bodyAttack != null ? this.m_bodyAttack.m_attack : false) || this.m_attack;
+        else
+            return (this.m_bodyAttack != null ? this.m_bodyAttack.m_attack : false);
     }
 
     //COMPLETE

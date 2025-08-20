@@ -13,8 +13,6 @@ export class BodyBase extends Component {
     ProtectBigSize: boolean = false;
     @property({ group: { name: 'Main' }, type: CCInteger, visible(this: BodyBase) { return !this.Protect; } })
     HitPoint: number = 1;
-    @property({ group: { name: 'Main' }, type: CCFloat })
-    HitDelay: number = 0.2;
     @property({ group: { name: 'Main' }, type: CCBoolean })
     HitFixed: boolean = false;
     @property({ group: { name: 'Main' }, type: CCBoolean })
@@ -145,7 +143,7 @@ export class BodyBase extends Component {
             this.scheduleOnce(() => {
                 this.m_hit = false;
                 this.onAnimationIdle();
-            }, Math.max(this.HitDelay, 0.02));
+            }, 0.02);
 
             //EVENT
             this.node.emit(ConstantBase.NODE_BODY_HIT, from);
@@ -220,7 +218,6 @@ export class BodyBase extends Component {
     //X2 - X4
 
     onBodyX2(state: boolean = true) {
-        console.log('onBodyX2', state);
         this.m_bodyX2 = state;
         //
         if (this.m_bodyX4)

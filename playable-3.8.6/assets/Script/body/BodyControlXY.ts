@@ -256,7 +256,7 @@ export class BodyControlXY extends Component {
             return;
         }
 
-        if (this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {
+        if (this.getAttack()) {
             this.m_rigidbody.linearVelocity = v2();
             return;
         }
@@ -296,7 +296,7 @@ export class BodyControlXY extends Component {
             if (this.m_bodyAttack != null && this.MoveStopAttack)
                 this.m_bodyAttack?.onStop(true);
         }
-        if (!this.m_move && this.MoveAttackReset && !this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack))
+        if (!this.m_move && this.MoveAttackReset && !this.getAttack())
             this.m_bodyAttack?.onAttackReset();
     }
 
@@ -314,7 +314,7 @@ export class BodyControlXY extends Component {
     //DASH:
 
     onDash() {
-        if (!this.m_control || this.m_dash || this.m_dashDelay || this.getAttack(this.DashStopByBodyAttack, this.DashStopByPressAttack) || this.getDead())
+        if (!this.m_control || this.m_dash || this.m_dashDelay || this.getAttack() || this.getDead())
             return;
         this.m_dash = true;
         this.m_dashDelay = true;
@@ -396,7 +396,9 @@ export class BodyControlXY extends Component {
     protected onAttackProgess() {
         if (this.m_bodyAttack == null)
             return;
-        if (!this.MoveStopAttack && (this.MoveStopByBodyAttack || this.MoveStopByPressAttack))
+        if (this.getAttack(false))
+            return;
+        if (this.MoveStopByBodyAttack || this.MoveStopByPressAttack)
             this.m_body.onAnimationIdle(true);
         this.scheduleOnce(() => {
             this.scheduleOnce(() => {
@@ -440,7 +442,7 @@ export class BodyControlXY extends Component {
             state = PlayerStateXY.DEAD;
         else if (this.getHit())
             state = PlayerStateXY.HIT;
-        else if (this.getAttack(this.MoveStopByBodyAttack, this.MoveStopByPressAttack)) {
+        else if (this.getAttack()) {
             if (this.AttackHold)
                 state = PlayerStateXY.ATTACK_HOLD;
             else
@@ -491,17 +493,14 @@ export class BodyControlXY extends Component {
     }
 
     getKnock(): boolean {
-        if (this.m_bodyKnock != null)
-            return this.m_bodyKnock.m_knock;
-        return false;
+        return this.m_bodyKnock != null ? this.m_bodyKnock.m_knock : false;
     }
 
-    getAttack(stopByBodyAttack: boolean, stopByPressAttack: boolean): boolean {
-        if (stopByBodyAttack && this.m_bodyAttack != null ? this.m_bodyAttack?.m_attack : false)
-            return true;
-        if (stopByPressAttack && this.m_attack)
-            return true;
-        return false;
+    getAttack(full: boolean = true): boolean {
+        if (full)
+            return (this.m_bodyAttack != null ? this.m_bodyAttack.m_attack : false) || this.m_attack;
+        else
+            return (this.m_bodyAttack != null ? this.m_bodyAttack.m_attack : false);
     }
 
     //COMPLETE:
