@@ -402,7 +402,7 @@ export class BodyAttackX extends Component {
         return this.m_targetMelee.length > 0 || this.m_targetRange.length > 0;
     }
 
-    onAttackProgess(): number {
+    onAttackProgess() {
         if (this.m_dead)
             return 0;
         if (!this.m_attackNext && this.m_attack)
@@ -410,6 +410,18 @@ export class BodyAttackX extends Component {
         this.m_attack = true;
         this.m_continue = true;
 
+        this.onAttackProgressAnim();
+
+        this.m_meleeHit = this.MeleeHitAnim[this.m_attackIndex] * this.getMeleeHitMulti();
+        const attackDelayDuration = this.DelayAttackAnim[this.m_attackIndex];
+        this.scheduleOnce(() => this.onAttackProgessInvoke(), attackDelayDuration);
+
+        this.m_attackIndex++;
+        if (this.m_attackIndex > this.AnimAttack.length - 1)
+            this.m_attackIndex = 0;
+    }
+
+    protected onAttackProgressAnim() {
         this.unscheduleAllCallbacks();
         this.unschedule(this.m_attackSchedule);
         this.unschedule(this.m_continueSchedule);
@@ -456,10 +468,6 @@ export class BodyAttackX extends Component {
                 this.m_attackIndex = 0;
         }, animAttackDuration);
 
-        this.m_meleeHit = this.MeleeHitAnim[this.m_attackIndex] * this.getMeleeHitMulti();
-        const attackDelayDuration = this.DelayAttackAnim[this.m_attackIndex];
-        this.scheduleOnce(() => this.onAttackProgessInvoke(), attackDelayDuration);
-
         const animNextDuration = this.DelayNextAnim[this.m_attackIndex] / this.AnimTimeScale;
         this.m_attackNext = false;
         this.m_nextSchedule = this.scheduleOnce(() => {
@@ -467,12 +475,6 @@ export class BodyAttackX extends Component {
             if (this.NextUnAttack)
                 this.m_attack = false;
         }, animNextDuration);
-
-        this.m_attackIndex++;
-        if (this.m_attackIndex > this.AnimAttack.length - 1)
-            this.m_attackIndex = 0;
-
-        return Math.max(animAttackDuration, this.DelayAttack);
     }
 
     protected onAttackProgessInvoke() {
