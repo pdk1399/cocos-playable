@@ -3592,7 +3592,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 200,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Mr.Boss",
@@ -5726,7 +5725,6 @@
     "DelayLoop": 1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -5746,11 +5744,17 @@
     "AnimAttack": [
       "attack1"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      10
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -5848,13 +5852,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": false,
     "Spine": {
       "__id__": 91
     },
-    "Skeleton": null,
+    "FaceRight": false,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "73cB4hPwVEf66rMQG3VPwO"
   },
@@ -6932,7 +6935,6 @@
     "Protect": false,
     "ProtectBigSize": true,
     "HitPoint": 50,
-    "HitDelay": 1,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "",
@@ -6973,7 +6975,6 @@
     "DelayLoop": 0,
     "StopOutRange": false,
     "StopOnHit": true,
-    "ContinueOnHit": false,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -6995,15 +6996,23 @@
       "attack-short",
       "attack-heavy"
     ],
-    "MeleeHitAnim": [
+    "AnimTimeScale": 1.5,
+    "AnimDelayNext": [
+      2,
+      2,
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0,
+      0,
+      0
+    ],
+    "AnimMeleeHit": [
       1,
       1,
       5
     ],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
-    "AnimTimeScale": 1.5,
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -7024,6 +7033,7 @@
     "_enabled": true,
     "__prefab": null,
     "Type": 0,
+    "SwitchIndex": 0,
     "LockX": false,
     "FaceRight": true,
     "MoveGroundX": 40,
@@ -7057,7 +7067,6 @@
     "DashAttackReset": true,
     "FallAttackStop": false,
     "FallAttackForce": 0,
-    "SwitchIndex": 0,
     "EndOnGround": true,
     "EndRevertX": false,
     "AnimMove": "run",
@@ -7131,15 +7140,14 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 185
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [
       "s10"
     ],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "46J6WkmlBP9aXSa0mSdKbo"
   },

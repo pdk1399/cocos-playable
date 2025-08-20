@@ -7556,11 +7556,10 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": null,
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "7eVafhnNFFKZiCASToVbSf"
   },
@@ -8002,7 +8001,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 50,
-    "HitDelay": 1,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "",
@@ -8043,7 +8041,6 @@
     "DelayLoop": 0,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": false,
@@ -8065,15 +8062,23 @@
       "attack_3",
       "attack_4"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [
+    "AnimTimeScale": 1.5,
+    "AnimDelayNext": [
       0.6,
       0.6,
       1.3
     ],
     "NextUnAttack": true,
-    "AnimTimeScale": 1.5,
+    "AnimDelayAttack": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "AnimMeleeHit": [
+      1,
+      1,
+      1
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -8094,6 +8099,7 @@
     "_enabled": true,
     "__prefab": null,
     "Type": 0,
+    "SwitchIndex": 0,
     "LockX": false,
     "FaceRight": true,
     "MoveGroundX": 40,
@@ -8127,7 +8133,6 @@
     "DashAttackReset": true,
     "FallAttackStop": false,
     "FallAttackForce": 2,
-    "SwitchIndex": 0,
     "EndOnGround": true,
     "EndRevertX": false,
     "AnimMove": "run",
@@ -8201,11 +8206,12 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Spine": {
+      "__id__": 212
+    },
     "FaceRight": true,
-    "Spine": null,
-    "Skeleton": null,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "5fgv/XT1lOqLDadCBC63Ck"
   },

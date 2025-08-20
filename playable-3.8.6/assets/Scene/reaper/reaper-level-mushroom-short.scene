@@ -8674,7 +8674,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 50,
-    "HitDelay": 1,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "",
@@ -8717,7 +8716,6 @@
     "DelayLoop": 0,
     "StopOutRange": false,
     "StopOnHit": true,
-    "ContinueOnHit": false,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": false,
@@ -8739,23 +8737,23 @@
       "attack_7_2",
       "attack_7_3"
     ],
-    "MeleeHitAnim": [
-      1,
-      1,
-      3
-    ],
-    "DelayAttackAnim": [
-      0,
-      0.1,
-      0.35
-    ],
-    "DelayNextAnim": [
+    "AnimTimeScale": 1,
+    "AnimDelayNext": [
       0.35,
       0.35,
       0.45
     ],
     "NextUnAttack": false,
-    "AnimTimeScale": 1,
+    "AnimDelayAttack": [
+      0,
+      0.1,
+      0.35
+    ],
+    "AnimMeleeHit": [
+      1,
+      1,
+      3
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -8776,6 +8774,7 @@
     "_enabled": true,
     "__prefab": null,
     "Type": 0,
+    "SwitchIndex": 0,
     "LockX": false,
     "FaceRight": true,
     "MoveGroundX": 40,
@@ -8809,7 +8808,6 @@
     "DashAttackReset": true,
     "FallAttackStop": false,
     "FallAttackForce": 0,
-    "SwitchIndex": 0,
     "EndOnGround": true,
     "EndRevertX": false,
     "AnimMove": "run",
@@ -8883,13 +8881,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 228
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "d6rGr4ln5LQpLZVOtvJn/1"
   },
@@ -13597,7 +13594,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 2,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Mr.Box",
@@ -13635,13 +13631,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 377
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "f7XstiwK5AraFhCUoCDaZG"
   },
@@ -13912,7 +13907,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 2,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Mr.Box",
@@ -13950,13 +13944,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 386
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "afW2/lAzlIG77DHAjVE281"
   },
@@ -14604,7 +14597,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Mr.Employee (T1)",
@@ -14647,7 +14639,6 @@
     "DelayLoop": 1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -14667,11 +14658,17 @@
     "AnimAttack": [
       "attack1"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -14768,13 +14765,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 404
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "a4MjjEMNNIH5zl9mFgj27R"
   },
@@ -15239,7 +15235,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Mr.Employee (T1)",
@@ -15280,7 +15275,6 @@
     "DelayLoop": 1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -15300,11 +15294,17 @@
     "AnimAttack": [
       "attack1"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -15401,13 +15401,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 423
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "3bwIsBFv5MNZdvl9lJcUjY"
   },
@@ -15868,7 +15867,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Mr.Employee (T1)",
@@ -15909,7 +15907,6 @@
     "DelayLoop": 1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -15929,11 +15926,17 @@
     "AnimAttack": [
       "attack1"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -16030,13 +16033,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 442
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "3cRjmHYD9M8Yi1dkUNEY3O"
   },
@@ -16613,7 +16615,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 15,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Mr.Boss",
@@ -16656,7 +16657,6 @@
     "DelayLoop": 1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -16676,11 +16676,17 @@
     "AnimAttack": [
       "attack1"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -16778,13 +16784,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 462
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "73cB4hPwVEf66rMQG3VPwO"
   },

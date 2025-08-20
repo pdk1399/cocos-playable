@@ -8509,7 +8509,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 50,
-    "HitDelay": 1,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "",
@@ -8547,16 +8546,29 @@
     "_enabled": true,
     "__prefab": null,
     "Once": true,
-    "DelayAttack": 0.25,
-    "DelayNext": 2,
     "DelayLoop": 0,
+    "AnimMix": false,
+    "AnimComboKeep": false,
+    "AnimReady": [],
+    "AnimAttack": [
+      "attack_weapon1_1"
+    ],
+    "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.25
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "StopOutRange": false,
     "StopOnHit": true,
-    "ContinueOnHit": false,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": false,
-    "MeleeHit": 1,
     "MeleeHitMultiX2": 2,
     "MeleeHitMultiX4": 4,
     "Range": false,
@@ -8566,17 +8578,6 @@
     "RangeBulletSpeed": 5,
     "RangeTargetUpdate": true,
     "RangeTargetReset": true,
-    "AnimComboKeep": false,
-    "AnimMix": false,
-    "AnimReady": [],
-    "AnimAttack": [
-      "attack_weapon1_1"
-    ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
-    "AnimTimeScale": 1,
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -8597,6 +8598,7 @@
     "_enabled": true,
     "__prefab": null,
     "Type": 0,
+    "SwitchIndex": 0,
     "LockX": false,
     "FaceRight": true,
     "MoveGroundX": 40,
@@ -8630,7 +8632,6 @@
     "DashAttackReset": true,
     "FallAttackStop": false,
     "FallAttackForce": 0,
-    "SwitchIndex": 0,
     "EndOnGround": true,
     "EndRevertX": false,
     "AnimMove": "run",
@@ -8704,14 +8705,15 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Spine": {
+      "__id__": 224
+    },
     "FaceRight": true,
-    "Spine": null,
-    "Skeleton": null,
     "Skin": [
       "s1",
       "wp1"
     ],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "15qK6PD3pAf6xAr/2j/XWF"
   },
@@ -11389,7 +11391,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Shadow (T1)",
@@ -11427,16 +11428,29 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 0.1,
+    "AnimMix": false,
+    "AnimComboKeep": false,
+    "AnimReady": [],
+    "AnimAttack": [
+      "attack"
+    ],
+    "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
-    "MeleeHit": 1,
     "MeleeHitMultiX2": 2,
     "MeleeHitMultiX4": 4,
     "Range": false,
@@ -11446,17 +11460,6 @@
     "RangeBulletSpeed": 5,
     "RangeTargetUpdate": true,
     "RangeTargetReset": true,
-    "AnimComboKeep": false,
-    "AnimMix": false,
-    "AnimReady": [],
-    "AnimAttack": [
-      "attack"
-    ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
-    "AnimTimeScale": 1,
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -11553,13 +11556,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 312
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "7fIh4nGcFHKp5JIZrn48Sy"
   },
@@ -12044,7 +12046,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Shadow (T1)",
@@ -12082,16 +12083,29 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 0.1,
+    "AnimMix": false,
+    "AnimComboKeep": false,
+    "AnimReady": [],
+    "AnimAttack": [
+      "attack"
+    ],
+    "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
-    "MeleeHit": 1,
     "MeleeHitMultiX2": 2,
     "MeleeHitMultiX4": 4,
     "Range": false,
@@ -12101,17 +12115,6 @@
     "RangeBulletSpeed": 5,
     "RangeTargetUpdate": true,
     "RangeTargetReset": true,
-    "AnimComboKeep": false,
-    "AnimMix": false,
-    "AnimReady": [],
-    "AnimAttack": [
-      "attack"
-    ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
-    "AnimTimeScale": 1,
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -12208,13 +12211,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 331
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "edElHc/7NBjIKYUesSufpx"
   },
@@ -12699,7 +12701,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Shadow (T1)",
@@ -12737,16 +12738,29 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 0.1,
+    "AnimMix": false,
+    "AnimComboKeep": false,
+    "AnimReady": [],
+    "AnimAttack": [
+      "attack"
+    ],
+    "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
-    "MeleeHit": 1,
     "MeleeHitMultiX2": 2,
     "MeleeHitMultiX4": 4,
     "Range": false,
@@ -12756,17 +12770,6 @@
     "RangeBulletSpeed": 5,
     "RangeTargetUpdate": true,
     "RangeTargetReset": true,
-    "AnimComboKeep": false,
-    "AnimMix": false,
-    "AnimReady": [],
-    "AnimAttack": [
-      "attack"
-    ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
-    "AnimTimeScale": 1,
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -12863,13 +12866,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 350
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "0bi3l2L25DcYqwcyvMtGDR"
   },
@@ -13409,7 +13411,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 6,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Shadow (T2)",
@@ -13447,16 +13448,29 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 0.1,
+    "AnimMix": false,
+    "AnimComboKeep": false,
+    "AnimReady": [],
+    "AnimAttack": [
+      "attack"
+    ],
+    "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
-    "MeleeHit": 1,
     "MeleeHitMultiX2": 2,
     "MeleeHitMultiX4": 4,
     "Range": false,
@@ -13466,17 +13480,6 @@
     "RangeBulletSpeed": 5,
     "RangeTargetUpdate": true,
     "RangeTargetReset": true,
-    "AnimComboKeep": false,
-    "AnimMix": false,
-    "AnimReady": [],
-    "AnimAttack": [
-      "attack"
-    ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
-    "AnimTimeScale": 1,
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -13574,13 +13577,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 370
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "a2isW+2JRBqKfK/2yYaFco"
   },
@@ -14518,7 +14520,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 6,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Shadow (T2)",
@@ -14556,16 +14557,29 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 0.1,
+    "AnimMix": false,
+    "AnimComboKeep": false,
+    "AnimReady": [],
+    "AnimAttack": [
+      "attack"
+    ],
+    "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
-    "MeleeHit": 1,
     "MeleeHitMultiX2": 2,
     "MeleeHitMultiX4": 4,
     "Range": false,
@@ -14575,17 +14589,6 @@
     "RangeBulletSpeed": 5,
     "RangeTargetUpdate": true,
     "RangeTargetReset": true,
-    "AnimComboKeep": false,
-    "AnimMix": false,
-    "AnimReady": [],
-    "AnimAttack": [
-      "attack"
-    ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
-    "AnimTimeScale": 1,
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -14683,13 +14686,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 401
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "4aYmHReeBPEIqZCHIKJb1r"
   },
@@ -15288,7 +15290,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 15,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Shadow (Boss)",
@@ -15326,16 +15327,29 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 0.1,
+    "AnimMix": false,
+    "AnimComboKeep": false,
+    "AnimReady": [],
+    "AnimAttack": [
+      "attack"
+    ],
+    "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
-    "MeleeHit": 1,
     "MeleeHitMultiX2": 2,
     "MeleeHitMultiX4": 4,
     "Range": false,
@@ -15345,17 +15359,6 @@
     "RangeBulletSpeed": 5,
     "RangeTargetUpdate": true,
     "RangeTargetReset": true,
-    "AnimComboKeep": false,
-    "AnimMix": false,
-    "AnimReady": [],
-    "AnimAttack": [
-      "attack"
-    ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
-    "AnimTimeScale": 1,
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -15453,13 +15456,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 423
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "c5fgPkxGRNK4S99ky0Gj9V"
   },
@@ -15973,7 +15975,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 6,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Shadow (T2)",
@@ -16011,16 +16012,29 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 0.1,
+    "AnimMix": false,
+    "AnimComboKeep": false,
+    "AnimReady": [],
+    "AnimAttack": [
+      "attack"
+    ],
+    "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
-    "MeleeHit": 1,
     "MeleeHitMultiX2": 2,
     "MeleeHitMultiX4": 4,
     "Range": false,
@@ -16030,17 +16044,6 @@
     "RangeBulletSpeed": 5,
     "RangeTargetUpdate": true,
     "RangeTargetReset": true,
-    "AnimComboKeep": false,
-    "AnimMix": false,
-    "AnimReady": [],
-    "AnimAttack": [
-      "attack"
-    ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
-    "AnimTimeScale": 1,
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -16138,13 +16141,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 443
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "33mokdxHVPu4rcDhiUlNWh"
   },
@@ -16658,7 +16660,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 6,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Shadow (T2)",
@@ -16696,16 +16697,29 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 0.1,
+    "AnimMix": false,
+    "AnimComboKeep": false,
+    "AnimReady": [],
+    "AnimAttack": [
+      "attack"
+    ],
+    "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      1
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
-    "MeleeHit": 1,
     "MeleeHitMultiX2": 2,
     "MeleeHitMultiX4": 4,
     "Range": false,
@@ -16715,17 +16729,6 @@
     "RangeBulletSpeed": 5,
     "RangeTargetUpdate": true,
     "RangeTargetReset": true,
-    "AnimComboKeep": false,
-    "AnimMix": false,
-    "AnimReady": [],
-    "AnimAttack": [
-      "attack"
-    ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
-    "AnimTimeScale": 1,
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -16823,13 +16826,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 463
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "8b8iq1pZNKTZtPBOFejgXc"
   },

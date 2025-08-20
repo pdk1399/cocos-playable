@@ -9203,7 +9203,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 50,
-    "HitDelay": 1,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "",
@@ -9246,7 +9245,6 @@
     "DelayLoop": 1,
     "StopOutRange": false,
     "StopOnHit": true,
-    "ContinueOnHit": false,
     "Melee": false,
     "MeleeDirUpdate": true,
     "MeleeAuto": false,
@@ -9268,11 +9266,17 @@
     "AnimAttack": [
       "attack_mage"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.02
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "Aim": true,
     "AimAnim": "attack_archer_2_aim",
     "AimBone": "attack_aim",
@@ -9294,14 +9298,10 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "Bullet": null,
-    "BulletSpeed": 5,
-    "ShootFrom": {
+    "Centre": {
       "__id__": 226
     },
-    "ShootSpawm": null,
-    "ShootHold": false,
-    "ShootDelay": 0.5,
+    "Spawm": null,
     "_id": "78lWr22V5OK5xrhchHV+DN"
   },
   {
@@ -9315,6 +9315,7 @@
     "_enabled": true,
     "__prefab": null,
     "Type": 0,
+    "SwitchIndex": 0,
     "LockX": false,
     "FaceRight": true,
     "MoveGroundX": 40,
@@ -9348,7 +9349,6 @@
     "DashAttackReset": true,
     "FallAttackStop": false,
     "FallAttackForce": 0,
-    "SwitchIndex": 0,
     "EndOnGround": true,
     "EndRevertX": false,
     "AnimMove": "run_up",
@@ -9422,16 +9422,15 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 230
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [
       "s2",
       "wp2"
     ],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "4dWrbjcsBI2ZT02RWlMg0K"
   },
@@ -13724,7 +13723,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Mr.Crab (T3)",
@@ -13767,7 +13765,6 @@
     "DelayLoop": 1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -13787,11 +13784,17 @@
     "AnimAttack": [
       "attack3"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      0.5
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.6
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -13888,13 +13891,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 379
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "7btpTKc8dC45nGZ/LdxECR"
   },
@@ -14365,7 +14367,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Mr.Crab (T3)",
@@ -14408,7 +14409,6 @@
     "DelayLoop": 1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -14428,11 +14428,17 @@
     "AnimAttack": [
       "attack3"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      0.5
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.6
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -14529,13 +14535,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 398
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "a3TZ6LTKxOILfVRgSrB94+"
   },
@@ -15006,7 +15011,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Mr.Crab (T3)",
@@ -15049,7 +15053,6 @@
     "DelayLoop": 1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -15069,11 +15072,17 @@
     "AnimAttack": [
       "attack3"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      0.5
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.6
+    ],
+    "AnimMeleeHit": [
+      1
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -15170,13 +15179,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 417
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "a77QwRxclPqYT60fCwcUB1"
   },

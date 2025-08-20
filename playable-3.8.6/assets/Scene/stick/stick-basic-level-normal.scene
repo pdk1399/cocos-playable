@@ -8621,7 +8621,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 50,
-    "HitDelay": 1,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "",
@@ -8664,7 +8663,6 @@
     "DelayLoop": 0,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": false,
@@ -8685,17 +8683,20 @@
       "attack_3_4",
       "attack_3_5"
     ],
-    "MeleeHitAnim": [
-      1,
-      3
+    "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2,
+      2
     ],
-    "DelayAttackAnim": [
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
       0.1,
       0.4
     ],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
-    "AnimTimeScale": 1,
+    "AnimMeleeHit": [
+      1,
+      3
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -8716,6 +8717,7 @@
     "_enabled": true,
     "__prefab": null,
     "Type": 0,
+    "SwitchIndex": 0,
     "LockX": false,
     "FaceRight": true,
     "MoveGroundX": 40,
@@ -8749,7 +8751,6 @@
     "DashAttackReset": true,
     "FallAttackStop": false,
     "FallAttackForce": 0,
-    "SwitchIndex": 0,
     "EndOnGround": true,
     "EndRevertX": false,
     "AnimMove": "run",
@@ -8823,14 +8824,15 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Spine": {
+      "__id__": 227
+    },
     "FaceRight": true,
-    "Spine": null,
-    "Skeleton": null,
     "Skin": [
       "s1",
       "wp3"
     ],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "8eiyK+5ndE2bnbY05gyVXW"
   },
@@ -13221,7 +13223,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Sword (T1)",
@@ -13264,7 +13265,6 @@
     "DelayLoop": 0.1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -13285,11 +13285,20 @@
       "stab",
       "slash"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2,
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.4,
+      0.4
+    ],
+    "AnimMeleeHit": [
+      5,
+      5
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -13386,13 +13395,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 364
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "33bVkIhtZKB6W3PprHG5eX"
   },
@@ -14332,7 +14340,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Sword (T1)",
@@ -14375,7 +14382,6 @@
     "DelayLoop": 0.1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -14396,11 +14402,20 @@
       "stab",
       "slash"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2,
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.4,
+      0.4
+    ],
+    "AnimMeleeHit": [
+      5,
+      5
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -14497,13 +14512,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 395
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "e301zdf3FFaIFTOdpEkMFd"
   },
@@ -15019,7 +15033,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 3,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Sword (T1)",
@@ -15062,7 +15075,6 @@
     "DelayLoop": 0.1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -15083,11 +15095,20 @@
       "stab",
       "slash"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2,
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.4,
+      0.4
+    ],
+    "AnimMeleeHit": [
+      5,
+      5
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -15184,13 +15205,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 415
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "6aQmmJ+hZBsb7Vo+Gm9e2A"
   },
@@ -15761,7 +15781,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 6,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Sword (T2)",
@@ -15781,6 +15800,11 @@
     "TagDestroyCollider": [
       200
     ],
+    "AnimIdle": "idle",
+    "AnimIdleLoop": true,
+    "AnimHit": "hit",
+    "AnimDead": "dead",
+    "AnimDeadLoop": true,
     "_id": "36RApdf2lMRaS0vQh0ZhQx"
   },
   {
@@ -15799,7 +15823,6 @@
     "DelayLoop": 0.1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -15820,11 +15843,20 @@
       "stab",
       "slash"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2,
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.5,
+      0.5
+    ],
+    "AnimMeleeHit": [
+      5,
+      5
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -15853,6 +15885,11 @@
       "__id__": 223
     },
     "FollowDirAttack": false,
+    "AnimMove": "move",
+    "AnimPush": "push",
+    "AnimAirOn": "air_on",
+    "AnimAirOff": "air_off",
+    "AnimDash": "dash",
     "_id": "3dj2KHQiRD+oTOf4N56ist"
   },
   {
@@ -15917,13 +15954,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 436
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "4cPCPHwT5Eybeo1Ak2VdNh"
   },
@@ -16468,7 +16504,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 6,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Sword (T2)",
@@ -16511,7 +16546,6 @@
     "DelayLoop": 0.1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -16532,11 +16566,20 @@
       "stab",
       "slash"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2,
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.5,
+      0.5
+    ],
+    "AnimMeleeHit": [
+      5,
+      5
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -16634,13 +16677,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 457
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "89Sf6VkfJFd7ZRToUPX3Ik"
   },
@@ -17270,7 +17312,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 15,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Sword (Boss)",
@@ -17313,7 +17354,6 @@
     "DelayLoop": 0.1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -17334,11 +17374,20 @@
       "stab",
       "slash"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2,
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.5,
+      0.5
+    ],
+    "AnimMeleeHit": [
+      10,
+      10
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -17436,13 +17485,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 480
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "32hYWVNi1KqaM+beg6EA1I"
   },
@@ -17987,7 +18035,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 6,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Sword (T2)",
@@ -18030,7 +18077,6 @@
     "DelayLoop": 0.1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -18051,11 +18097,20 @@
       "stab",
       "slash"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2,
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.5,
+      0.5
+    ],
+    "AnimMeleeHit": [
+      5,
+      5
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -18153,13 +18208,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 501
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "51jonhksRKQLSdYOJ5qf0z"
   },
@@ -18704,7 +18758,6 @@
     "Protect": false,
     "ProtectBigSize": false,
     "HitPoint": 6,
-    "HitDelay": 0.2,
     "HitFixed": false,
     "SwimWater": false,
     "Name": "Sword (T2)",
@@ -18747,7 +18800,6 @@
     "DelayLoop": 0.1,
     "StopOutRange": false,
     "StopOnHit": false,
-    "ContinueOnHit": true,
     "Melee": true,
     "MeleeDirUpdate": true,
     "MeleeAuto": true,
@@ -18768,11 +18820,20 @@
       "stab",
       "slash"
     ],
-    "MeleeHitAnim": [],
-    "DelayAttackAnim": [],
-    "DelayNextAnim": [],
-    "NextUnAttack": false,
     "AnimTimeScale": 1,
+    "AnimDelayNext": [
+      2,
+      2
+    ],
+    "NextUnAttack": false,
+    "AnimDelayAttack": [
+      0.5,
+      0.5
+    ],
+    "AnimMeleeHit": [
+      5,
+      5
+    ],
     "Aim": false,
     "AimAnim": "attack_aim",
     "AimBone": "aim_bone",
@@ -18870,13 +18931,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "FaceRight": true,
     "Spine": {
       "__id__": 522
     },
-    "Skeleton": null,
+    "FaceRight": true,
     "Skin": [],
-    "SpineEvent": false,
+    "OnScene": true,
     "AnimStart": [],
     "_id": "e6w6JE7u9MgIeZD7Y3eB4A"
   },
