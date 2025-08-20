@@ -1,6 +1,8 @@
 import { _decorator, Node, AudioSource, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, instantiate, RigidBody2D, Sprite, Vec2, v2, v3, UITransform, tween, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { UIValueBar } from '../ui/UIValueBar';
+import { SpineBase } from '../renderer/SpineBase';
+import { BodySpine } from './BodySpine';
 const { ccclass, property } = _decorator;
 
 @ccclass('BodyBase')
@@ -49,11 +51,23 @@ export class BodyBase extends Component {
     @property({ group: { name: 'Destroy' }, type: [CCInteger], visible(this: BodyBase) { return this.DestroyBody; } })
     TagDestroyCollider: number[] = [200];
 
+    @property({ group: { name: 'Anim' }, type: CCString })
+    AnimIdle: string = 'idle';
+    @property({ group: { name: 'Anim' }, type: CCBoolean })
+    AnimIdleLoop: boolean = true;
+    @property({ group: { name: 'Anim' }, type: CCString })
+    AnimHit: string = 'hit';
+    @property({ group: { name: 'Anim' }, type: CCString })
+    AnimDead: string = 'dead';
+    @property({ group: { name: 'Anim' }, type: CCBoolean })
+    AnimDeadLoop: boolean = true;
+
     m_baseSize: number = 1;
     m_baseScale: Vec3 = Vec3.ONE;
 
     m_dead: boolean = false;
     m_hit: boolean = false;
+    m_hitLockAnimation: boolean = false;
     m_hitPointCurrent: number;
 
     m_bodyX2: boolean = false;
@@ -66,8 +80,11 @@ export class BodyBase extends Component {
     m_maskTransform: UITransform = null;
     m_maskTransformX: number;
 
+    m_spine: SpineBase = null;
+
     protected onLoad(): void {
         this.m_rigidbody = this.getComponent(RigidBody2D);
+        this.m_spine = this.getComponent(SpineBase);
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
         this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
@@ -104,43 +121,52 @@ export class BodyBase extends Component {
             director.emit(this.EmitDestroy, this.node);
     }
 
+    onLostFocusInEditor(): void {
+        const bodySpine = this.node.getComponent(BodySpine);
+        this.AnimIdle = bodySpine.AnimIdle;
+        this.AnimIdleLoop = bodySpine.AnimIdleLoop;
+        this.AnimHit = bodySpine.AnimHit;
+        this.AnimDead = bodySpine.AnimDead;
+        this.AnimDeadLoop = bodySpine.AnimDeadLoop;
+    }
+
     //BODY
 
     onHit(hit: number, from: Node) {
-        if (this.m_dead)
+        if (this.Protect || (this.ProtectBigSize && (this.m_bodyX2 || this.m_bodyX4)))
             return;
-
-        if (this.m_hit)
+        if (this.m_dead || this.m_hit)
             return;
         this.m_hit = true;
-        this.scheduleOnce(() => {
-            this.m_hit = false;
-        }, this.HitDelay);
 
-        if (this.Protect || (this.ProtectBigSize && (this.m_bodyX2 || this.m_bodyX4))) {
-            //Protect
-        }
-        else {
-            //Hurt
-            if (this.HitFixed)
-                this.m_hitPointCurrent -= 1;
-            else
-                this.m_hitPointCurrent -= Math.max(hit, 1);
-            if (this.m_hitPointCurrent < 0)
-                this.m_hitPointCurrent = 0;
-            this.onBarUpdate();
-        }
+        //VALUE
+        if (this.HitFixed)
+            this.m_hitPointCurrent -= 1;
+        else
+            this.m_hitPointCurrent -= Math.max(hit, 1);
+        if (this.m_hitPointCurrent < 0)
+            this.m_hitPointCurrent = 0;
+        this.onBarUpdate();
 
-        if (this.m_hitPointCurrent <= 0)
-            this.onDead(from);
-        else {
-            this.node.emit(ConstantBase.NODE_BODY_HIT, hit, from);
+        //RESULT
+        if (this.m_hitPointCurrent > 0) {
+            //DELAY & ANIMTION
+            this.onAnimationHit();
+            this.scheduleOnce(() => {
+                this.m_hit = false;
+                this.onAnimationIdle();
+            }, Math.max(this.HitDelay, 0.02));
+
+            //EVENT
+            this.node.emit(ConstantBase.NODE_BODY_HIT, from);
             if (this.EmitHit != '')
                 director.emit(this.EmitHit);
 
             if (this.ShakeHit)
                 director.emit(ConstantBase.CAMERA_EFFECT_SHAKE_ONCE);
         }
+        else
+            this.onDead(from);
     }
 
     onDead(from: Node) {
@@ -148,6 +174,11 @@ export class BodyBase extends Component {
             return;
         this.unscheduleAllCallbacks();
         this.m_dead = true;
+
+        this.node.off(ConstantBase.NODE_BODY_HIT, this.onHit, this);
+        this.node.off(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
+
+        this.onAnimationDead();
 
         this.node.emit(ConstantBase.NODE_BODY_DEAD, from);
         if (this.EmitDead != '')
@@ -157,9 +188,6 @@ export class BodyBase extends Component {
             director.emit(ConstantBase.CAMERA_EFFECT_SHAKE_ONCE);
 
         this.onDeadDestroy();
-
-        this.node.off(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.off(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
     }
 
     onProtect(state: boolean = true) {
@@ -275,5 +303,43 @@ export class BodyBase extends Component {
                 this.m_destroyCollider.forEach(colliderCheck => { colliderCheck.destroy(); });
             }, Math.max(this.DestroyBodyDelay, 0.02));
         }
+    }
+
+    //ANIMTION
+
+    onAnimationIdle(force: boolean = false): number {
+        if (this.m_dead)
+            return this.onAnimationDead();
+        if (force)
+            //Force animation IDLE for another progress (example reset animation)
+            return this.m_spine.onAnimationForce(this.AnimIdle, this.AnimIdleLoop);
+        if (this.m_hit)
+            return this.onAnimationHit();
+        //FINAL
+        return this.m_spine.onAnimation(this.AnimIdle, this.AnimIdleLoop);
+    }
+
+    onAnimationHit(): number {
+        if (this.m_dead)
+            return this.onAnimationDead();
+        if (this.m_hitLockAnimation)
+            //Lock animtion HIT for another animation (example ATTACK)
+            return 0;
+        //FINAL
+        return this.m_spine.onAnimationForceUnSave(this.AnimHit, false);
+    }
+
+    onAnimationDead(): number {
+        //FINAL
+        return this.m_spine.onAnimationForce(this.AnimDead, this.AnimDeadLoop);
+    }
+
+    onAnimation(animation: string, loop: boolean) {
+        if (this.m_dead)
+            return this.onAnimationDead();
+        if (this.m_hit)
+            return this.onAnimationHit();
+        //FINAL
+        return this.m_spine.onAnimation(animation, loop);
     }
 }

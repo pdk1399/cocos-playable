@@ -57,12 +57,12 @@ export class ManagerInput extends Component {
     @property({ group: { name: 'Attack' }, type: Node })
     BtnAttack: Node = null;
 
-    @property({ group: { name: 'Interaction' }, type: KeyCodeType })
-    KeyInteracte: KeyCodeType = KeyCodeType.KEY_A;
-    @property({ group: { name: 'Interaction' }, type: Node })
-    BtnInteraction: Node = null;
-    @property({ group: { name: 'Interaction' }, type: [Node] })
-    IconInteraction: Node[] = [];
+    // @property({ group: { name: 'Interaction' }, type: KeyCodeType })
+    // KeyInteracte: KeyCodeType = KeyCodeType.KEY_A;
+    // @property({ group: { name: 'Interaction' }, type: Node })
+    // BtnInteraction: Node = null;
+    // @property({ group: { name: 'Interaction' }, type: [Node] })
+    // IconInteraction: Node[] = [];
 
     @property({ group: { name: 'Switch' }, type: CCBoolean })
     SwitchActive: boolean = false;
@@ -87,10 +87,6 @@ export class ManagerInput extends Component {
     m_dash: boolean = false;
     m_attack: boolean = false;
     m_switchIndex: number = 0;
-
-    m_debugDt: number = 0;
-    m_debugDtMax: number = 0;
-    m_debugDtReset: number = 0;
 
     protected onLoad(): void {
         director.on(ConstantBase.CONTROL_LOCK, this.onLock, this);
@@ -146,11 +142,11 @@ export class ManagerInput extends Component {
             director.on(ConstantBase.UI_ATTACK_SHOW, this.onAttackShow, this);
         }
 
-        if (this.BtnInteraction != null) {
-            this.BtnInteraction.on(Input.EventType.TOUCH_START, this.onInteraction, this);
-            director.on(ConstantBase.UI_INTERACTION_SHOW, this.onInteractionShow, this);
-            director.on(ConstantBase.UI_INTERACTION_ICON, this.onInteractionIcon, this);
-        }
+        // if (this.BtnInteraction != null) {
+        //     this.BtnInteraction.on(Input.EventType.TOUCH_START, this.onInteraction, this);
+        //     director.on(ConstantBase.UI_INTERACTION_SHOW, this.onInteractionShow, this);
+        //     director.on(ConstantBase.UI_INTERACTION_ICON, this.onInteractionIcon, this);
+        // }
 
         this.Switch.forEach(Item => {
             Item.on(Input.EventType.TOUCH_START, this.onSwitchStart, this);
@@ -294,8 +290,8 @@ export class ManagerInput extends Component {
         if (this.BtnAttack != null)
             this.BtnAttack.active = false;
 
-        if (this.BtnInteraction != null)
-            this.BtnInteraction.active = false;
+        // if (this.BtnInteraction != null)
+        //     this.BtnInteraction.active = false;
 
         for (let i = 0; i < this.Switch.length; i++)
             this.Switch[i].active = false;
@@ -331,8 +327,8 @@ export class ManagerInput extends Component {
         if (this.BtnAttack != null)
             this.BtnAttack.active = this.m_avaible;
 
-        if (this.BtnInteraction != null)
-            this.BtnInteraction.active = this.m_avaible;
+        // if (this.BtnInteraction != null)
+        //     this.BtnInteraction.active = this.m_avaible;
 
         for (let i = 0; i < this.Switch.length; i++)
             this.Switch[i].active = this.m_avaible;
@@ -425,18 +421,18 @@ export class ManagerInput extends Component {
 
     //Interaction
 
-    onInteraction() {
-        director.emit(ConstantBase.CONTROL_INTERACTION);
-    }
+    // onInteraction() {
+    //     director.emit(ConstantBase.CONTROL_INTERACTION);
+    // }
 
-    onInteractionShow(state: boolean) {
-        this.BtnInteraction.active = this.m_avaible && state;
-    }
+    // onInteractionShow(state: boolean) {
+    //     this.BtnInteraction.active = this.m_avaible && state;
+    // }
 
-    onInteractionIcon(index: number) {
-        for (let i = 0; i < this.IconInteraction.length; i++)
-            this.IconInteraction[i].active = this.m_avaible && i == index;
-    }
+    // onInteractionIcon(index: number) {
+    //     for (let i = 0; i < this.IconInteraction.length; i++)
+    //         this.IconInteraction[i].active = this.m_avaible && i == index;
+    // }
 
     //Switch
 
@@ -512,9 +508,9 @@ export class ManagerInput extends Component {
                 this.onAttackStart();
                 break;
             //Interaction
-            case this.KeyInteracte:
-                this.onInteraction();
-                break;
+            // case this.KeyInteracte:
+            //     this.onInteraction();
+            //     break;
             //Switch
             case KeyCodeType.TAB:
                 this.m_switchIndex++;
@@ -554,9 +550,9 @@ export class ManagerInput extends Component {
                 this.onAttackEnd();
                 break;
             //Interaction
-            case this.KeyInteracte:
-                //...
-                break;
+            // case this.KeyInteracte:
+            //     //...
+            //     break;
             //Switch
             case KeyCodeType.TAB:
                 //...

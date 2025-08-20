@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, Component, Enum, RigidBody2D, Vec3, Node, v3 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, Component, Enum, RigidBody2D, Vec3, Node, v3, CCString } from 'cc';
 import { ConstantBase } from '../../ConstantBase';
 import { SpineBase } from '../../renderer/SpineBase';
 import { BodyBase } from '../BodyBase';
@@ -43,6 +43,17 @@ export class BodyMovePathX extends Component {
     PathOffsetXL: number = 500;
     @property({ group: { name: 'Path' }, type: CCFloat })
     PathOffsetXR: number = 500;
+
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimMove: string = 'move';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimPush: string = 'push';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimAirOn: string = 'air_on';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimAirOff: string = 'air_off';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimDash: string = 'dash';
 
     m_state: BodyState = BodyState.IDLE;
     m_move: boolean = false;
@@ -90,11 +101,20 @@ export class BodyMovePathX extends Component {
         this.m_pathXR = this.m_pathXStart + this.PathOffsetXR;
     }
 
-    protected update(dt: number): void {
+    protected lateUpdate(dt: number): void {
         this.onPhysicUpdateX(dt);
         this.onFollowUpdate(dt);
         this.onHeadChange(dt);
         this.onStateUpdate(dt);
+    }
+
+    onLostFocusInEditor(): void {
+        const bodySpine = this.node.getComponent(BodySpine);
+        this.AnimMove = bodySpine.AnimMove;
+        this.AnimPush = bodySpine.AnimPush;
+        this.AnimAirOn = bodySpine.AnimAirOn;
+        this.AnimAirOff = bodySpine.AnimAirOff;
+        this.AnimDash = bodySpine.AnimDash;
     }
 
     //MOVE
@@ -174,7 +194,7 @@ export class BodyMovePathX extends Component {
     //ATTACK
 
     protected onMeleeFoundTarget(dt: number) {
-        this.m_bodySpine.onIdle(true);
+        this.m_body.onAnimationIdle(true);
     }
 
     //GET
@@ -200,10 +220,10 @@ export class BodyMovePathX extends Component {
             case BodyState.NONE:
                 break;
             case BodyState.IDLE:
-                this.m_bodySpine.onIdle();
+                this.m_body.onAnimationIdle();
                 break;
             case BodyState.MOVE:
-                this.m_bodySpine.onMove();
+                this.m_body.onAnimation(this.AnimMove, true);
                 break;
             case BodyState.HIT:
                 break;

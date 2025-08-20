@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, director, Enum, Node, RigidBody2D, v2, Vec2 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, Enum, Node, RigidBody2D, v2, Vec2 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { BodyBase } from './BodyBase';
 import { BodySpine } from './BodySpine';
@@ -59,6 +59,21 @@ export class BodyControlXY extends Component {
 
     @property({ group: { name: 'Switch' }, type: CCInteger })
     SwitchIndex: number = 0;
+
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimMove: string = 'move';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimPush: string = 'push';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimAirOn: string = 'air_on';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimAirOff: string = 'air_off';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimDash: string = 'dash';
+    @property({ group: { name: 'Finish' }, type: CCString })
+    AnimFinish: string = 'win';
+    @property({ group: { name: 'Finish' }, type: CCBoolean })
+    AnimFinishLoop: boolean = true;
 
     m_state = PlayerStateXY.IDLE;
     m_move: boolean = false;
@@ -126,6 +141,17 @@ export class BodyControlXY extends Component {
     protected lateUpdate(dt: number): void {
         this.onPhysicUpdate(dt);
         this.onStateUpdate(dt);
+    }
+
+    onLostFocusInEditor(): void {
+        const bodySpine = this.node.getComponent(BodySpine);
+        this.AnimMove = bodySpine.AnimMove;
+        this.AnimPush = bodySpine.AnimPush;
+        this.AnimAirOn = bodySpine.AnimAirOn;
+        this.AnimAirOff = bodySpine.AnimAirOff;
+        this.AnimDash = bodySpine.AnimDash;
+        this.AnimFinish = bodySpine.AnimFinish;
+        this.AnimFinishLoop = bodySpine.AnimFinishLoop;
     }
 
     //EVENT:
@@ -382,7 +408,7 @@ export class BodyControlXY extends Component {
         if (this.m_bodyAttack == null)
             return;
         if (!this.MoveStopAttack && (this.MoveStopByBodyAttack || this.MoveStopByPressAttack))
-            this.m_bodySpine.onIdle(true);
+            this.m_body.onAnimationIdle(true);
         this.scheduleOnce(() => {
             this.scheduleOnce(() => {
                 this.onAimReset();
@@ -441,15 +467,15 @@ export class BodyControlXY extends Component {
         this.m_state = state;
         switch (this.m_state) {
             case PlayerStateXY.IDLE:
-                this.m_bodySpine.onIdle();
+                this.m_body.onAnimationIdle();
                 break;
             case PlayerStateXY.MOVE:
                 if (this.MoveStopAttack)
                     this.m_bodyAttack?.onStop(false);
-                this.m_bodySpine.onMove();
+                this.m_body.onAnimation(this.AnimMove, true);
                 break;
             case PlayerStateXY.DASH:
-                this.m_bodySpine.onDash();
+                this.m_body.onAnimation(this.AnimDash, true);
                 break;
             case PlayerStateXY.ATTACK:
                 if (this.AttackHold)
@@ -512,7 +538,7 @@ export class BodyControlXY extends Component {
         this.scheduleOnce(() => {
             this.scheduleOnce(() => {
                 director.emit(ConstantBase.GAME_COMPLETE);
-            }, this.m_bodySpine.onComplete());
+            }, this.m_body.onAnimation(this.AnimFinish, this.AnimFinishLoop));
         }, 0);
     }
 
@@ -535,7 +561,7 @@ export class BodyControlXY extends Component {
             this.scheduleOnce(() => {
                 console.log('Game Lose');
                 director.emit(ConstantBase.GAME_LOSE);
-            }, this.m_bodySpine.onDead());
+            }, this.m_body.onAnimationDead());
         }, 0);
     }
 

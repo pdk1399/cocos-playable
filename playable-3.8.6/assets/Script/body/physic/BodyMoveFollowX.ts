@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, Component, Enum, Node, RigidBody2D, v3, Vec3 } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCString, Component, Enum, Node, RigidBody2D, v3, Vec3 } from 'cc';
 import { ConstantBase } from '../../ConstantBase';
 import { SpineBase } from '../../renderer/SpineBase';
 import { BodyBase } from '../BodyBase';
@@ -42,6 +42,17 @@ export class BodyMoveFollowX extends Component {
     @property({ group: { name: 'Follow' }, type: CCBoolean })
     FollowDirAttack: boolean = false;
 
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimMove: string = 'move';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimPush: string = 'push';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimAirOn: string = 'air_on';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimAirOff: string = 'air_off';
+    @property({ group: { name: 'Main' }, type: CCString })
+    AnimDash: string = 'dash';
+
     m_state: BodyState = BodyState.IDLE;
     m_move: boolean = false;
     m_dir: number;
@@ -81,11 +92,20 @@ export class BodyMoveFollowX extends Component {
         this.onDirUpdate();
     }
 
-    protected update(dt: number): void {
+    protected lateUpdate(dt: number): void {
         this.onPhysicUpdateX(dt);
         this.onFollowUpdate(dt);
         this.onHeadChange(dt);
         this.onStateUpdate(dt);
+    }
+
+    onLostFocusInEditor(): void {
+        const bodySpine = this.node.getComponent(BodySpine);
+        this.AnimMove = bodySpine.AnimMove;
+        this.AnimPush = bodySpine.AnimPush;
+        this.AnimAirOn = bodySpine.AnimAirOn;
+        this.AnimAirOff = bodySpine.AnimAirOff;
+        this.AnimDash = bodySpine.AnimDash;
     }
 
     //MOVE
@@ -172,7 +192,7 @@ export class BodyMoveFollowX extends Component {
     //ATTACK
 
     protected onMeleeFoundTarget(dt: number) {
-        this.m_bodySpine.onIdle(true);
+        this.m_body.onAnimationIdle(true);
     }
 
     //GET
@@ -193,15 +213,14 @@ export class BodyMoveFollowX extends Component {
         if (state == this.m_state)
             return;
         this.m_state = state;
-
         switch (this.m_state) {
             case BodyState.NONE:
                 break;
             case BodyState.IDLE:
-                this.m_bodySpine.onIdle(true);
+                this.m_body.onAnimationIdle(true);
                 break;
             case BodyState.MOVE:
-                this.m_bodySpine.onMove();
+                this.m_body.onAnimation(this.AnimMove, true);
                 break;
             case BodyState.HIT:
                 break;

@@ -61,9 +61,6 @@ export class BodySpine extends Component {
     protected onLoad(): void {
         this.m_body = this.getComponent(BodyBase);
         this.m_spine = this.getComponent(SpineBase);
-
-        this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
-        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
     }
 
     //
@@ -78,84 +75,6 @@ export class BodySpine extends Component {
             this.m_spine.onFaceDir(direction);
         }
         return change;
-    }
-
-    //
-
-    onIdle(force: boolean = false): number {
-        if (this.m_hit || this.m_dead)
-            return 0;
-        if (!force) {
-            if (!this.AnimIdleActive)
-                return 0;
-            if (this.m_hit)
-                return 0;
-        }
-        return this.m_spine.onAnimation(this.AnimIdle, this.AnimIdleLoop);
-    }
-
-    onHit(): number {
-        if (this.m_hit || this.m_dead)
-            return 0;
-        if (!this.AnimHitActive)
-            return 0;
-        if (this.m_hitLock)
-            return 0;
-        if (this.m_body.Protect && this.m_body.Protect)
-            return;
-        this.m_hit = true;
-        const animHitDuration = this.m_spine.onAnimationForceUnSave(this.AnimHit, false);
-        this.scheduleOnce(() => {
-            this.m_hit = false;
-            if (!this.m_dead)
-                this.onIdle();
-        }, animHitDuration);
-        return animHitDuration;
-    }
-
-    onDead(): number {
-        if (this.m_body.Protect && this.m_body.Protect)
-            return;
-        this.m_dead = true;
-        if (!this.AnimDeadActive)
-            return 0;
-        return this.m_spine.onAnimationForce(this.AnimDead, this.AnimDeadLoop);
-    }
-
-    onMove(): number {
-        if (this.m_hit || this.m_dead)
-            return 0;
-        return this.m_spine.onAnimation(this.AnimMove, true);
-    }
-
-    onPush(): number {
-        if (this.m_hit || this.m_dead)
-            return 0;
-        return this.m_spine.onAnimation(this.AnimPush, true);
-    }
-
-    onAirOn(): number {
-        if (this.m_hit || this.m_dead)
-            return 0;
-        return this.m_spine.onAnimation(this.AnimAirOn, true);
-    }
-
-    onAirOff(): number {
-        if (this.m_hit || this.m_dead)
-            return 0;
-        return this.m_spine.onAnimation(this.AnimAirOff, true);
-    }
-
-    onComplete(): number {
-        if (this.m_hit || this.m_dead)
-            return 0;
-        return this.m_spine.onAnimation(this.AnimFinish, this.AnimFinishLoop);
-    }
-
-    onDash(): number {
-        if (this.m_hit || this.m_dead)
-            return 0;
-        return this.m_spine.onAnimation(this.AnimDash, true);
     }
 
     //PICK:

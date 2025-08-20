@@ -90,6 +90,7 @@ export class SpineBase extends Component {
         }
         else if (VERSION >= '3.8.3') {
             //NOTE: For some fucking reason, new spine.Skin(); got error with any value attach to it!
+            //@ts-ignore
             let spineCache = sp.spine.wasmUtil.createSpineSkeletonDataWithJson(
                 this.Spine.skeletonData.skeletonJsonStr,
                 this.Spine.skeletonData.atlasText); //Create new data form original spine!
@@ -225,6 +226,16 @@ export class SpineBase extends Component {
         this.m_dir = dir;
         this.Spine._skeleton.scaleX = this.m_spineScaleXR * dir;
         this.Spine._skeleton.updateWorldTransform();
+    }
+
+    onViewDirection(direction: number): boolean {
+        let change = false;
+        if (direction == -1 && this.Spine._skeleton.scaleX > 0)
+            change = true;
+        else if (direction == 1 && this.Spine._skeleton.scaleX < 0)
+            change = true;
+        this.onFaceDir(direction);
+        return change;
     }
 
     //Aim
