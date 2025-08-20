@@ -1,4 +1,4 @@
-import { _decorator, Node, AudioSource, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, instantiate, RigidBody2D, Sprite, Vec2, v2, v3, UITransform, tween, Vec3 } from 'cc';
+import { _decorator, Node, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, RigidBody2D, Sprite, UITransform, tween, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { UIValueBar } from '../ui/UIValueBar';
 import { SpineBase } from '../renderer/SpineBase';
