@@ -311,9 +311,22 @@ export class BodyAttackX extends Component {
     protected onRangeShoot() {
         if (this.m_shoot == null)
             return;
+
+        if (!this.m_shoot.AimSpine) {
+            //Shoot straight
+            this.m_shoot.onShootVelocityDeg(
+                this.m_dir == 1 ? 0 : 180,
+                this.RangeBullet,
+                this.RangeBulletSpeed,
+                0);
+            return;
+        }
+
         if (this.RangeTargetUpdate && this.m_targetRangeAim == null)
+            //Find target
             this.m_targetRangeAim = this.onRangeTargetNearest();
         if (this.m_targetRangeAim != null ? this.m_targetRangeAim.isValid : false) {
+            //Shoot target
             this.m_shoot.onShootVelocityTarget(
                 this.m_targetRangeAim,
                 this.RangeBullet,
@@ -323,6 +336,7 @@ export class BodyAttackX extends Component {
                 this.m_targetRangeAim = null;
         }
         else {
+            //Shoot straight
             this.m_shoot.onShootVelocityDeg(
                 this.m_dir == 1 ? 0 : 180,
                 this.RangeBullet,
