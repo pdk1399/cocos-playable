@@ -62,8 +62,8 @@ export class EmitShoot extends EmitBaseEvent {
     onShoot() {
         if (this.ShootAnim) {
             let animDuration = this.m_spine.onAnimation(this.AnimShoot, false);
-            this.scheduleOnce(() => this.m_spine.onAnimation(this.AnimShoot, this.AnimIdleLoop), animDuration);
-            this.scheduleOnce(() => this.onShootBullet(), Math.min(animDuration, this.ShootDelay));
+            this.scheduleOnce(() => this.m_spine.onAnimation(this.AnimIdle, this.AnimIdleLoop), animDuration);
+            this.scheduleOnce(() => this.onShootBullet(), this.ShootDelay);
         }
         else
             this.onShootBullet();
