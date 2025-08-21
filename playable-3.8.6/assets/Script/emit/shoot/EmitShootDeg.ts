@@ -18,34 +18,32 @@ export class EmitShootDeg extends EmitBaseEvent {
     Bullet: Node = null;
     @property({ group: { name: 'Main' }, type: CCFloat })
     BulletSpeed: number = 5;
-
     @property({ group: { name: 'Main' }, type: CCBoolean })
+    BulletRotateActive: boolean = false;
+    @property({ group: { name: 'Main' }, type: CCFloat, visible(this: EmitShootDeg) { return this.BulletRotateActive; } })
+    BulletRotate: number = 180;
+
+    @property({ group: { name: 'Rotate' }, type: CCBoolean })
     TweenRotate: boolean = false;
-    @property({ group: { name: 'Main' }, type: CCFloat, visible(this: EmitShootDeg) { return this.TweenRotate; } })
+    @property({ group: { name: 'Rotate' }, type: CCFloat, visible(this: EmitShootDeg) { return this.TweenRotate; } })
     TweenDuration: number = 1;
-    @property({ group: { name: 'Main' }, type: CCFloat, visible(this: EmitShootDeg) { return this.TweenRotate; } })
+    @property({ group: { name: 'Rotate' }, type: CCFloat, visible(this: EmitShootDeg) { return this.TweenRotate; } })
     TweenDegFrom: number = 0;
-    @property({ group: { name: 'Main' }, type: CCFloat, visible(this: EmitShootDeg) { return this.TweenRotate; } })
+    @property({ group: { name: 'Rotate' }, type: CCFloat, visible(this: EmitShootDeg) { return this.TweenRotate; } })
     TweenDegTo: number = 180;
-    @property({ group: { name: 'Main' }, type: CCFloat, visible(this: EmitShootDeg) { return this.TweenRotate; } })
+    @property({ group: { name: 'Rotate' }, type: CCFloat, visible(this: EmitShootDeg) { return this.TweenRotate; } })
     TweenDegOffset: number = 0;
 
-    @property({ group: { name: 'Main' }, type: CCFloat })
-    ShootDelay: number = 0;
-
-    @property({ group: { name: 'Anim' }, type: CCBoolean })
-    AnimActive: boolean = false;
-    @property({ group: { name: 'Anim' }, type: CCString })
+    @property({ group: { name: 'Shoot' }, type: CCBoolean })
+    ShootAnim: boolean = false;
+    @property({ group: { name: 'Shoot' }, type: CCString, visible(this: EmitShootDeg) { return this.ShootAnim; } })
     AnimShoot: string = 'shoot';
-    @property({ group: { name: 'Anim' }, type: CCString })
+    @property({ group: { name: 'Shoot' }, type: CCFloat, visible(this: EmitShootDeg) { return this.ShootAnim; } })
+    ShootDelay: number = 0;
+    @property({ group: { name: 'Shoot' }, type: CCString, visible(this: EmitShootDeg) { return this.ShootAnim; } })
     AnimIdle: string = 'idle';
-    @property({ group: { name: 'Anim' }, type: CCBoolean })
+    @property({ group: { name: 'Shoot' }, type: CCBoolean, visible(this: EmitShootDeg) { return this.ShootAnim; } })
     AnimIdleLoop: boolean = true;
-
-    @property({ group: { name: 'Bullet' }, type: CCBoolean })
-    BulletRotateActive: boolean = false;
-    @property({ group: { name: 'Bullet' }, type: CCFloat, visible(this: EmitShootDeg) { return this.BulletRotateActive; } })
-    BulletRotate: number = 180;
 
     m_degShoot: number = 0;
     m_degSpine: number = 0;
@@ -120,7 +118,7 @@ export class EmitShootDeg extends EmitBaseEvent {
     }
 
     onShoot() {
-        if (this.AnimActive) {
+        if (this.ShootAnim) {
             let animDuration = this.m_spine.onAnimation(this.AnimShoot, false);
             this.scheduleOnce(() => this.m_spine.onAnimation(this.AnimShoot, this.AnimIdleLoop), animDuration);
             this.scheduleOnce(() => {
