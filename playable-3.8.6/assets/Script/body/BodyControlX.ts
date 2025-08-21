@@ -771,8 +771,6 @@ export class BodyControlX extends Component {
     protected onAim() {
         if (this.m_bodyAttack == null)
             return;
-        if (!this.m_bodyAttack?.Aim)
-            return;
         this.m_bodyAttack?.onDirUpdate(this.m_faceDirX);
         const target = this.m_bodyAttack?.onRangeTargetNearest();
         if (target == null ? true : !target.isValid)

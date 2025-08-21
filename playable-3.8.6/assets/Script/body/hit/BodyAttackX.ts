@@ -552,8 +552,10 @@ export class BodyAttackX extends Component {
         this.m_shoot.onAimTarget(target);
     }
 
-    onAimReset() {
+    onAimReset(delay: number = 0.02) {
         this.m_targetRangeAim = null;
-        this.m_shoot.onAimReset();
+        this.scheduleOnce(() => {
+            this.m_spine.onAnimationClear(ConstantBase.ANIM_INDEX_ATTACK);
+        }, delay);
     }
 }

@@ -209,15 +209,7 @@ export class SpineBase extends Component {
         return animDuration / animDurationScale;
     }
 
-    onAnimationEmty(index: number, mixDuration: number) {
-        this.Spine.getState().setEmptyAnimation(index, mixDuration);
-        this.Spine.getState().apply(this.Spine._skeleton);
-        this.Spine.getState().update(0.02);
-    }
-
     onAnimationClear(index: number) {
-        this.Spine.getState().clearTrack(index);
-        this.Spine.getState().apply(this.Spine._skeleton);
-        this.Spine.getState().update(0.02);
+        this.Spine.clearAnimation(index);
     }
 }
