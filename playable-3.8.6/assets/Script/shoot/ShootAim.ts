@@ -51,15 +51,6 @@ export class ShootAim extends Component {
     @property({ group: { name: 'Anim' }, type: CCBoolean })
     AnimIdleLoop: boolean = true;
 
-    @property({ group: { name: 'Aim' }, type: CCBoolean })
-    Aim: boolean = false;
-    @property({ group: { name: 'Aim' }, type: CCString, visible(this: ShootAim) { return this.Aim; } })
-    AimAnim: string = 'attack_aim';
-    @property({ group: { name: 'Aim' }, type: CCString, visible(this: ShootAim) { return this.Aim; } })
-    AimBone: string = 'aim_bone';
-    @property({ group: { name: 'Aim' }, type: Node, visible(this: ShootAim) { return this.Aim; } })
-    AimFrom: Node = null;
-
     @property({ group: { name: 'Bullet' }, type: CCBoolean })
     BulletRotateActive: boolean = false;
     @property({ group: { name: 'Bullet' }, type: CCFloat })
@@ -78,9 +69,6 @@ export class ShootAim extends Component {
 
         if (this.OnEvent != '')
             director.on(this.OnEvent, this.onAim, this);
-
-        if (this.Aim)
-            this.m_spine.onAimInit(this.AimAnim, this.AimBone, this.AimFrom);
     }
 
     protected start(): void {

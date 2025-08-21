@@ -64,15 +64,6 @@ export class BodyAttackX extends Component {
     @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeTargetReset: boolean = true;
 
-    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
-    Aim: boolean = false;
-    @property({ group: { name: 'Range' }, type: CCString, visible(this: BodyAttackX) { return this.Range && this.Aim && this.getComponent(ShootBase) != null; } })
-    AimAnim: string = 'attack_aim';
-    @property({ group: { name: 'Range' }, type: CCString, visible(this: BodyAttackX) { return this.Range && this.Aim && this.getComponent(ShootBase) != null; } })
-    AimBone: string = 'aim_bone';
-    @property({ group: { name: 'Range' }, type: Node, visible(this: BodyAttackX) { return this.Range && this.Aim && this.getComponent(ShootBase) != null; } })
-    AimFrom: Node = null;
-
     @property({ group: { name: 'Tag' }, type: CCInteger })
     TagMelee: number = 101;
     @property({ group: { name: 'Tag' }, type: CCInteger })
@@ -134,9 +125,6 @@ export class BodyAttackX extends Component {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
             collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
-
-        if (this.Aim)
-            this.m_spine.onAimInit(this.AimAnim, this.AimBone, this.AimFrom);
 
         this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
         this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
