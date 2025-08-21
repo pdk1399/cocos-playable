@@ -145,7 +145,7 @@ export class ShootAim extends Component {
     }
 
     private onAimUpdate() {
-        this.m_spine.onAimDeg(this.m_degSpine);
+        this.m_shoot.onAimDeg(this.m_degSpine);
     }
 
     private getAimDir(deg: number, length: number): Vec2 {

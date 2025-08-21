@@ -25,11 +25,6 @@ export class SpineBase extends Component {
     m_durationScale: number = 0;
     m_timeScale: number = 1;
 
-    m_aimBone: sp.spine.Bone;
-    m_aimAnim: string = 'attack_aim';
-    m_aimFrom: Node = null;
-    m_aimPosPrimary: Vec2;
-
     protected onLoad(): void {
         if (this.Spine == null)
             this.Spine = this.getComponent(sp.Skeleton) ?? this.getComponentInChildren(sp.Skeleton);
@@ -224,48 +219,5 @@ export class SpineBase extends Component {
         this.Spine.getState().clearTrack(index);
         this.Spine.getState().apply(this.Spine._skeleton);
         this.Spine.getState().update(0.02);
-    }
-
-    //Aim
-
-    onAimInit(anim: string, bone: string, from: Node) {
-        this.m_aimBone = this.Spine.findBone(bone);
-        this.m_aimAnim = anim;
-        this.m_aimPosPrimary = v2(this.m_aimBone.x, this.m_aimBone.y);
-        this.m_aimFrom = from;
-    }
-
-    onAimTarget(target: Node) {
-        if (this.m_aimBone == null)
-            return;
-        let aimPosition = target.worldPosition.clone().subtract(this.node.worldPosition.clone());
-        this.onAim(v2(aimPosition.x, aimPosition.y));
-    }
-
-    onAimDeg(deg: number) {
-        if (this.m_aimBone == null)
-            return;
-        let direction = v3(Math.cos(deg * (Math.PI / 180)), Math.sin(deg * (Math.PI / 180)), 0);
-        direction = direction.clone().normalize().multiplyScalar(10);
-        let aimPosition = this.m_aimFrom.position.clone().add(direction);
-        this.onAim(v2(aimPosition.x, aimPosition.y));
-    }
-
-    onAim(posLocal: Vec2) {
-        if (this.m_aimBone == null)
-            return;
-        //Not used this on update() or lateUpdate() to avoid some bug with caculate position
-        let posLocalSpine = new sp.spine.Vector2(posLocal.clone().x, posLocal.clone().y);
-        this.m_aimBone.parent.worldToLocal(posLocalSpine);
-        this.m_aimBone.x = posLocalSpine.x;
-        this.m_aimBone.y = posLocalSpine.y;
-        this.Spine._skeleton.updateWorldTransform();
-        this.Spine.setAnimation(ConstantBase.ANIM_INDEX_AIM, this.m_aimAnim, true);
-    }
-
-    onAimReset() {
-        if (this.m_aimBone == null)
-            return;
-        this.onAnimationClear(ConstantBase.ANIM_INDEX_AIM);
     }
 }

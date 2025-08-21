@@ -29,7 +29,7 @@ export class ShootBase extends Component {
         this.m_spine = this.getComponent(SpineBase);
 
         if (this.AimSpine)
-            this.m_spine.onAimInit(this.AimAnim, this.AimBone, this.Centre);
+            this.onAimInit(this.AimAnim, this.AimBone, this.Centre);
     }
 
     protected start(): void {

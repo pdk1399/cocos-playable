@@ -544,16 +544,16 @@ export class BodyAttackX extends Component {
     }
 
     onAimDeg(deg: number) {
-        this.m_spine.onAimDeg(deg);
+        this.m_shoot.onAimDeg(deg);
     }
 
     onAimTarget(target: Node) {
         this.m_targetRangeAim = target;
-        this.m_spine.onAimTarget(target);
+        this.m_shoot.onAimTarget(target);
     }
 
     onAimReset() {
         this.m_targetRangeAim = null;
-        this.m_spine.onAimReset();
+        this.m_shoot.onAimReset();
     }
 }
