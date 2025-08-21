@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Contact2DType, Enum, ERigidBody2DType, IPhysics2DContact, Node, RigidBody2D } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, Enum, ERigidBody2DType, IPhysics2DContact, Node, RigidBody2D } from 'cc';
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
@@ -14,6 +14,9 @@ Enum(OnceType);
 
 @ccclass('EmitBase')
 export class EmitBase extends Component {
+
+    @property({ type: CCString, displayOrder: 0 })
+    Desciption: string = '';
 
     @property({ group: { name: 'Event', displayOrder: 0 }, type: CCBoolean })
     Start: boolean = false;
@@ -36,6 +39,8 @@ export class EmitBase extends Component {
     protected onLoad(): void {
         if (this.Start)
             return;
+        //ON-EVENT
+        this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
         //ON-COLLISION-EVENT
         let rigidBody = this.getComponent(RigidBody2D);
         if (rigidBody != null) {
