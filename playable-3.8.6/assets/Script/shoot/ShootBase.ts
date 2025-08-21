@@ -87,14 +87,14 @@ export class ShootBase extends Component {
     //GET
 
     getVelocityTarget(target: Node, length: number): Vec2 {
-        var direction = v2(
+        const direction = v2(
             target.worldPosition.clone().x - this.Centre.worldPosition.clone().x,
             target.worldPosition.clone().y - this.Centre.worldPosition.clone().y + 100).normalize();
         return direction.clone().multiplyScalar(length);
     }
 
     getVelocityWorldPos(worldPos: Vec2, length: number): Vec2 {
-        var direction = v2(
+        const direction = v2(
             worldPos.x - this.Centre.worldPosition.clone().x,
             worldPos.y - this.Centre.worldPosition.clone().y + 100).normalize();
         return direction.clone().multiplyScalar(length);
@@ -112,12 +112,12 @@ export class ShootBase extends Component {
     //SHOOT: VELOCITY
 
     onShootVelocity(velocity: Vec2, bullet: Node, rotate?: number) {
-        var bulletClone = instantiate(bullet);
+        const bulletClone = instantiate(bullet);
         bulletClone.setParent(this.BulletSpawm);
         bulletClone.worldPosition = this.Centre.worldPosition.clone();
         if (rotate != null) {
             //Rotate default value is 180 recommend
-            var bulletRotate = Math.atan2(velocity.y, velocity.x) * 57.29578 + rotate;
+            const bulletRotate = Math.atan2(velocity.y, velocity.x) * 57.29578 + rotate;
             bulletClone.setRotationFromEuler(v3(0, 0, bulletRotate));
         }
         this.scheduleOnce(() => {
@@ -128,14 +128,22 @@ export class ShootBase extends Component {
 
     //SHOOT: INSTANT
 
+    onShootInstantTarget(target: Node, bullet: Node, rotate?: number) {
+        const worldPosition = v2(target.worldPosition.clone().x, target.worldPosition.clone().y);
+        this.onShootInstant(
+            worldPosition,
+            bullet,
+            rotate);
+    }
+
     onShootInstant(posWorld: Vec2, bullet: Node, rotate?: number) {
-        var bulletClone = instantiate(bullet);
+        const bulletClone = instantiate(bullet);
         bulletClone.setParent(this.BulletSpawm);
         bulletClone.worldPosition = v3(posWorld.x, posWorld.y, bulletClone.worldPosition.clone().z);
         if (rotate != null) {
             //Rotate default value is 180 recommend
             let velocity = this.getVelocityWorldPos(posWorld, 1);
-            var bulletRotate = Math.atan2(velocity.y, velocity.x) * 57.29578 + rotate;
+            const bulletRotate = Math.atan2(velocity.y, velocity.x) * 57.29578 + rotate;
             bulletClone.setRotationFromEuler(v3(0, 0, bulletRotate));
         }
         this.scheduleOnce(() => {
