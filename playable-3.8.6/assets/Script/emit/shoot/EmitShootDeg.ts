@@ -30,12 +30,6 @@ export class EmitShootDeg extends EmitShoot {
     m_spine: SpineBase = null;
     m_shoot: ShootBase = null;
 
-    protected onLoad(): void {
-        super.onLoad();
-        this.m_spine = this.getComponent(SpineBase);
-        this.m_shoot = this.getComponent(ShootBase);
-    }
-
     protected start(): void {
         this.m_degShoot = this.TweenDegFrom;
         this.m_degSpine = this.TweenDegFrom + this.TweenDegOffset;
@@ -52,16 +46,12 @@ export class EmitShootDeg extends EmitShoot {
         }
     }
 
-    //
-
     onEventActive(): void {
         if (this.TweenRotate)
             this.onRotate();
         else
             this.onShoot();
     }
-
-    //
 
     onRotate() {
         //INIT
@@ -85,8 +75,6 @@ export class EmitShootDeg extends EmitShoot {
             .call(() => this.onShoot())
             .start();
     }
-
-    //
 
     onShootBullet() {
         this.m_shoot.onShootVelocityDeg(

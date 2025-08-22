@@ -18,9 +18,76 @@ export class EmitSpine extends EmitBaseNode {
     @property({ group: { name: 'Main' }, type: CCBoolean })
     AnimEndLoop: boolean = false;
 
+    @property({ group: { name: 'Option' }, type: CCBoolean })
+    OnScene: boolean = true;
+
+    private m_lockEventFinal = false;
+
+    protected onLoad(): void {
+        super.onLoad();
+
+        this.node.on(ConstantBase.NODE_SPINE_STOP, this.onSpineStop, this);
+        this.node.on(ConstantBase.NODE_SPINE_PLAY, this.onSpinePlay, this);
+
+        if (this.OnScene) {
+            director.on(ConstantBase.SCENE_STOP, this.onSpineStop, this);
+            director.on(ConstantBase.SCENE_PLAY, this.onSpinePlay, this);
+        }
+    }
+
+    onSpineStop(): void {
+        //#2: Emit Node
+        this.EmitNode.forEach(t => {
+            if (t != null) {
+                const spineBase = t.getComponent(SpineBase);
+                if (spineBase != null) {
+                    spineBase.onSpineStop();
+                }
+            }
+        });
+
+        //#3: Emit Node Target
+        if (this.EmitTagTarget) {
+            this.m_targetCollide.forEach(t => {
+                if (t != null) {
+                    const spineBase = t.getComponent(SpineBase);
+                    if (spineBase != null) {
+                        spineBase.onSpineStop();
+                    }
+                }
+            });
+        }
+    }
+
+    onSpinePlay(): void {
+        //#2: Emit Node
+        this.EmitNode.forEach(t => {
+            if (t != null) {
+                const spineBase = t.getComponent(SpineBase);
+                if (spineBase != null) {
+                    spineBase.onSpinePlay();
+                }
+            }
+        });
+
+        //#3: Emit Node Target
+        if (this.EmitTagTarget) {
+            this.m_targetCollide.forEach(t => {
+                if (t != null) {
+                    const spineBase = t.getComponent(SpineBase);
+                    if (spineBase != null) {
+                        spineBase.onSpinePlay();
+                    }
+                }
+            });
+        }
+    }
+
     onEvent(): void {
         //DELAY
         this.scheduleOnce(() => {
+            this.m_lockEventFinal = false; //Reset lock event
+
             //#2: Emit Node
             this.EmitNode.forEach(t => {
                 if (t != null) {
@@ -80,6 +147,10 @@ export class EmitSpine extends EmitBaseNode {
     }
 
     onEventSingleFinal() {
+        if (this.m_lockEventFinal)
+            return;
+        this.m_lockEventFinal = true; //Avoid multiple event final execute
+
         //#0: Emit Active
         this.onEventActive();
 

@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, Component, director, Enum, Node } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, Component, director, Enum, Node, Tween, tween } from 'cc';
 import { EmitBaseEvent } from '../base/EmitBaseEvent';
 import { ConstantBase, EaseType } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
@@ -39,13 +39,36 @@ export class EmitTween extends EmitBaseEvent {
     @property({ group: { name: 'Main', displayOrder: 99999 }, type: CCBoolean, visible(this: EmitTween) { return this.Progress == TweenType.Once || this.Limit > 0; } })
     CompleteDestroy: boolean = false;
 
+    @property({ group: { name: 'Option' }, type: CCBoolean })
+    OnScene: boolean = true;
+
     m_valueA: any = null;
     m_valueB: any = null;
 
     protected onLoad(): void {
         super.onLoad();
+
+        this.node.on(ConstantBase.NODE_TWEEN_STOP, this.onTweenStop, this);
+        this.node.on(ConstantBase.NODE_TWEEN_PLAY, this.onTweenPlay, this);
+
+        if (this.OnScene) {
+            director.on(ConstantBase.SCENE_STOP, this.onTweenStop, this);
+            director.on(ConstantBase.SCENE_PLAY, this.onTweenPlay, this);
+        }
+    }
+
+    protected start(): void {
         if (this.EmitNode == null)
             this.EmitNode = this.node;
+        super.start();
+    }
+
+    onTweenStop(): void {
+        Tween.pauseAllByTarget(this.EmitNode);
+    }
+
+    onTweenPlay(): void {
+        Tween.resumeAllByTarget(this.EmitNode);
     }
 
     onEvent(): void {

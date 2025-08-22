@@ -12,8 +12,6 @@ export class EmitShootCircle extends EmitShoot {
     @property({ group: { name: 'Shoot' }, type: CCFloat })
     Offset: number = 45;
 
-    //
-
     onShootBullet() {
         this.m_shoot.onShootVelocityCircle(
             this.Deg,

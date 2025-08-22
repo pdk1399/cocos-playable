@@ -24,8 +24,6 @@ export class BodyBase extends Component {
     ValueBar: UIValueBar = null;
 
     @property({ group: { name: 'Event' }, type: CCString })
-    EmitHit: string = '';
-    @property({ group: { name: 'Event' }, type: CCString })
     EmitDead: string = '';
     @property({ group: { name: 'Event' }, type: CCString })
     EmitDestroy: string = '';
@@ -147,8 +145,6 @@ export class BodyBase extends Component {
 
             //EVENT
             this.node.emit(ConstantBase.NODE_BODY_HIT, from);
-            if (this.EmitHit != '')
-                director.emit(this.EmitHit);
 
             if (this.ShakeHit)
                 director.emit(ConstantBase.CAMERA_EFFECT_SHAKE_ONCE);

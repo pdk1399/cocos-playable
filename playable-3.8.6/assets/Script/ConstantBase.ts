@@ -19,6 +19,9 @@ export class ConstantBase {
     static readonly DIRECT_STORE: string = 'direct-store';
     static readonly DIRECT_PRESS: string = 'direct-press';
 
+    static readonly SCENE_STOP: string = 'scene-stop';
+    static readonly SCENE_PLAY: string = 'scene-play';
+
     //CAMERA
 
     static readonly CAMERA_SMOOTH_TIME: string = 'camera-smooth-time';
@@ -52,7 +55,14 @@ export class ConstantBase {
 
     //NODE
 
-    static readonly NODE_EVENT: string = 'node-event'; // Used in most of quick-events in Nodes
+    static readonly NODE_EVENT_STOP: string = 'node-event-stop';
+    static readonly NODE_EVENT: string = 'node-event';
+
+    static readonly NODE_SPINE_STOP: string = 'node-spine-stop';
+    static readonly NODE_SPINE_PLAY: string = 'node-spine-play';
+
+    static readonly NODE_TWEEN_STOP: string = 'node-tween-stop';
+    static readonly NODE_TWEEN_PLAY: string = 'node-tween-play';
 
     static readonly NODE_BODY_HIT: string = 'node-body-hit';
     static readonly NODE_BODY_DEAD: string = 'node-body-dead';
@@ -96,8 +106,6 @@ export class ConstantBase {
     static readonly NODE_VALUE_MOVE_JUMP: string = 'node-value-move-jump';
     static readonly NODE_VALUE_MELEE_HIT: string = 'node-value-melee-hit';
 
-    static readonly NODE_STOP: string = 'node-stop';
-
     static readonly NODE_STATE: string = 'node-state';
     static readonly NODE_STATE_LOCK: string = 'node-state-lock';
 
@@ -111,18 +119,12 @@ export class ConstantBase {
 
     //ANIMATION
 
-    static readonly SPINE_PLAY: string = 'SPINE_PLAY';
-    static readonly SPINE_STOP: string = 'SPINE_STOP';
-
     static readonly ANIM_INDEX_ATTACK: number = 1;
     static readonly ANIM_INDEX_AIM: number = 2;
-    // static readonly ANIM_INDEX_PICK: number = 1;
 
     //UI
 
     static readonly UI_ATTACK_SHOW: string = 'ui-attack-show';
-    // static readonly UI_INTERACTION_SHOW: string = 'ui-interaction-show';
-    // static readonly UI_INTERACTION_ICON: string = 'ui-interaction-icon';
 }
 
 export enum EaseType {

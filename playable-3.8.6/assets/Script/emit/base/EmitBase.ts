@@ -40,6 +40,7 @@ export class EmitBase extends Component {
         if (this.Start)
             return;
         //ON-EVENT
+        this.node.on(ConstantBase.NODE_EVENT_STOP, this.onEventStop, this);
         this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
         //ON-COLLISION-EVENT
         let rigidBody = this.getComponent(RigidBody2D);
@@ -75,6 +76,10 @@ export class EmitBase extends Component {
 
         //EVENT
         this.onEvent();
+    }
+
+    onEventStop(): void {
+        this.unscheduleAllCallbacks();
     }
 
     onEvent(): void {

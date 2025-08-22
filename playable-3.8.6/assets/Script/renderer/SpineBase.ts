@@ -37,9 +37,12 @@ export class SpineBase extends Component {
         this.m_durationScale = 1.0 * this.m_duration / this.Spine.timeScale;
         this.m_timeScale = this.Spine.timeScale;
 
+        this.node.on(ConstantBase.NODE_SPINE_STOP, this.onSpinePlay, this);
+        this.node.on(ConstantBase.NODE_SPINE_STOP, this.onSpineStop, this);
+
         if (this.OnScene) {
-            director.on(ConstantBase.SPINE_PLAY, this.onPlay, this);
-            director.on(ConstantBase.SPINE_STOP, this.onStop, this);
+            director.on(ConstantBase.SCENE_STOP, this.onSpineStop, this);
+            director.on(ConstantBase.SCENE_PLAY, this.onSpinePlay, this);
         }
     }
 
@@ -48,6 +51,14 @@ export class SpineBase extends Component {
             this.onSkin(...this.Skin);
         for (let i = 0; i < this.AnimStart.length; i++)
             this.onAnimationIndex(i, this.AnimStart[i], true);
+    }
+
+    onSpinePlay(): void {
+        this.Spine.timeScale = this.m_timeScale;
+    }
+
+    onSpineStop(): void {
+        this.Spine.timeScale = 0;
     }
 
     onLostFocusInEditor(): void {
@@ -115,16 +126,6 @@ export class SpineBase extends Component {
             this.Spine._skeleton.setSlotsToSetupPose();
             this.Spine.getState().apply(this.Spine._skeleton);
         }
-    }
-
-    //
-
-    onPlay(): void {
-        this.Spine.timeScale = this.m_timeScale;
-    }
-
-    onStop(): void {
-        this.Spine.timeScale = 0;
     }
 
     //

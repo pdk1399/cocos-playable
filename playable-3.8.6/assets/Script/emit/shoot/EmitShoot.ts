@@ -40,8 +40,6 @@ export class EmitShoot extends EmitBaseEvent {
         super.onLoad();
     }
 
-    //
-
     onEvent(): void {
         //DELAY
         this.scheduleOnce(() => {
@@ -56,8 +54,6 @@ export class EmitShoot extends EmitBaseEvent {
     onEventActive(): void {
         this.onShoot();
     }
-
-    //
 
     onShoot() {
         if (this.ShootAnim) {
