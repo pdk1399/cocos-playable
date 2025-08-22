@@ -1,14 +1,12 @@
-import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Contact2DType, Enum, IPhysics2DContact, Node } from 'cc';
+import { _decorator, CCBoolean, CCInteger, Collider2D, Component, Contact2DType, IPhysics2DContact, Node } from 'cc';
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('BodyHurt')
-export class BodyHurt extends Component {
+@ccclass('BodyBullet')
+export class BodyBullet extends Component {
 
     @property({ group: { name: 'Hit' }, type: CCInteger })
     Hit: number = 1;
-    @property({ group: { name: 'Hit' }, type: CCInteger })
-    HitSelf: number = 0;
 
     @property({ group: { name: 'Tag' }, type: CCInteger })
     TagBody: number = 300;
@@ -30,8 +28,6 @@ export class BodyHurt extends Component {
         const targetIndex = this.TagTarget.findIndex((t) => t == otherCollider.tag);
         if (targetIndex > -1) {
             otherCollider.node.emit(ConstantBase.NODE_BODY_HIT, this.Hit, this.node);
-            if (this.HitSelf > 0)
-                this.node.emit(ConstantBase.NODE_BODY_HIT, this.HitSelf, this.node);
         }
     }
 }
