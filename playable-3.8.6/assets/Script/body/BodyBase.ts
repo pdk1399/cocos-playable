@@ -50,11 +50,15 @@ export class BodyBase extends Component {
     AnimIdle: string = 'idle';
     @property({ group: { name: 'Anim' }, type: CCBoolean })
     AnimIdleLoop: boolean = true;
-    @property({ group: { name: 'Anim' }, type: CCString })
-    AnimHit: string = 'hit';
-    @property({ group: { name: 'Anim' }, type: CCString })
-    AnimDead: string = 'dead';
     @property({ group: { name: 'Anim' }, type: CCBoolean })
+    AnimHitEvent: boolean = true;
+    @property({ group: { name: 'Anim' }, type: CCString, visible(this: BodyBase) { return this.AnimHitEvent; } })
+    AnimHit: string = 'hit';
+    @property({ group: { name: 'Anim' }, type: CCBoolean })
+    AnimDeadEvent: boolean = true;
+    @property({ group: { name: 'Anim' }, type: CCString, visible(this: BodyBase) { return this.AnimDeadEvent; } })
+    AnimDead: string = 'dead';
+    @property({ group: { name: 'Anim' }, type: CCBoolean, visible(this: BodyBase) { return this.AnimDeadEvent; } })
     AnimDeadLoop: boolean = true;
 
     m_baseSize: number = 1;
@@ -125,7 +129,6 @@ export class BodyBase extends Component {
             return;
         this.m_hit = true;
 
-        //VALUE
         if (this.HitFixed)
             this.m_hitPointCurrent -= 1;
         else
@@ -134,23 +137,18 @@ export class BodyBase extends Component {
             this.m_hitPointCurrent = 0;
         this.onBarUpdate();
 
-        //RESULT
-        if (this.m_hitPointCurrent > 0) {
-            //DELAY & ANIMTION
-            this.onAnimationHit();
-            this.scheduleOnce(() => {
-                this.m_hit = false;
-                this.onAnimationIdle();
-            }, 0.02);
-
-            //EVENT
-            this.node.emit(ConstantBase.NODE_BODY_HIT, from);
-
-            if (this.ShakeHit)
-                director.emit(ConstantBase.CAMERA_EFFECT_SHAKE_ONCE);
-        }
-        else
+        if (this.m_hitPointCurrent == 0) {
             this.onDead(from);
+            return;
+        }
+
+        this.scheduleOnce(() => this.m_hit = false, 0.02);
+        this.onAnimationHit();
+
+        this.node.emit(ConstantBase.NODE_BODY_HIT, from);
+
+        if (this.ShakeHit)
+            director.emit(ConstantBase.CAMERA_EFFECT_SHAKE_ONCE);
     }
 
     onDead(from: Node) {
@@ -303,16 +301,21 @@ export class BodyBase extends Component {
     }
 
     onAnimationHit(): number {
+        if (!this.AnimHitEvent)
+            return 0;
         if (this.m_dead)
             return this.onAnimationDead();
         if (this.m_hitLockAnimation)
             //Lock animtion HIT for another animation (example ATTACK)
             return 0;
         //FINAL
+        this.scheduleOnce(() => this.onAnimationIdle(), 0.02);
         return this.m_spine.onAnimationForceUnSave(this.AnimHit, false);
     }
 
     onAnimationDead(): number {
+        if (!this.AnimDeadEvent)
+            return 0;
         //FINAL
         return this.m_spine.onAnimationForce(this.AnimDead, this.AnimDeadLoop);
     }

@@ -17,9 +17,9 @@ export class UIValueBar extends Component {
 
     @property({ group: { name: 'Hide' }, type: CCBoolean })
     Hide: boolean = false;
-    @property({ group: { name: 'Hide' }, type: CCFloat })
+    @property({ group: { name: 'Hide' }, type: CCFloat, visible(this: UIValueBar) { return this.Hide; } })
     HideDelay: number = 3;
-    @property({ group: { name: 'Hide' }, type: [Node] })
+    @property({ group: { name: 'Hide' }, type: [Node], visible(this: UIValueBar) { return this.Hide; } })
     HideNode: Node[] = [];
 
     m_maskSprite: Sprite = null;
@@ -27,15 +27,12 @@ export class UIValueBar extends Component {
     m_maskTransformX: number;
 
     protected onLoad(): void {
-        if (this.Mask != null) {
-            this.m_maskSprite = this.Mask.getComponent(Sprite);
-            this.m_maskTransform = this.Mask.getComponent(UITransform);
-        }
+        this.m_maskSprite = this.Mask.getComponent(Sprite);
+        this.m_maskTransform = this.Mask.getComponent(UITransform);
+        this.m_maskTransformX = this.m_maskTransform.contentSize.clone().x;
     }
 
     protected start(): void {
-        if (this.Mask != null)
-            this.m_maskTransformX = this.m_maskTransform.contentSize.clone().x;
         if (this.Hide)
             this.onHideNode();
     }
