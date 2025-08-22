@@ -1,4 +1,4 @@
-import { _decorator, CCBoolean, CCInteger, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D } from 'cc';
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
@@ -12,6 +12,8 @@ export class BodyBullet extends Component {
 
     @property({ group: { name: 'Option' }, type: CCBoolean })
     OnScene: boolean = true;
+    @property({ group: { name: 'Option' }, type: CCFloat })
+    ExistDuration: number = 10;
 
     @property({ group: { name: 'Tag' }, type: CCInteger })
     TagBody: number = 300;
@@ -39,6 +41,10 @@ export class BodyBullet extends Component {
         }
     }
 
+    protected start(): void {
+        this.scheduleOnce(() => this.node.destroy(), this.ExistDuration);
+    }
+
     protected onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         if (selfCollider.tag != this.TagBody)
             return;
@@ -51,10 +57,12 @@ export class BodyBullet extends Component {
     }
 
     onBulletStop(): void {
+        this.unscheduleAllCallbacks();
         this.scheduleOnce(() => this.m_rigidbody.type = RigidBody2D.BodyType.Static, 0.02);
     }
 
     onBulletPlay(): void {
+        this.scheduleOnce(() => this.node.destroy(), this.ExistDuration);
         this.scheduleOnce(() => this.m_rigidbody.type = RigidBody2D.BodyType.Dynamic, 0.02);
     }
 }
