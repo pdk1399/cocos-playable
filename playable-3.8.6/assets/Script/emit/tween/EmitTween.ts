@@ -72,6 +72,10 @@ export class EmitTween extends EmitBaseEvent {
     }
 
     onEvent(): void {
+        if (!this.enabledInHierarchy)
+            //Not do event when not active in hierarchy
+            return;
+
         //DELAY
         this.scheduleOnce(() => {
             //#0: Emit Active

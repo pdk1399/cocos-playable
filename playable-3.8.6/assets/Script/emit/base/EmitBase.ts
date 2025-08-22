@@ -83,6 +83,10 @@ export class EmitBase extends Component {
     }
 
     onEvent(): void {
+        if (!this.enabledInHierarchy)
+            //Not do event when not active in hierarchy
+            return;
+
         //DELAY
         this.scheduleOnce(() => {
             //NEXT

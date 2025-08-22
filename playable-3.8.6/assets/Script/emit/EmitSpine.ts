@@ -84,6 +84,10 @@ export class EmitSpine extends EmitBaseNode {
     }
 
     onEvent(): void {
+        if (!this.enabledInHierarchy)
+            //Not do event when not active in hierarchy
+            return;
+
         //DELAY
         this.scheduleOnce(() => {
             this.m_lockEventFinal = false; //Reset lock event
