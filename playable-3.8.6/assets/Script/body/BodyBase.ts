@@ -67,7 +67,7 @@ export class BodyBase extends Component {
     m_dead: boolean = false;
     m_hit: boolean = false;
     m_hitLockAnimation: boolean = false;
-    m_hitPointCurrent: number;
+    m_hitPointCurrent: number = 0;
 
     m_bodyX2: boolean = false;
     m_bodyX4: boolean = false;

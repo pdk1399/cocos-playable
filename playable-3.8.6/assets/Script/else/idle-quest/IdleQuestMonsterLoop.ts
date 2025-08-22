@@ -6,7 +6,7 @@ const { ccclass, property } = _decorator;
 @ccclass('IdleQuestMonsterLoop')
 export class IdleQuestMonsterLoop extends Component {
 
-    @property({ type: Node })
+    @property({ type: BodyBase })
     BodyMonster: BodyBase = null;
 
     @property({ type: Node })
