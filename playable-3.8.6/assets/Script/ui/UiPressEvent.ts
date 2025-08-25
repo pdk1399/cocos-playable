@@ -5,21 +5,17 @@ const { ccclass, property } = _decorator;
 @ccclass('UiPressEvent')
 export class UiPressEvent extends Component {
 
-    @property({ group: { name: 'Event' }, type: CCBoolean })
+    @property({ type: CCBoolean })
     Once: boolean = true;
 
-    @property({ group: { name: 'Event' }, type: CCFloat })
-    DelayStart: number = 0;
-    @property({ group: { name: 'Event' }, type: CCString })
+    @property({ type: CCString })
     EmitStart: string = '';
-    @property({ group: { name: 'Event' }, type: Node })
+    @property({ type: Node })
     EmitNodeStart: Node = null;
 
-    @property({ group: { name: 'Event' }, type: CCFloat })
-    DelayEnd: number = 0;
-    @property({ group: { name: 'Event' }, type: CCString })
+    @property({ type: CCString })
     EmitEnd: string = '';
-    @property({ group: { name: 'Event' }, type: Node })
+    @property({ type: Node })
     EmitNodeEnd: Node = null;
 
     protected onLoad(): void {
@@ -29,21 +25,17 @@ export class UiPressEvent extends Component {
     }
 
     onPressStart() {
-        this.scheduleOnce(() => {
-            if (this.EmitStart != '')
-                director.emit(this.EmitStart);
-            if (this.EmitNodeStart != null)
-                this.EmitNodeStart.emit(ConstantBase.NODE_EVENT);
-        }, this.DelayStart);
+        if (this.EmitStart != '')
+            director.emit(this.EmitStart);
+        if (this.EmitNodeStart != null)
+            this.EmitNodeStart.emit(ConstantBase.NODE_EVENT);
     }
 
     onPressEnd() {
-        this.scheduleOnce(() => {
-            if (this.EmitEnd != '')
-                director.emit(this.EmitEnd);
-            if (this.EmitNodeEnd != null)
-                this.EmitNodeEnd.emit(ConstantBase.NODE_EVENT);
-        }, this.DelayEnd);
+        if (this.EmitEnd != '')
+            director.emit(this.EmitEnd);
+        if (this.EmitNodeEnd != null)
+            this.EmitNodeEnd.emit(ConstantBase.NODE_EVENT);
         if (this.Once) {
             this.node.off(Input.EventType.TOUCH_START, this.onPressStart, this);
             this.node.off(Input.EventType.TOUCH_END, this.onPressEnd, this);
