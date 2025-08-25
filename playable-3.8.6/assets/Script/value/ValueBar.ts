@@ -1,18 +1,18 @@
-import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Label, Node, Sprite, UITransform } from 'cc';
+import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Component, director, Label, Node, Sprite, UITransform } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('ValueBar')
 export class ValueBar extends Component {
 
-    @property({ group: { name: 'Show' }, type: CCBoolean })
-    Full: boolean = true;
-    @property({ group: { name: 'Show' }, type: CCFloat })
+    @property({ group: { name: 'Main' }, type: CCInteger })
     Muti: number = 5;
-    @property({ group: { name: 'Show' }, type: Node })
+    @property({ group: { name: 'Main' }, type: CCBoolean })
+    Full: boolean = true;
+    @property({ group: { name: 'Main' }, type: Node })
     Mask: Node = null;
-    @property({ group: { name: 'Show' }, type: Label })
+    @property({ group: { name: 'Main' }, type: Label })
     LabelValue: Label = null;
-    @property({ group: { name: 'Show' }, type: Label })
+    @property({ group: { name: 'Main' }, type: Label })
     LabelName: Label = null;
 
     @property({ group: { name: 'Hide' }, type: CCBoolean })
