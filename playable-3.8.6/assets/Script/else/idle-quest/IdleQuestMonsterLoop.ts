@@ -12,11 +12,11 @@ export class IdleQuestMonsterLoop extends Component {
     @property({ type: Node })
     EventAttackLoop: Node = null;
 
-    @property({ type: Node })
-    EventBodyDead: Node = null;
-
     @property({ type: CCFloat })
     DelayAttack: number = 2;
+
+    @property({ type: Node })
+    EventBodyDead: Node = null;
 
     protected onLoad(): void {
         director.on(ConstantBase.GAME_LOSE, this.onGameLose, this);
