@@ -16,7 +16,14 @@ export class IdleQuestPlayerLoop extends Component {
     EventDelayLoop: number = 1;
 
     protected onLoad(): void {
+        director.on(ConstantBase.GAME_LOSE, this.onGameLose, this);
+        director.on(ConstantBase.GAME_TIME_OUT, this.onGameLose, this);
+
         this.node.on(ConstantBase.NODE_EVENT, this.onPlayerLoop, this);
+    }
+
+    private onGameLose(): void {
+        this.unscheduleAllCallbacks();
     }
 
     private onPlayerLoop(): void {

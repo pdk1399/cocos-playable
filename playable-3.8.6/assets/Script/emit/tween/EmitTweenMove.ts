@@ -11,7 +11,7 @@ export class EmitTweenMove extends EmitTween {
     @property({ group: { name: 'Main', displayOrder: 10 }, type: CCBoolean })
     ValueWorld: boolean = false;
     @property({ group: { name: 'Main', displayOrder: 10 }, type: CCBoolean, visible: function (this: EmitTween) { return this.Progress == TweenType.Once; } })
-    ValueReset: boolean = false;
+    ValueReset: boolean = true; //When TRUE, if target restart tween, it will start from it's original
 
     m_valueA: Vec3 = v3();
     m_valueB: Vec3 = v3();
