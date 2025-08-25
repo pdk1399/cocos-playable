@@ -21,6 +21,9 @@ export class IdleQuestPlayerLoop extends Component {
     @property({ type: CCFloat })
     DelayNext: number = 1;
 
+    @property({ type: Node })
+    EventNextWave: Node = null;
+
     m_monsterDead: number = 0;
 
     protected onLoad(): void {
@@ -55,12 +58,15 @@ export class IdleQuestPlayerLoop extends Component {
         if (this.m_monsterDead >= this.MonsterGroup.children.length) {
             this.unscheduleAllCallbacks();
             this.EventAttackLoop.emit(ConstantBase.NODE_EVENT_STOP);
+            this.onNextWave();
         }
     }
 
     private onNextWave() {
         this.scheduleOnce(() => {
-
+            this.MonsterGroup.children.forEach(monster => monster.getComponent(BodyBase).onRevive());
+            this.EventNextWave.emit(ConstantBase.NODE_EVENT_RESET);
+            this.EventNextWave.emit(ConstantBase.NODE_EVENT);
         }, this.DelayNext)
     }
 }

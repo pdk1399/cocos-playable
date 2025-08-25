@@ -26,7 +26,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 445
+      "__id__": 441
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -57,7 +57,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 446
+      "__id__": 442
     },
     "_id": "d35200c5-b991-4b91-a12d-c87731cf6c35"
   },
@@ -8161,19 +8161,19 @@
     "_active": true,
     "_components": [
       {
+        "__id__": 436
+      },
+      {
+        "__id__": 437
+      },
+      {
+        "__id__": 438
+      },
+      {
+        "__id__": 439
+      },
+      {
         "__id__": 440
-      },
-      {
-        "__id__": 441
-      },
-      {
-        "__id__": 442
-      },
-      {
-        "__id__": 443
-      },
-      {
-        "__id__": 444
       }
     ],
     "_prefab": null,
@@ -8382,13 +8382,13 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 437
+        "__id__": 433
       },
       {
-        "__id__": 438
+        "__id__": 434
       },
       {
-        "__id__": 439
+        "__id__": 435
       }
     ],
     "_prefab": null,
@@ -10323,7 +10323,7 @@
     "TagDestroyCollider": [
       200
     ],
-    "AnimIdle": "bow-idle",
+    "AnimIdle": "idle",
     "AnimIdleLoop": true,
     "AnimHitEvent": false,
     "AnimHit": "hit",
@@ -11157,7 +11157,7 @@
     "TagDestroyCollider": [
       200
     ],
-    "AnimIdle": "bow-idle",
+    "AnimIdle": "idle",
     "AnimIdleLoop": true,
     "AnimHitEvent": false,
     "AnimHit": "hit",
@@ -11991,7 +11991,7 @@
     "TagDestroyCollider": [
       200
     ],
-    "AnimIdle": "bow-idle",
+    "AnimIdle": "idle",
     "AnimIdleLoop": true,
     "AnimHitEvent": false,
     "AnimHit": "hit",
@@ -12825,7 +12825,7 @@
     "TagDestroyCollider": [
       200
     ],
-    "AnimIdle": "bow-idle",
+    "AnimIdle": "idle",
     "AnimIdleLoop": true,
     "AnimHitEvent": false,
     "AnimHit": "hit",
@@ -13270,7 +13270,7 @@
         "__id__": 365
       },
       {
-        "__id__": 436
+        "__id__": 432
       }
     ],
     "_prefab": null,
@@ -13314,7 +13314,7 @@
     "_enabled": true,
     "__prefab": null,
     "Desciption": "field tween move",
-    "Start": true,
+    "Start": false,
     "OnTagBody": 0,
     "OnTagTarget": [
       100
@@ -13503,6 +13503,9 @@
       "__id__": 261
     },
     "DelayNext": 1,
+    "EventNextWave": {
+      "__id__": 364
+    },
     "_id": "32+Ao+rtZKBYg8JVat770h"
   },
   {
@@ -13542,22 +13545,22 @@
         "__id__": 372
       },
       {
-        "__id__": 404
+        "__id__": 403
       },
       {
-        "__id__": 414
+        "__id__": 412
       },
       {
-        "__id__": 424
+        "__id__": 421
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 434
+        "__id__": 430
       },
       {
-        "__id__": 435
+        "__id__": 431
       }
     ],
     "_prefab": null,
@@ -13606,7 +13609,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 403
+        "__id__": 402
       }
     ],
     "_prefab": null,
@@ -13641,7 +13644,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "monster-archer-1-attack-loop",
+    "_name": "monster-archer-1-loop",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -13658,7 +13661,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 402
+        "__id__": 401
       }
     ],
     "_prefab": null,
@@ -14566,9 +14569,6 @@
       },
       {
         "__id__": 400
-      },
-      {
-        "__id__": 401
       }
     ],
     "_prefab": null,
@@ -14625,7 +14625,7 @@
     "OnNode": [],
     "EmitEvent": [],
     "EmitNode": {
-      "__id__": 266
+      "__id__": 262
     },
     "Progress": 0,
     "Limit": 1,
@@ -14637,7 +14637,7 @@
     "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
-      "x": 1000,
+      "x": 600,
       "y": 0
     },
     "ValueWorld": false,
@@ -14671,59 +14671,16 @@
       "__id__": 266
     },
     "Progress": 2,
-    "Limit": 0,
+    "Limit": 2,
     "To": 0,
     "Duration": 0.5,
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
     "OnScene": true,
-    "Value": -359.99,
+    "Value": -360,
     "ValueReset": false,
     "_id": "56tAbd4fpC6qUH7KEY0cuO"
-  },
-  {
-    "__type__": "b4b5f+gmAVCH5QWftpxsAc3",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 398
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "Desciption": "monster shadow move backward",
-    "Start": false,
-    "OnTagBody": 0,
-    "OnTagTarget": [
-      100
-    ],
-    "OnNodeTarget": [],
-    "Once": 0,
-    "Delay": 0,
-    "EmitNodeNext": null,
-    "OnEvent": [],
-    "OnNode": [],
-    "EmitEvent": [],
-    "EmitNode": {
-      "__id__": 263
-    },
-    "Progress": 0,
-    "Limit": 1,
-    "To": 1,
-    "Duration": 1,
-    "Ease": 0,
-    "Fixed": true,
-    "CompleteDestroy": false,
-    "OnScene": true,
-    "Value": {
-      "__type__": "cc.Vec2",
-      "x": 1000,
-      "y": 0
-    },
-    "ValueWorld": false,
-    "ValueReset": false,
-    "_id": "540ZTyr9dPQJ/7T3T3/Rfm"
   },
   {
     "__type__": "4eb1eVrXl1I359vJVQLwKMl",
@@ -14777,7 +14734,7 @@
     },
     "Progress": 2,
     "Limit": 1,
-    "To": 0,
+    "To": 1,
     "Duration": 3,
     "Ease": 0,
     "Fixed": true,
@@ -14785,8 +14742,8 @@
     "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
-      "x": 225,
-      "y": 210
+      "x": -600,
+      "y": 0
     },
     "ValueWorld": false,
     "ValueReset": false,
@@ -14802,13 +14759,13 @@
     },
     "_children": [
       {
-        "__id__": 405
+        "__id__": 404
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 413
+        "__id__": 411
       }
     ],
     "_prefab": null,
@@ -14843,24 +14800,24 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "monster-bomb-attack-loop",
+    "_name": "monster-bomb-loop",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 404
+      "__id__": 403
     },
     "_children": [
       {
-        "__id__": 406
+        "__id__": 405
       },
       {
-        "__id__": 408
+        "__id__": 407
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 412
+        "__id__": 410
       }
     ],
     "_prefab": null,
@@ -14899,13 +14856,13 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 405
+      "__id__": 404
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 407
+        "__id__": 406
       }
     ],
     "_prefab": null,
@@ -14944,7 +14901,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 406
+      "__id__": 405
     },
     "_enabled": true,
     "__prefab": null,
@@ -14987,19 +14944,16 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 405
+      "__id__": 404
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
+        "__id__": 408
+      },
+      {
         "__id__": 409
-      },
-      {
-        "__id__": 410
-      },
-      {
-        "__id__": 411
       }
     ],
     "_prefab": null,
@@ -15038,7 +14992,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 408
+      "__id__": 407
     },
     "_enabled": true,
     "__prefab": null,
@@ -15056,7 +15010,7 @@
     "OnNode": [],
     "EmitEvent": [],
     "EmitNode": {
-      "__id__": 289
+      "__id__": 285
     },
     "Progress": 0,
     "Limit": 1,
@@ -15068,7 +15022,7 @@
     "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
-      "x": 1000,
+      "x": 600,
       "y": 0
     },
     "ValueWorld": false,
@@ -15081,7 +15035,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 408
+      "__id__": 407
     },
     "_enabled": true,
     "__prefab": null,
@@ -15102,59 +15056,16 @@
       "__id__": 289
     },
     "Progress": 2,
-    "Limit": 0,
+    "Limit": 2,
     "To": 0,
     "Duration": 0.5,
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
     "OnScene": true,
-    "Value": -359.99,
+    "Value": -360,
     "ValueReset": false,
     "_id": "6f294kshdPtL28enPK55lq"
-  },
-  {
-    "__type__": "b4b5f+gmAVCH5QWftpxsAc3",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 408
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "Desciption": "monster shadow move backward",
-    "Start": false,
-    "OnTagBody": 0,
-    "OnTagTarget": [
-      100
-    ],
-    "OnNodeTarget": [],
-    "Once": 0,
-    "Delay": 0,
-    "EmitNodeNext": null,
-    "OnEvent": [],
-    "OnNode": [],
-    "EmitEvent": [],
-    "EmitNode": {
-      "__id__": 286
-    },
-    "Progress": 0,
-    "Limit": 1,
-    "To": 1,
-    "Duration": 1,
-    "Ease": 0,
-    "Fixed": true,
-    "CompleteDestroy": false,
-    "OnScene": true,
-    "Value": {
-      "__type__": "cc.Vec2",
-      "x": 1000,
-      "y": 0
-    },
-    "ValueWorld": false,
-    "ValueReset": false,
-    "_id": "5f8KHVM1JFWYwwzYkIcJib"
   },
   {
     "__type__": "4eb1eVrXl1I359vJVQLwKMl",
@@ -15162,7 +15073,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 405
+      "__id__": 404
     },
     "_enabled": true,
     "__prefab": null,
@@ -15170,11 +15081,11 @@
       "__id__": 303
     },
     "EventAttackLoop": {
-      "__id__": 406
+      "__id__": 405
     },
     "DelayAttack": 2,
     "EventBodyDead": {
-      "__id__": 408
+      "__id__": 407
     },
     "_id": "d9ugRqJJVLKaHvd3IrXTES"
   },
@@ -15184,7 +15095,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 404
+      "__id__": 403
     },
     "_enabled": true,
     "__prefab": null,
@@ -15198,7 +15109,7 @@
     "Once": 0,
     "Delay": 0,
     "EmitNodeNext": {
-      "__id__": 405
+      "__id__": 404
     },
     "OnEvent": [],
     "OnNode": [],
@@ -15208,7 +15119,7 @@
     },
     "Progress": 2,
     "Limit": 1,
-    "To": 0,
+    "To": 1,
     "Duration": 2,
     "Ease": 0,
     "Fixed": true,
@@ -15216,8 +15127,8 @@
     "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
-      "x": 25,
-      "y": 110
+      "x": -600,
+      "y": 0
     },
     "ValueWorld": false,
     "ValueReset": false,
@@ -15233,13 +15144,13 @@
     },
     "_children": [
       {
-        "__id__": 415
+        "__id__": 413
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 423
+        "__id__": 420
       }
     ],
     "_prefab": null,
@@ -15274,24 +15185,24 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "monster-mage-attack-loop",
+    "_name": "monster-mage-loop",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 414
+      "__id__": 412
     },
     "_children": [
       {
-        "__id__": 416
+        "__id__": 414
       },
       {
-        "__id__": 418
+        "__id__": 416
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 422
+        "__id__": 419
       }
     ],
     "_prefab": null,
@@ -15330,13 +15241,13 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 415
+      "__id__": 413
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 417
+        "__id__": 415
       }
     ],
     "_prefab": null,
@@ -15375,7 +15286,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 416
+      "__id__": 414
     },
     "_enabled": true,
     "__prefab": null,
@@ -15418,19 +15329,16 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 415
+      "__id__": 413
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 419
+        "__id__": 417
       },
       {
-        "__id__": 420
-      },
-      {
-        "__id__": 421
+        "__id__": 418
       }
     ],
     "_prefab": null,
@@ -15469,7 +15377,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 418
+      "__id__": 416
     },
     "_enabled": true,
     "__prefab": null,
@@ -15487,7 +15395,7 @@
     "OnNode": [],
     "EmitEvent": [],
     "EmitNode": {
-      "__id__": 312
+      "__id__": 308
     },
     "Progress": 0,
     "Limit": 1,
@@ -15499,7 +15407,7 @@
     "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
-      "x": 1000,
+      "x": 600,
       "y": 0
     },
     "ValueWorld": false,
@@ -15512,7 +15420,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 418
+      "__id__": 416
     },
     "_enabled": true,
     "__prefab": null,
@@ -15533,59 +15441,16 @@
       "__id__": 312
     },
     "Progress": 2,
-    "Limit": 0,
+    "Limit": 2,
     "To": 0,
     "Duration": 0.5,
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
     "OnScene": true,
-    "Value": -359.99,
+    "Value": -360,
     "ValueReset": false,
     "_id": "eepMhwGrJMVrTD1jTbMhA3"
-  },
-  {
-    "__type__": "b4b5f+gmAVCH5QWftpxsAc3",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 418
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "Desciption": "monster shadow move backward",
-    "Start": false,
-    "OnTagBody": 0,
-    "OnTagTarget": [
-      100
-    ],
-    "OnNodeTarget": [],
-    "Once": 0,
-    "Delay": 0,
-    "EmitNodeNext": null,
-    "OnEvent": [],
-    "OnNode": [],
-    "EmitEvent": [],
-    "EmitNode": {
-      "__id__": 309
-    },
-    "Progress": 0,
-    "Limit": 1,
-    "To": 1,
-    "Duration": 1,
-    "Ease": 0,
-    "Fixed": true,
-    "CompleteDestroy": false,
-    "OnScene": true,
-    "Value": {
-      "__type__": "cc.Vec2",
-      "x": 1000,
-      "y": 0
-    },
-    "ValueWorld": false,
-    "ValueReset": false,
-    "_id": "a3sLWjwiJDmKHKQ6OJueaN"
   },
   {
     "__type__": "4eb1eVrXl1I359vJVQLwKMl",
@@ -15593,7 +15458,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 415
+      "__id__": 413
     },
     "_enabled": true,
     "__prefab": null,
@@ -15601,11 +15466,11 @@
       "__id__": 326
     },
     "EventAttackLoop": {
-      "__id__": 416
+      "__id__": 414
     },
     "DelayAttack": 2,
     "EventBodyDead": {
-      "__id__": 418
+      "__id__": 416
     },
     "_id": "ca7IQ593dGHolO+6jwMDQO"
   },
@@ -15615,7 +15480,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 414
+      "__id__": 412
     },
     "_enabled": true,
     "__prefab": null,
@@ -15629,7 +15494,7 @@
     "Once": 0,
     "Delay": 0,
     "EmitNodeNext": {
-      "__id__": 415
+      "__id__": 413
     },
     "OnEvent": [],
     "OnNode": [],
@@ -15639,7 +15504,7 @@
     },
     "Progress": 2,
     "Limit": 1,
-    "To": 0,
+    "To": 1,
     "Duration": 4,
     "Ease": 0,
     "Fixed": true,
@@ -15647,8 +15512,8 @@
     "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
-      "x": 425,
-      "y": 110
+      "x": -600,
+      "y": 0
     },
     "ValueWorld": false,
     "ValueReset": false,
@@ -15664,13 +15529,13 @@
     },
     "_children": [
       {
-        "__id__": 425
+        "__id__": 422
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 433
+        "__id__": 429
       }
     ],
     "_prefab": null,
@@ -15705,24 +15570,24 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "monster-archer-2-attack-loop",
+    "_name": "monster-archer-2-loop",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 424
+      "__id__": 421
     },
     "_children": [
       {
-        "__id__": 426
+        "__id__": 423
       },
       {
-        "__id__": 428
+        "__id__": 425
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 432
+        "__id__": 428
       }
     ],
     "_prefab": null,
@@ -15761,13 +15626,13 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 425
+      "__id__": 422
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 427
+        "__id__": 424
       }
     ],
     "_prefab": null,
@@ -15806,7 +15671,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 426
+      "__id__": 423
     },
     "_enabled": true,
     "__prefab": null,
@@ -15849,19 +15714,16 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 425
+      "__id__": 422
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 429
+        "__id__": 426
       },
       {
-        "__id__": 430
-      },
-      {
-        "__id__": 431
+        "__id__": 427
       }
     ],
     "_prefab": null,
@@ -15900,7 +15762,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 428
+      "__id__": 425
     },
     "_enabled": true,
     "__prefab": null,
@@ -15918,7 +15780,7 @@
     "OnNode": [],
     "EmitEvent": [],
     "EmitNode": {
-      "__id__": 335
+      "__id__": 331
     },
     "Progress": 0,
     "Limit": 1,
@@ -15930,7 +15792,7 @@
     "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
-      "x": 1000,
+      "x": 600,
       "y": 0
     },
     "ValueWorld": false,
@@ -15943,7 +15805,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 428
+      "__id__": 425
     },
     "_enabled": true,
     "__prefab": null,
@@ -15964,59 +15826,16 @@
       "__id__": 335
     },
     "Progress": 2,
-    "Limit": 0,
+    "Limit": 2,
     "To": 0,
     "Duration": 0.5,
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
     "OnScene": true,
-    "Value": -359.99,
+    "Value": -360,
     "ValueReset": false,
     "_id": "3dNqTCjVRAypChBBkBJJtn"
-  },
-  {
-    "__type__": "b4b5f+gmAVCH5QWftpxsAc3",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 428
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "Desciption": "monster shadow move backward",
-    "Start": false,
-    "OnTagBody": 0,
-    "OnTagTarget": [
-      100
-    ],
-    "OnNodeTarget": [],
-    "Once": 0,
-    "Delay": 0,
-    "EmitNodeNext": null,
-    "OnEvent": [],
-    "OnNode": [],
-    "EmitEvent": [],
-    "EmitNode": {
-      "__id__": 332
-    },
-    "Progress": 0,
-    "Limit": 1,
-    "To": 1,
-    "Duration": 1,
-    "Ease": 0,
-    "Fixed": true,
-    "CompleteDestroy": false,
-    "OnScene": true,
-    "Value": {
-      "__type__": "cc.Vec2",
-      "x": 1000,
-      "y": 0
-    },
-    "ValueWorld": false,
-    "ValueReset": false,
-    "_id": "1eHAobPj5JUbQkW93sXx4D"
   },
   {
     "__type__": "4eb1eVrXl1I359vJVQLwKMl",
@@ -16024,7 +15843,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 425
+      "__id__": 422
     },
     "_enabled": true,
     "__prefab": null,
@@ -16032,11 +15851,11 @@
       "__id__": 349
     },
     "EventAttackLoop": {
-      "__id__": 426
+      "__id__": 423
     },
     "DelayAttack": 2,
     "EventBodyDead": {
-      "__id__": 428
+      "__id__": 425
     },
     "_id": "9eb2Ig3ZZDf7AKRbm2C/oD"
   },
@@ -16046,7 +15865,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 424
+      "__id__": 421
     },
     "_enabled": true,
     "__prefab": null,
@@ -16060,7 +15879,7 @@
     "Once": 0,
     "Delay": 0,
     "EmitNodeNext": {
-      "__id__": 425
+      "__id__": 422
     },
     "OnEvent": [],
     "OnNode": [],
@@ -16070,7 +15889,7 @@
     },
     "Progress": 2,
     "Limit": 1,
-    "To": 0,
+    "To": 1,
     "Duration": 3,
     "Ease": 0,
     "Fixed": true,
@@ -16078,8 +15897,8 @@
     "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
-      "x": 225,
-      "y": 10
+      "x": -600,
+      "y": 0
     },
     "ValueWorld": false,
     "ValueReset": false,
@@ -16113,13 +15932,13 @@
         "__id__": 372
       },
       {
-        "__id__": 404
+        "__id__": 403
       },
       {
-        "__id__": 414
+        "__id__": 412
       },
       {
-        "__id__": 424
+        "__id__": 421
       }
     ],
     "EmitTagTarget": false,
@@ -16393,28 +16212,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 447
+      "__id__": 443
     },
     "shadows": {
-      "__id__": 448
+      "__id__": 444
     },
     "_skybox": {
-      "__id__": 449
+      "__id__": 445
     },
     "fog": {
-      "__id__": 450
+      "__id__": 446
     },
     "octree": {
-      "__id__": 451
+      "__id__": 447
     },
     "skin": {
-      "__id__": 452
+      "__id__": 448
     },
     "lightProbeInfo": {
-      "__id__": 453
+      "__id__": 449
     },
     "postSettings": {
-      "__id__": 454
+      "__id__": 450
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

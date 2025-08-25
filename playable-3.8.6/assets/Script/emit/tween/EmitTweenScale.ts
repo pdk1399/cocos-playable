@@ -29,8 +29,8 @@ export class EmitTweenScale extends EmitTween {
     }
 
     onTweenOnce(target: Node): void {
-        // Tween.stopAllByTarget(target);
-        tween(target)
+        Tween.stopAllByTarget(this.m_tween);
+        this.m_tween = tween(target)
             .call(() => {
                 if (this.ValueReset)
                     target.scale = this.m_valueA.clone();
@@ -47,9 +47,9 @@ export class EmitTweenScale extends EmitTween {
     }
 
     onTweenPingPong(target: Node): void {
-        // Tween.stopAllByTarget(target);
+        Tween.stopAllByTarget(this.m_tween);
         if (this.Limit > 0) {
-            tween(target)
+            this.m_tween = tween(target)
                 .repeat(this.Limit, tween(target)
                     .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .to(this.Duration, { scale: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -62,7 +62,7 @@ export class EmitTweenScale extends EmitTween {
                 .start();
         }
         else {
-            tween(target)
+            this.m_tween = tween(target)
                 .repeatForever(tween(target)
                     .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                     .to(this.Duration, { scale: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -72,9 +72,9 @@ export class EmitTweenScale extends EmitTween {
     }
 
     onTweenRestart(target: Node): void {
-        // Tween.stopAllByTarget(target);
+        Tween.stopAllByTarget(this.m_tween);
         if (this.Limit > 0) {
-            tween(target)
+            this.m_tween = tween(target)
                 .repeat(this.Limit, tween(target)
                     .call(() => target.scale = this.m_valueA.clone())
                     .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -87,7 +87,7 @@ export class EmitTweenScale extends EmitTween {
                 .start();
         }
         else {
-            tween(target)
+            this.m_tween = tween(target)
                 .repeatForever(tween(target)
                     .call(() => target.scale = this.m_valueA.clone())
                     .to(this.Duration, { scale: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -97,7 +97,7 @@ export class EmitTweenScale extends EmitTween {
     }
 
     onEventReset(): void {
-        Tween.stopAllByTarget(this.EmitNode);
+        Tween.stopAllByTarget(this.m_tween);
         this.EmitNode.scale = this.m_valueA.clone();
     }
 }

@@ -27,12 +27,9 @@ export class EmitBaseEvent extends EmitBase {
         //ON-EVENT
         this.node.on(ConstantBase.NODE_EVENT_STOP, this.onEventStop, this);
         this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
-        this.OnEvent.forEach(event => {
-            director.on(event, this.onEvent, this);
-        });
-        this.OnNode.forEach(event => {
-            this.node.on(event, this.onEvent, this);
-        });
+        this.node.on(ConstantBase.NODE_EVENT_RESET, this.onEventReset, this);
+        this.OnEvent.forEach(event => director.on(event, this.onEvent, this));
+        this.OnNode.forEach(event => this.node.on(event, this.onEvent, this));
         //ON-COLLISION-EVENT
         let rigidBody = this.getComponent(RigidBody2D);
         if (rigidBody != null) {

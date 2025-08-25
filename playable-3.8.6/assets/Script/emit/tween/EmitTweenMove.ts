@@ -31,10 +31,10 @@ export class EmitTweenMove extends EmitTween {
     }
 
     onTweenOnce(target: Node): void {
-        // Tween.stopAllByTarget(target);
+        Tween.stopAllByTarget(this.m_tween);
         if (this.ValueWorld) {
             //World
-            tween(target)
+            this.m_tween = tween(target)
                 .call(() => {
                     if (this.ValueReset)
                         target.worldPosition = this.m_valueA.clone();
@@ -51,7 +51,7 @@ export class EmitTweenMove extends EmitTween {
         }
         else {
             //Local
-            tween(target)
+            this.m_tween = tween(target)
                 .call(() => {
                     if (this.ValueReset)
                         target.position = this.m_valueA.clone();
@@ -69,11 +69,11 @@ export class EmitTweenMove extends EmitTween {
     }
 
     onTweenPingPong(target: Node): void {
-        // Tween.stopAllByTarget(target);
+        Tween.stopAllByTarget(this.m_tween);
         if (this.ValueWorld) {
             //World
             if (this.Limit > 0) {
-                tween(target)
+                this.m_tween = tween(target)
                     .repeat(this.Limit, tween(target)
                         .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                         .to(this.Duration, { worldPosition: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -86,7 +86,7 @@ export class EmitTweenMove extends EmitTween {
                     .start();
             }
             else {
-                tween(target)
+                this.m_tween = tween(target)
                     .repeatForever(tween(target)
                         .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                         .to(this.Duration, { worldPosition: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -97,7 +97,7 @@ export class EmitTweenMove extends EmitTween {
         else {
             //Local
             if (this.Limit > 0) {
-                tween(target)
+                this.m_tween = tween(target)
                     .repeat(this.Limit, tween(target)
                         .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                         .to(this.Duration, { position: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -110,7 +110,7 @@ export class EmitTweenMove extends EmitTween {
                     .start();
             }
             else {
-                tween(target)
+                this.m_tween = tween(target)
                     .repeatForever(tween(target)
                         .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
                         .to(this.Duration, { position: this.m_valueA }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -121,11 +121,11 @@ export class EmitTweenMove extends EmitTween {
     }
 
     onTweenRestart(target: Node): void {
-        // Tween.stopAllByTarget(target);
+        Tween.stopAllByTarget(this.m_tween);
         if (this.ValueWorld) {
             //World
             if (this.Limit > 0) {
-                tween(target)
+                this.m_tween = tween(target)
                     .repeat(this.Limit, tween(target)
                         .call(() => target.worldPosition = this.m_valueA.clone())
                         .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -138,7 +138,7 @@ export class EmitTweenMove extends EmitTween {
                     .start();
             }
             else {
-                tween(target)
+                this.m_tween = tween(target)
                     .repeatForever(tween(target)
                         .call(() => target.worldPosition = this.m_valueA.clone())
                         .to(this.Duration, { worldPosition: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -149,7 +149,7 @@ export class EmitTweenMove extends EmitTween {
         else {
             //Local
             if (this.Limit > 0) {
-                tween(target)
+                this.m_tween = tween(target)
                     .repeat(this.Limit, tween(target)
                         .call(() => target.position = this.m_valueA.clone())
                         .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -162,7 +162,7 @@ export class EmitTweenMove extends EmitTween {
                     .start();
             }
             else {
-                tween(target)
+                this.m_tween = tween(target)
                     .repeatForever(tween(target)
                         .call(() => target.position = this.m_valueA.clone())
                         .to(this.Duration, { position: this.m_valueB }, { easing: EaseType[this.Ease] as TweenEasing })
@@ -173,7 +173,8 @@ export class EmitTweenMove extends EmitTween {
     }
 
     onEventReset(): void {
-        Tween.stopAllByTarget(this.EmitNode);
+        console.log('???');
+        Tween.stopAllByTarget(this.m_tween);
         if (this.ValueWorld)
             this.EmitNode.worldPosition = this.m_valueA.clone();
         else

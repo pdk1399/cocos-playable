@@ -44,6 +44,7 @@ export class EmitTween extends EmitBaseEvent {
 
     m_valueA: any = null;
     m_valueB: any = null;
+    m_tween: Tween<Node> = null;
 
     protected onLoad(): void {
         super.onLoad();

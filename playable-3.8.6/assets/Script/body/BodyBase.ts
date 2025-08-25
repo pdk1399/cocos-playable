@@ -172,6 +172,14 @@ export class BodyBase extends Component {
         this.onDeadDestroy();
     }
 
+    onRevive() {
+        this.m_dead = false;
+        this.m_hit = false;
+        this.m_hitPointCurrent = this.HitPoint;
+        this.onBarUpdate();
+        this.onAnimationIdle();
+    }
+
     onProtect(state: boolean = true) {
         if (state)
             this.Protect = state;
