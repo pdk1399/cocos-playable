@@ -13,7 +13,7 @@ export class IdleQuestPlayerLoop extends Component {
     EventAttackLoop: Node = null;
 
     @property({ type: CCFloat })
-    EventDelayLoop: number = 1;
+    DelayAttack: number = 1;
 
     @property({ type: Node })
     MonsterGroup: Node = null;
@@ -40,7 +40,7 @@ export class IdleQuestPlayerLoop extends Component {
 
     private onPlayerLoop(): void {
         this.EventAttackLoop.emit(ConstantBase.NODE_EVENT);
-        this.scheduleOnce(() => this.onPlayerLoop(), this.EventDelayLoop);
+        this.scheduleOnce(() => this.onPlayerLoop(), this.DelayAttack);
     }
 
     private onPlayerDead() {
