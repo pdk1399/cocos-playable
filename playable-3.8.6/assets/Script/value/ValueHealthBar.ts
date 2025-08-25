@@ -1,27 +1,27 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Label, Node, Sprite, UITransform } from 'cc';
 const { ccclass, property } = _decorator;
 
-@ccclass('UIValueBar')
-export class UIValueBar extends Component {
+@ccclass('ValueHealthBar')
+export class ValueHealthBar extends Component {
 
-    @property({ group: { name: 'Ui' }, type: CCBoolean })
+    @property({ group: { name: 'Show' }, type: CCBoolean })
     Full: boolean = true;
-    @property({ group: { name: 'Ui' }, type: CCFloat })
+    @property({ group: { name: 'Show' }, type: CCFloat })
     Muti: number = 5;
-    @property({ group: { name: 'Ui' }, type: Label })
+    @property({ group: { name: 'Show' }, type: Label })
     Value: Label = null;
-    @property({ group: { name: 'Ui' }, type: Node })
+    @property({ group: { name: 'Show' }, type: Node })
     Mask: Node = null;
-    @property({ group: { name: 'Ui' }, type: Label })
+    @property({ group: { name: 'Show' }, type: Label })
     Name: Label = null;
 
     @property({ group: { name: 'Hide' }, type: CCBoolean })
     HideDead: boolean = false;
     @property({ group: { name: 'Hide' }, type: CCBoolean })
     Hide: boolean = false;
-    @property({ group: { name: 'Hide' }, type: CCFloat, visible(this: UIValueBar) { return this.Hide; } })
+    @property({ group: { name: 'Hide' }, type: CCFloat, visible(this: ValueHealthBar) { return this.Hide; } })
     HideDelay: number = 3;
-    @property({ group: { name: 'Hide' }, type: [Node], visible(this: UIValueBar) { return this.Hide || this.HideDead; } })
+    @property({ group: { name: 'Hide' }, type: [Node], visible(this: ValueHealthBar) { return this.Hide || this.HideDead; } })
     HideNode: Node[] = [];
 
     m_maskSprite: Sprite = null;
