@@ -18,6 +18,9 @@ export class IdleQuestPlayerLoop extends Component {
     @property({ type: Node })
     MonsterGroup: Node = null;
 
+    @property({ type: CCFloat })
+    DelayNext: number = 1;
+
     m_monsterDead: number = 0;
 
     protected onLoad(): void {
@@ -28,9 +31,7 @@ export class IdleQuestPlayerLoop extends Component {
 
         this.BodyPlayer.node.on(ConstantBase.NODE_BODY_DEAD, this.onPlayerDead, this);
 
-        this.MonsterGroup.children.forEach(monster => {
-            monster.on(ConstantBase.NODE_BODY_DEAD, this.onMonsterDead, this);
-        });
+        this.MonsterGroup.children.forEach(monster => monster.on(ConstantBase.NODE_BODY_DEAD, this.onMonsterDead, this));
     }
 
     private onGameLose(): void {
@@ -55,5 +56,11 @@ export class IdleQuestPlayerLoop extends Component {
             this.unscheduleAllCallbacks();
             this.EventAttackLoop.emit(ConstantBase.NODE_EVENT_STOP);
         }
+    }
+
+    private onNextWave() {
+        this.scheduleOnce(() => {
+
+        }, this.DelayNext)
     }
 }
