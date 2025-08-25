@@ -95,4 +95,9 @@ export class EmitTweenRotate extends EmitTween {
                 .start();
         }
     }
+
+    onEventReset(): void {
+        Tween.stopAllByTarget(this.EmitNode);
+        this.EmitNode.eulerAngles = this.m_valueA.clone();
+    }
 }

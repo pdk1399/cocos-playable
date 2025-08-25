@@ -57,6 +57,7 @@ export class ConstantBase {
 
     static readonly NODE_EVENT_STOP: string = 'node-event-stop';
     static readonly NODE_EVENT: string = 'node-event';
+    static readonly NODE_EVENT_RESET: string = 'node-event-reset';
 
     static readonly NODE_SPINE_STOP: string = 'node-spine-stop';
     static readonly NODE_SPINE_PLAY: string = 'node-spine-play';

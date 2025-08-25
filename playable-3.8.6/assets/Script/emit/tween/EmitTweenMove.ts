@@ -171,4 +171,12 @@ export class EmitTweenMove extends EmitTween {
             }
         }
     }
+
+    onEventReset(): void {
+        Tween.stopAllByTarget(this.EmitNode);
+        if (this.ValueWorld)
+            this.EmitNode.worldPosition = this.m_valueA.clone();
+        else
+            this.EmitNode.position = this.m_valueA.clone();
+    }
 }

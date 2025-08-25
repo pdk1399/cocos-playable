@@ -42,6 +42,7 @@ export class EmitBase extends Component {
         //ON-EVENT
         this.node.on(ConstantBase.NODE_EVENT_STOP, this.onEventStop, this);
         this.node.on(ConstantBase.NODE_EVENT, this.onEvent, this);
+        this.node.on(ConstantBase.NODE_EVENT_RESET, this.onEventReset, this);
         //ON-COLLISION-EVENT
         let rigidBody = this.getComponent(RigidBody2D);
         if (rigidBody != null) {
@@ -115,4 +116,6 @@ export class EmitBase extends Component {
         else if (this.Once >= OnceType.Destroy)
             this.scheduleOnce(() => this.node.destroy(), 0.02);
     }
+
+    onEventReset() { } // Re-code onEventReset() to fix reset event
 }

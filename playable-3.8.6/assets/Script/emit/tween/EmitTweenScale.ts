@@ -95,4 +95,9 @@ export class EmitTweenScale extends EmitTween {
                 .start();
         }
     }
+
+    onEventReset(): void {
+        Tween.stopAllByTarget(this.EmitNode);
+        this.EmitNode.scale = this.m_valueA.clone();
+    }
 }
