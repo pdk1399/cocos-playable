@@ -15,11 +15,6 @@ export class ValueBar extends Component {
     @property({ group: { name: 'Show' }, type: Label })
     LabelName: Label = null;
 
-    @property({ group: { name: 'Show' }, type: Label })
-    Value: Label = null;
-    @property({ group: { name: 'Show' }, type: Label })
-    Name: Label = null;
-
     @property({ group: { name: 'Hide' }, type: CCBoolean })
     HideDead: boolean = false;
     @property({ group: { name: 'Hide' }, type: CCBoolean })
@@ -42,11 +37,6 @@ export class ValueBar extends Component {
     protected start(): void {
         if (this.Hide)
             this.onHideNode();
-    }
-
-    onLostFocusInEditor(): void {
-        this.LabelValue = this.Value;
-        this.LabelName = this.Name;
     }
 
     onName(name: string) {
