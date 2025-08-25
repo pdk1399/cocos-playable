@@ -31,7 +31,7 @@ export class EmitTweenMove extends EmitTween {
     }
 
     onTweenOnce(target: Node): void {
-        Tween.stopAllByTarget(target);
+        // Tween.stopAllByTarget(target);
         if (this.ValueWorld) {
             //World
             tween(target)
@@ -69,7 +69,7 @@ export class EmitTweenMove extends EmitTween {
     }
 
     onTweenPingPong(target: Node): void {
-        Tween.stopAllByTarget(target);
+        // Tween.stopAllByTarget(target);
         if (this.ValueWorld) {
             //World
             if (this.Limit > 0) {
@@ -121,7 +121,7 @@ export class EmitTweenMove extends EmitTween {
     }
 
     onTweenRestart(target: Node): void {
-        Tween.stopAllByTarget(target);
+        // Tween.stopAllByTarget(target);
         if (this.ValueWorld) {
             //World
             if (this.Limit > 0) {

@@ -16,10 +16,12 @@ export class UIValueBar extends Component {
     Name: Label = null;
 
     @property({ group: { name: 'Hide' }, type: CCBoolean })
+    HideDead: boolean = false;
+    @property({ group: { name: 'Hide' }, type: CCBoolean })
     Hide: boolean = false;
     @property({ group: { name: 'Hide' }, type: CCFloat, visible(this: UIValueBar) { return this.Hide; } })
     HideDelay: number = 3;
-    @property({ group: { name: 'Hide' }, type: [Node], visible(this: UIValueBar) { return this.Hide; } })
+    @property({ group: { name: 'Hide' }, type: [Node], visible(this: UIValueBar) { return this.Hide || this.HideDead; } })
     HideNode: Node[] = [];
 
     m_maskSprite: Sprite = null;
@@ -43,7 +45,13 @@ export class UIValueBar extends Component {
     }
 
     onValue(current: number, max: number) {
-        if (this.Hide) {
+        if (this.HideDead) {
+            if (current > 0)
+                this.onShowNode();
+            else
+                this.onHideNode();
+        }
+        else if (this.Hide) {
             this.unscheduleAllCallbacks();
             this.onShowNode();
             this.scheduleOnce(() => this.onHideNode(), this.HideDelay);

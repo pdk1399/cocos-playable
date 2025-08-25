@@ -29,7 +29,7 @@ export class EmitTweenRotate extends EmitTween {
     }
 
     onTweenOnce(target: Node): void {
-        Tween.stopAllByTarget(target);
+        // Tween.stopAllByTarget(target);
         tween(target)
             .call(() => {
                 if (this.ValueReset)
@@ -47,7 +47,7 @@ export class EmitTweenRotate extends EmitTween {
     }
 
     onTweenPingPong(target: Node): void {
-        Tween.stopAllByTarget(target);
+        // Tween.stopAllByTarget(target);
         if (this.Limit > 0) {
             tween(target)
                 .repeat(this.Limit, tween(target)
@@ -72,7 +72,7 @@ export class EmitTweenRotate extends EmitTween {
     }
 
     onTweenRestart(target: Node): void {
-        Tween.stopAllByTarget(target);
+        // Tween.stopAllByTarget(target);
         if (this.Limit > 0) {
             tween(target)
                 .repeat(this.Limit, tween(target)

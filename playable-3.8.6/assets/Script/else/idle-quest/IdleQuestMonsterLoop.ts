@@ -23,18 +23,23 @@ export class IdleQuestMonsterLoop extends Component {
         director.on(ConstantBase.GAME_TIME_OUT, this.onGameLose, this);
 
         this.node.on(ConstantBase.NODE_EVENT, this.onMonsterLoop, this);
+
+        this.BodyMonster.node.on(ConstantBase.NODE_BODY_DEAD, this.onMonsterDead, this);
     }
 
     private onGameLose(): void {
         this.unscheduleAllCallbacks();
+        this.EventAttackLoop.emit(ConstantBase.NODE_EVENT_STOP);
     }
 
     private onMonsterLoop(): void {
-        if (this.BodyMonster.m_dead) {
-            this.EventBodyDead.emit(ConstantBase.NODE_EVENT);
-            return;
-        }
         this.EventAttackLoop.emit(ConstantBase.NODE_EVENT);
         this.scheduleOnce(() => this.onMonsterLoop(), this.DelayAttack);
+    }
+
+    private onMonsterDead() {
+        this.unscheduleAllCallbacks();
+        this.EventAttackLoop.emit(ConstantBase.NODE_EVENT_STOP);
+        this.EventBodyDead.emit(ConstantBase.NODE_EVENT);
     }
 }
