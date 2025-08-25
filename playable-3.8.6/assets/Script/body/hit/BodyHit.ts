@@ -2,8 +2,8 @@ import { _decorator, CCBoolean, CCFloat, CCInteger, Collider2D, Component, Conta
 import { ConstantBase } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('BodyHurt')
-export class BodyHurt extends Component {
+@ccclass('BodyHit')
+export class BodyHit extends Component {
 
     @property({ group: { name: 'Hit' }, type: CCInteger })
     Hit: number = 1;
