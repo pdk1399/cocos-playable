@@ -1,7 +1,7 @@
 import { _decorator, Component, math, Node, v2, Vec2, view, screen, CCBoolean, Rect } from 'cc';
 import { Responsive2D } from 'db://responsive2d/Responsive2D';
-import { ConstantBase } from '../ConstantBase';
-import CameraBase from '../camera/CameraBase';
+import { ConstantBase } from '../../ConstantBase';
+import CameraBase from '../../camera/CameraBase';
 const { ccclass, property } = _decorator;
 
 export enum OrientationType {

@@ -1,5 +1,5 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, instantiate, Node, tween, TweenEasing, UIOpacity, v2, Vec2, Vec3 } from 'cc';
-import { ConstantBase, EaseType } from '../ConstantBase';
+import { ConstantBase, EaseType } from '../../ConstantBase';
 const { ccclass, property } = _decorator;
 
 class ScrollChildData {
