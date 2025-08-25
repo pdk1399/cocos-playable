@@ -64,6 +64,7 @@ export class IdleQuestPlayerLoop extends Component {
 
     private onNextWave() {
         this.scheduleOnce(() => {
+            this.m_monsterDead = 0;
             this.MonsterGroup.children.forEach(monster => monster.getComponent(BodyBase).onRevive());
             this.EventNextWave.emit(ConstantBase.NODE_EVENT_RESET);
             this.EventNextWave.emit(ConstantBase.NODE_EVENT);

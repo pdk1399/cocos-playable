@@ -175,8 +175,13 @@ export class BodyBase extends Component {
     onRevive() {
         this.m_dead = false;
         this.m_hit = false;
+
+        this.node.on(ConstantBase.NODE_BODY_HIT, this.onHit, this);
+        this.node.on(ConstantBase.NODE_BODY_DEAD, this.onDead, this);
+
         this.m_hitPointCurrent = this.HitPoint;
         this.onBarUpdate();
+
         this.onAnimationIdle();
     }
 

@@ -173,7 +173,6 @@ export class EmitTweenMove extends EmitTween {
     }
 
     onEventReset(): void {
-        console.log('???');
         Tween.stopAllByTarget(this.m_tween);
         if (this.ValueWorld)
             this.EmitNode.worldPosition = this.m_valueA.clone();
