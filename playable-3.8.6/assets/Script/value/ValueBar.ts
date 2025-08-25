@@ -1,17 +1,22 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, Label, Node, Sprite, UITransform } from 'cc';
 const { ccclass, property } = _decorator;
 
-@ccclass('ValueHealthBar')
-export class ValueHealthBar extends Component {
+@ccclass('ValueBar')
+export class ValueBar extends Component {
 
     @property({ group: { name: 'Show' }, type: CCBoolean })
     Full: boolean = true;
     @property({ group: { name: 'Show' }, type: CCFloat })
     Muti: number = 5;
-    @property({ group: { name: 'Show' }, type: Label })
-    Value: Label = null;
     @property({ group: { name: 'Show' }, type: Node })
     Mask: Node = null;
+    @property({ group: { name: 'Show' }, type: Label })
+    LabelValue: Label = null;
+    @property({ group: { name: 'Show' }, type: Label })
+    LabelName: Label = null;
+
+    @property({ group: { name: 'Show' }, type: Label })
+    Value: Label = null;
     @property({ group: { name: 'Show' }, type: Label })
     Name: Label = null;
 
@@ -19,9 +24,9 @@ export class ValueHealthBar extends Component {
     HideDead: boolean = false;
     @property({ group: { name: 'Hide' }, type: CCBoolean })
     Hide: boolean = false;
-    @property({ group: { name: 'Hide' }, type: CCFloat, visible(this: ValueHealthBar) { return this.Hide; } })
+    @property({ group: { name: 'Hide' }, type: CCFloat, visible(this: ValueBar) { return this.Hide; } })
     HideDelay: number = 3;
-    @property({ group: { name: 'Hide' }, type: [Node], visible(this: ValueHealthBar) { return this.Hide || this.HideDead; } })
+    @property({ group: { name: 'Hide' }, type: [Node], visible(this: ValueBar) { return this.Hide || this.HideDead; } })
     HideNode: Node[] = [];
 
     m_maskSprite: Sprite = null;
@@ -39,9 +44,14 @@ export class ValueHealthBar extends Component {
             this.onHideNode();
     }
 
+    onLostFocusInEditor(): void {
+        this.LabelValue = this.Value;
+        this.LabelName = this.Name;
+    }
+
     onName(name: string) {
-        if (this.Name != null)
-            this.Name.string = name;
+        if (this.LabelName != null)
+            this.LabelName.string = name;
     }
 
     onValue(current: number, max: number) {
@@ -56,11 +66,11 @@ export class ValueHealthBar extends Component {
             this.onShowNode();
             this.scheduleOnce(() => this.onHideNode(), this.HideDelay);
         }
-        if (this.Value != null) {
+        if (this.LabelValue != null) {
             if (this.Full)
-                this.Value.string = (current * this.Muti).toString() + '/' + (max * this.Muti).toString();
+                this.LabelValue.string = (current * this.Muti).toString() + '/' + (max * this.Muti).toString();
             else
-                this.Value.string = (current * this.Muti).toString();
+                this.LabelValue.string = (current * this.Muti).toString();
         }
         if (this.Mask != null) {
             if (this.m_maskSprite != null ? this.m_maskSprite.type == Sprite.Type.FILLED : false)

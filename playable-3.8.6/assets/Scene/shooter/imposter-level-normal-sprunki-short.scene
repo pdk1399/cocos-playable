@@ -196,7 +196,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 757.1830985915493,
+    "_orthoHeight": 628.7719298245614,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -2898,13 +2898,18 @@
     "__prefab": null,
     "Full": true,
     "Muti": 5,
-    "Value": {
-      "__id__": 73
-    },
     "Mask": {
       "__id__": 68
     },
+    "LabelValue": {
+      "__id__": 73
+    },
+    "LabelName": null,
+    "Value": {
+      "__id__": 73
+    },
     "Name": null,
+    "HideDead": false,
     "Hide": false,
     "HideDelay": 3,
     "HideNode": [
@@ -3410,13 +3415,18 @@
     "__prefab": null,
     "Full": true,
     "Muti": 5,
-    "Value": {
-      "__id__": 87
-    },
     "Mask": {
       "__id__": 82
     },
+    "LabelValue": {
+      "__id__": 87
+    },
+    "LabelName": null,
+    "Value": {
+      "__id__": 87
+    },
     "Name": null,
+    "HideDead": false,
     "Hide": false,
     "HideDelay": 3,
     "HideNode": [
@@ -4222,15 +4232,22 @@
     "__prefab": null,
     "Full": true,
     "Muti": 5,
-    "Value": {
-      "__id__": 105
-    },
     "Mask": {
       "__id__": 96
+    },
+    "LabelValue": {
+      "__id__": 105
+    },
+    "LabelName": {
+      "__id__": 109
+    },
+    "Value": {
+      "__id__": 105
     },
     "Name": {
       "__id__": 109
     },
+    "HideDead": false,
     "Hide": true,
     "HideDelay": 3,
     "HideNode": [
@@ -7221,10 +7238,8 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayStart": 0,
     "EmitStart": "direct-store",
     "EmitNodeStart": null,
-    "DelayEnd": 0,
     "EmitEnd": "",
     "EmitNodeEnd": null,
     "_id": "73jeHKlslFd6QcYAqGKJpa"
@@ -7262,6 +7277,7 @@
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
+    "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
       "x": 0.1,
@@ -8538,6 +8554,9 @@
     "_enabled": true,
     "__prefab": null,
     "Hit": 1,
+    "HitDestroy": true,
+    "OnScene": true,
+    "ExistDuration": 10,
     "TagBody": 300,
     "TagTarget": [
       -1,
@@ -8620,7 +8639,6 @@
     "ValueBar": {
       "__id__": 91
     },
-    "EmitHit": "event-player-health",
     "EmitDead": "",
     "EmitDestroy": "",
     "ShakeHit": true,
@@ -8635,7 +8653,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead2",
     "AnimDeadLoop": false,
     "_id": "dfS0X6yJJPl5PT3x2PncVF"
@@ -11570,6 +11590,7 @@
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
+    "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -11612,6 +11633,7 @@
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
+    "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -12357,6 +12379,7 @@
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
+    "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -12399,6 +12422,7 @@
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
+    "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -13227,7 +13251,6 @@
     "ValueBar": {
       "__id__": 113
     },
-    "EmitHit": "",
     "EmitDead": "",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -13242,7 +13265,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "3fPBpYgQFCq4GP+7L+nJeo"
@@ -14463,7 +14488,6 @@
     "SwimWater": false,
     "Name": "Mr.Employee (T1)",
     "ValueBar": null,
-    "EmitHit": "",
     "EmitDead": "",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -14478,7 +14502,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "201WMSM1lL25Aqay5dQ1n7"
@@ -15077,7 +15103,6 @@
     "SwimWater": false,
     "Name": "Mr.Employee (T1)",
     "ValueBar": null,
-    "EmitHit": "",
     "EmitDead": "",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -15092,7 +15117,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "e2+gStLYlNAZT94EUNj3gu"
@@ -15812,7 +15839,6 @@
     "ValueBar": {
       "__id__": 113
     },
-    "EmitHit": "",
     "EmitDead": "monster-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -15827,7 +15853,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "54TnVajFBBmJYdRI17y3FC"
@@ -16526,7 +16554,6 @@
     "ValueBar": {
       "__id__": 113
     },
-    "EmitHit": "",
     "EmitDead": "monster-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -16541,7 +16568,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "02zy+NCaRBKJ2wBUZR8EK7"
@@ -17326,7 +17355,6 @@
     "ValueBar": {
       "__id__": 113
     },
-    "EmitHit": "",
     "EmitDead": "monster-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -17341,7 +17369,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "11rM/MtBJDbo2+Jr2Sj2o6"
@@ -18040,7 +18070,6 @@
     "ValueBar": {
       "__id__": 113
     },
-    "EmitHit": "",
     "EmitDead": "monster-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -18055,7 +18084,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "1aTuiI9llCh6EAAcf87QHB"
@@ -18754,7 +18785,6 @@
     "ValueBar": {
       "__id__": 113
     },
-    "EmitHit": "",
     "EmitDead": "monster-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -18769,7 +18799,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "f4Z1vncENIG4NLXCsOiY3f"

@@ -1,6 +1,6 @@
 import { _decorator, Node, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, RigidBody2D, Sprite, UITransform, tween, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
-import { ValueHealthBar } from '../value/ValueHealthBar';
+import { ValueBar } from '../value/ValueBar';
 import { SpineBase } from '../renderer/SpineBase';
 const { ccclass, property } = _decorator;
 
@@ -20,8 +20,8 @@ export class BodyBase extends Component {
 
     @property({ group: { name: 'Main' }, type: CCString })
     Name: string = '';
-    @property({ group: { name: 'Main' }, type: ValueHealthBar })
-    ValueBar: ValueHealthBar = null;
+    @property({ group: { name: 'Main' }, type: ValueBar })
+    ValueBar: ValueBar = null;
 
     @property({ group: { name: 'Event' }, type: CCString })
     EmitDead: string = '';

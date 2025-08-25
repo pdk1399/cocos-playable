@@ -196,7 +196,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 731.4285714285714,
+    "_orthoHeight": 628.7719298245614,
     "_near": 1,
     "_far": 1000,
     "_color": {
@@ -3125,13 +3125,18 @@
     "__prefab": null,
     "Full": true,
     "Muti": 5,
-    "Value": {
-      "__id__": 79
-    },
     "Mask": {
       "__id__": 74
     },
+    "LabelValue": {
+      "__id__": 79
+    },
+    "LabelName": null,
+    "Value": {
+      "__id__": 79
+    },
     "Name": null,
+    "HideDead": false,
     "Hide": false,
     "HideDelay": 3,
     "HideNode": [
@@ -3637,13 +3642,18 @@
     "__prefab": null,
     "Full": true,
     "Muti": 5,
-    "Value": {
-      "__id__": 93
-    },
     "Mask": {
       "__id__": 88
     },
+    "LabelValue": {
+      "__id__": 93
+    },
+    "LabelName": null,
+    "Value": {
+      "__id__": 93
+    },
     "Name": null,
+    "HideDead": false,
     "Hide": false,
     "HideDelay": 3,
     "HideNode": [
@@ -4449,15 +4459,22 @@
     "__prefab": null,
     "Full": true,
     "Muti": 5,
-    "Value": {
-      "__id__": 111
-    },
     "Mask": {
       "__id__": 102
+    },
+    "LabelValue": {
+      "__id__": 111
+    },
+    "LabelName": {
+      "__id__": 115
+    },
+    "Value": {
+      "__id__": 111
     },
     "Name": {
       "__id__": 115
     },
+    "HideDead": false,
     "Hide": true,
     "HideDelay": 3,
     "HideNode": [
@@ -7590,10 +7607,8 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayStart": 0,
     "EmitStart": "direct-store",
     "EmitNodeStart": null,
-    "DelayEnd": 0,
     "EmitEnd": "",
     "EmitNodeEnd": null,
     "_id": "d7rpdAvVlFtKX5LrSDveON"
@@ -7608,6 +7623,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": true,
     "OnTagBody": 0,
     "OnTagTarget": [
@@ -7630,6 +7646,7 @@
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
+    "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
       "x": 0.1,
@@ -8680,7 +8697,6 @@
     "ValueBar": {
       "__id__": 97
     },
-    "EmitHit": "event-player-health",
     "EmitDead": "player-dead",
     "EmitDestroy": "",
     "ShakeHit": true,
@@ -8695,7 +8711,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead2",
     "AnimDeadLoop": false,
     "_id": "43tzieWe1L4KJ9MrXcwF6l"
@@ -8711,26 +8729,9 @@
     "_enabled": true,
     "__prefab": null,
     "Once": true,
-    "DelayAttack": 0,
-    "DelayNext": 2,
     "DelayLoop": 0,
-    "StopOutRange": false,
-    "StopOnHit": true,
-    "Melee": true,
-    "MeleeDirUpdate": true,
-    "MeleeAuto": false,
-    "MeleeHit": 1,
-    "MeleeHitMultiX2": 2,
-    "MeleeHitMultiX4": 4,
-    "Range": false,
-    "RangeDirUpdate": true,
-    "RangeAuto": false,
-    "RangeBullet": null,
-    "RangeBulletSpeed": 5,
-    "RangeTargetUpdate": true,
-    "RangeTargetReset": true,
-    "AnimComboKeep": false,
     "AnimMix": false,
+    "AnimComboKeep": false,
     "AnimReady": [],
     "AnimAttack": [
       "attack_sword"
@@ -8746,10 +8747,20 @@
     "AnimMeleeHit": [
       1
     ],
-    "Aim": false,
-    "AimAnim": "attack_aim",
-    "AimBone": "aim_bone",
-    "AimFrom": null,
+    "StopOutRange": false,
+    "StopOnHit": true,
+    "Melee": true,
+    "MeleeDirUpdate": true,
+    "MeleeAuto": false,
+    "MeleeHitMultiX2": 2,
+    "MeleeHitMultiX4": 4,
+    "Range": false,
+    "RangeDirUpdate": true,
+    "RangeAuto": false,
+    "RangeBullet": null,
+    "RangeBulletSpeed": 5,
+    "RangeTargetUpdate": true,
+    "RangeTargetReset": true,
     "TagMelee": 101,
     "TagRange": 102,
     "TagTarget": 200,
@@ -9341,6 +9352,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": true,
     "OnTagBody": 0,
     "OnTagTarget": [
@@ -9529,6 +9541,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": true,
     "OnTagBody": 0,
     "OnTagTarget": [
@@ -9668,6 +9681,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": true,
     "OnTagBody": 0,
     "OnTagTarget": [
@@ -12060,6 +12074,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": false,
     "OnTagBody": 0,
     "OnTagTarget": [
@@ -12084,6 +12099,7 @@
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
+    "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -12103,6 +12119,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": false,
     "OnTagBody": 0,
     "OnTagTarget": [
@@ -12125,6 +12142,7 @@
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
+    "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -12847,6 +12865,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": false,
     "OnTagBody": 0,
     "OnTagTarget": [
@@ -12871,6 +12890,7 @@
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
+    "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -12890,6 +12910,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": false,
     "OnTagBody": 0,
     "OnTagTarget": [
@@ -12912,6 +12933,7 @@
     "Ease": 0,
     "Fixed": true,
     "CompleteDestroy": false,
+    "OnScene": true,
     "Value": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -13421,7 +13443,6 @@
     "ValueBar": {
       "__id__": 119
     },
-    "EmitHit": "emit-hit",
     "EmitDead": "emit-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -13437,7 +13458,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "broken2",
     "AnimDeadLoop": false,
     "_id": "59Q+lDH2RFpIApGQ5vQJKH"
@@ -13734,7 +13757,6 @@
     "ValueBar": {
       "__id__": 119
     },
-    "EmitHit": "emit-hit",
     "EmitDead": "emit-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -13750,7 +13772,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "broken2",
     "AnimDeadLoop": false,
     "_id": "a8KPkPpktEUJ9t3kCWNSyu"
@@ -14088,6 +14112,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": false,
     "OnTagBody": 0,
     "OnTagTarget": [
@@ -14488,7 +14513,6 @@
     "ValueBar": {
       "__id__": 119
     },
-    "EmitHit": "",
     "EmitDead": "",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -14503,7 +14527,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "94a6DqPJZGAJJtXie31d4k"
@@ -14519,26 +14545,9 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 1,
-    "StopOutRange": false,
-    "StopOnHit": false,
-    "Melee": true,
-    "MeleeDirUpdate": true,
-    "MeleeAuto": true,
-    "MeleeHit": 1,
-    "MeleeHitMultiX2": 2,
-    "MeleeHitMultiX4": 4,
-    "Range": false,
-    "RangeDirUpdate": true,
-    "RangeAuto": false,
-    "RangeBullet": null,
-    "RangeBulletSpeed": 5,
-    "RangeTargetUpdate": true,
-    "RangeTargetReset": true,
-    "AnimComboKeep": false,
     "AnimMix": false,
+    "AnimComboKeep": false,
     "AnimReady": [],
     "AnimAttack": [
       "attack1"
@@ -14554,10 +14563,20 @@
     "AnimMeleeHit": [
       1
     ],
-    "Aim": false,
-    "AimAnim": "attack_aim",
-    "AimBone": "aim_bone",
-    "AimFrom": null,
+    "StopOutRange": false,
+    "StopOnHit": false,
+    "Melee": true,
+    "MeleeDirUpdate": true,
+    "MeleeAuto": true,
+    "MeleeHitMultiX2": 2,
+    "MeleeHitMultiX4": 4,
+    "Range": false,
+    "RangeDirUpdate": true,
+    "RangeAuto": false,
+    "RangeBullet": null,
+    "RangeBulletSpeed": 5,
+    "RangeTargetUpdate": true,
+    "RangeTargetReset": true,
     "TagMelee": 201,
     "TagRange": 202,
     "TagTarget": 100,
@@ -15190,7 +15209,6 @@
     "ValueBar": {
       "__id__": 119
     },
-    "EmitHit": "",
     "EmitDead": "",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -15205,7 +15223,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "632ugs7IZB1rnO8+Hjzd20"
@@ -15221,26 +15241,9 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 1,
-    "StopOutRange": false,
-    "StopOnHit": false,
-    "Melee": true,
-    "MeleeDirUpdate": true,
-    "MeleeAuto": true,
-    "MeleeHit": 1,
-    "MeleeHitMultiX2": 2,
-    "MeleeHitMultiX4": 4,
-    "Range": false,
-    "RangeDirUpdate": true,
-    "RangeAuto": false,
-    "RangeBullet": null,
-    "RangeBulletSpeed": 5,
-    "RangeTargetUpdate": true,
-    "RangeTargetReset": true,
-    "AnimComboKeep": false,
     "AnimMix": false,
+    "AnimComboKeep": false,
     "AnimReady": [],
     "AnimAttack": [
       "attack1"
@@ -15256,10 +15259,20 @@
     "AnimMeleeHit": [
       1
     ],
-    "Aim": false,
-    "AimAnim": "attack_aim",
-    "AimBone": "aim_bone",
-    "AimFrom": null,
+    "StopOutRange": false,
+    "StopOnHit": false,
+    "Melee": true,
+    "MeleeDirUpdate": true,
+    "MeleeAuto": true,
+    "MeleeHitMultiX2": 2,
+    "MeleeHitMultiX4": 4,
+    "Range": false,
+    "RangeDirUpdate": true,
+    "RangeAuto": false,
+    "RangeBullet": null,
+    "RangeBulletSpeed": 5,
+    "RangeTargetUpdate": true,
+    "RangeTargetReset": true,
     "TagMelee": 201,
     "TagRange": 202,
     "TagTarget": 100,
@@ -15892,7 +15905,6 @@
     "ValueBar": {
       "__id__": 119
     },
-    "EmitHit": "",
     "EmitDead": "",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -15907,7 +15919,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "26iae+PzNAg4pG8cOInyfX"
@@ -15923,26 +15937,9 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 1,
-    "StopOutRange": false,
-    "StopOnHit": false,
-    "Melee": true,
-    "MeleeDirUpdate": true,
-    "MeleeAuto": true,
-    "MeleeHit": 1,
-    "MeleeHitMultiX2": 2,
-    "MeleeHitMultiX4": 4,
-    "Range": false,
-    "RangeDirUpdate": true,
-    "RangeAuto": false,
-    "RangeBullet": null,
-    "RangeBulletSpeed": 5,
-    "RangeTargetUpdate": true,
-    "RangeTargetReset": true,
-    "AnimComboKeep": false,
     "AnimMix": false,
+    "AnimComboKeep": false,
     "AnimReady": [],
     "AnimAttack": [
       "attack1"
@@ -15958,10 +15955,20 @@
     "AnimMeleeHit": [
       1
     ],
-    "Aim": false,
-    "AimAnim": "attack_aim",
-    "AimBone": "aim_bone",
-    "AimFrom": null,
+    "StopOutRange": false,
+    "StopOnHit": false,
+    "Melee": true,
+    "MeleeDirUpdate": true,
+    "MeleeAuto": true,
+    "MeleeHitMultiX2": 2,
+    "MeleeHitMultiX4": 4,
+    "Range": false,
+    "RangeDirUpdate": true,
+    "RangeAuto": false,
+    "RangeBullet": null,
+    "RangeBulletSpeed": 5,
+    "RangeTargetUpdate": true,
+    "RangeTargetReset": true,
     "TagMelee": 201,
     "TagRange": 202,
     "TagTarget": 100,
@@ -16649,7 +16656,6 @@
     "ValueBar": {
       "__id__": 119
     },
-    "EmitHit": "",
     "EmitDead": "monster-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -16664,7 +16670,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "36RApdf2lMRaS0vQh0ZhQx"
@@ -16680,26 +16688,9 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 1,
-    "StopOutRange": false,
-    "StopOnHit": false,
-    "Melee": true,
-    "MeleeDirUpdate": true,
-    "MeleeAuto": true,
-    "MeleeHit": 1,
-    "MeleeHitMultiX2": 2,
-    "MeleeHitMultiX4": 4,
-    "Range": false,
-    "RangeDirUpdate": true,
-    "RangeAuto": false,
-    "RangeBullet": null,
-    "RangeBulletSpeed": 5,
-    "RangeTargetUpdate": true,
-    "RangeTargetReset": true,
-    "AnimComboKeep": false,
     "AnimMix": false,
+    "AnimComboKeep": false,
     "AnimReady": [],
     "AnimAttack": [
       "attack1"
@@ -16715,10 +16706,20 @@
     "AnimMeleeHit": [
       1
     ],
-    "Aim": false,
-    "AimAnim": "attack_aim",
-    "AimBone": "aim_bone",
-    "AimFrom": null,
+    "StopOutRange": false,
+    "StopOnHit": false,
+    "Melee": true,
+    "MeleeDirUpdate": true,
+    "MeleeAuto": true,
+    "MeleeHitMultiX2": 2,
+    "MeleeHitMultiX4": 4,
+    "Range": false,
+    "RangeDirUpdate": true,
+    "RangeAuto": false,
+    "RangeBullet": null,
+    "RangeBulletSpeed": 5,
+    "RangeTargetUpdate": true,
+    "RangeTargetReset": true,
     "TagMelee": 201,
     "TagRange": 202,
     "TagTarget": 100,
@@ -17381,7 +17382,6 @@
     "ValueBar": {
       "__id__": 119
     },
-    "EmitHit": "",
     "EmitDead": "monster-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -17396,7 +17396,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "90C30xwQ9AqIEvX28+t2a6"
@@ -17412,26 +17414,9 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 1,
-    "StopOutRange": false,
-    "StopOnHit": false,
-    "Melee": true,
-    "MeleeDirUpdate": true,
-    "MeleeAuto": true,
-    "MeleeHit": 1,
-    "MeleeHitMultiX2": 2,
-    "MeleeHitMultiX4": 4,
-    "Range": false,
-    "RangeDirUpdate": true,
-    "RangeAuto": false,
-    "RangeBullet": null,
-    "RangeBulletSpeed": 5,
-    "RangeTargetUpdate": true,
-    "RangeTargetReset": true,
-    "AnimComboKeep": false,
     "AnimMix": false,
+    "AnimComboKeep": false,
     "AnimReady": [],
     "AnimAttack": [
       "attack1"
@@ -17447,10 +17432,20 @@
     "AnimMeleeHit": [
       1
     ],
-    "Aim": false,
-    "AimAnim": "attack_aim",
-    "AimBone": "aim_bone",
-    "AimFrom": null,
+    "StopOutRange": false,
+    "StopOnHit": false,
+    "Melee": true,
+    "MeleeDirUpdate": true,
+    "MeleeAuto": true,
+    "MeleeHitMultiX2": 2,
+    "MeleeHitMultiX4": 4,
+    "Range": false,
+    "RangeDirUpdate": true,
+    "RangeAuto": false,
+    "RangeBullet": null,
+    "RangeBulletSpeed": 5,
+    "RangeTargetUpdate": true,
+    "RangeTargetReset": true,
     "TagMelee": 201,
     "TagRange": 202,
     "TagTarget": 100,
@@ -17787,6 +17782,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": false,
     "OnTagBody": 0,
     "OnTagTarget": [
@@ -18198,7 +18194,6 @@
     "ValueBar": {
       "__id__": 119
     },
-    "EmitHit": "",
     "EmitDead": "monster-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -18213,7 +18208,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "98e8wHzZRHaKxgEtHBkejS"
@@ -18229,26 +18226,9 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 1,
-    "StopOutRange": false,
-    "StopOnHit": false,
-    "Melee": true,
-    "MeleeDirUpdate": true,
-    "MeleeAuto": true,
-    "MeleeHit": 1,
-    "MeleeHitMultiX2": 2,
-    "MeleeHitMultiX4": 4,
-    "Range": false,
-    "RangeDirUpdate": true,
-    "RangeAuto": false,
-    "RangeBullet": null,
-    "RangeBulletSpeed": 5,
-    "RangeTargetUpdate": true,
-    "RangeTargetReset": true,
-    "AnimComboKeep": false,
     "AnimMix": false,
+    "AnimComboKeep": false,
     "AnimReady": [],
     "AnimAttack": [
       "attack1"
@@ -18264,10 +18244,20 @@
     "AnimMeleeHit": [
       1
     ],
-    "Aim": false,
-    "AimAnim": "attack_aim",
-    "AimBone": "aim_bone",
-    "AimFrom": null,
+    "StopOutRange": false,
+    "StopOnHit": false,
+    "Melee": true,
+    "MeleeDirUpdate": true,
+    "MeleeAuto": true,
+    "MeleeHitMultiX2": 2,
+    "MeleeHitMultiX4": 4,
+    "Range": false,
+    "RangeDirUpdate": true,
+    "RangeAuto": false,
+    "RangeBullet": null,
+    "RangeBulletSpeed": 5,
+    "RangeTargetUpdate": true,
+    "RangeTargetReset": true,
     "TagMelee": 201,
     "TagRange": 202,
     "TagTarget": 100,
@@ -18930,7 +18920,6 @@
     "ValueBar": {
       "__id__": 119
     },
-    "EmitHit": "",
     "EmitDead": "monster-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -18945,7 +18934,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "1fuj9g6RRP95WzzbsZuO92"
@@ -18961,26 +18952,9 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 1,
-    "StopOutRange": false,
-    "StopOnHit": false,
-    "Melee": true,
-    "MeleeDirUpdate": true,
-    "MeleeAuto": true,
-    "MeleeHit": 1,
-    "MeleeHitMultiX2": 2,
-    "MeleeHitMultiX4": 4,
-    "Range": false,
-    "RangeDirUpdate": true,
-    "RangeAuto": false,
-    "RangeBullet": null,
-    "RangeBulletSpeed": 5,
-    "RangeTargetUpdate": true,
-    "RangeTargetReset": true,
-    "AnimComboKeep": false,
     "AnimMix": false,
+    "AnimComboKeep": false,
     "AnimReady": [],
     "AnimAttack": [
       "attack1"
@@ -18996,10 +18970,20 @@
     "AnimMeleeHit": [
       1
     ],
-    "Aim": false,
-    "AimAnim": "attack_aim",
-    "AimBone": "aim_bone",
-    "AimFrom": null,
+    "StopOutRange": false,
+    "StopOnHit": false,
+    "Melee": true,
+    "MeleeDirUpdate": true,
+    "MeleeAuto": true,
+    "MeleeHitMultiX2": 2,
+    "MeleeHitMultiX4": 4,
+    "Range": false,
+    "RangeDirUpdate": true,
+    "RangeAuto": false,
+    "RangeBullet": null,
+    "RangeBulletSpeed": 5,
+    "RangeTargetUpdate": true,
+    "RangeTargetReset": true,
     "TagMelee": 201,
     "TagRange": 202,
     "TagTarget": 100,
@@ -19662,7 +19646,6 @@
     "ValueBar": {
       "__id__": 119
     },
-    "EmitHit": "",
     "EmitDead": "monster-dead",
     "EmitDestroy": "",
     "ShakeHit": false,
@@ -19677,7 +19660,9 @@
     ],
     "AnimIdle": "idle",
     "AnimIdleLoop": true,
+    "AnimHitEvent": true,
     "AnimHit": "hit",
+    "AnimDeadEvent": true,
     "AnimDead": "dead",
     "AnimDeadLoop": false,
     "_id": "47xvmYy69Ejoj1sgxSvjW4"
@@ -19693,26 +19678,9 @@
     "_enabled": true,
     "__prefab": null,
     "Once": false,
-    "DelayAttack": 1,
-    "DelayNext": 2,
     "DelayLoop": 1,
-    "StopOutRange": false,
-    "StopOnHit": false,
-    "Melee": true,
-    "MeleeDirUpdate": true,
-    "MeleeAuto": true,
-    "MeleeHit": 1,
-    "MeleeHitMultiX2": 2,
-    "MeleeHitMultiX4": 4,
-    "Range": false,
-    "RangeDirUpdate": true,
-    "RangeAuto": false,
-    "RangeBullet": null,
-    "RangeBulletSpeed": 5,
-    "RangeTargetUpdate": true,
-    "RangeTargetReset": true,
-    "AnimComboKeep": false,
     "AnimMix": false,
+    "AnimComboKeep": false,
     "AnimReady": [],
     "AnimAttack": [
       "attack1"
@@ -19728,10 +19696,20 @@
     "AnimMeleeHit": [
       1
     ],
-    "Aim": false,
-    "AimAnim": "attack_aim",
-    "AimBone": "aim_bone",
-    "AimFrom": null,
+    "StopOutRange": false,
+    "StopOnHit": false,
+    "Melee": true,
+    "MeleeDirUpdate": true,
+    "MeleeAuto": true,
+    "MeleeHitMultiX2": 2,
+    "MeleeHitMultiX4": 4,
+    "Range": false,
+    "RangeDirUpdate": true,
+    "RangeAuto": false,
+    "RangeBullet": null,
+    "RangeBulletSpeed": 5,
+    "RangeTargetUpdate": true,
+    "RangeTargetReset": true,
     "TagMelee": 201,
     "TagRange": 202,
     "TagTarget": 100,
@@ -20068,6 +20046,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": false,
     "OnTagBody": 0,
     "OnTagTarget": [
@@ -20250,6 +20229,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Desciption": "",
     "Start": false,
     "OnTagBody": 0,
     "OnTagTarget": [
