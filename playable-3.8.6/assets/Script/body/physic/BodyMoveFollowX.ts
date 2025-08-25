@@ -2,7 +2,7 @@ import { _decorator, CCBoolean, CCFloat, CCString, Component, Enum, Node, RigidB
 import { ConstantBase } from '../../ConstantBase';
 import { SpineBase } from '../../renderer/SpineBase';
 import { BodyBase } from '../BodyBase';
-import { BodyAttackX } from '../hit/BodyAttackX';
+import { BodyAttack } from '../hit/BodyAttack';
 import { BodyCheckX } from './BodyCheckX';
 import { BodyKnockX } from './BodyKnockX';
 const { ccclass, property, requireComponent } = _decorator;
@@ -64,7 +64,7 @@ export class BodyMoveFollowX extends Component {
     m_body: BodyBase = null;
     m_bodyCheck: BodyCheckX = null;
     m_bodyKnock: BodyKnockX = null;
-    m_bodyAttack: BodyAttackX = null;
+    m_bodyAttack: BodyAttack = null;
     m_spine: SpineBase = null;
     m_rigidbody: RigidBody2D = null;
 
@@ -72,7 +72,7 @@ export class BodyMoveFollowX extends Component {
         this.m_body = this.getComponent(BodyBase);
         this.m_bodyCheck = this.getComponent(BodyCheckX);
         this.m_bodyKnock = this.getComponent(BodyKnockX);
-        this.m_bodyAttack = this.getComponent(BodyAttackX);
+        this.m_bodyAttack = this.getComponent(BodyAttack);
         this.m_spine = this.getComponent(SpineBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
     }

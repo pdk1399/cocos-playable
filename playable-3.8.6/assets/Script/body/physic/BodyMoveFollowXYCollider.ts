@@ -1,6 +1,6 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, Contact2DType, director, IPhysics2DContact, Node, RigidBody2D, v2, v3, Vec2 } from 'cc';
 import { SpineBase } from '../../renderer/SpineBase';
-import { BodyAttackX } from '../hit/BodyAttackX';
+import { BodyAttack } from '../hit/BodyAttack';
 const { ccclass, property, requireComponent } = _decorator;
 
 @ccclass('FollowCollider')
@@ -48,12 +48,12 @@ export class BodyMoveFollowXYCollider extends Component {
     m_move: boolean = false;
     m_view: boolean = false;
 
-    m_bodyAttack: BodyAttackX = null;
+    m_bodyAttack: BodyAttack = null;
     m_spine: SpineBase = null;
     m_rigidbody: RigidBody2D = null;
 
     protected onLoad(): void {
-        this.m_bodyAttack = this.getComponent(BodyAttackX);
+        this.m_bodyAttack = this.getComponent(BodyAttack);
         this.m_spine = this.getComponent(SpineBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
 

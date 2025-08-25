@@ -1,7 +1,7 @@
 import { _decorator, CCBoolean, CCFloat, CCInteger, CCString, Collider2D, Component, director, Enum, Node, RigidBody2D, tween, v2, v3, Vec2, Vec3 } from 'cc';
 import { ConstantBase } from '../ConstantBase';
 import { BodyBase } from './BodyBase';
-import { BodyAttackX } from './hit/BodyAttackX';
+import { BodyAttack } from './hit/BodyAttack';
 import { BodyCheckX } from './physic/BodyCheckX';
 import { BodyKnockX } from './physic/BodyKnockX';
 import { SpineBase } from '../renderer/SpineBase';
@@ -74,39 +74,39 @@ export class BodyControlX extends Component {
     @property({ group: { name: 'MoveY' }, type: CCBoolean, visible(this: BodyControlX) { return !this.LockY; } })
     JumpAuto: boolean = false;
 
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null; } })
     AttackHold: boolean = false;
-    @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null; } })
+    @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null; } })
     AttackDegOffset: number = 0;
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null; } })
     AttackAimReset: boolean = true;
 
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockX; } })
     DirStopByBodyAttack: boolean = true;
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockX; } })
     DirStopByPressAttack: boolean = true;
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockX; } })
     MoveStopByBodyAttack: boolean = true;
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockX; } })
     MoveStopByPressAttack: boolean = true;
-    @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
+    @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockX; } })
     MoveAttackGroundX: number = 0;
-    @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
+    @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockX; } })
     MoveAttackAirX: number = 0;
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockX; } })
     MoveAttackByFace: boolean = true;
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockX; } })
     DashStopByBodyAttack: boolean = false;
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockX; } })
     DashStopByPressAttack: boolean = false;
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockX; } })
     MoveAttackReset: boolean = true;
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockX; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockX; } })
     DashAttackReset: boolean = true;
 
-    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockY; } })
+    @property({ group: { name: 'Attack' }, type: CCBoolean, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockY; } })
     FallAttackStop: boolean = false;
-    @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttackX) != null && !this.LockY && !this.FallAttackStop; } })
+    @property({ group: { name: 'Attack' }, type: CCFloat, visible(this: BodyControlX) { return this.getComponent(BodyAttack) != null && !this.LockY && !this.FallAttackStop; } })
     FallAttackForce: number = 0; //Default -0.2f for slow fall down while attack
 
     // @property({ group: { name: 'Pick' }, type: CCBoolean })
@@ -189,7 +189,7 @@ export class BodyControlX extends Component {
     m_body: BodyBase = null;
     m_bodyCheck: BodyCheckX = null;
     m_bodyKnock: BodyKnockX = null;
-    m_bodyAttack: BodyAttackX = null;
+    m_bodyAttack: BodyAttack = null;
     m_spine: SpineBase = null;
     m_rigidbody: RigidBody2D = null;
 
@@ -197,7 +197,7 @@ export class BodyControlX extends Component {
         this.m_body = this.getComponent(BodyBase);
         this.m_bodyCheck = this.getComponent(BodyCheckX);
         this.m_bodyKnock = this.getComponent(BodyKnockX);
-        this.m_bodyAttack = this.getComponent(BodyAttackX);
+        this.m_bodyAttack = this.getComponent(BodyAttack);
         this.m_spine = this.getComponent(SpineBase);
         this.m_rigidbody = this.getComponent(RigidBody2D);
 

@@ -6,9 +6,9 @@ import { ShootBase } from '../../shoot/ShootBase';
 import { SpineBase } from '../../renderer/SpineBase';
 const { ccclass, property } = _decorator;
 
-@ccclass('BodyAttackX')
-export class BodyAttackX extends Component {
-    //
+@ccclass('BodyAttack')
+export class BodyAttack extends Component {
+
     @property({ group: { name: 'Main' }, type: CCBoolean })
     Once: boolean = false;
     @property({ group: { name: 'Main' }, type: CCFloat })
@@ -40,28 +40,28 @@ export class BodyAttackX extends Component {
 
     @property({ group: { name: 'Melee' }, type: CCBoolean })
     Melee: boolean = false;
-    @property({ group: { name: 'Melee' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Melee; } })
+    @property({ group: { name: 'Melee' }, type: CCBoolean, visible(this: BodyAttack) { return this.Melee; } })
     MeleeDirUpdate: boolean = true;
-    @property({ group: { name: 'Melee' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Melee; } })
+    @property({ group: { name: 'Melee' }, type: CCBoolean, visible(this: BodyAttack) { return this.Melee; } })
     MeleeAuto: boolean = false;
-    @property({ group: { name: 'Melee' }, type: CCInteger, visible(this: BodyAttackX) { return this.Melee; } })
+    @property({ group: { name: 'Melee' }, type: CCInteger, visible(this: BodyAttack) { return this.Melee; } })
     MeleeHitMultiX2: number = 2;
-    @property({ group: { name: 'Melee' }, type: CCInteger, visible(this: BodyAttackX) { return this.Melee; } })
+    @property({ group: { name: 'Melee' }, type: CCInteger, visible(this: BodyAttack) { return this.Melee; } })
     MeleeHitMultiX4: number = 4;
 
-    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttack) { return this.getComponent(ShootBase) != null; } })
     Range: boolean = false;
-    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttack) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeDirUpdate: boolean = true;
-    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttack) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeAuto: boolean = false;
-    @property({ group: { name: 'Range' }, type: Node, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: Node, visible(this: BodyAttack) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeBullet: Node = null;
-    @property({ group: { name: 'Range' }, type: CCFloat, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: CCFloat, visible(this: BodyAttack) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeBulletSpeed: number = 5;
-    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttack) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeTargetUpdate: boolean = true;
-    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttackX) { return this.Range && this.getComponent(ShootBase) != null; } })
+    @property({ group: { name: 'Range' }, type: CCBoolean, visible(this: BodyAttack) { return this.Range && this.getComponent(ShootBase) != null; } })
     RangeTargetReset: boolean = true;
 
     @property({ group: { name: 'Tag' }, type: CCInteger })

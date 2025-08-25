@@ -1,6 +1,6 @@
 import { _decorator, CCBoolean, CCFloat, CCString, Component, director, math, Node, v3, Vec3 } from 'cc';
 import { SpineBase } from '../../renderer/SpineBase';
-import { BodyAttackX } from '../hit/BodyAttackX';
+import { BodyAttack } from '../hit/BodyAttack';
 const { ccclass, property, requireComponent } = _decorator;
 
 @ccclass('FollowOffset')
@@ -45,11 +45,11 @@ export class BodyMoveFollowXYOffset extends Component {
     m_dir: number = 1;
     m_move: boolean = false;
 
-    m_bodyAttack: BodyAttackX = null;
+    m_bodyAttack: BodyAttack = null;
     m_spine: SpineBase = null;
 
     protected onLoad(): void {
-        this.m_bodyAttack = this.getComponent(BodyAttackX);
+        this.m_bodyAttack = this.getComponent(BodyAttack);
         this.m_spine = this.getComponent(SpineBase);
 
         if (this.OnFollow != '')
